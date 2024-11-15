@@ -44,6 +44,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -79,6 +81,10 @@ class ContactCenterInsightsAsyncClient:
 
     analysis_path = staticmethod(ContactCenterInsightsClient.analysis_path)
     parse_analysis_path = staticmethod(ContactCenterInsightsClient.parse_analysis_path)
+    analysis_rule_path = staticmethod(ContactCenterInsightsClient.analysis_rule_path)
+    parse_analysis_rule_path = staticmethod(
+        ContactCenterInsightsClient.parse_analysis_rule_path
+    )
     conversation_path = staticmethod(ContactCenterInsightsClient.conversation_path)
     parse_conversation_path = staticmethod(
         ContactCenterInsightsClient.parse_conversation_path
@@ -95,6 +101,10 @@ class ContactCenterInsightsAsyncClient:
     parse_encryption_spec_path = staticmethod(
         ContactCenterInsightsClient.parse_encryption_spec_path
     )
+    feedback_label_path = staticmethod(ContactCenterInsightsClient.feedback_label_path)
+    parse_feedback_label_path = staticmethod(
+        ContactCenterInsightsClient.parse_feedback_label_path
+    )
     issue_path = staticmethod(ContactCenterInsightsClient.issue_path)
     parse_issue_path = staticmethod(ContactCenterInsightsClient.parse_issue_path)
     issue_model_path = staticmethod(ContactCenterInsightsClient.issue_model_path)
@@ -108,6 +118,26 @@ class ContactCenterInsightsAsyncClient:
     phrase_matcher_path = staticmethod(ContactCenterInsightsClient.phrase_matcher_path)
     parse_phrase_matcher_path = staticmethod(
         ContactCenterInsightsClient.parse_phrase_matcher_path
+    )
+    qa_question_path = staticmethod(ContactCenterInsightsClient.qa_question_path)
+    parse_qa_question_path = staticmethod(
+        ContactCenterInsightsClient.parse_qa_question_path
+    )
+    qa_scorecard_path = staticmethod(ContactCenterInsightsClient.qa_scorecard_path)
+    parse_qa_scorecard_path = staticmethod(
+        ContactCenterInsightsClient.parse_qa_scorecard_path
+    )
+    qa_scorecard_result_path = staticmethod(
+        ContactCenterInsightsClient.qa_scorecard_result_path
+    )
+    parse_qa_scorecard_result_path = staticmethod(
+        ContactCenterInsightsClient.parse_qa_scorecard_result_path
+    )
+    qa_scorecard_revision_path = staticmethod(
+        ContactCenterInsightsClient.qa_scorecard_revision_path
+    )
+    parse_qa_scorecard_revision_path = staticmethod(
+        ContactCenterInsightsClient.parse_qa_scorecard_revision_path
     )
     recognizer_path = staticmethod(ContactCenterInsightsClient.recognizer_path)
     parse_recognizer_path = staticmethod(
@@ -4508,6 +4538,595 @@ class ContactCenterInsightsAsyncClient:
         # Done; return the response.
         return response
 
+    async def create_analysis_rule(
+        self,
+        request: Optional[
+            Union[contact_center_insights.CreateAnalysisRuleRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        analysis_rule: Optional[resources.AnalysisRule] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AnalysisRule:
+        r"""Creates a analysis rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_create_analysis_rule():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.CreateAnalysisRuleRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_analysis_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateAnalysisRuleRequest, dict]]):
+                The request object. The request to create a analysis rule. analysis_rule_id
+                will be generated by the server.
+            parent (:class:`str`):
+                Required. The parent resource of the analysis rule.
+                Required. The location to create a analysis rule for.
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>`` or
+                ``projects/<Project Number>/locations/<Location ID>``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            analysis_rule (:class:`google.cloud.contact_center_insights_v1.types.AnalysisRule`):
+                Required. The analysis rule resource
+                to create.
+
+                This corresponds to the ``analysis_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.AnalysisRule:
+                The CCAI Insights project wide
+                analysis rule. This rule will be applied
+                to all conversations that match the
+                filter defined in the rule. For a
+                conversation matches the filter, the
+                annotators specified in the rule will be
+                run. If a conversation matches multiple
+                rules, a union of all the annotators
+                will be run. One project can have
+                multiple analysis rules.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, analysis_rule])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateAnalysisRuleRequest):
+            request = contact_center_insights.CreateAnalysisRuleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if analysis_rule is not None:
+            request.analysis_rule = analysis_rule
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_analysis_rule
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_analysis_rule(
+        self,
+        request: Optional[
+            Union[contact_center_insights.GetAnalysisRuleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AnalysisRule:
+        r"""Get a analysis rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_get_analysis_rule():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.GetAnalysisRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_analysis_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetAnalysisRuleRequest, dict]]):
+                The request object. The request for getting a analysis
+                rule.
+            name (:class:`str`):
+                Required. The name of the
+                AnalysisRule to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.AnalysisRule:
+                The CCAI Insights project wide
+                analysis rule. This rule will be applied
+                to all conversations that match the
+                filter defined in the rule. For a
+                conversation matches the filter, the
+                annotators specified in the rule will be
+                run. If a conversation matches multiple
+                rules, a union of all the annotators
+                will be run. One project can have
+                multiple analysis rules.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetAnalysisRuleRequest):
+            request = contact_center_insights.GetAnalysisRuleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_analysis_rule
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_analysis_rules(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ListAnalysisRulesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAnalysisRulesAsyncPager:
+        r"""Lists analysis rules.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_list_analysis_rules():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.ListAnalysisRulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_analysis_rules(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListAnalysisRulesRequest, dict]]):
+                The request object. The request to list analysis rules.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                analysis rules.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListAnalysisRulesAsyncPager:
+                The response of listing views.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListAnalysisRulesRequest):
+            request = contact_center_insights.ListAnalysisRulesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_analysis_rules
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAnalysisRulesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_analysis_rule(
+        self,
+        request: Optional[
+            Union[contact_center_insights.UpdateAnalysisRuleRequest, dict]
+        ] = None,
+        *,
+        analysis_rule: Optional[resources.AnalysisRule] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.AnalysisRule:
+        r"""Updates a analysis rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_update_analysis_rule():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.UpdateAnalysisRuleRequest(
+                )
+
+                # Make the request
+                response = await client.update_analysis_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateAnalysisRuleRequest, dict]]):
+                The request object. The request to update a analysis
+                rule.
+            analysis_rule (:class:`google.cloud.contact_center_insights_v1.types.AnalysisRule`):
+                Required. The new analysis rule.
+                This corresponds to the ``analysis_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The list of fields to be updated. If the
+                update_mask is not provided, the update will be applied
+                to all fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.AnalysisRule:
+                The CCAI Insights project wide
+                analysis rule. This rule will be applied
+                to all conversations that match the
+                filter defined in the rule. For a
+                conversation matches the filter, the
+                annotators specified in the rule will be
+                run. If a conversation matches multiple
+                rules, a union of all the annotators
+                will be run. One project can have
+                multiple analysis rules.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([analysis_rule, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateAnalysisRuleRequest):
+            request = contact_center_insights.UpdateAnalysisRuleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if analysis_rule is not None:
+            request.analysis_rule = analysis_rule
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_analysis_rule
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("analysis_rule.name", request.analysis_rule.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_analysis_rule(
+        self,
+        request: Optional[
+            Union[contact_center_insights.DeleteAnalysisRuleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a analysis rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_delete_analysis_rule():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.DeleteAnalysisRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_analysis_rule(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteAnalysisRuleRequest, dict]]):
+                The request object. The request to delete a analysis
+                rule.
+            name (:class:`str`):
+                Required. The name of the analysis
+                rule to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteAnalysisRuleRequest):
+            request = contact_center_insights.DeleteAnalysisRuleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_analysis_rule
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     async def get_encryption_spec(
         self,
         request: Optional[
@@ -4566,9 +5185,8 @@ class ContactCenterInsightsAsyncClient:
 
         Returns:
             google.cloud.contact_center_insights_v1.types.EncryptionSpec:
-                A customer-managed encryption key
-                specification that can be applied to all
-                created resources (e.g. Conversation).
+                A customer-managed encryption key specification that can be applied to all
+                   created resources (e.g. Conversation).
 
         """
         # Create or coerce a protobuf request object.
@@ -4629,9 +5247,9 @@ class ContactCenterInsightsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Initializes a location-level encryption key
-        specification.  An error will be thrown if the location
-        has resources already created before the initialization.
-        Once the encryption specification is initialized at a
+        specification. An error will result if the location has
+        resources already created before the initialization.
+        After the encryption specification is initialized at a
         location, it is immutable and all newly created
         resources under the location will be encrypted with the
         existing specification.
@@ -4678,8 +5296,8 @@ class ContactCenterInsightsAsyncClient:
                 It is required that the kms key is in the same region as
                 the endpoint. The same key will be used for all
                 provisioned resources, if encryption is available. If
-                the kms_key_name is left empty, no encryption will be
-                enforced.
+                the ``kms_key_name`` field is left empty, no encryption
+                will be enforced.
 
                 This corresponds to the ``encryption_spec`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5302,6 +5920,3077 @@ class ContactCenterInsightsAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def query_metrics(
+        self,
+        request: Optional[
+            Union[contact_center_insights.QueryMetricsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Query metrics.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_query_metrics():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.QueryMetricsRequest(
+                    location="location_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                operation = client.query_metrics(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.QueryMetricsRequest, dict]]):
+                The request object. The request for querying metrics.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.QueryMetricsResponse`
+                The response for querying metrics.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.QueryMetricsRequest):
+            request = contact_center_insights.QueryMetricsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_metrics
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            contact_center_insights.QueryMetricsResponse,
+            metadata_type=contact_center_insights.QueryMetricsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_qa_question(
+        self,
+        request: Optional[
+            Union[contact_center_insights.CreateQaQuestionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        qa_question: Optional[resources.QaQuestion] = None,
+        qa_question_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaQuestion:
+        r"""Create a QaQuestion.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_create_qa_question():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.CreateQaQuestionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_qa_question(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateQaQuestionRequest, dict]]):
+                The request object. The request for creating a
+                QaQuestion.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                QaQuestion.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            qa_question (:class:`google.cloud.contact_center_insights_v1.types.QaQuestion`):
+                Required. The QaQuestion to create.
+                This corresponds to the ``qa_question`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            qa_question_id (:class:`str`):
+                Optional. A unique ID for the new question. This ID will
+                become the final component of the question's resource
+                name. If no ID is specified, a server-generated ID will
+                be used.
+
+                This value should be 4-64 characters and must match the
+                regular expression ``^[a-z0-9-]{4,64}$``. Valid
+                characters are ``[a-z][0-9]-``.
+
+                This corresponds to the ``qa_question_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaQuestion:
+                A single question to be scored by the
+                Insights QA feature.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, qa_question, qa_question_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateQaQuestionRequest):
+            request = contact_center_insights.CreateQaQuestionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if qa_question is not None:
+            request.qa_question = qa_question
+        if qa_question_id is not None:
+            request.qa_question_id = qa_question_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_qa_question
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_qa_question(
+        self,
+        request: Optional[
+            Union[contact_center_insights.GetQaQuestionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaQuestion:
+        r"""Gets a QaQuestion.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_get_qa_question():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.GetQaQuestionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_qa_question(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetQaQuestionRequest, dict]]):
+                The request object. The request for a QaQuestion.
+            name (:class:`str`):
+                Required. The name of the QaQuestion
+                to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaQuestion:
+                A single question to be scored by the
+                Insights QA feature.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetQaQuestionRequest):
+            request = contact_center_insights.GetQaQuestionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_qa_question
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_qa_question(
+        self,
+        request: Optional[
+            Union[contact_center_insights.UpdateQaQuestionRequest, dict]
+        ] = None,
+        *,
+        qa_question: Optional[resources.QaQuestion] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaQuestion:
+        r"""Updates a QaQuestion.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_update_qa_question():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.UpdateQaQuestionRequest(
+                )
+
+                # Make the request
+                response = await client.update_qa_question(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateQaQuestionRequest, dict]]):
+                The request object. The request for updating a
+                QaQuestion.
+            qa_question (:class:`google.cloud.contact_center_insights_v1.types.QaQuestion`):
+                Required. The QaQuestion to update.
+                This corresponds to the ``qa_question`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be updated. All possible
+                fields can be updated by passing ``*``, or a subset of
+                the following updateable fields can be provided:
+
+                -  ``abbreviation``
+                -  ``answer_choices``
+                -  ``answer_instructions``
+                -  ``order``
+                -  ``question_body``
+                -  ``tags``
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaQuestion:
+                A single question to be scored by the
+                Insights QA feature.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([qa_question, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateQaQuestionRequest):
+            request = contact_center_insights.UpdateQaQuestionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if qa_question is not None:
+            request.qa_question = qa_question
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_qa_question
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("qa_question.name", request.qa_question.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_qa_question(
+        self,
+        request: Optional[
+            Union[contact_center_insights.DeleteQaQuestionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a QaQuestion.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_delete_qa_question():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.DeleteQaQuestionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_qa_question(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteQaQuestionRequest, dict]]):
+                The request object. The request for deleting a
+                QaQuestion.
+            name (:class:`str`):
+                Required. The name of the QaQuestion
+                to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteQaQuestionRequest):
+            request = contact_center_insights.DeleteQaQuestionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_qa_question
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_qa_questions(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ListQaQuestionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListQaQuestionsAsyncPager:
+        r"""Lists QaQuestions.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_list_qa_questions():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.ListQaQuestionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_qa_questions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListQaQuestionsRequest, dict]]):
+                The request object. Request to list QaQuestions.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                questions.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListQaQuestionsAsyncPager:
+                The response from a ListQaQuestions
+                request.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListQaQuestionsRequest):
+            request = contact_center_insights.ListQaQuestionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_qa_questions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListQaQuestionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_qa_scorecard(
+        self,
+        request: Optional[
+            Union[contact_center_insights.CreateQaScorecardRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        qa_scorecard: Optional[resources.QaScorecard] = None,
+        qa_scorecard_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaScorecard:
+        r"""Create a QaScorecard.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_create_qa_scorecard():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.CreateQaScorecardRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_qa_scorecard(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateQaScorecardRequest, dict]]):
+                The request object. The request for creating a
+                QaScorecard.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                QaScorecard.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            qa_scorecard (:class:`google.cloud.contact_center_insights_v1.types.QaScorecard`):
+                Required. The QaScorecard to create.
+                This corresponds to the ``qa_scorecard`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            qa_scorecard_id (:class:`str`):
+                Optional. A unique ID for the new QaScorecard. This ID
+                will become the final component of the QaScorecard's
+                resource name. If no ID is specified, a server-generated
+                ID will be used.
+
+                This value should be 4-64 characters and must match the
+                regular expression ``^[a-z0-9-]{4,64}$``. Valid
+                characters are ``[a-z][0-9]-``.
+
+                This corresponds to the ``qa_scorecard_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaScorecard:
+                A QaScorecard represents a collection
+                of questions to be scored during
+                analysis.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, qa_scorecard, qa_scorecard_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateQaScorecardRequest):
+            request = contact_center_insights.CreateQaScorecardRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if qa_scorecard is not None:
+            request.qa_scorecard = qa_scorecard
+        if qa_scorecard_id is not None:
+            request.qa_scorecard_id = qa_scorecard_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_qa_scorecard
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_qa_scorecard(
+        self,
+        request: Optional[
+            Union[contact_center_insights.GetQaScorecardRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaScorecard:
+        r"""Gets a QaScorecard.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_get_qa_scorecard():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.GetQaScorecardRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_qa_scorecard(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetQaScorecardRequest, dict]]):
+                The request object. The request for a QaScorecard. By
+                default, returns the latest revision.
+            name (:class:`str`):
+                Required. The name of the QaScorecard
+                to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaScorecard:
+                A QaScorecard represents a collection
+                of questions to be scored during
+                analysis.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetQaScorecardRequest):
+            request = contact_center_insights.GetQaScorecardRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_qa_scorecard
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_qa_scorecard(
+        self,
+        request: Optional[
+            Union[contact_center_insights.UpdateQaScorecardRequest, dict]
+        ] = None,
+        *,
+        qa_scorecard: Optional[resources.QaScorecard] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaScorecard:
+        r"""Updates a QaScorecard.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_update_qa_scorecard():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.UpdateQaScorecardRequest(
+                )
+
+                # Make the request
+                response = await client.update_qa_scorecard(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateQaScorecardRequest, dict]]):
+                The request object. The request for updating a
+                QaScorecard.
+            qa_scorecard (:class:`google.cloud.contact_center_insights_v1.types.QaScorecard`):
+                Required. The QaScorecard to update.
+                This corresponds to the ``qa_scorecard`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be updated. All possible
+                fields can be updated by passing ``*``, or a subset of
+                the following updateable fields can be provided:
+
+                -  ``description``
+                -  ``display_name``
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaScorecard:
+                A QaScorecard represents a collection
+                of questions to be scored during
+                analysis.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([qa_scorecard, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateQaScorecardRequest):
+            request = contact_center_insights.UpdateQaScorecardRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if qa_scorecard is not None:
+            request.qa_scorecard = qa_scorecard
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_qa_scorecard
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("qa_scorecard.name", request.qa_scorecard.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_qa_scorecard(
+        self,
+        request: Optional[
+            Union[contact_center_insights.DeleteQaScorecardRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a QaScorecard.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_delete_qa_scorecard():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.DeleteQaScorecardRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_qa_scorecard(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteQaScorecardRequest, dict]]):
+                The request object. The request for deleting a
+                QaScorecard.
+            name (:class:`str`):
+                Required. The name of the QaScorecard
+                to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteQaScorecardRequest):
+            request = contact_center_insights.DeleteQaScorecardRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_qa_scorecard
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_qa_scorecards(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ListQaScorecardsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListQaScorecardsAsyncPager:
+        r"""Lists QaScorecards.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_list_qa_scorecards():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.ListQaScorecardsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_qa_scorecards(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListQaScorecardsRequest, dict]]):
+                The request object. Request to list QaScorecards.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                scorecards.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListQaScorecardsAsyncPager:
+                The response from a ListQaScorecards
+                request.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListQaScorecardsRequest):
+            request = contact_center_insights.ListQaScorecardsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_qa_scorecards
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListQaScorecardsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_qa_scorecard_revision(
+        self,
+        request: Optional[
+            Union[contact_center_insights.CreateQaScorecardRevisionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        qa_scorecard_revision: Optional[resources.QaScorecardRevision] = None,
+        qa_scorecard_revision_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaScorecardRevision:
+        r"""Creates a QaScorecardRevision.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_create_qa_scorecard_revision():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.CreateQaScorecardRevisionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_qa_scorecard_revision(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateQaScorecardRevisionRequest, dict]]):
+                The request object. The request for creating a
+                QaScorecardRevision.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                QaScorecardRevision.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            qa_scorecard_revision (:class:`google.cloud.contact_center_insights_v1.types.QaScorecardRevision`):
+                Required. The QaScorecardRevision to
+                create.
+
+                This corresponds to the ``qa_scorecard_revision`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            qa_scorecard_revision_id (:class:`str`):
+                Optional. A unique ID for the new QaScorecardRevision.
+                This ID will become the final component of the
+                QaScorecardRevision's resource name. If no ID is
+                specified, a server-generated ID will be used.
+
+                This value should be 4-64 characters and must match the
+                regular expression ``^[a-z0-9-]{4,64}$``. Valid
+                characters are ``[a-z][0-9]-``.
+
+                This corresponds to the ``qa_scorecard_revision_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
+                A revision of a QaScorecard.
+
+                Modifying published scorecard fields
+                would invalidate existing scorecard
+                results — the questions may have
+                changed, or the score weighting will
+                make existing scores impossible to
+                understand. So changes must create a new
+                revision, rather than modifying the
+                existing resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [parent, qa_scorecard_revision, qa_scorecard_revision_id]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.CreateQaScorecardRevisionRequest
+        ):
+            request = contact_center_insights.CreateQaScorecardRevisionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if qa_scorecard_revision is not None:
+            request.qa_scorecard_revision = qa_scorecard_revision
+        if qa_scorecard_revision_id is not None:
+            request.qa_scorecard_revision_id = qa_scorecard_revision_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_qa_scorecard_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_qa_scorecard_revision(
+        self,
+        request: Optional[
+            Union[contact_center_insights.GetQaScorecardRevisionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaScorecardRevision:
+        r"""Gets a QaScorecardRevision.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_get_qa_scorecard_revision():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.GetQaScorecardRevisionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_qa_scorecard_revision(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetQaScorecardRevisionRequest, dict]]):
+                The request object. The request for a
+                QaScorecardRevision.
+            name (:class:`str`):
+                Required. The name of the
+                QaScorecardRevision to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
+                A revision of a QaScorecard.
+
+                Modifying published scorecard fields
+                would invalidate existing scorecard
+                results — the questions may have
+                changed, or the score weighting will
+                make existing scores impossible to
+                understand. So changes must create a new
+                revision, rather than modifying the
+                existing resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.GetQaScorecardRevisionRequest
+        ):
+            request = contact_center_insights.GetQaScorecardRevisionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_qa_scorecard_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def tune_qa_scorecard_revision(
+        self,
+        request: Optional[
+            Union[contact_center_insights.TuneQaScorecardRevisionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
+        validate_only: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Fine tune one or more QaModels.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_tune_qa_scorecard_revision():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.TuneQaScorecardRevisionRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                operation = client.tune_qa_scorecard_revision(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.TuneQaScorecardRevisionRequest, dict]]):
+                The request object. Request for TuneQaScorecardRevision
+                endpoint.
+            parent (:class:`str`):
+                Required. The parent resource for new
+                fine tuning job instance.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            filter (:class:`str`):
+                Required. Filter for selecting the
+                feedback labels that needs to be used
+                for training. This filter can be used to
+                limit the feedback labels used for
+                tuning to a feedback labels created or
+                updated for a specific time-window etc.
+
+                This corresponds to the ``filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            validate_only (:class:`bool`):
+                Optional. Run in validate only mode,
+                no fine tuning will actually run. Data
+                quality validations like training data
+                distributions will run. Even when set to
+                false, the data quality validations will
+                still run but once the validations
+                complete we will proceed with the fine
+                tune, if applicable.
+
+                This corresponds to the ``validate_only`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.TuneQaScorecardRevisionResponse`
+                Response for TuneQaScorecardRevision endpoint.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, filter, validate_only])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.TuneQaScorecardRevisionRequest
+        ):
+            request = contact_center_insights.TuneQaScorecardRevisionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if filter is not None:
+            request.filter = filter
+        if validate_only is not None:
+            request.validate_only = validate_only
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.tune_qa_scorecard_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            contact_center_insights.TuneQaScorecardRevisionResponse,
+            metadata_type=contact_center_insights.TuneQaScorecardRevisionMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def deploy_qa_scorecard_revision(
+        self,
+        request: Optional[
+            Union[contact_center_insights.DeployQaScorecardRevisionRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaScorecardRevision:
+        r"""Deploy a QaScorecardRevision.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_deploy_qa_scorecard_revision():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.DeployQaScorecardRevisionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.deploy_qa_scorecard_revision(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeployQaScorecardRevisionRequest, dict]]):
+                The request object. The request to deploy a
+                QaScorecardRevision
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
+                A revision of a QaScorecard.
+
+                Modifying published scorecard fields
+                would invalidate existing scorecard
+                results — the questions may have
+                changed, or the score weighting will
+                make existing scores impossible to
+                understand. So changes must create a new
+                revision, rather than modifying the
+                existing resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.DeployQaScorecardRevisionRequest
+        ):
+            request = contact_center_insights.DeployQaScorecardRevisionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.deploy_qa_scorecard_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def undeploy_qa_scorecard_revision(
+        self,
+        request: Optional[
+            Union[contact_center_insights.UndeployQaScorecardRevisionRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.QaScorecardRevision:
+        r"""Undeploy a QaScorecardRevision.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_undeploy_qa_scorecard_revision():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.UndeployQaScorecardRevisionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.undeploy_qa_scorecard_revision(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UndeployQaScorecardRevisionRequest, dict]]):
+                The request object. The request to undeploy a
+                QaScorecardRevision
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
+                A revision of a QaScorecard.
+
+                Modifying published scorecard fields
+                would invalidate existing scorecard
+                results — the questions may have
+                changed, or the score weighting will
+                make existing scores impossible to
+                understand. So changes must create a new
+                revision, rather than modifying the
+                existing resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.UndeployQaScorecardRevisionRequest
+        ):
+            request = contact_center_insights.UndeployQaScorecardRevisionRequest(
+                request
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.undeploy_qa_scorecard_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_qa_scorecard_revision(
+        self,
+        request: Optional[
+            Union[contact_center_insights.DeleteQaScorecardRevisionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a QaScorecardRevision.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_delete_qa_scorecard_revision():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.DeleteQaScorecardRevisionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_qa_scorecard_revision(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteQaScorecardRevisionRequest, dict]]):
+                The request object. The request to delete a
+                QaScorecardRevision.
+            name (:class:`str`):
+                Required. The name of the
+                QaScorecardRevision to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.DeleteQaScorecardRevisionRequest
+        ):
+            request = contact_center_insights.DeleteQaScorecardRevisionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_qa_scorecard_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_qa_scorecard_revisions(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ListQaScorecardRevisionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListQaScorecardRevisionsAsyncPager:
+        r"""Lists all revisions under the parent QaScorecard.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_list_qa_scorecard_revisions():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.ListQaScorecardRevisionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_qa_scorecard_revisions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsRequest, dict]]):
+                The request object. Request to list QaScorecardRevisions
+            parent (:class:`str`):
+                Required. The parent resource of the
+                scorecard revisions. To list all
+                revisions of all scorecards, substitute
+                the QaScorecard ID with a '-' character.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListQaScorecardRevisionsAsyncPager:
+                The response from a
+                ListQaScorecardRevisions request.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.ListQaScorecardRevisionsRequest
+        ):
+            request = contact_center_insights.ListQaScorecardRevisionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_qa_scorecard_revisions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListQaScorecardRevisionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_feedback_label(
+        self,
+        request: Optional[
+            Union[contact_center_insights.CreateFeedbackLabelRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        feedback_label: Optional[resources.FeedbackLabel] = None,
+        feedback_label_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.FeedbackLabel:
+        r"""Create feedback label.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_create_feedback_label():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                feedback_label = contact_center_insights_v1.FeedbackLabel()
+                feedback_label.label = "label_value"
+
+                request = contact_center_insights_v1.CreateFeedbackLabelRequest(
+                    parent="parent_value",
+                    feedback_label=feedback_label,
+                )
+
+                # Make the request
+                response = await client.create_feedback_label(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.CreateFeedbackLabelRequest, dict]]):
+                The request object. The request for creating a feedback
+                label.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                feedback label.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            feedback_label (:class:`google.cloud.contact_center_insights_v1.types.FeedbackLabel`):
+                Required. The feedback label to
+                create.
+
+                This corresponds to the ``feedback_label`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            feedback_label_id (:class:`str`):
+                Optional. The ID of the feedback
+                label to create. If one is not specified
+                it will be generated by the server.
+
+                This corresponds to the ``feedback_label_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.FeedbackLabel:
+                Represents a conversation, resource,
+                and label provided by the user.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, feedback_label, feedback_label_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.CreateFeedbackLabelRequest):
+            request = contact_center_insights.CreateFeedbackLabelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if feedback_label is not None:
+            request.feedback_label = feedback_label
+        if feedback_label_id is not None:
+            request.feedback_label_id = feedback_label_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_feedback_label
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_feedback_labels(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ListFeedbackLabelsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListFeedbackLabelsAsyncPager:
+        r"""List feedback labels.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_list_feedback_labels():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.ListFeedbackLabelsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_feedback_labels(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsRequest, dict]]):
+                The request object. The request for listing feedback
+                labels.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                feedback labels.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListFeedbackLabelsAsyncPager:
+                The response for listing feedback
+                labels.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.ListFeedbackLabelsRequest):
+            request = contact_center_insights.ListFeedbackLabelsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_feedback_labels
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListFeedbackLabelsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_feedback_label(
+        self,
+        request: Optional[
+            Union[contact_center_insights.GetFeedbackLabelRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.FeedbackLabel:
+        r"""Get feedback label.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_get_feedback_label():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.GetFeedbackLabelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_feedback_label(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.GetFeedbackLabelRequest, dict]]):
+                The request object. The request for getting a feedback
+                label.
+            name (:class:`str`):
+                Required. The name of the feedback
+                label to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.FeedbackLabel:
+                Represents a conversation, resource,
+                and label provided by the user.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.GetFeedbackLabelRequest):
+            request = contact_center_insights.GetFeedbackLabelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_feedback_label
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_feedback_label(
+        self,
+        request: Optional[
+            Union[contact_center_insights.UpdateFeedbackLabelRequest, dict]
+        ] = None,
+        *,
+        feedback_label: Optional[resources.FeedbackLabel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.FeedbackLabel:
+        r"""Update feedback label.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_update_feedback_label():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                feedback_label = contact_center_insights_v1.FeedbackLabel()
+                feedback_label.label = "label_value"
+
+                request = contact_center_insights_v1.UpdateFeedbackLabelRequest(
+                    feedback_label=feedback_label,
+                )
+
+                # Make the request
+                response = await client.update_feedback_label(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.UpdateFeedbackLabelRequest, dict]]):
+                The request object. The request for updating a feedback
+                label.
+            feedback_label (:class:`google.cloud.contact_center_insights_v1.types.FeedbackLabel`):
+                Required. The feedback label to
+                update.
+
+                This corresponds to the ``feedback_label`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.FeedbackLabel:
+                Represents a conversation, resource,
+                and label provided by the user.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([feedback_label, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.UpdateFeedbackLabelRequest):
+            request = contact_center_insights.UpdateFeedbackLabelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if feedback_label is not None:
+            request.feedback_label = feedback_label
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_feedback_label
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("feedback_label.name", request.feedback_label.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_feedback_label(
+        self,
+        request: Optional[
+            Union[contact_center_insights.DeleteFeedbackLabelRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Delete feedback label.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_delete_feedback_label():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.DeleteFeedbackLabelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_feedback_label(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.DeleteFeedbackLabelRequest, dict]]):
+                The request object. The request for deleting a feedback
+                label.
+            name (:class:`str`):
+                Required. The name of the feedback
+                label to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, contact_center_insights.DeleteFeedbackLabelRequest):
+            request = contact_center_insights.DeleteFeedbackLabelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_feedback_label
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_all_feedback_labels(
+        self,
+        request: Optional[
+            Union[contact_center_insights.ListAllFeedbackLabelsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAllFeedbackLabelsAsyncPager:
+        r"""List all feedback labels by project number.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_list_all_feedback_labels():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = contact_center_insights_v1.ListAllFeedbackLabelsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_all_feedback_labels(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsRequest, dict]]):
+                The request object. The request for listing all feedback
+                labels.
+            parent (:class:`str`):
+                Required. The parent resource of all
+                feedback labels per project.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListAllFeedbackLabelsAsyncPager:
+                The response for listing all feedback
+                labels.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.ListAllFeedbackLabelsRequest
+        ):
+            request = contact_center_insights.ListAllFeedbackLabelsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_all_feedback_labels
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAllFeedbackLabelsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def bulk_upload_feedback_labels(
+        self,
+        request: Optional[
+            Union[contact_center_insights.BulkUploadFeedbackLabelsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Upload feedback labels in bulk.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_bulk_upload_feedback_labels():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                gcs_source = contact_center_insights_v1.GcsSource()
+                gcs_source.format_ = "JSON"
+                gcs_source.object_uri = "object_uri_value"
+
+                request = contact_center_insights_v1.BulkUploadFeedbackLabelsRequest(
+                    gcs_source=gcs_source,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.bulk_upload_feedback_labels(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.BulkUploadFeedbackLabelsRequest, dict]]):
+                The request object. The request for bulk uploading
+                feedback labels.
+            parent (:class:`str`):
+                Required. The parent resource for new
+                feedback labels.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.BulkUploadFeedbackLabelsResponse`
+                Response for the Bulk Upload Feedback Labels API.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.BulkUploadFeedbackLabelsRequest
+        ):
+            request = contact_center_insights.BulkUploadFeedbackLabelsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.bulk_upload_feedback_labels
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            contact_center_insights.BulkUploadFeedbackLabelsResponse,
+            metadata_type=contact_center_insights.BulkUploadFeedbackLabelsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def bulk_download_feedback_labels(
+        self,
+        request: Optional[
+            Union[contact_center_insights.BulkDownloadFeedbackLabelsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Download feedback labels in bulk.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import contact_center_insights_v1
+
+            async def sample_bulk_download_feedback_labels():
+                # Create a client
+                client = contact_center_insights_v1.ContactCenterInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                gcs_destination = contact_center_insights_v1.GcsDestination()
+                gcs_destination.format_ = "JSON"
+                gcs_destination.object_uri = "object_uri_value"
+
+                request = contact_center_insights_v1.BulkDownloadFeedbackLabelsRequest(
+                    gcs_destination=gcs_destination,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.bulk_download_feedback_labels(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.contact_center_insights_v1.types.BulkDownloadFeedbackLabelsRequest, dict]]):
+                The request object. Request for the
+                BulkDownloadFeedbackLabel endpoint.
+            parent (:class:`str`):
+                Required. The parent resource for new
+                feedback labels.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.BulkDownloadFeedbackLabelsResponse`
+                Response for the BulkDownloadFeedbackLabel endpoint.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, contact_center_insights.BulkDownloadFeedbackLabelsRequest
+        ):
+            request = contact_center_insights.BulkDownloadFeedbackLabelsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.bulk_download_feedback_labels
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            contact_center_insights.BulkDownloadFeedbackLabelsResponse,
+            metadata_type=contact_center_insights.BulkDownloadFeedbackLabelsMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def list_operations(
         self,

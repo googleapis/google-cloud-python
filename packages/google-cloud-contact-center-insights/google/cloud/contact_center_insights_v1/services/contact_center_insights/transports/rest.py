@@ -24,6 +24,8 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
@@ -81,6 +83,22 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_bulk_download_feedback_labels(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_bulk_download_feedback_labels(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_bulk_upload_feedback_labels(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_bulk_upload_feedback_labels(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_calculate_issue_model_stats(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -105,11 +123,27 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_analysis_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_analysis_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_create_conversation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_feedback_label(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_feedback_label(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -129,6 +163,30 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_qa_question(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_qa_question(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_qa_scorecard(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_qa_scorecard(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_qa_scorecard_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_qa_scorecard_revision(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -141,7 +199,15 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_analysis_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_conversation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_feedback_label(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -161,6 +227,18 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_qa_question(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_qa_scorecard(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_qa_scorecard_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_view(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -170,6 +248,14 @@ class ContactCenterInsightsRestInterceptor:
                 return request, metadata
 
             def post_deploy_issue_model(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_deploy_qa_scorecard_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_deploy_qa_scorecard_revision(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -197,6 +283,14 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_analysis_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_analysis_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -210,6 +304,14 @@ class ContactCenterInsightsRestInterceptor:
                 return request, metadata
 
             def post_get_encryption_spec(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_feedback_label(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_feedback_label(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -234,6 +336,30 @@ class ContactCenterInsightsRestInterceptor:
                 return request, metadata
 
             def post_get_phrase_matcher(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_qa_question(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_qa_question(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_qa_scorecard(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_qa_scorecard(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_qa_scorecard_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_qa_scorecard_revision(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -277,6 +403,14 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_all_feedback_labels(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_all_feedback_labels(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_analyses(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -285,11 +419,27 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_analysis_rules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_analysis_rules(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_conversations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_conversations(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_feedback_labels(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_feedback_labels(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -317,11 +467,51 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_qa_questions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_qa_questions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_qa_scorecard_revisions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_qa_scorecard_revisions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_qa_scorecards(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_qa_scorecards(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_views(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_views(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_query_metrics(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_metrics(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_tune_qa_scorecard_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_tune_qa_scorecard_revision(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -333,11 +523,35 @@ class ContactCenterInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_undeploy_qa_scorecard_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_undeploy_qa_scorecard_revision(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_analysis_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_analysis_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_conversation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_feedback_label(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_feedback_label(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -362,6 +576,22 @@ class ContactCenterInsightsRestInterceptor:
                 return request, metadata
 
             def post_update_phrase_matcher(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_qa_question(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_qa_question(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_qa_scorecard(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_qa_scorecard(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -447,6 +677,58 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_bulk_download_feedback_labels(
+        self,
+        request: contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for bulk_download_feedback_labels
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_bulk_download_feedback_labels(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for bulk_download_feedback_labels
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_bulk_upload_feedback_labels(
+        self,
+        request: contact_center_insights.BulkUploadFeedbackLabelsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.BulkUploadFeedbackLabelsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for bulk_upload_feedback_labels
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_bulk_upload_feedback_labels(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for bulk_upload_feedback_labels
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_calculate_issue_model_stats(
         self,
         request: contact_center_insights.CalculateIssueModelStatsRequest,
@@ -523,6 +805,31 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_create_analysis_rule(
+        self,
+        request: contact_center_insights.CreateAnalysisRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.CreateAnalysisRuleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_analysis_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_create_analysis_rule(
+        self, response: resources.AnalysisRule
+    ) -> resources.AnalysisRule:
+        """Post-rpc interceptor for create_analysis_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_conversation(
         self,
         request: contact_center_insights.CreateConversationRequest,
@@ -541,6 +848,31 @@ class ContactCenterInsightsRestInterceptor:
         self, response: resources.Conversation
     ) -> resources.Conversation:
         """Post-rpc interceptor for create_conversation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_feedback_label(
+        self,
+        request: contact_center_insights.CreateFeedbackLabelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.CreateFeedbackLabelRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_feedback_label
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_create_feedback_label(
+        self, response: resources.FeedbackLabel
+    ) -> resources.FeedbackLabel:
+        """Post-rpc interceptor for create_feedback_label
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -598,6 +930,82 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_create_qa_question(
+        self,
+        request: contact_center_insights.CreateQaQuestionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.CreateQaQuestionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_qa_question
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_create_qa_question(
+        self, response: resources.QaQuestion
+    ) -> resources.QaQuestion:
+        """Post-rpc interceptor for create_qa_question
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_qa_scorecard(
+        self,
+        request: contact_center_insights.CreateQaScorecardRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.CreateQaScorecardRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_qa_scorecard
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_create_qa_scorecard(
+        self, response: resources.QaScorecard
+    ) -> resources.QaScorecard:
+        """Post-rpc interceptor for create_qa_scorecard
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_qa_scorecard_revision(
+        self,
+        request: contact_center_insights.CreateQaScorecardRevisionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.CreateQaScorecardRevisionRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for create_qa_scorecard_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_create_qa_scorecard_revision(
+        self, response: resources.QaScorecardRevision
+    ) -> resources.QaScorecardRevision:
+        """Post-rpc interceptor for create_qa_scorecard_revision
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_create_view(
         self,
         request: contact_center_insights.CreateViewRequest,
@@ -633,6 +1041,20 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_analysis_rule(
+        self,
+        request: contact_center_insights.DeleteAnalysisRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.DeleteAnalysisRuleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_analysis_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
     def pre_delete_conversation(
         self,
         request: contact_center_insights.DeleteConversationRequest,
@@ -641,6 +1063,20 @@ class ContactCenterInsightsRestInterceptor:
         contact_center_insights.DeleteConversationRequest, Sequence[Tuple[str, str]]
     ]:
         """Pre-rpc interceptor for delete_conversation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def pre_delete_feedback_label(
+        self,
+        request: contact_center_insights.DeleteFeedbackLabelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.DeleteFeedbackLabelRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_feedback_label
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the ContactCenterInsights server.
@@ -698,6 +1134,49 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_qa_question(
+        self,
+        request: contact_center_insights.DeleteQaQuestionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.DeleteQaQuestionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_qa_question
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def pre_delete_qa_scorecard(
+        self,
+        request: contact_center_insights.DeleteQaScorecardRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.DeleteQaScorecardRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_qa_scorecard
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def pre_delete_qa_scorecard_revision(
+        self,
+        request: contact_center_insights.DeleteQaScorecardRevisionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.DeleteQaScorecardRevisionRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for delete_qa_scorecard_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
     def pre_delete_view(
         self,
         request: contact_center_insights.DeleteViewRequest,
@@ -728,6 +1207,32 @@ class ContactCenterInsightsRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_issue_model
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_deploy_qa_scorecard_revision(
+        self,
+        request: contact_center_insights.DeployQaScorecardRevisionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.DeployQaScorecardRevisionRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for deploy_qa_scorecard_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_deploy_qa_scorecard_revision(
+        self, response: resources.QaScorecardRevision
+    ) -> resources.QaScorecardRevision:
+        """Post-rpc interceptor for deploy_qa_scorecard_revision
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -806,6 +1311,31 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_get_analysis_rule(
+        self,
+        request: contact_center_insights.GetAnalysisRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.GetAnalysisRuleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_analysis_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_get_analysis_rule(
+        self, response: resources.AnalysisRule
+    ) -> resources.AnalysisRule:
+        """Post-rpc interceptor for get_analysis_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_conversation(
         self,
         request: contact_center_insights.GetConversationRequest,
@@ -849,6 +1379,31 @@ class ContactCenterInsightsRestInterceptor:
         self, response: resources.EncryptionSpec
     ) -> resources.EncryptionSpec:
         """Post-rpc interceptor for get_encryption_spec
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_feedback_label(
+        self,
+        request: contact_center_insights.GetFeedbackLabelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.GetFeedbackLabelRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_feedback_label
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_get_feedback_label(
+        self, response: resources.FeedbackLabel
+    ) -> resources.FeedbackLabel:
+        """Post-rpc interceptor for get_feedback_label
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -918,6 +1473,79 @@ class ContactCenterInsightsRestInterceptor:
         self, response: resources.PhraseMatcher
     ) -> resources.PhraseMatcher:
         """Post-rpc interceptor for get_phrase_matcher
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_qa_question(
+        self,
+        request: contact_center_insights.GetQaQuestionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[contact_center_insights.GetQaQuestionRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_qa_question
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_get_qa_question(
+        self, response: resources.QaQuestion
+    ) -> resources.QaQuestion:
+        """Post-rpc interceptor for get_qa_question
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_qa_scorecard(
+        self,
+        request: contact_center_insights.GetQaScorecardRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.GetQaScorecardRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_qa_scorecard
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_get_qa_scorecard(
+        self, response: resources.QaScorecard
+    ) -> resources.QaScorecard:
+        """Post-rpc interceptor for get_qa_scorecard
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_qa_scorecard_revision(
+        self,
+        request: contact_center_insights.GetQaScorecardRevisionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.GetQaScorecardRevisionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_qa_scorecard_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_get_qa_scorecard_revision(
+        self, response: resources.QaScorecardRevision
+    ) -> resources.QaScorecardRevision:
+        """Post-rpc interceptor for get_qa_scorecard_revision
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -1043,6 +1671,31 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_list_all_feedback_labels(
+        self,
+        request: contact_center_insights.ListAllFeedbackLabelsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ListAllFeedbackLabelsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_all_feedback_labels
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_list_all_feedback_labels(
+        self, response: contact_center_insights.ListAllFeedbackLabelsResponse
+    ) -> contact_center_insights.ListAllFeedbackLabelsResponse:
+        """Post-rpc interceptor for list_all_feedback_labels
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_analyses(
         self,
         request: contact_center_insights.ListAnalysesRequest,
@@ -1059,6 +1712,31 @@ class ContactCenterInsightsRestInterceptor:
         self, response: contact_center_insights.ListAnalysesResponse
     ) -> contact_center_insights.ListAnalysesResponse:
         """Post-rpc interceptor for list_analyses
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_analysis_rules(
+        self,
+        request: contact_center_insights.ListAnalysisRulesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ListAnalysisRulesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_analysis_rules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_list_analysis_rules(
+        self, response: contact_center_insights.ListAnalysisRulesResponse
+    ) -> contact_center_insights.ListAnalysisRulesResponse:
+        """Post-rpc interceptor for list_analysis_rules
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -1084,6 +1762,31 @@ class ContactCenterInsightsRestInterceptor:
         self, response: contact_center_insights.ListConversationsResponse
     ) -> contact_center_insights.ListConversationsResponse:
         """Post-rpc interceptor for list_conversations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_feedback_labels(
+        self,
+        request: contact_center_insights.ListFeedbackLabelsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ListFeedbackLabelsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_feedback_labels
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_list_feedback_labels(
+        self, response: contact_center_insights.ListFeedbackLabelsResponse
+    ) -> contact_center_insights.ListFeedbackLabelsResponse:
+        """Post-rpc interceptor for list_feedback_labels
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -1164,6 +1867,82 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_list_qa_questions(
+        self,
+        request: contact_center_insights.ListQaQuestionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ListQaQuestionsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_qa_questions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_list_qa_questions(
+        self, response: contact_center_insights.ListQaQuestionsResponse
+    ) -> contact_center_insights.ListQaQuestionsResponse:
+        """Post-rpc interceptor for list_qa_questions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_qa_scorecard_revisions(
+        self,
+        request: contact_center_insights.ListQaScorecardRevisionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ListQaScorecardRevisionsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_qa_scorecard_revisions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_list_qa_scorecard_revisions(
+        self, response: contact_center_insights.ListQaScorecardRevisionsResponse
+    ) -> contact_center_insights.ListQaScorecardRevisionsResponse:
+        """Post-rpc interceptor for list_qa_scorecard_revisions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_qa_scorecards(
+        self,
+        request: contact_center_insights.ListQaScorecardsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.ListQaScorecardsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_qa_scorecards
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_list_qa_scorecards(
+        self, response: contact_center_insights.ListQaScorecardsResponse
+    ) -> contact_center_insights.ListQaScorecardsResponse:
+        """Post-rpc interceptor for list_qa_scorecards
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_views(
         self,
         request: contact_center_insights.ListViewsRequest,
@@ -1180,6 +1959,55 @@ class ContactCenterInsightsRestInterceptor:
         self, response: contact_center_insights.ListViewsResponse
     ) -> contact_center_insights.ListViewsResponse:
         """Post-rpc interceptor for list_views
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_query_metrics(
+        self,
+        request: contact_center_insights.QueryMetricsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[contact_center_insights.QueryMetricsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for query_metrics
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_query_metrics(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for query_metrics
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_tune_qa_scorecard_revision(
+        self,
+        request: contact_center_insights.TuneQaScorecardRevisionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.TuneQaScorecardRevisionRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for tune_qa_scorecard_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_tune_qa_scorecard_revision(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for tune_qa_scorecard_revision
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -1212,6 +2040,57 @@ class ContactCenterInsightsRestInterceptor:
         """
         return response
 
+    def pre_undeploy_qa_scorecard_revision(
+        self,
+        request: contact_center_insights.UndeployQaScorecardRevisionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.UndeployQaScorecardRevisionRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for undeploy_qa_scorecard_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_undeploy_qa_scorecard_revision(
+        self, response: resources.QaScorecardRevision
+    ) -> resources.QaScorecardRevision:
+        """Post-rpc interceptor for undeploy_qa_scorecard_revision
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_analysis_rule(
+        self,
+        request: contact_center_insights.UpdateAnalysisRuleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.UpdateAnalysisRuleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_analysis_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_update_analysis_rule(
+        self, response: resources.AnalysisRule
+    ) -> resources.AnalysisRule:
+        """Post-rpc interceptor for update_analysis_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_conversation(
         self,
         request: contact_center_insights.UpdateConversationRequest,
@@ -1230,6 +2109,31 @@ class ContactCenterInsightsRestInterceptor:
         self, response: resources.Conversation
     ) -> resources.Conversation:
         """Post-rpc interceptor for update_conversation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_feedback_label(
+        self,
+        request: contact_center_insights.UpdateFeedbackLabelRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.UpdateFeedbackLabelRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_feedback_label
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_update_feedback_label(
+        self, response: resources.FeedbackLabel
+    ) -> resources.FeedbackLabel:
+        """Post-rpc interceptor for update_feedback_label
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -1301,6 +2205,56 @@ class ContactCenterInsightsRestInterceptor:
         self, response: resources.PhraseMatcher
     ) -> resources.PhraseMatcher:
         """Post-rpc interceptor for update_phrase_matcher
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_qa_question(
+        self,
+        request: contact_center_insights.UpdateQaQuestionRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.UpdateQaQuestionRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_qa_question
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_update_qa_question(
+        self, response: resources.QaQuestion
+    ) -> resources.QaQuestion:
+        """Post-rpc interceptor for update_qa_question
+
+        Override in a subclass to manipulate the response
+        after it is returned by the ContactCenterInsights server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_qa_scorecard(
+        self,
+        request: contact_center_insights.UpdateQaScorecardRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        contact_center_insights.UpdateQaScorecardRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_qa_scorecard
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ContactCenterInsights server.
+        """
+        return request, metadata
+
+    def post_update_qa_scorecard(
+        self, response: resources.QaScorecard
+    ) -> resources.QaScorecard:
+        """Post-rpc interceptor for update_qa_scorecard
 
         Override in a subclass to manipulate the response
         after it is returned by the ContactCenterInsights server but before
@@ -1778,6 +2732,206 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = self._interceptor.post_bulk_delete_conversations(resp)
             return resp
 
+    class _BulkDownloadFeedbackLabels(
+        _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.BulkDownloadFeedbackLabels")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the bulk download feedback
+            labels method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.BulkDownloadFeedbackLabelsRequest):
+                        The request object. Request for the
+                    BulkDownloadFeedbackLabel endpoint.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_bulk_download_feedback_labels(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._BulkDownloadFeedbackLabels._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_bulk_download_feedback_labels(resp)
+            return resp
+
+    class _BulkUploadFeedbackLabels(
+        _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.BulkUploadFeedbackLabels")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.BulkUploadFeedbackLabelsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the bulk upload feedback
+            labels method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.BulkUploadFeedbackLabelsRequest):
+                        The request object. The request for bulk uploading
+                    feedback labels.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_bulk_upload_feedback_labels(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._BulkUploadFeedbackLabels._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_bulk_upload_feedback_labels(resp)
+            return resp
+
     class _CalculateIssueModelStats(
         _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats,
         ContactCenterInsightsRestStub,
@@ -2061,6 +3215,116 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = self._interceptor.post_create_analysis(resp)
             return resp
 
+    class _CreateAnalysisRule(
+        _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.CreateAnalysisRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.CreateAnalysisRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AnalysisRule:
+            r"""Call the create analysis rule method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.CreateAnalysisRuleRequest):
+                    The request object. The request to create a analysis rule. analysis_rule_id
+                will be generated by the server.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AnalysisRule:
+                    The CCAI Insights project wide
+                analysis rule. This rule will be applied
+                to all conversations that match the
+                filter defined in the rule. For a
+                conversation matches the filter, the
+                annotators specified in the rule will be
+                run. If a conversation matches multiple
+                rules, a union of all the annotators
+                will be run. One project can have
+                multiple analysis rules.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_analysis_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._CreateAnalysisRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AnalysisRule()
+            pb_resp = resources.AnalysisRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_analysis_rule(resp)
+            return resp
+
     class _CreateConversation(
         _BaseContactCenterInsightsRestTransport._BaseCreateConversation,
         ContactCenterInsightsRestStub,
@@ -2158,6 +3422,108 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_conversation(resp)
+            return resp
+
+    class _CreateFeedbackLabel(
+        _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.CreateFeedbackLabel")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.CreateFeedbackLabelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.FeedbackLabel:
+            r"""Call the create feedback label method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.CreateFeedbackLabelRequest):
+                    The request object. The request for creating a feedback
+                label.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.FeedbackLabel:
+                    Represents a conversation, resource,
+                and label provided by the user.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_feedback_label(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._CreateFeedbackLabel._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.FeedbackLabel()
+            pb_resp = resources.FeedbackLabel.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_feedback_label(resp)
             return resp
 
     class _CreateIssueModel(
@@ -2359,6 +3725,320 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = self._interceptor.post_create_phrase_matcher(resp)
             return resp
 
+    class _CreateQaQuestion(
+        _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.CreateQaQuestion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.CreateQaQuestionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaQuestion:
+            r"""Call the create qa question method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.CreateQaQuestionRequest):
+                    The request object. The request for creating a
+                QaQuestion.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.QaQuestion:
+                    A single question to be scored by the
+                Insights QA feature.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_qa_question(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._CreateQaQuestion._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaQuestion()
+            pb_resp = resources.QaQuestion.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_qa_question(resp)
+            return resp
+
+    class _CreateQaScorecard(
+        _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.CreateQaScorecard")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.CreateQaScorecardRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaScorecard:
+            r"""Call the create qa scorecard method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.CreateQaScorecardRequest):
+                    The request object. The request for creating a
+                QaScorecard.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.QaScorecard:
+                    A QaScorecard represents a collection
+                of questions to be scored during
+                analysis.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_qa_scorecard(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._CreateQaScorecard._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaScorecard()
+            pb_resp = resources.QaScorecard.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_qa_scorecard(resp)
+            return resp
+
+    class _CreateQaScorecardRevision(
+        _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.CreateQaScorecardRevision")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.CreateQaScorecardRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaScorecardRevision:
+            r"""Call the create qa scorecard
+            revision method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.CreateQaScorecardRevisionRequest):
+                        The request object. The request for creating a
+                    QaScorecardRevision.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.QaScorecardRevision:
+                        A revision of a QaScorecard.
+
+                    Modifying published scorecard fields
+                    would invalidate existing scorecard
+                    results — the questions may have
+                    changed, or the score weighting will
+                    make existing scores impossible to
+                    understand. So changes must create a new
+                    revision, rather than modifying the
+                    existing resource.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_qa_scorecard_revision(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._CreateQaScorecardRevision._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaScorecardRevision()
+            pb_resp = resources.QaScorecardRevision.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_qa_scorecard_revision(resp)
+            return resp
+
     class _CreateView(
         _BaseContactCenterInsightsRestTransport._BaseCreateView,
         ContactCenterInsightsRestStub,
@@ -2531,6 +4211,88 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteAnalysisRule(
+        _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.DeleteAnalysisRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.DeleteAnalysisRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete analysis rule method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.DeleteAnalysisRuleRequest):
+                    The request object. The request to delete a analysis
+                rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_analysis_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._DeleteAnalysisRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteConversation(
         _BaseContactCenterInsightsRestTransport._BaseDeleteConversation,
         ContactCenterInsightsRestStub,
@@ -2598,6 +4360,88 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Send the request
             response = (
                 ContactCenterInsightsRestTransport._DeleteConversation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteFeedbackLabel(
+        _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.DeleteFeedbackLabel")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.DeleteFeedbackLabelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete feedback label method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.DeleteFeedbackLabelRequest):
+                    The request object. The request for deleting a feedback
+                label.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_feedback_label(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._DeleteFeedbackLabel._get_response(
                     self._host,
                     metadata,
                     query_params,
@@ -2865,6 +4709,251 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteQaQuestion(
+        _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.DeleteQaQuestion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.DeleteQaQuestionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete qa question method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.DeleteQaQuestionRequest):
+                    The request object. The request for deleting a
+                QaQuestion.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_qa_question(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._DeleteQaQuestion._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteQaScorecard(
+        _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.DeleteQaScorecard")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.DeleteQaScorecardRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete qa scorecard method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.DeleteQaScorecardRequest):
+                    The request object. The request for deleting a
+                QaScorecard.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_qa_scorecard(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._DeleteQaScorecard._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteQaScorecardRevision(
+        _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.DeleteQaScorecardRevision")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.DeleteQaScorecardRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete qa scorecard
+            revision method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.DeleteQaScorecardRevisionRequest):
+                        The request object. The request to delete a
+                    QaScorecardRevision.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_qa_scorecard_revision(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._DeleteQaScorecardRevision._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteView(
         _BaseContactCenterInsightsRestTransport._BaseDeleteView,
         ContactCenterInsightsRestStub,
@@ -3040,6 +5129,115 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_deploy_issue_model(resp)
+            return resp
+
+    class _DeployQaScorecardRevision(
+        _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.DeployQaScorecardRevision")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.DeployQaScorecardRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaScorecardRevision:
+            r"""Call the deploy qa scorecard
+            revision method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.DeployQaScorecardRevisionRequest):
+                        The request object. The request to deploy a
+                    QaScorecardRevision
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.QaScorecardRevision:
+                        A revision of a QaScorecard.
+
+                    Modifying published scorecard fields
+                    would invalidate existing scorecard
+                    results — the questions may have
+                    changed, or the score weighting will
+                    make existing scores impossible to
+                    understand. So changes must create a new
+                    revision, rather than modifying the
+                    existing resource.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_deploy_qa_scorecard_revision(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._DeployQaScorecardRevision._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaScorecardRevision()
+            pb_resp = resources.QaScorecardRevision.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_deploy_qa_scorecard_revision(resp)
             return resp
 
     class _ExportInsightsData(
@@ -3331,6 +5529,110 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = self._interceptor.post_get_analysis(resp)
             return resp
 
+    class _GetAnalysisRule(
+        _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.GetAnalysisRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.GetAnalysisRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AnalysisRule:
+            r"""Call the get analysis rule method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.GetAnalysisRuleRequest):
+                    The request object. The request for getting a analysis
+                rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AnalysisRule:
+                    The CCAI Insights project wide
+                analysis rule. This rule will be applied
+                to all conversations that match the
+                filter defined in the rule. For a
+                conversation matches the filter, the
+                annotators specified in the rule will be
+                run. If a conversation matches multiple
+                rules, a union of all the annotators
+                will be run. One project can have
+                multiple analysis rules.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_analysis_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._GetAnalysisRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AnalysisRule()
+            pb_resp = resources.AnalysisRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_analysis_rule(resp)
+            return resp
+
     class _GetConversation(
         _BaseContactCenterInsightsRestTransport._BaseGetConversation,
         ContactCenterInsightsRestStub,
@@ -3475,9 +5777,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             Returns:
                 ~.resources.EncryptionSpec:
-                    A customer-managed encryption key
-                specification that can be applied to all
-                created resources (e.g. Conversation).
+                    A customer-managed encryption key specification that can
+                be applied to all created resources (e.g.
+                ``Conversation``).
 
             """
 
@@ -3519,6 +5821,102 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_encryption_spec(resp)
+            return resp
+
+    class _GetFeedbackLabel(
+        _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.GetFeedbackLabel")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.GetFeedbackLabelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.FeedbackLabel:
+            r"""Call the get feedback label method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.GetFeedbackLabelRequest):
+                    The request object. The request for getting a feedback
+                label.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.FeedbackLabel:
+                    Represents a conversation, resource,
+                and label provided by the user.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_feedback_label(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._GetFeedbackLabel._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.FeedbackLabel()
+            pb_resp = resources.FeedbackLabel.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_feedback_label(resp)
             return resp
 
     class _GetIssue(
@@ -3791,6 +6189,294 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_phrase_matcher(resp)
+            return resp
+
+    class _GetQaQuestion(
+        _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.GetQaQuestion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.GetQaQuestionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaQuestion:
+            r"""Call the get qa question method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.GetQaQuestionRequest):
+                    The request object. The request for a QaQuestion.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.QaQuestion:
+                    A single question to be scored by the
+                Insights QA feature.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_qa_question(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._GetQaQuestion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaQuestion()
+            pb_resp = resources.QaQuestion.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_qa_question(resp)
+            return resp
+
+    class _GetQaScorecard(
+        _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.GetQaScorecard")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.GetQaScorecardRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaScorecard:
+            r"""Call the get qa scorecard method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.GetQaScorecardRequest):
+                    The request object. The request for a QaScorecard. By
+                default, returns the latest revision.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.QaScorecard:
+                    A QaScorecard represents a collection
+                of questions to be scored during
+                analysis.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_qa_scorecard(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._GetQaScorecard._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaScorecard()
+            pb_resp = resources.QaScorecard.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_qa_scorecard(resp)
+            return resp
+
+    class _GetQaScorecardRevision(
+        _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.GetQaScorecardRevision")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.GetQaScorecardRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaScorecardRevision:
+            r"""Call the get qa scorecard revision method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.GetQaScorecardRevisionRequest):
+                    The request object. The request for a
+                QaScorecardRevision.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.QaScorecardRevision:
+                    A revision of a QaScorecard.
+
+                Modifying published scorecard fields
+                would invalidate existing scorecard
+                results — the questions may have
+                changed, or the score weighting will
+                make existing scores impossible to
+                understand. So changes must create a new
+                revision, rather than modifying the
+                existing resource.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_qa_scorecard_revision(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._GetQaScorecardRevision._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaScorecardRevision()
+            pb_resp = resources.QaScorecardRevision.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_qa_scorecard_revision(resp)
             return resp
 
     class _GetSettings(
@@ -4278,6 +6964,102 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = self._interceptor.post_initialize_encryption_spec(resp)
             return resp
 
+    class _ListAllFeedbackLabels(
+        _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.ListAllFeedbackLabels")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.ListAllFeedbackLabelsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> contact_center_insights.ListAllFeedbackLabelsResponse:
+            r"""Call the list all feedback labels method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.ListAllFeedbackLabelsRequest):
+                    The request object. The request for listing all feedback
+                labels.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.contact_center_insights.ListAllFeedbackLabelsResponse:
+                    The response for listing all feedback
+                labels.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_all_feedback_labels(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._ListAllFeedbackLabels._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = contact_center_insights.ListAllFeedbackLabelsResponse()
+            pb_resp = contact_center_insights.ListAllFeedbackLabelsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_all_feedback_labels(resp)
+            return resp
+
     class _ListAnalyses(
         _BaseContactCenterInsightsRestTransport._BaseListAnalyses,
         ContactCenterInsightsRestStub,
@@ -4365,6 +7147,99 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_analyses(resp)
+            return resp
+
+    class _ListAnalysisRules(
+        _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.ListAnalysisRules")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.ListAnalysisRulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> contact_center_insights.ListAnalysisRulesResponse:
+            r"""Call the list analysis rules method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.ListAnalysisRulesRequest):
+                    The request object. The request to list analysis rules.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.contact_center_insights.ListAnalysisRulesResponse:
+                    The response of listing views.
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_analysis_rules(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._ListAnalysisRules._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = contact_center_insights.ListAnalysisRulesResponse()
+            pb_resp = contact_center_insights.ListAnalysisRulesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_analysis_rules(resp)
             return resp
 
     class _ListConversations(
@@ -4460,6 +7335,102 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_conversations(resp)
+            return resp
+
+    class _ListFeedbackLabels(
+        _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.ListFeedbackLabels")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.ListFeedbackLabelsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> contact_center_insights.ListFeedbackLabelsResponse:
+            r"""Call the list feedback labels method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.ListFeedbackLabelsRequest):
+                    The request object. The request for listing feedback
+                labels.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.contact_center_insights.ListFeedbackLabelsResponse:
+                    The response for listing feedback
+                labels.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_feedback_labels(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._ListFeedbackLabels._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = contact_center_insights.ListFeedbackLabelsResponse()
+            pb_resp = contact_center_insights.ListFeedbackLabelsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_feedback_labels(resp)
             return resp
 
     class _ListIssueModels(
@@ -4739,6 +7710,290 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = self._interceptor.post_list_phrase_matchers(resp)
             return resp
 
+    class _ListQaQuestions(
+        _BaseContactCenterInsightsRestTransport._BaseListQaQuestions,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.ListQaQuestions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.ListQaQuestionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> contact_center_insights.ListQaQuestionsResponse:
+            r"""Call the list qa questions method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.ListQaQuestionsRequest):
+                    The request object. Request to list QaQuestions.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.contact_center_insights.ListQaQuestionsResponse:
+                    The response from a ListQaQuestions
+                request.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_qa_questions(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._ListQaQuestions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = contact_center_insights.ListQaQuestionsResponse()
+            pb_resp = contact_center_insights.ListQaQuestionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_qa_questions(resp)
+            return resp
+
+    class _ListQaScorecardRevisions(
+        _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.ListQaScorecardRevisions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.ListQaScorecardRevisionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> contact_center_insights.ListQaScorecardRevisionsResponse:
+            r"""Call the list qa scorecard
+            revisions method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.ListQaScorecardRevisionsRequest):
+                        The request object. Request to list QaScorecardRevisions
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.contact_center_insights.ListQaScorecardRevisionsResponse:
+                        The response from a
+                    ListQaScorecardRevisions request.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_qa_scorecard_revisions(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._ListQaScorecardRevisions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = contact_center_insights.ListQaScorecardRevisionsResponse()
+            pb_resp = contact_center_insights.ListQaScorecardRevisionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_qa_scorecard_revisions(resp)
+            return resp
+
+    class _ListQaScorecards(
+        _BaseContactCenterInsightsRestTransport._BaseListQaScorecards,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.ListQaScorecards")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.ListQaScorecardsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> contact_center_insights.ListQaScorecardsResponse:
+            r"""Call the list qa scorecards method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.ListQaScorecardsRequest):
+                    The request object. Request to list QaScorecards.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.contact_center_insights.ListQaScorecardsResponse:
+                    The response from a ListQaScorecards
+                request.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_qa_scorecards(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._ListQaScorecards._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = contact_center_insights.ListQaScorecardsResponse()
+            pb_resp = contact_center_insights.ListQaScorecardsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_qa_scorecards(resp)
+            return resp
+
     class _ListViews(
         _BaseContactCenterInsightsRestTransport._BaseListViews,
         ContactCenterInsightsRestStub,
@@ -4826,6 +8081,202 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_views(resp)
+            return resp
+
+    class _QueryMetrics(
+        _BaseContactCenterInsightsRestTransport._BaseQueryMetrics,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.QueryMetrics")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.QueryMetricsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the query metrics method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.QueryMetricsRequest):
+                    The request object. The request for querying metrics.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_query_metrics(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._QueryMetrics._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_query_metrics(resp)
+            return resp
+
+    class _TuneQaScorecardRevision(
+        _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.TuneQaScorecardRevision")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.TuneQaScorecardRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the tune qa scorecard
+            revision method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.TuneQaScorecardRevisionRequest):
+                        The request object. Request for TuneQaScorecardRevision
+                    endpoint.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_tune_qa_scorecard_revision(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._TuneQaScorecardRevision._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_tune_qa_scorecard_revision(resp)
             return resp
 
     class _UndeployIssueModel(
@@ -4929,6 +8380,227 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = self._interceptor.post_undeploy_issue_model(resp)
             return resp
 
+    class _UndeployQaScorecardRevision(
+        _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "ContactCenterInsightsRestTransport.UndeployQaScorecardRevision"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.UndeployQaScorecardRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaScorecardRevision:
+            r"""Call the undeploy qa scorecard
+            revision method over HTTP.
+
+                Args:
+                    request (~.contact_center_insights.UndeployQaScorecardRevisionRequest):
+                        The request object. The request to undeploy a
+                    QaScorecardRevision
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.resources.QaScorecardRevision:
+                        A revision of a QaScorecard.
+
+                    Modifying published scorecard fields
+                    would invalidate existing scorecard
+                    results — the questions may have
+                    changed, or the score weighting will
+                    make existing scores impossible to
+                    understand. So changes must create a new
+                    revision, rather than modifying the
+                    existing resource.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_undeploy_qa_scorecard_revision(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = ContactCenterInsightsRestTransport._UndeployQaScorecardRevision._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaScorecardRevision()
+            pb_resp = resources.QaScorecardRevision.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_undeploy_qa_scorecard_revision(resp)
+            return resp
+
+    class _UpdateAnalysisRule(
+        _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.UpdateAnalysisRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.UpdateAnalysisRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.AnalysisRule:
+            r"""Call the update analysis rule method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.UpdateAnalysisRuleRequest):
+                    The request object. The request to update a analysis
+                rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.AnalysisRule:
+                    The CCAI Insights project wide
+                analysis rule. This rule will be applied
+                to all conversations that match the
+                filter defined in the rule. For a
+                conversation matches the filter, the
+                annotators specified in the rule will be
+                run. If a conversation matches multiple
+                rules, a union of all the annotators
+                will be run. One project can have
+                multiple analysis rules.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_analysis_rule(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._UpdateAnalysisRule._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.AnalysisRule()
+            pb_resp = resources.AnalysisRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_analysis_rule(resp)
+            return resp
+
     class _UpdateConversation(
         _BaseContactCenterInsightsRestTransport._BaseUpdateConversation,
         ContactCenterInsightsRestStub,
@@ -5026,6 +8698,108 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_conversation(resp)
+            return resp
+
+    class _UpdateFeedbackLabel(
+        _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.UpdateFeedbackLabel")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.UpdateFeedbackLabelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.FeedbackLabel:
+            r"""Call the update feedback label method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.UpdateFeedbackLabelRequest):
+                    The request object. The request for updating a feedback
+                label.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.FeedbackLabel:
+                    Represents a conversation, resource,
+                and label provided by the user.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_feedback_label(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._UpdateFeedbackLabel._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.FeedbackLabel()
+            pb_resp = resources.FeedbackLabel.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_feedback_label(resp)
             return resp
 
     class _UpdateIssue(
@@ -5320,6 +9094,211 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_phrase_matcher(resp)
+            return resp
+
+    class _UpdateQaQuestion(
+        _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.UpdateQaQuestion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.UpdateQaQuestionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaQuestion:
+            r"""Call the update qa question method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.UpdateQaQuestionRequest):
+                    The request object. The request for updating a
+                QaQuestion.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.QaQuestion:
+                    A single question to be scored by the
+                Insights QA feature.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_qa_question(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._UpdateQaQuestion._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaQuestion()
+            pb_resp = resources.QaQuestion.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_qa_question(resp)
+            return resp
+
+    class _UpdateQaScorecard(
+        _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard,
+        ContactCenterInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("ContactCenterInsightsRestTransport.UpdateQaScorecard")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: contact_center_insights.UpdateQaScorecardRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.QaScorecard:
+            r"""Call the update qa scorecard method over HTTP.
+
+            Args:
+                request (~.contact_center_insights.UpdateQaScorecardRequest):
+                    The request object. The request for updating a
+                QaScorecard.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.QaScorecard:
+                    A QaScorecard represents a collection
+                of questions to be scored during
+                analysis.
+
+            """
+
+            http_options = (
+                _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_update_qa_scorecard(
+                request, metadata
+            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                ContactCenterInsightsRestTransport._UpdateQaScorecard._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.QaScorecard()
+            pb_resp = resources.QaScorecard.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_qa_scorecard(resp)
             return resp
 
     class _UpdateSettings(
@@ -5642,6 +9621,28 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._BulkDeleteConversations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def bulk_download_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkDownloadFeedbackLabelsRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BulkDownloadFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def bulk_upload_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.BulkUploadFeedbackLabelsRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BulkUploadFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def calculate_issue_model_stats(
         self,
     ) -> Callable[
@@ -5674,6 +9675,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._CreateAnalysis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateAnalysisRuleRequest], resources.AnalysisRule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_conversation(
         self,
     ) -> Callable[
@@ -5682,6 +9693,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateFeedbackLabelRequest], resources.FeedbackLabel
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_issue_model(
@@ -5704,6 +9725,37 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._CreatePhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaQuestionRequest], resources.QaQuestion
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaScorecardRequest], resources.QaScorecard
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_view(
         self,
     ) -> Callable[[contact_center_insights.CreateViewRequest], resources.View]:
@@ -5720,12 +9772,30 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._DeleteAnalysis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_analysis_rule(
+        self,
+    ) -> Callable[[contact_center_insights.DeleteAnalysisRuleRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_conversation(
         self,
     ) -> Callable[[contact_center_insights.DeleteConversationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteFeedbackLabelRequest], empty_pb2.Empty
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_issue(
@@ -5756,6 +9826,32 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._DeletePhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_qa_question(
+        self,
+    ) -> Callable[[contact_center_insights.DeleteQaQuestionRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_qa_scorecard(
+        self,
+    ) -> Callable[[contact_center_insights.DeleteQaScorecardRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteQaScorecardRevisionRequest], empty_pb2.Empty
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_view(
         self,
     ) -> Callable[[contact_center_insights.DeleteViewRequest], empty_pb2.Empty]:
@@ -5772,6 +9868,17 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployIssueModel(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def deploy_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeployQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeployQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def export_insights_data(
@@ -5802,6 +9909,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._GetAnalysis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetAnalysisRuleRequest], resources.AnalysisRule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_conversation(
         self,
     ) -> Callable[
@@ -5820,6 +9937,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetFeedbackLabelRequest], resources.FeedbackLabel
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_issue(
@@ -5846,6 +9973,35 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_qa_question(
+        self,
+    ) -> Callable[[contact_center_insights.GetQaQuestionRequest], resources.QaQuestion]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetQaScorecardRequest], resources.QaScorecard
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_settings(
@@ -5895,6 +10051,17 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._InitializeEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_all_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListAllFeedbackLabelsRequest],
+        contact_center_insights.ListAllFeedbackLabelsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAllFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_analyses(
         self,
     ) -> Callable[
@@ -5906,6 +10073,17 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._ListAnalyses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_analysis_rules(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListAnalysisRulesRequest],
+        contact_center_insights.ListAnalysisRulesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAnalysisRules(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_conversations(
         self,
     ) -> Callable[
@@ -5915,6 +10093,17 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConversations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_feedback_labels(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListFeedbackLabelsRequest],
+        contact_center_insights.ListFeedbackLabelsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_issue_models(
@@ -5950,6 +10139,39 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._ListPhraseMatchers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_qa_questions(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaQuestionsRequest],
+        contact_center_insights.ListQaQuestionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListQaQuestions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_qa_scorecard_revisions(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaScorecardRevisionsRequest],
+        contact_center_insights.ListQaScorecardRevisionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListQaScorecardRevisions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_qa_scorecards(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListQaScorecardsRequest],
+        contact_center_insights.ListQaScorecardsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListQaScorecards(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_views(
         self,
     ) -> Callable[
@@ -5959,6 +10181,27 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListViews(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def query_metrics(
+        self,
+    ) -> Callable[
+        [contact_center_insights.QueryMetricsRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryMetrics(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def tune_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.TuneQaScorecardRevisionRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._TuneQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def undeploy_issue_model(
@@ -5971,6 +10214,27 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         return self._UndeployIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def undeploy_qa_scorecard_revision(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UndeployQaScorecardRevisionRequest],
+        resources.QaScorecardRevision,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UndeployQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_analysis_rule(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateAnalysisRuleRequest], resources.AnalysisRule
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_conversation(
         self,
     ) -> Callable[
@@ -5979,6 +10243,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_feedback_label(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateFeedbackLabelRequest], resources.FeedbackLabel
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_issue(
@@ -6007,6 +10281,26 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_qa_question(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateQaQuestionRequest], resources.QaQuestion
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_qa_scorecard(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateQaScorecardRequest], resources.QaScorecard
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_settings(

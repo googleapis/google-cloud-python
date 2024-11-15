@@ -510,6 +510,162 @@ class ListPhraseMatchersAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListAnalysisRulesPager:
+    """A pager for iterating through ``list_analysis_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListAnalysisRulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``analysis_rules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAnalysisRules`` requests and continue to iterate
+    through the ``analysis_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListAnalysisRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., contact_center_insights.ListAnalysisRulesResponse],
+        request: contact_center_insights.ListAnalysisRulesRequest,
+        response: contact_center_insights.ListAnalysisRulesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListAnalysisRulesRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListAnalysisRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListAnalysisRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[contact_center_insights.ListAnalysisRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.AnalysisRule]:
+        for page in self.pages:
+            yield from page.analysis_rules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAnalysisRulesAsyncPager:
+    """A pager for iterating through ``list_analysis_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListAnalysisRulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``analysis_rules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAnalysisRules`` requests and continue to iterate
+    through the ``analysis_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListAnalysisRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[contact_center_insights.ListAnalysisRulesResponse]
+        ],
+        request: contact_center_insights.ListAnalysisRulesRequest,
+        response: contact_center_insights.ListAnalysisRulesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListAnalysisRulesRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListAnalysisRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListAnalysisRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[contact_center_insights.ListAnalysisRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.AnalysisRule]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.analysis_rules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListViewsPager:
     """A pager for iterating through ``list_views`` requests.
 
@@ -654,6 +810,788 @@ class ListViewsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.views:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQaQuestionsPager:
+    """A pager for iterating through ``list_qa_questions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListQaQuestionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``qa_questions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListQaQuestions`` requests and continue to iterate
+    through the ``qa_questions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListQaQuestionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., contact_center_insights.ListQaQuestionsResponse],
+        request: contact_center_insights.ListQaQuestionsRequest,
+        response: contact_center_insights.ListQaQuestionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListQaQuestionsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListQaQuestionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListQaQuestionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[contact_center_insights.ListQaQuestionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.QaQuestion]:
+        for page in self.pages:
+            yield from page.qa_questions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQaQuestionsAsyncPager:
+    """A pager for iterating through ``list_qa_questions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListQaQuestionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``qa_questions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListQaQuestions`` requests and continue to iterate
+    through the ``qa_questions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListQaQuestionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[contact_center_insights.ListQaQuestionsResponse]
+        ],
+        request: contact_center_insights.ListQaQuestionsRequest,
+        response: contact_center_insights.ListQaQuestionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListQaQuestionsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListQaQuestionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListQaQuestionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[contact_center_insights.ListQaQuestionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.QaQuestion]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.qa_questions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQaScorecardsPager:
+    """A pager for iterating through ``list_qa_scorecards`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``qa_scorecards`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListQaScorecards`` requests and continue to iterate
+    through the ``qa_scorecards`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., contact_center_insights.ListQaScorecardsResponse],
+        request: contact_center_insights.ListQaScorecardsRequest,
+        response: contact_center_insights.ListQaScorecardsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListQaScorecardsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListQaScorecardsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListQaScorecardsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[contact_center_insights.ListQaScorecardsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.QaScorecard]:
+        for page in self.pages:
+            yield from page.qa_scorecards
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQaScorecardsAsyncPager:
+    """A pager for iterating through ``list_qa_scorecards`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``qa_scorecards`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListQaScorecards`` requests and continue to iterate
+    through the ``qa_scorecards`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[contact_center_insights.ListQaScorecardsResponse]
+        ],
+        request: contact_center_insights.ListQaScorecardsRequest,
+        response: contact_center_insights.ListQaScorecardsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListQaScorecardsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListQaScorecardsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListQaScorecardsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[contact_center_insights.ListQaScorecardsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.QaScorecard]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.qa_scorecards:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQaScorecardRevisionsPager:
+    """A pager for iterating through ``list_qa_scorecard_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``qa_scorecard_revisions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListQaScorecardRevisions`` requests and continue to iterate
+    through the ``qa_scorecard_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., contact_center_insights.ListQaScorecardRevisionsResponse],
+        request: contact_center_insights.ListQaScorecardRevisionsRequest,
+        response: contact_center_insights.ListQaScorecardRevisionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListQaScorecardRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[contact_center_insights.ListQaScorecardRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.QaScorecardRevision]:
+        for page in self.pages:
+            yield from page.qa_scorecard_revisions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQaScorecardRevisionsAsyncPager:
+    """A pager for iterating through ``list_qa_scorecard_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``qa_scorecard_revisions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListQaScorecardRevisions`` requests and continue to iterate
+    through the ``qa_scorecard_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse]
+        ],
+        request: contact_center_insights.ListQaScorecardRevisionsRequest,
+        response: contact_center_insights.ListQaScorecardRevisionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListQaScorecardRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListQaScorecardRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[contact_center_insights.ListQaScorecardRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.QaScorecardRevision]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.qa_scorecard_revisions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListFeedbackLabelsPager:
+    """A pager for iterating through ``list_feedback_labels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``feedback_labels`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListFeedbackLabels`` requests and continue to iterate
+    through the ``feedback_labels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., contact_center_insights.ListFeedbackLabelsResponse],
+        request: contact_center_insights.ListFeedbackLabelsRequest,
+        response: contact_center_insights.ListFeedbackLabelsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListFeedbackLabelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[contact_center_insights.ListFeedbackLabelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.FeedbackLabel]:
+        for page in self.pages:
+            yield from page.feedback_labels
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListFeedbackLabelsAsyncPager:
+    """A pager for iterating through ``list_feedback_labels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``feedback_labels`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListFeedbackLabels`` requests and continue to iterate
+    through the ``feedback_labels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[contact_center_insights.ListFeedbackLabelsResponse]
+        ],
+        request: contact_center_insights.ListFeedbackLabelsRequest,
+        response: contact_center_insights.ListFeedbackLabelsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListFeedbackLabelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListFeedbackLabelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[contact_center_insights.ListFeedbackLabelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.FeedbackLabel]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.feedback_labels:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAllFeedbackLabelsPager:
+    """A pager for iterating through ``list_all_feedback_labels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``feedback_labels`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAllFeedbackLabels`` requests and continue to iterate
+    through the ``feedback_labels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., contact_center_insights.ListAllFeedbackLabelsResponse],
+        request: contact_center_insights.ListAllFeedbackLabelsRequest,
+        response: contact_center_insights.ListAllFeedbackLabelsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListAllFeedbackLabelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[contact_center_insights.ListAllFeedbackLabelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.FeedbackLabel]:
+        for page in self.pages:
+            yield from page.feedback_labels
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAllFeedbackLabelsAsyncPager:
+    """A pager for iterating through ``list_all_feedback_labels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``feedback_labels`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAllFeedbackLabels`` requests and continue to iterate
+    through the ``feedback_labels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse]
+        ],
+        request: contact_center_insights.ListAllFeedbackLabelsRequest,
+        response: contact_center_insights.ListAllFeedbackLabelsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsRequest):
+                The initial request object.
+            response (google.cloud.contact_center_insights_v1.types.ListAllFeedbackLabelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = contact_center_insights.ListAllFeedbackLabelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[contact_center_insights.ListAllFeedbackLabelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.FeedbackLabel]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.feedback_labels:
                     yield response
 
         return async_generator()

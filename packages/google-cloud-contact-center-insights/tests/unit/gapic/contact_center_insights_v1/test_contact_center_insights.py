@@ -59,6 +59,9 @@ from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import options_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
@@ -14084,6 +14087,1970 @@ async def test_update_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        contact_center_insights.CreateAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_create_analysis_rule(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule(
+            name="name_value",
+            display_name="display_name_value",
+            conversation_filter="conversation_filter_value",
+            analysis_percentage=0.20170000000000002,
+            active=True,
+        )
+        response = client.create_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+def test_create_analysis_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.CreateAnalysisRuleRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_analysis_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateAnalysisRuleRequest(
+            parent="parent_value",
+        )
+
+
+def test_create_analysis_rule_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_analysis_rule in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_analysis_rule
+        ] = mock_rpc
+        request = {}
+        client.create_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_analysis_rule_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_analysis_rule
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        await client.create_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_analysis_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.CreateAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule(
+                name="name_value",
+                display_name="display_name_value",
+                conversation_filter="conversation_filter_value",
+                analysis_percentage=0.20170000000000002,
+                active=True,
+            )
+        )
+        response = await client.create_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+@pytest.mark.asyncio
+async def test_create_analysis_rule_async_from_dict():
+    await test_create_analysis_rule_async(request_type=dict)
+
+
+def test_create_analysis_rule_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateAnalysisRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = resources.AnalysisRule()
+        client.create_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_analysis_rule_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateAnalysisRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule()
+        )
+        await client.create_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_analysis_rule_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_analysis_rule(
+            parent="parent_value",
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].analysis_rule
+        mock_val = resources.AnalysisRule(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_analysis_rule_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_analysis_rule(
+            contact_center_insights.CreateAnalysisRuleRequest(),
+            parent="parent_value",
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_analysis_rule_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_analysis_rule(
+            parent="parent_value",
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].analysis_rule
+        mock_val = resources.AnalysisRule(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_analysis_rule_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_analysis_rule(
+            contact_center_insights.CreateAnalysisRuleRequest(),
+            parent="parent_value",
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_get_analysis_rule(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule(
+            name="name_value",
+            display_name="display_name_value",
+            conversation_filter="conversation_filter_value",
+            analysis_percentage=0.20170000000000002,
+            active=True,
+        )
+        response = client.get_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+def test_get_analysis_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.GetAnalysisRuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_analysis_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetAnalysisRuleRequest(
+            name="name_value",
+        )
+
+
+def test_get_analysis_rule_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_analysis_rule in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_analysis_rule
+        ] = mock_rpc
+        request = {}
+        client.get_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_analysis_rule_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_analysis_rule
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        await client.get_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_analysis_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.GetAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule(
+                name="name_value",
+                display_name="display_name_value",
+                conversation_filter="conversation_filter_value",
+                analysis_percentage=0.20170000000000002,
+                active=True,
+            )
+        )
+        response = await client.get_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+@pytest.mark.asyncio
+async def test_get_analysis_rule_async_from_dict():
+    await test_get_analysis_rule_async(request_type=dict)
+
+
+def test_get_analysis_rule_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetAnalysisRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = resources.AnalysisRule()
+        client.get_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_analysis_rule_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetAnalysisRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule()
+        )
+        await client.get_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_analysis_rule_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_analysis_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_analysis_rule_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_analysis_rule(
+            contact_center_insights.GetAnalysisRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_analysis_rule_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_analysis_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_analysis_rule_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_analysis_rule(
+            contact_center_insights.GetAnalysisRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListAnalysisRulesRequest,
+        dict,
+    ],
+)
+def test_list_analysis_rules(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListAnalysisRulesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_analysis_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListAnalysisRulesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAnalysisRulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_analysis_rules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ListAnalysisRulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_analysis_rules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListAnalysisRulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_analysis_rules_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_analysis_rules in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_analysis_rules
+        ] = mock_rpc
+        request = {}
+        client.list_analysis_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_analysis_rules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_analysis_rules
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_analysis_rules
+        ] = mock_rpc
+
+        request = {}
+        await client.list_analysis_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_analysis_rules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ListAnalysisRulesRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAnalysisRulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_analysis_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListAnalysisRulesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAnalysisRulesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_async_from_dict():
+    await test_list_analysis_rules_async(request_type=dict)
+
+
+def test_list_analysis_rules_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListAnalysisRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListAnalysisRulesResponse()
+        client.list_analysis_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListAnalysisRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAnalysisRulesResponse()
+        )
+        await client.list_analysis_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_analysis_rules_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListAnalysisRulesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_analysis_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_analysis_rules_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_analysis_rules(
+            contact_center_insights.ListAnalysisRulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListAnalysisRulesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAnalysisRulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_analysis_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_analysis_rules(
+            contact_center_insights.ListAnalysisRulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_analysis_rules_pager(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_analysis_rules(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.AnalysisRule) for i in results)
+
+
+def test_list_analysis_rules_pages(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_analysis_rules(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_async_pager():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_analysis_rules(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.AnalysisRule) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_analysis_rules_async_pages():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_analysis_rules(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_update_analysis_rule(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule(
+            name="name_value",
+            display_name="display_name_value",
+            conversation_filter="conversation_filter_value",
+            analysis_percentage=0.20170000000000002,
+            active=True,
+        )
+        response = client.update_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+def test_update_analysis_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.UpdateAnalysisRuleRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_analysis_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdateAnalysisRuleRequest()
+
+
+def test_update_analysis_rule_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_analysis_rule in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_analysis_rule
+        ] = mock_rpc
+        request = {}
+        client.update_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_analysis_rule_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_analysis_rule
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        await client.update_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_analysis_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.UpdateAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule(
+                name="name_value",
+                display_name="display_name_value",
+                conversation_filter="conversation_filter_value",
+                analysis_percentage=0.20170000000000002,
+                active=True,
+            )
+        )
+        response = await client.update_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+@pytest.mark.asyncio
+async def test_update_analysis_rule_async_from_dict():
+    await test_update_analysis_rule_async(request_type=dict)
+
+
+def test_update_analysis_rule_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateAnalysisRuleRequest()
+
+    request.analysis_rule.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = resources.AnalysisRule()
+        client.update_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "analysis_rule.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_analysis_rule_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateAnalysisRuleRequest()
+
+    request.analysis_rule.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule()
+        )
+        await client.update_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "analysis_rule.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_analysis_rule_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_analysis_rule(
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].analysis_rule
+        mock_val = resources.AnalysisRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_analysis_rule_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_analysis_rule(
+            contact_center_insights.UpdateAnalysisRuleRequest(),
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_analysis_rule_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.AnalysisRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_analysis_rule(
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].analysis_rule
+        mock_val = resources.AnalysisRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_analysis_rule_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_analysis_rule(
+            contact_center_insights.UpdateAnalysisRuleRequest(),
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_delete_analysis_rule(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_analysis_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.DeleteAnalysisRuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_analysis_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteAnalysisRuleRequest(
+            name="name_value",
+        )
+
+
+def test_delete_analysis_rule_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_analysis_rule in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_analysis_rule
+        ] = mock_rpc
+        request = {}
+        client.delete_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_analysis_rule_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_analysis_rule
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_analysis_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.DeleteAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteAnalysisRuleRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_analysis_rule_async_from_dict():
+    await test_delete_analysis_rule_async(request_type=dict)
+
+
+def test_delete_analysis_rule_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteAnalysisRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_analysis_rule_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteAnalysisRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_analysis_rule_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_analysis_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_analysis_rule_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_analysis_rule(
+            contact_center_insights.DeleteAnalysisRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_analysis_rule_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_analysis_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_analysis_rule_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_analysis_rule(
+            contact_center_insights.DeleteAnalysisRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         contact_center_insights.GetEncryptionSpecRequest,
         dict,
     ],
@@ -16594,6 +18561,9866 @@ async def test_delete_view_flattened_error_async():
         await client.delete_view(
             contact_center_insights.DeleteViewRequest(),
             name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.QueryMetricsRequest,
+        dict,
+    ],
+)
+def test_query_metrics(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.query_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.QueryMetricsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_query_metrics_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.QueryMetricsRequest(
+        location="location_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.query_metrics(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.QueryMetricsRequest(
+            location="location_value",
+            filter="filter_value",
+        )
+
+
+def test_query_metrics_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_metrics in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.query_metrics] = mock_rpc
+        request = {}
+        client.query_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.query_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_query_metrics_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.query_metrics
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.query_metrics
+        ] = mock_rpc
+
+        request = {}
+        await client.query_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.query_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_query_metrics_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.QueryMetricsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.query_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.QueryMetricsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_query_metrics_async_from_dict():
+    await test_query_metrics_async(request_type=dict)
+
+
+def test_query_metrics_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.QueryMetricsRequest()
+
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.query_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "location=location_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_query_metrics_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.QueryMetricsRequest()
+
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.query_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "location=location_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateQaQuestionRequest,
+        dict,
+    ],
+)
+def test_create_qa_question(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion(
+            name="name_value",
+            abbreviation="abbreviation_value",
+            question_body="question_body_value",
+            answer_instructions="answer_instructions_value",
+            tags=["tags_value"],
+            order=540,
+        )
+        response = client.create_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+def test_create_qa_question_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.CreateQaQuestionRequest(
+        parent="parent_value",
+        qa_question_id="qa_question_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_qa_question(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateQaQuestionRequest(
+            parent="parent_value",
+            qa_question_id="qa_question_id_value",
+        )
+
+
+def test_create_qa_question_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_qa_question in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_qa_question
+        ] = mock_rpc
+        request = {}
+        client.create_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_qa_question_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_qa_question
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_qa_question
+        ] = mock_rpc
+
+        request = {}
+        await client.create_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_qa_question_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.CreateQaQuestionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion(
+                name="name_value",
+                abbreviation="abbreviation_value",
+                question_body="question_body_value",
+                answer_instructions="answer_instructions_value",
+                tags=["tags_value"],
+                order=540,
+            )
+        )
+        response = await client.create_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+@pytest.mark.asyncio
+async def test_create_qa_question_async_from_dict():
+    await test_create_qa_question_async(request_type=dict)
+
+
+def test_create_qa_question_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateQaQuestionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        call.return_value = resources.QaQuestion()
+        client.create_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_qa_question_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateQaQuestionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion()
+        )
+        await client.create_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_qa_question_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_qa_question(
+            parent="parent_value",
+            qa_question=resources.QaQuestion(name="name_value"),
+            qa_question_id="qa_question_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].qa_question
+        mock_val = resources.QaQuestion(name="name_value")
+        assert arg == mock_val
+        arg = args[0].qa_question_id
+        mock_val = "qa_question_id_value"
+        assert arg == mock_val
+
+
+def test_create_qa_question_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_qa_question(
+            contact_center_insights.CreateQaQuestionRequest(),
+            parent="parent_value",
+            qa_question=resources.QaQuestion(name="name_value"),
+            qa_question_id="qa_question_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_qa_question_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_qa_question(
+            parent="parent_value",
+            qa_question=resources.QaQuestion(name="name_value"),
+            qa_question_id="qa_question_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].qa_question
+        mock_val = resources.QaQuestion(name="name_value")
+        assert arg == mock_val
+        arg = args[0].qa_question_id
+        mock_val = "qa_question_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_qa_question_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_qa_question(
+            contact_center_insights.CreateQaQuestionRequest(),
+            parent="parent_value",
+            qa_question=resources.QaQuestion(name="name_value"),
+            qa_question_id="qa_question_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetQaQuestionRequest,
+        dict,
+    ],
+)
+def test_get_qa_question(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion(
+            name="name_value",
+            abbreviation="abbreviation_value",
+            question_body="question_body_value",
+            answer_instructions="answer_instructions_value",
+            tags=["tags_value"],
+            order=540,
+        )
+        response = client.get_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+def test_get_qa_question_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.GetQaQuestionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_qa_question(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetQaQuestionRequest(
+            name="name_value",
+        )
+
+
+def test_get_qa_question_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_qa_question in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_qa_question] = mock_rpc
+        request = {}
+        client.get_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_qa_question_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_qa_question
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_qa_question
+        ] = mock_rpc
+
+        request = {}
+        await client.get_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_qa_question_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.GetQaQuestionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion(
+                name="name_value",
+                abbreviation="abbreviation_value",
+                question_body="question_body_value",
+                answer_instructions="answer_instructions_value",
+                tags=["tags_value"],
+                order=540,
+            )
+        )
+        response = await client.get_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+@pytest.mark.asyncio
+async def test_get_qa_question_async_from_dict():
+    await test_get_qa_question_async(request_type=dict)
+
+
+def test_get_qa_question_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetQaQuestionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        call.return_value = resources.QaQuestion()
+        client.get_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_qa_question_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetQaQuestionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion()
+        )
+        await client.get_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_qa_question_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_qa_question(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_qa_question_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_qa_question(
+            contact_center_insights.GetQaQuestionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_qa_question_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_qa_question(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_qa_question_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_qa_question(
+            contact_center_insights.GetQaQuestionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateQaQuestionRequest,
+        dict,
+    ],
+)
+def test_update_qa_question(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion(
+            name="name_value",
+            abbreviation="abbreviation_value",
+            question_body="question_body_value",
+            answer_instructions="answer_instructions_value",
+            tags=["tags_value"],
+            order=540,
+        )
+        response = client.update_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+def test_update_qa_question_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.UpdateQaQuestionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_qa_question(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdateQaQuestionRequest()
+
+
+def test_update_qa_question_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_qa_question in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_qa_question
+        ] = mock_rpc
+        request = {}
+        client.update_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_qa_question_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_qa_question
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_qa_question
+        ] = mock_rpc
+
+        request = {}
+        await client.update_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_qa_question_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.UpdateQaQuestionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion(
+                name="name_value",
+                abbreviation="abbreviation_value",
+                question_body="question_body_value",
+                answer_instructions="answer_instructions_value",
+                tags=["tags_value"],
+                order=540,
+            )
+        )
+        response = await client.update_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+@pytest.mark.asyncio
+async def test_update_qa_question_async_from_dict():
+    await test_update_qa_question_async(request_type=dict)
+
+
+def test_update_qa_question_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateQaQuestionRequest()
+
+    request.qa_question.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        call.return_value = resources.QaQuestion()
+        client.update_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "qa_question.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_qa_question_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateQaQuestionRequest()
+
+    request.qa_question.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion()
+        )
+        await client.update_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "qa_question.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_qa_question_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_qa_question(
+            qa_question=resources.QaQuestion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].qa_question
+        mock_val = resources.QaQuestion(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_qa_question_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_qa_question(
+            contact_center_insights.UpdateQaQuestionRequest(),
+            qa_question=resources.QaQuestion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_qa_question_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaQuestion()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_qa_question(
+            qa_question=resources.QaQuestion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].qa_question
+        mock_val = resources.QaQuestion(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_qa_question_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_qa_question(
+            contact_center_insights.UpdateQaQuestionRequest(),
+            qa_question=resources.QaQuestion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteQaQuestionRequest,
+        dict,
+    ],
+)
+def test_delete_qa_question(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_qa_question_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.DeleteQaQuestionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_qa_question(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteQaQuestionRequest(
+            name="name_value",
+        )
+
+
+def test_delete_qa_question_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_qa_question in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_qa_question
+        ] = mock_rpc
+        request = {}
+        client.delete_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_question_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_qa_question
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_qa_question
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_question_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.DeleteQaQuestionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteQaQuestionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_question_async_from_dict():
+    await test_delete_qa_question_async(request_type=dict)
+
+
+def test_delete_qa_question_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteQaQuestionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_question_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteQaQuestionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_qa_question_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_qa_question(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_qa_question_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_qa_question(
+            contact_center_insights.DeleteQaQuestionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_question_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_qa_question(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_question_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_qa_question(
+            contact_center_insights.DeleteQaQuestionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListQaQuestionsRequest,
+        dict,
+    ],
+)
+def test_list_qa_questions(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaQuestionsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_qa_questions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListQaQuestionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaQuestionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_qa_questions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ListQaQuestionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_qa_questions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListQaQuestionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_qa_questions_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_qa_questions in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_qa_questions
+        ] = mock_rpc
+        request = {}
+        client.list_qa_questions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_qa_questions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_qa_questions
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_qa_questions
+        ] = mock_rpc
+
+        request = {}
+        await client.list_qa_questions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_qa_questions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ListQaQuestionsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaQuestionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_qa_questions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListQaQuestionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaQuestionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_async_from_dict():
+    await test_list_qa_questions_async(request_type=dict)
+
+
+def test_list_qa_questions_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListQaQuestionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListQaQuestionsResponse()
+        client.list_qa_questions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListQaQuestionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaQuestionsResponse()
+        )
+        await client.list_qa_questions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_qa_questions_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaQuestionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_qa_questions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_qa_questions_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_qa_questions(
+            contact_center_insights.ListQaQuestionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaQuestionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaQuestionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_qa_questions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_qa_questions(
+            contact_center_insights.ListQaQuestionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_qa_questions_pager(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_qa_questions(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.QaQuestion) for i in results)
+
+
+def test_list_qa_questions_pages(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_qa_questions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_async_pager():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_qa_questions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.QaQuestion) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_qa_questions_async_pages():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_qa_questions(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateQaScorecardRequest,
+        dict,
+    ],
+)
+def test_create_qa_scorecard(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+        response = client.create_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_create_qa_scorecard_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.CreateQaScorecardRequest(
+        parent="parent_value",
+        qa_scorecard_id="qa_scorecard_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_qa_scorecard(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateQaScorecardRequest(
+            parent="parent_value",
+            qa_scorecard_id="qa_scorecard_id_value",
+        )
+
+
+def test_create_qa_scorecard_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_qa_scorecard in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_qa_scorecard
+        ] = mock_rpc
+        request = {}
+        client.create_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_qa_scorecard
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        await client.create_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.CreateQaScorecardRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_async_from_dict():
+    await test_create_qa_scorecard_async(request_type=dict)
+
+
+def test_create_qa_scorecard_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateQaScorecardRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecard()
+        client.create_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateQaScorecardRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard()
+        )
+        await client.create_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_qa_scorecard_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_qa_scorecard(
+            parent="parent_value",
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            qa_scorecard_id="qa_scorecard_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].qa_scorecard
+        mock_val = resources.QaScorecard(name="name_value")
+        assert arg == mock_val
+        arg = args[0].qa_scorecard_id
+        mock_val = "qa_scorecard_id_value"
+        assert arg == mock_val
+
+
+def test_create_qa_scorecard_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_qa_scorecard(
+            contact_center_insights.CreateQaScorecardRequest(),
+            parent="parent_value",
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            qa_scorecard_id="qa_scorecard_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_qa_scorecard(
+            parent="parent_value",
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            qa_scorecard_id="qa_scorecard_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].qa_scorecard
+        mock_val = resources.QaScorecard(name="name_value")
+        assert arg == mock_val
+        arg = args[0].qa_scorecard_id
+        mock_val = "qa_scorecard_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_qa_scorecard(
+            contact_center_insights.CreateQaScorecardRequest(),
+            parent="parent_value",
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            qa_scorecard_id="qa_scorecard_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetQaScorecardRequest,
+        dict,
+    ],
+)
+def test_get_qa_scorecard(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+        response = client.get_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_get_qa_scorecard_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.GetQaScorecardRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_qa_scorecard(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetQaScorecardRequest(
+            name="name_value",
+        )
+
+
+def test_get_qa_scorecard_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_qa_scorecard in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_qa_scorecard
+        ] = mock_rpc
+        request = {}
+        client.get_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_qa_scorecard
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        await client.get_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.GetQaScorecardRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_async_from_dict():
+    await test_get_qa_scorecard_async(request_type=dict)
+
+
+def test_get_qa_scorecard_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetQaScorecardRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        call.return_value = resources.QaScorecard()
+        client.get_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetQaScorecardRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard()
+        )
+        await client.get_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_qa_scorecard_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_qa_scorecard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_qa_scorecard_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_qa_scorecard(
+            contact_center_insights.GetQaScorecardRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_qa_scorecard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_qa_scorecard(
+            contact_center_insights.GetQaScorecardRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateQaScorecardRequest,
+        dict,
+    ],
+)
+def test_update_qa_scorecard(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+        response = client.update_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+def test_update_qa_scorecard_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.UpdateQaScorecardRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_qa_scorecard(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdateQaScorecardRequest()
+
+
+def test_update_qa_scorecard_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_qa_scorecard in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_qa_scorecard
+        ] = mock_rpc
+        request = {}
+        client.update_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_qa_scorecard_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_qa_scorecard
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        await client.update_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_qa_scorecard_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.UpdateQaScorecardRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.update_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_update_qa_scorecard_async_from_dict():
+    await test_update_qa_scorecard_async(request_type=dict)
+
+
+def test_update_qa_scorecard_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateQaScorecardRequest()
+
+    request.qa_scorecard.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecard()
+        client.update_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "qa_scorecard.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_qa_scorecard_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateQaScorecardRequest()
+
+    request.qa_scorecard.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard()
+        )
+        await client.update_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "qa_scorecard.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_qa_scorecard_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_qa_scorecard(
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].qa_scorecard
+        mock_val = resources.QaScorecard(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_qa_scorecard_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_qa_scorecard(
+            contact_center_insights.UpdateQaScorecardRequest(),
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_qa_scorecard_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecard()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_qa_scorecard(
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].qa_scorecard
+        mock_val = resources.QaScorecard(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_qa_scorecard_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_qa_scorecard(
+            contact_center_insights.UpdateQaScorecardRequest(),
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteQaScorecardRequest,
+        dict,
+    ],
+)
+def test_delete_qa_scorecard(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_qa_scorecard_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.DeleteQaScorecardRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_qa_scorecard(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteQaScorecardRequest(
+            name="name_value",
+        )
+
+
+def test_delete_qa_scorecard_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_qa_scorecard in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_qa_scorecard
+        ] = mock_rpc
+        request = {}
+        client.delete_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_qa_scorecard
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.DeleteQaScorecardRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteQaScorecardRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_async_from_dict():
+    await test_delete_qa_scorecard_async(request_type=dict)
+
+
+def test_delete_qa_scorecard_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteQaScorecardRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteQaScorecardRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_qa_scorecard_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_qa_scorecard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_qa_scorecard_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_qa_scorecard(
+            contact_center_insights.DeleteQaScorecardRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_qa_scorecard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_qa_scorecard(
+            contact_center_insights.DeleteQaScorecardRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListQaScorecardsRequest,
+        dict,
+    ],
+)
+def test_list_qa_scorecards(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaScorecardsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_qa_scorecards(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListQaScorecardsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaScorecardsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_qa_scorecards_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ListQaScorecardsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_qa_scorecards(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListQaScorecardsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_qa_scorecards_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_qa_scorecards in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_qa_scorecards
+        ] = mock_rpc
+        request = {}
+        client.list_qa_scorecards(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_qa_scorecards(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_qa_scorecards
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_qa_scorecards
+        ] = mock_rpc
+
+        request = {}
+        await client.list_qa_scorecards(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_qa_scorecards(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ListQaScorecardsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_qa_scorecards(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListQaScorecardsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaScorecardsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_async_from_dict():
+    await test_list_qa_scorecards_async(request_type=dict)
+
+
+def test_list_qa_scorecards_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListQaScorecardsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListQaScorecardsResponse()
+        client.list_qa_scorecards(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListQaScorecardsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardsResponse()
+        )
+        await client.list_qa_scorecards(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_qa_scorecards_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaScorecardsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_qa_scorecards(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_qa_scorecards_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_qa_scorecards(
+            contact_center_insights.ListQaScorecardsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaScorecardsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_qa_scorecards(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_qa_scorecards(
+            contact_center_insights.ListQaScorecardsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_qa_scorecards_pager(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_qa_scorecards(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.QaScorecard) for i in results)
+
+
+def test_list_qa_scorecards_pages(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_qa_scorecards(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_async_pager():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_qa_scorecards(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.QaScorecard) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_async_pages():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_qa_scorecards(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_create_qa_scorecard_revision(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+        response = client.create_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+def test_create_qa_scorecard_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.CreateQaScorecardRevisionRequest(
+        parent="parent_value",
+        qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_qa_scorecard_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateQaScorecardRevisionRequest(
+            parent="parent_value",
+            qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+        )
+
+
+def test_create_qa_scorecard_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_qa_scorecard_revision
+        ] = mock_rpc
+        request = {}
+        client.create_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_qa_scorecard_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.create_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_revision_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.CreateQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        response = await client.create_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_revision_async_from_dict():
+    await test_create_qa_scorecard_revision_async(request_type=dict)
+
+
+def test_create_qa_scorecard_revision_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateQaScorecardRevisionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.create_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_revision_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateQaScorecardRevisionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision()
+        )
+        await client.create_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_qa_scorecard_revision_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_qa_scorecard_revision(
+            parent="parent_value",
+            qa_scorecard_revision=resources.QaScorecardRevision(name="name_value"),
+            qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].qa_scorecard_revision
+        mock_val = resources.QaScorecardRevision(name="name_value")
+        assert arg == mock_val
+        arg = args[0].qa_scorecard_revision_id
+        mock_val = "qa_scorecard_revision_id_value"
+        assert arg == mock_val
+
+
+def test_create_qa_scorecard_revision_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_qa_scorecard_revision(
+            contact_center_insights.CreateQaScorecardRevisionRequest(),
+            parent="parent_value",
+            qa_scorecard_revision=resources.QaScorecardRevision(name="name_value"),
+            qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_revision_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_qa_scorecard_revision(
+            parent="parent_value",
+            qa_scorecard_revision=resources.QaScorecardRevision(name="name_value"),
+            qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].qa_scorecard_revision
+        mock_val = resources.QaScorecardRevision(name="name_value")
+        assert arg == mock_val
+        arg = args[0].qa_scorecard_revision_id
+        mock_val = "qa_scorecard_revision_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_revision_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_qa_scorecard_revision(
+            contact_center_insights.CreateQaScorecardRevisionRequest(),
+            parent="parent_value",
+            qa_scorecard_revision=resources.QaScorecardRevision(name="name_value"),
+            qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_get_qa_scorecard_revision(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+        response = client.get_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+def test_get_qa_scorecard_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.GetQaScorecardRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_qa_scorecard_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetQaScorecardRevisionRequest(
+            name="name_value",
+        )
+
+
+def test_get_qa_scorecard_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_qa_scorecard_revision
+        ] = mock_rpc
+        request = {}
+        client.get_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_qa_scorecard_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.get_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_revision_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.GetQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        response = await client.get_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_revision_async_from_dict():
+    await test_get_qa_scorecard_revision_async(request_type=dict)
+
+
+def test_get_qa_scorecard_revision_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.get_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_revision_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision()
+        )
+        await client.get_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_qa_scorecard_revision_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_qa_scorecard_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_qa_scorecard_revision_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_qa_scorecard_revision(
+            contact_center_insights.GetQaScorecardRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_revision_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_qa_scorecard_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_revision_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_qa_scorecard_revision(
+            contact_center_insights.GetQaScorecardRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.TuneQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_tune_qa_scorecard_revision(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.tune_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.TuneQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_tune_qa_scorecard_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.TuneQaScorecardRevisionRequest(
+        parent="parent_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.tune_qa_scorecard_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.TuneQaScorecardRevisionRequest(
+            parent="parent_value",
+            filter="filter_value",
+        )
+
+
+def test_tune_qa_scorecard_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.tune_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.tune_qa_scorecard_revision
+        ] = mock_rpc
+        request = {}
+        client.tune_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.tune_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_tune_qa_scorecard_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.tune_qa_scorecard_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.tune_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.tune_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.tune_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_tune_qa_scorecard_revision_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.TuneQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.tune_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.TuneQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_tune_qa_scorecard_revision_async_from_dict():
+    await test_tune_qa_scorecard_revision_async(request_type=dict)
+
+
+def test_tune_qa_scorecard_revision_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.TuneQaScorecardRevisionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.tune_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_tune_qa_scorecard_revision_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.TuneQaScorecardRevisionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.tune_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_tune_qa_scorecard_revision_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.tune_qa_scorecard_revision(
+            parent="parent_value",
+            filter="filter_value",
+            validate_only=True,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+        arg = args[0].validate_only
+        mock_val = True
+        assert arg == mock_val
+
+
+def test_tune_qa_scorecard_revision_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.tune_qa_scorecard_revision(
+            contact_center_insights.TuneQaScorecardRevisionRequest(),
+            parent="parent_value",
+            filter="filter_value",
+            validate_only=True,
+        )
+
+
+@pytest.mark.asyncio
+async def test_tune_qa_scorecard_revision_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.tune_qa_scorecard_revision(
+            parent="parent_value",
+            filter="filter_value",
+            validate_only=True,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+        arg = args[0].validate_only
+        mock_val = True
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_tune_qa_scorecard_revision_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.tune_qa_scorecard_revision(
+            contact_center_insights.TuneQaScorecardRevisionRequest(),
+            parent="parent_value",
+            filter="filter_value",
+            validate_only=True,
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeployQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_deploy_qa_scorecard_revision(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+        response = client.deploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeployQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+def test_deploy_qa_scorecard_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.DeployQaScorecardRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.deploy_qa_scorecard_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeployQaScorecardRevisionRequest(
+            name="name_value",
+        )
+
+
+def test_deploy_qa_scorecard_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.deploy_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.deploy_qa_scorecard_revision
+        ] = mock_rpc
+        request = {}
+        client.deploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.deploy_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_deploy_qa_scorecard_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.deploy_qa_scorecard_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.deploy_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.deploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.deploy_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_deploy_qa_scorecard_revision_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.DeployQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        response = await client.deploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeployQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.asyncio
+async def test_deploy_qa_scorecard_revision_async_from_dict():
+    await test_deploy_qa_scorecard_revision_async(request_type=dict)
+
+
+def test_deploy_qa_scorecard_revision_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeployQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.deploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_deploy_qa_scorecard_revision_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeployQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision()
+        )
+        await client.deploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UndeployQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_undeploy_qa_scorecard_revision(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+        response = client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UndeployQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+def test_undeploy_qa_scorecard_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.UndeployQaScorecardRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.undeploy_qa_scorecard_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UndeployQaScorecardRevisionRequest(
+            name="name_value",
+        )
+
+
+def test_undeploy_qa_scorecard_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.undeploy_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.undeploy_qa_scorecard_revision
+        ] = mock_rpc
+        request = {}
+        client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_undeploy_qa_scorecard_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.undeploy_qa_scorecard_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.undeploy_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_undeploy_qa_scorecard_revision_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.UndeployQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        response = await client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UndeployQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.asyncio
+async def test_undeploy_qa_scorecard_revision_async_from_dict():
+    await test_undeploy_qa_scorecard_revision_async(request_type=dict)
+
+
+def test_undeploy_qa_scorecard_revision_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UndeployQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_undeploy_qa_scorecard_revision_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UndeployQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision()
+        )
+        await client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_delete_qa_scorecard_revision(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_qa_scorecard_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.DeleteQaScorecardRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_qa_scorecard_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteQaScorecardRevisionRequest(
+            name="name_value",
+        )
+
+
+def test_delete_qa_scorecard_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_qa_scorecard_revision
+        ] = mock_rpc
+        request = {}
+        client.delete_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_qa_scorecard_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_revision_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.DeleteQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteQaScorecardRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_revision_async_from_dict():
+    await test_delete_qa_scorecard_revision_async(request_type=dict)
+
+
+def test_delete_qa_scorecard_revision_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_revision_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteQaScorecardRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_qa_scorecard_revision_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_qa_scorecard_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_qa_scorecard_revision_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_qa_scorecard_revision(
+            contact_center_insights.DeleteQaScorecardRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_revision_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_qa_scorecard_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_revision_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_qa_scorecard_revision(
+            contact_center_insights.DeleteQaScorecardRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListQaScorecardRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_qa_scorecard_revisions(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaScorecardRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_qa_scorecard_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListQaScorecardRevisionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaScorecardRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_qa_scorecard_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ListQaScorecardRevisionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_qa_scorecard_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListQaScorecardRevisionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+def test_list_qa_scorecard_revisions_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_qa_scorecard_revisions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_qa_scorecard_revisions
+        ] = mock_rpc
+        request = {}
+        client.list_qa_scorecard_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_qa_scorecard_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_qa_scorecard_revisions
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_qa_scorecard_revisions
+        ] = mock_rpc
+
+        request = {}
+        await client.list_qa_scorecard_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_qa_scorecard_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ListQaScorecardRevisionsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_qa_scorecard_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListQaScorecardRevisionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaScorecardRevisionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_async_from_dict():
+    await test_list_qa_scorecard_revisions_async(request_type=dict)
+
+
+def test_list_qa_scorecard_revisions_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListQaScorecardRevisionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+        client.list_qa_scorecard_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListQaScorecardRevisionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardRevisionsResponse()
+        )
+        await client.list_qa_scorecard_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_qa_scorecard_revisions_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_qa_scorecard_revisions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_qa_scorecard_revisions_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_qa_scorecard_revisions(
+            contact_center_insights.ListQaScorecardRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardRevisionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_qa_scorecard_revisions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_qa_scorecard_revisions(
+            contact_center_insights.ListQaScorecardRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_qa_scorecard_revisions_pager(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_qa_scorecard_revisions(
+            request={}, retry=retry, timeout=timeout
+        )
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.QaScorecardRevision) for i in results)
+
+
+def test_list_qa_scorecard_revisions_pages(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_qa_scorecard_revisions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_async_pager():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_qa_scorecard_revisions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.QaScorecardRevision) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_async_pages():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_qa_scorecard_revisions(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_create_feedback_label(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel(
+            name="name_value",
+            labeled_resource="labeled_resource_value",
+            label="label_value",
+        )
+        response = client.create_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+def test_create_feedback_label_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.CreateFeedbackLabelRequest(
+        parent="parent_value",
+        feedback_label_id="feedback_label_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_feedback_label(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateFeedbackLabelRequest(
+            parent="parent_value",
+            feedback_label_id="feedback_label_id_value",
+        )
+
+
+def test_create_feedback_label_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_feedback_label
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_feedback_label
+        ] = mock_rpc
+        request = {}
+        client.create_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_feedback_label_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_feedback_label
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        await client.create_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_feedback_label_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.CreateFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel(
+                name="name_value",
+                labeled_resource="labeled_resource_value",
+            )
+        )
+        response = await client.create_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.CreateFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+@pytest.mark.asyncio
+async def test_create_feedback_label_async_from_dict():
+    await test_create_feedback_label_async(request_type=dict)
+
+
+def test_create_feedback_label_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateFeedbackLabelRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        call.return_value = resources.FeedbackLabel()
+        client.create_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_feedback_label_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateFeedbackLabelRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel()
+        )
+        await client.create_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_feedback_label_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_feedback_label(
+            parent="parent_value",
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            feedback_label_id="feedback_label_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].feedback_label
+        mock_val = resources.FeedbackLabel(label="label_value")
+        assert arg == mock_val
+        arg = args[0].feedback_label_id
+        mock_val = "feedback_label_id_value"
+        assert arg == mock_val
+
+
+def test_create_feedback_label_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_feedback_label(
+            contact_center_insights.CreateFeedbackLabelRequest(),
+            parent="parent_value",
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            feedback_label_id="feedback_label_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_feedback_label_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_feedback_label(
+            parent="parent_value",
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            feedback_label_id="feedback_label_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].feedback_label
+        mock_val = resources.FeedbackLabel(label="label_value")
+        assert arg == mock_val
+        arg = args[0].feedback_label_id
+        mock_val = "feedback_label_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_feedback_label_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_feedback_label(
+            contact_center_insights.CreateFeedbackLabelRequest(),
+            parent="parent_value",
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            feedback_label_id="feedback_label_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_list_feedback_labels(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListFeedbackLabelsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFeedbackLabelsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_feedback_labels_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ListFeedbackLabelsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_feedback_labels(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListFeedbackLabelsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_feedback_labels_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_feedback_labels in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_feedback_labels
+        ] = mock_rpc
+        request = {}
+        client.list_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_feedback_labels
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        await client.list_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ListFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListFeedbackLabelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFeedbackLabelsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_async_from_dict():
+    await test_list_feedback_labels_async(request_type=dict)
+
+
+def test_list_feedback_labels_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListFeedbackLabelsResponse()
+        client.list_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListFeedbackLabelsResponse()
+        )
+        await client.list_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_feedback_labels_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListFeedbackLabelsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_feedback_labels_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_feedback_labels(
+            contact_center_insights.ListFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListFeedbackLabelsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListFeedbackLabelsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_feedback_labels(
+            contact_center_insights.ListFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_feedback_labels_pager(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_feedback_labels(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.FeedbackLabel) for i in results)
+
+
+def test_list_feedback_labels_pages(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_feedback_labels(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_async_pager():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_feedback_labels(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.FeedbackLabel) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_feedback_labels_async_pages():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_feedback_labels(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_get_feedback_label(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel(
+            name="name_value",
+            labeled_resource="labeled_resource_value",
+            label="label_value",
+        )
+        response = client.get_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+def test_get_feedback_label_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.GetFeedbackLabelRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_feedback_label(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetFeedbackLabelRequest(
+            name="name_value",
+        )
+
+
+def test_get_feedback_label_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_feedback_label in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_feedback_label
+        ] = mock_rpc
+        request = {}
+        client.get_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_feedback_label_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_feedback_label
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        await client.get_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_feedback_label_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.GetFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel(
+                name="name_value",
+                labeled_resource="labeled_resource_value",
+            )
+        )
+        response = await client.get_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.GetFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+@pytest.mark.asyncio
+async def test_get_feedback_label_async_from_dict():
+    await test_get_feedback_label_async(request_type=dict)
+
+
+def test_get_feedback_label_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetFeedbackLabelRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        call.return_value = resources.FeedbackLabel()
+        client.get_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_feedback_label_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetFeedbackLabelRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel()
+        )
+        await client.get_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_feedback_label_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_feedback_label(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_feedback_label_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_feedback_label(
+            contact_center_insights.GetFeedbackLabelRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_feedback_label_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_feedback_label(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_feedback_label_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_feedback_label(
+            contact_center_insights.GetFeedbackLabelRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_update_feedback_label(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel(
+            name="name_value",
+            labeled_resource="labeled_resource_value",
+            label="label_value",
+        )
+        response = client.update_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+def test_update_feedback_label_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.UpdateFeedbackLabelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_feedback_label(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdateFeedbackLabelRequest()
+
+
+def test_update_feedback_label_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_feedback_label
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_feedback_label
+        ] = mock_rpc
+        request = {}
+        client.update_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_feedback_label_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_feedback_label
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        await client.update_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_feedback_label_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.UpdateFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel(
+                name="name_value",
+                labeled_resource="labeled_resource_value",
+            )
+        )
+        response = await client.update_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.UpdateFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+@pytest.mark.asyncio
+async def test_update_feedback_label_async_from_dict():
+    await test_update_feedback_label_async(request_type=dict)
+
+
+def test_update_feedback_label_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateFeedbackLabelRequest()
+
+    request.feedback_label.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        call.return_value = resources.FeedbackLabel()
+        client.update_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "feedback_label.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_feedback_label_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateFeedbackLabelRequest()
+
+    request.feedback_label.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel()
+        )
+        await client.update_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "feedback_label.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_feedback_label_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_feedback_label(
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].feedback_label
+        mock_val = resources.FeedbackLabel(label="label_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_feedback_label_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_feedback_label(
+            contact_center_insights.UpdateFeedbackLabelRequest(),
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_feedback_label_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.FeedbackLabel()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_feedback_label(
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].feedback_label
+        mock_val = resources.FeedbackLabel(label="label_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_feedback_label_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_feedback_label(
+            contact_center_insights.UpdateFeedbackLabelRequest(),
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_delete_feedback_label(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_feedback_label_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.DeleteFeedbackLabelRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_feedback_label(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteFeedbackLabelRequest(
+            name="name_value",
+        )
+
+
+def test_delete_feedback_label_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_feedback_label
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_feedback_label
+        ] = mock_rpc
+        request = {}
+        client.delete_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_feedback_label_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_feedback_label
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_feedback_label_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.DeleteFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.DeleteFeedbackLabelRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_feedback_label_async_from_dict():
+    await test_delete_feedback_label_async(request_type=dict)
+
+
+def test_delete_feedback_label_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteFeedbackLabelRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_feedback_label_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteFeedbackLabelRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_feedback_label_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_feedback_label(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_feedback_label_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_feedback_label(
+            contact_center_insights.DeleteFeedbackLabelRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_feedback_label_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_feedback_label(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_feedback_label_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_feedback_label(
+            contact_center_insights.DeleteFeedbackLabelRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListAllFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_list_all_feedback_labels(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListAllFeedbackLabelsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_all_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListAllFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAllFeedbackLabelsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_all_feedback_labels_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.ListAllFeedbackLabelsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_all_feedback_labels(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListAllFeedbackLabelsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+def test_list_all_feedback_labels_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_all_feedback_labels
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_all_feedback_labels
+        ] = mock_rpc
+        request = {}
+        client.list_all_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_all_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_all_feedback_labels
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_all_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        await client.list_all_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_all_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ListAllFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_all_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.ListAllFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAllFeedbackLabelsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_async_from_dict():
+    await test_list_all_feedback_labels_async(request_type=dict)
+
+
+def test_list_all_feedback_labels_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListAllFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+        client.list_all_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListAllFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAllFeedbackLabelsResponse()
+        )
+        await client.list_all_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_all_feedback_labels_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_all_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_all_feedback_labels_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_all_feedback_labels(
+            contact_center_insights.ListAllFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAllFeedbackLabelsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_all_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_all_feedback_labels(
+            contact_center_insights.ListAllFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_all_feedback_labels_pager(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_all_feedback_labels(
+            request={}, retry=retry, timeout=timeout
+        )
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.FeedbackLabel) for i in results)
+
+
+def test_list_all_feedback_labels_pages(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_all_feedback_labels(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_async_pager():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_all_feedback_labels(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.FeedbackLabel) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_async_pages():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_all_feedback_labels(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.BulkUploadFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_bulk_upload_feedback_labels(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.bulk_upload_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_bulk_upload_feedback_labels_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.BulkUploadFeedbackLabelsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.bulk_upload_feedback_labels(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.BulkUploadFeedbackLabelsRequest(
+            parent="parent_value",
+        )
+
+
+def test_bulk_upload_feedback_labels_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.bulk_upload_feedback_labels
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.bulk_upload_feedback_labels
+        ] = mock_rpc
+        request = {}
+        client.bulk_upload_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.bulk_upload_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_bulk_upload_feedback_labels_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.bulk_upload_feedback_labels
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.bulk_upload_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        await client.bulk_upload_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.bulk_upload_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_bulk_upload_feedback_labels_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.BulkUploadFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.bulk_upload_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_bulk_upload_feedback_labels_async_from_dict():
+    await test_bulk_upload_feedback_labels_async(request_type=dict)
+
+
+def test_bulk_upload_feedback_labels_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.bulk_upload_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_bulk_upload_feedback_labels_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.bulk_upload_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_bulk_upload_feedback_labels_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.bulk_upload_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_bulk_upload_feedback_labels_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.bulk_upload_feedback_labels(
+            contact_center_insights.BulkUploadFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_bulk_upload_feedback_labels_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.bulk_upload_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_bulk_upload_feedback_labels_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.bulk_upload_feedback_labels(
+            contact_center_insights.BulkUploadFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_bulk_download_feedback_labels(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.bulk_download_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_bulk_download_feedback_labels_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = contact_center_insights.BulkDownloadFeedbackLabelsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        conversation_filter="conversation_filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.bulk_download_feedback_labels(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.BulkDownloadFeedbackLabelsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            conversation_filter="conversation_filter_value",
+        )
+
+
+def test_bulk_download_feedback_labels_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.bulk_download_feedback_labels
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.bulk_download_feedback_labels
+        ] = mock_rpc
+        request = {}
+        client.bulk_download_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.bulk_download_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_bulk_download_feedback_labels_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.bulk_download_feedback_labels
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.bulk_download_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        await client.bulk_download_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.bulk_download_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_bulk_download_feedback_labels_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.bulk_download_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_bulk_download_feedback_labels_async_from_dict():
+    await test_bulk_download_feedback_labels_async(request_type=dict)
+
+
+def test_bulk_download_feedback_labels_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.bulk_download_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_bulk_download_feedback_labels_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.bulk_download_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_bulk_download_feedback_labels_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.bulk_download_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_bulk_download_feedback_labels_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.bulk_download_feedback_labels(
+            contact_center_insights.BulkDownloadFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_bulk_download_feedback_labels_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.bulk_download_feedback_labels(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_bulk_download_feedback_labels_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.bulk_download_feedback_labels(
+            contact_center_insights.BulkDownloadFeedbackLabelsRequest(),
+            parent="parent_value",
         )
 
 
@@ -23369,6 +35196,1001 @@ def test_update_settings_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_create_analysis_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_analysis_rule in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        client.create_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_analysis_rule_rest_required_fields(
+    request_type=contact_center_insights.CreateAnalysisRuleRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_analysis_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_analysis_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.AnalysisRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.AnalysisRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_analysis_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_analysis_rule_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_analysis_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "analysisRule",
+            )
+        )
+    )
+
+
+def test_create_analysis_rule_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AnalysisRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.AnalysisRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_analysis_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/analysisRules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_analysis_rule_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_analysis_rule(
+            contact_center_insights.CreateAnalysisRuleRequest(),
+            parent="parent_value",
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+        )
+
+
+def test_get_analysis_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_analysis_rule in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        client.get_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_analysis_rule_rest_required_fields(
+    request_type=contact_center_insights.GetAnalysisRuleRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_analysis_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_analysis_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.AnalysisRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.AnalysisRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_analysis_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_analysis_rule_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_analysis_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_analysis_rule_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AnalysisRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/analysisRules/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.AnalysisRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_analysis_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/analysisRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_analysis_rule_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_analysis_rule(
+            contact_center_insights.GetAnalysisRuleRequest(),
+            name="name_value",
+        )
+
+
+def test_list_analysis_rules_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_analysis_rules in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_analysis_rules
+        ] = mock_rpc
+
+        request = {}
+        client.list_analysis_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_analysis_rules(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_analysis_rules_rest_required_fields(
+    request_type=contact_center_insights.ListAnalysisRulesRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_analysis_rules._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_analysis_rules._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = contact_center_insights.ListAnalysisRulesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListAnalysisRulesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_analysis_rules(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_analysis_rules_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_analysis_rules._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_analysis_rules_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListAnalysisRulesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListAnalysisRulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_analysis_rules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/analysisRules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_analysis_rules_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_analysis_rules(
+            contact_center_insights.ListAnalysisRulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_analysis_rules_rest_pager(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAnalysisRulesResponse(
+                analysis_rules=[
+                    resources.AnalysisRule(),
+                    resources.AnalysisRule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            contact_center_insights.ListAnalysisRulesResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_analysis_rules(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.AnalysisRule) for i in results)
+
+        pages = list(client.list_analysis_rules(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_update_analysis_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_analysis_rule in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        client.update_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_analysis_rule_rest_required_fields(
+    request_type=contact_center_insights.UpdateAnalysisRuleRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_analysis_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_analysis_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.AnalysisRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.AnalysisRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_analysis_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_analysis_rule_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_analysis_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("analysisRule",)))
+
+
+def test_update_analysis_rule_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AnalysisRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "analysis_rule": {
+                "name": "projects/sample1/locations/sample2/analysisRules/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.AnalysisRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_analysis_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{analysis_rule.name=projects/*/locations/*/analysisRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_analysis_rule_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_analysis_rule(
+            contact_center_insights.UpdateAnalysisRuleRequest(),
+            analysis_rule=resources.AnalysisRule(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_analysis_rule_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_analysis_rule in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_analysis_rule
+        ] = mock_rpc
+
+        request = {}
+        client.delete_analysis_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_analysis_rule(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_analysis_rule_rest_required_fields(
+    request_type=contact_center_insights.DeleteAnalysisRuleRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_analysis_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_analysis_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_analysis_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_analysis_rule_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_analysis_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_analysis_rule_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/analysisRules/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_analysis_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/analysisRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_analysis_rule_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_analysis_rule(
+            contact_center_insights.DeleteAnalysisRuleRequest(),
+            name="name_value",
+        )
+
+
 def test_get_encryption_spec_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -24690,6 +37512,5084 @@ def test_delete_view_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_query_metrics_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_metrics in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.query_metrics] = mock_rpc
+
+        request = {}
+        client.query_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.query_metrics(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_query_metrics_rest_required_fields(
+    request_type=contact_center_insights.QueryMetricsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["location"] = ""
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_metrics._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["location"] = "location_value"
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_metrics._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "location" in jsonified_request
+    assert jsonified_request["location"] == "location_value"
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.query_metrics(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_query_metrics_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.query_metrics._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "location",
+                "filter",
+            )
+        )
+    )
+
+
+def test_create_qa_question_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_qa_question in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_qa_question
+        ] = mock_rpc
+
+        request = {}
+        client.create_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_qa_question_rest_required_fields(
+    request_type=contact_center_insights.CreateQaQuestionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_qa_question._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_qa_question._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("qa_question_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaQuestion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaQuestion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_qa_question(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_qa_question_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_qa_question._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("qaQuestionId",))
+        & set(
+            (
+                "parent",
+                "qaQuestion",
+            )
+        )
+    )
+
+
+def test_create_qa_question_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaQuestion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            qa_question=resources.QaQuestion(name="name_value"),
+            qa_question_id="qa_question_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaQuestion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_qa_question(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/qaScorecards/*/revisions/*}/qaQuestions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_qa_question_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_qa_question(
+            contact_center_insights.CreateQaQuestionRequest(),
+            parent="parent_value",
+            qa_question=resources.QaQuestion(name="name_value"),
+            qa_question_id="qa_question_id_value",
+        )
+
+
+def test_get_qa_question_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_qa_question in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_qa_question] = mock_rpc
+
+        request = {}
+        client.get_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_qa_question_rest_required_fields(
+    request_type=contact_center_insights.GetQaQuestionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_qa_question._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_qa_question._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaQuestion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaQuestion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_qa_question(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_qa_question_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_qa_question._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_qa_question_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaQuestion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaQuestion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_qa_question(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/qaScorecards/*/revisions/*/qaQuestions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_qa_question_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_qa_question(
+            contact_center_insights.GetQaQuestionRequest(),
+            name="name_value",
+        )
+
+
+def test_update_qa_question_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_qa_question in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_qa_question
+        ] = mock_rpc
+
+        request = {}
+        client.update_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_qa_question_rest_required_fields(
+    request_type=contact_center_insights.UpdateQaQuestionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_qa_question._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_qa_question._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaQuestion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaQuestion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_qa_question(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_qa_question_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_qa_question._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "qaQuestion",
+                "updateMask",
+            )
+        )
+    )
+
+
+def test_update_qa_question_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaQuestion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "qa_question": {
+                "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            qa_question=resources.QaQuestion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaQuestion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_qa_question(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{qa_question.name=projects/*/locations/*/qaScorecards/*/revisions/*/qaQuestions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_qa_question_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_qa_question(
+            contact_center_insights.UpdateQaQuestionRequest(),
+            qa_question=resources.QaQuestion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_qa_question_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_qa_question in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_qa_question
+        ] = mock_rpc
+
+        request = {}
+        client.delete_qa_question(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_qa_question(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_qa_question_rest_required_fields(
+    request_type=contact_center_insights.DeleteQaQuestionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_qa_question._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_qa_question._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_qa_question(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_qa_question_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_qa_question._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_qa_question_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_qa_question(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/qaScorecards/*/revisions/*/qaQuestions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_qa_question_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_qa_question(
+            contact_center_insights.DeleteQaQuestionRequest(),
+            name="name_value",
+        )
+
+
+def test_list_qa_questions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_qa_questions in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_qa_questions
+        ] = mock_rpc
+
+        request = {}
+        client.list_qa_questions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_qa_questions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_qa_questions_rest_required_fields(
+    request_type=contact_center_insights.ListQaQuestionsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_qa_questions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_qa_questions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = contact_center_insights.ListQaQuestionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListQaQuestionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_qa_questions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_qa_questions_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_qa_questions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_qa_questions_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListQaQuestionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListQaQuestionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_qa_questions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/qaScorecards/*/revisions/*}/qaQuestions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_qa_questions_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_qa_questions(
+            contact_center_insights.ListQaQuestionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_qa_questions_rest_pager(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaQuestionsResponse(
+                qa_questions=[
+                    resources.QaQuestion(),
+                    resources.QaQuestion(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            contact_center_insights.ListQaQuestionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+        }
+
+        pager = client.list_qa_questions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.QaQuestion) for i in results)
+
+        pages = list(client.list_qa_questions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_create_qa_scorecard_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_qa_scorecard in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        client.create_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_qa_scorecard_rest_required_fields(
+    request_type=contact_center_insights.CreateQaScorecardRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_qa_scorecard._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_qa_scorecard._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("qa_scorecard_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaScorecard()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaScorecard.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_qa_scorecard(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_qa_scorecard_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_qa_scorecard._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("qaScorecardId",))
+        & set(
+            (
+                "parent",
+                "qaScorecard",
+            )
+        )
+    )
+
+
+def test_create_qa_scorecard_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecard()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            qa_scorecard_id="qa_scorecard_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_qa_scorecard(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/qaScorecards"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_qa_scorecard_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_qa_scorecard(
+            contact_center_insights.CreateQaScorecardRequest(),
+            parent="parent_value",
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            qa_scorecard_id="qa_scorecard_id_value",
+        )
+
+
+def test_get_qa_scorecard_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_qa_scorecard in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        client.get_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_qa_scorecard_rest_required_fields(
+    request_type=contact_center_insights.GetQaScorecardRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_qa_scorecard._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_qa_scorecard._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaScorecard()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaScorecard.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_qa_scorecard(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_qa_scorecard_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_qa_scorecard._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_qa_scorecard_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecard()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_qa_scorecard(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/qaScorecards/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_qa_scorecard_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_qa_scorecard(
+            contact_center_insights.GetQaScorecardRequest(),
+            name="name_value",
+        )
+
+
+def test_update_qa_scorecard_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_qa_scorecard in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        client.update_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_qa_scorecard_rest_required_fields(
+    request_type=contact_center_insights.UpdateQaScorecardRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_qa_scorecard._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_qa_scorecard._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaScorecard()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaScorecard.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_qa_scorecard(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_qa_scorecard_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_qa_scorecard._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "qaScorecard",
+                "updateMask",
+            )
+        )
+    )
+
+
+def test_update_qa_scorecard_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecard()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "qa_scorecard": {
+                "name": "projects/sample1/locations/sample2/qaScorecards/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_qa_scorecard(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{qa_scorecard.name=projects/*/locations/*/qaScorecards/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_qa_scorecard_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_qa_scorecard(
+            contact_center_insights.UpdateQaScorecardRequest(),
+            qa_scorecard=resources.QaScorecard(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_qa_scorecard_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_qa_scorecard in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_qa_scorecard
+        ] = mock_rpc
+
+        request = {}
+        client.delete_qa_scorecard(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_qa_scorecard(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_qa_scorecard_rest_required_fields(
+    request_type=contact_center_insights.DeleteQaScorecardRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_qa_scorecard._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_qa_scorecard._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_qa_scorecard(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_qa_scorecard_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_qa_scorecard._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+def test_delete_qa_scorecard_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_qa_scorecard(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/qaScorecards/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_qa_scorecard_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_qa_scorecard(
+            contact_center_insights.DeleteQaScorecardRequest(),
+            name="name_value",
+        )
+
+
+def test_list_qa_scorecards_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_qa_scorecards in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_qa_scorecards
+        ] = mock_rpc
+
+        request = {}
+        client.list_qa_scorecards(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_qa_scorecards(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_qa_scorecards_rest_required_fields(
+    request_type=contact_center_insights.ListQaScorecardsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_qa_scorecards._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_qa_scorecards._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = contact_center_insights.ListQaScorecardsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListQaScorecardsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_qa_scorecards(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_qa_scorecards_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_qa_scorecards._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_qa_scorecards_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListQaScorecardsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListQaScorecardsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_qa_scorecards(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/qaScorecards"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_qa_scorecards_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_qa_scorecards(
+            contact_center_insights.ListQaScorecardsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_qa_scorecards_rest_pager(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardsResponse(
+                qa_scorecards=[
+                    resources.QaScorecard(),
+                    resources.QaScorecard(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            contact_center_insights.ListQaScorecardsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_qa_scorecards(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.QaScorecard) for i in results)
+
+        pages = list(client.list_qa_scorecards(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_create_qa_scorecard_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        client.create_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_qa_scorecard_revision_rest_required_fields(
+    request_type=contact_center_insights.CreateQaScorecardRevisionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("qa_scorecard_revision_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaScorecardRevision()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaScorecardRevision.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_qa_scorecard_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_qa_scorecard_revision_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_qa_scorecard_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("qaScorecardRevisionId",))
+        & set(
+            (
+                "parent",
+                "qaScorecardRevision",
+            )
+        )
+    )
+
+
+def test_create_qa_scorecard_revision_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecardRevision()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/qaScorecards/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            qa_scorecard_revision=resources.QaScorecardRevision(name="name_value"),
+            qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecardRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_qa_scorecard_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/qaScorecards/*}/revisions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_qa_scorecard_revision_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_qa_scorecard_revision(
+            contact_center_insights.CreateQaScorecardRevisionRequest(),
+            parent="parent_value",
+            qa_scorecard_revision=resources.QaScorecardRevision(name="name_value"),
+            qa_scorecard_revision_id="qa_scorecard_revision_id_value",
+        )
+
+
+def test_get_qa_scorecard_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        client.get_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_qa_scorecard_revision_rest_required_fields(
+    request_type=contact_center_insights.GetQaScorecardRevisionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaScorecardRevision()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaScorecardRevision.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_qa_scorecard_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_qa_scorecard_revision_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_qa_scorecard_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_qa_scorecard_revision_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecardRevision()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecardRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_qa_scorecard_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/qaScorecards/*/revisions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_qa_scorecard_revision_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_qa_scorecard_revision(
+            contact_center_insights.GetQaScorecardRevisionRequest(),
+            name="name_value",
+        )
+
+
+def test_tune_qa_scorecard_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.tune_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.tune_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        client.tune_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.tune_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_tune_qa_scorecard_revision_rest_required_fields(
+    request_type=contact_center_insights.TuneQaScorecardRevisionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["filter"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tune_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["filter"] = "filter_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).tune_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "filter" in jsonified_request
+    assert jsonified_request["filter"] == "filter_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.tune_qa_scorecard_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_tune_qa_scorecard_revision_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.tune_qa_scorecard_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "filter",
+            )
+        )
+    )
+
+
+def test_tune_qa_scorecard_revision_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            filter="filter_value",
+            validate_only=True,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.tune_qa_scorecard_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/qaScorecards/*/revisions/*}:tuneQaScorecardRevision"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_tune_qa_scorecard_revision_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.tune_qa_scorecard_revision(
+            contact_center_insights.TuneQaScorecardRevisionRequest(),
+            parent="parent_value",
+            filter="filter_value",
+            validate_only=True,
+        )
+
+
+def test_deploy_qa_scorecard_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.deploy_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.deploy_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        client.deploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.deploy_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_deploy_qa_scorecard_revision_rest_required_fields(
+    request_type=contact_center_insights.DeployQaScorecardRevisionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).deploy_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).deploy_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaScorecardRevision()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaScorecardRevision.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.deploy_qa_scorecard_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_deploy_qa_scorecard_revision_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.deploy_qa_scorecard_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_undeploy_qa_scorecard_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.undeploy_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.undeploy_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.undeploy_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_undeploy_qa_scorecard_revision_rest_required_fields(
+    request_type=contact_center_insights.UndeployQaScorecardRevisionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).undeploy_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).undeploy_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.QaScorecardRevision()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.QaScorecardRevision.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.undeploy_qa_scorecard_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_undeploy_qa_scorecard_revision_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.undeploy_qa_scorecard_revision._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_qa_scorecard_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_qa_scorecard_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_qa_scorecard_revision
+        ] = mock_rpc
+
+        request = {}
+        client.delete_qa_scorecard_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_qa_scorecard_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_qa_scorecard_revision_rest_required_fields(
+    request_type=contact_center_insights.DeleteQaScorecardRevisionRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_qa_scorecard_revision._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("force",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_qa_scorecard_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_qa_scorecard_revision_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_qa_scorecard_revision._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("force",)) & set(("name",)))
+
+
+def test_delete_qa_scorecard_revision_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_qa_scorecard_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/qaScorecards/*/revisions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_qa_scorecard_revision_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_qa_scorecard_revision(
+            contact_center_insights.DeleteQaScorecardRevisionRequest(),
+            name="name_value",
+        )
+
+
+def test_list_qa_scorecard_revisions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_qa_scorecard_revisions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_qa_scorecard_revisions
+        ] = mock_rpc
+
+        request = {}
+        client.list_qa_scorecard_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_qa_scorecard_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_qa_scorecard_revisions_rest_required_fields(
+    request_type=contact_center_insights.ListQaScorecardRevisionsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_qa_scorecard_revisions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_qa_scorecard_revisions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListQaScorecardRevisionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_qa_scorecard_revisions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_qa_scorecard_revisions_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_qa_scorecard_revisions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_qa_scorecard_revisions_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/qaScorecards/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListQaScorecardRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_qa_scorecard_revisions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/qaScorecards/*}/revisions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_qa_scorecard_revisions_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_qa_scorecard_revisions(
+            contact_center_insights.ListQaScorecardRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_qa_scorecard_revisions_rest_pager(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                qa_scorecard_revisions=[
+                    resources.QaScorecardRevision(),
+                    resources.QaScorecardRevision(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            contact_center_insights.ListQaScorecardRevisionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/qaScorecards/sample3"
+        }
+
+        pager = client.list_qa_scorecard_revisions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.QaScorecardRevision) for i in results)
+
+        pages = list(client.list_qa_scorecard_revisions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_create_feedback_label_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_feedback_label
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        client.create_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_feedback_label_rest_required_fields(
+    request_type=contact_center_insights.CreateFeedbackLabelRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_feedback_label._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_feedback_label._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("feedback_label_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.FeedbackLabel()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.FeedbackLabel.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_feedback_label(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_feedback_label_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_feedback_label._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("feedbackLabelId",))
+        & set(
+            (
+                "parent",
+                "feedbackLabel",
+            )
+        )
+    )
+
+
+def test_create_feedback_label_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FeedbackLabel()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/conversations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            feedback_label_id="feedback_label_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.FeedbackLabel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_feedback_label(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/conversations/*}/feedbackLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_feedback_label_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_feedback_label(
+            contact_center_insights.CreateFeedbackLabelRequest(),
+            parent="parent_value",
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            feedback_label_id="feedback_label_id_value",
+        )
+
+
+def test_list_feedback_labels_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_feedback_labels in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        client.list_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_feedback_labels_rest_required_fields(
+    request_type=contact_center_insights.ListFeedbackLabelsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_feedback_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_feedback_labels._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = contact_center_insights.ListFeedbackLabelsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListFeedbackLabelsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_feedback_labels(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_feedback_labels_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_feedback_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_feedback_labels_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListFeedbackLabelsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/conversations/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListFeedbackLabelsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_feedback_labels(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/conversations/*}/feedbackLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_feedback_labels_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_feedback_labels(
+            contact_center_insights.ListFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_feedback_labels_rest_pager(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            contact_center_insights.ListFeedbackLabelsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/conversations/sample3"
+        }
+
+        pager = client.list_feedback_labels(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.FeedbackLabel) for i in results)
+
+        pages = list(client.list_feedback_labels(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_feedback_label_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_feedback_label in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        client.get_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_feedback_label_rest_required_fields(
+    request_type=contact_center_insights.GetFeedbackLabelRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_feedback_label._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_feedback_label._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.FeedbackLabel()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.FeedbackLabel.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_feedback_label(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_feedback_label_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_feedback_label._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_feedback_label_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FeedbackLabel()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.FeedbackLabel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_feedback_label(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/conversations/*/feedbackLabels/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_feedback_label_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_feedback_label(
+            contact_center_insights.GetFeedbackLabelRequest(),
+            name="name_value",
+        )
+
+
+def test_update_feedback_label_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_feedback_label
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        client.update_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_feedback_label_rest_required_fields(
+    request_type=contact_center_insights.UpdateFeedbackLabelRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_feedback_label._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_feedback_label._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.FeedbackLabel()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.FeedbackLabel.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_feedback_label(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_feedback_label_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_feedback_label._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "feedbackLabel",
+                "updateMask",
+            )
+        )
+    )
+
+
+def test_update_feedback_label_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FeedbackLabel()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "feedback_label": {
+                "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.FeedbackLabel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_feedback_label(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{feedback_label.name=projects/*/locations/*/conversations/*/feedbackLabels/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_feedback_label_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_feedback_label(
+            contact_center_insights.UpdateFeedbackLabelRequest(),
+            feedback_label=resources.FeedbackLabel(label="label_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_feedback_label_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_feedback_label
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_feedback_label
+        ] = mock_rpc
+
+        request = {}
+        client.delete_feedback_label(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_feedback_label(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_feedback_label_rest_required_fields(
+    request_type=contact_center_insights.DeleteFeedbackLabelRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_feedback_label._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_feedback_label._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_feedback_label(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_feedback_label_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_feedback_label._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_feedback_label_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_feedback_label(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/conversations/*/feedbackLabels/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_feedback_label_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_feedback_label(
+            contact_center_insights.DeleteFeedbackLabelRequest(),
+            name="name_value",
+        )
+
+
+def test_list_all_feedback_labels_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_all_feedback_labels
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_all_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        client.list_all_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_all_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_all_feedback_labels_rest_required_fields(
+    request_type=contact_center_insights.ListAllFeedbackLabelsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_all_feedback_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_all_feedback_labels._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListAllFeedbackLabelsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_all_feedback_labels(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_all_feedback_labels_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_all_feedback_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_all_feedback_labels_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListAllFeedbackLabelsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_all_feedback_labels(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}:listAllFeedbackLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_all_feedback_labels_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_all_feedback_labels(
+            contact_center_insights.ListAllFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_all_feedback_labels_rest_pager(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[],
+                next_page_token="def",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                ],
+                next_page_token="ghi",
+            ),
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                feedback_labels=[
+                    resources.FeedbackLabel(),
+                    resources.FeedbackLabel(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            contact_center_insights.ListAllFeedbackLabelsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_all_feedback_labels(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, resources.FeedbackLabel) for i in results)
+
+        pages = list(client.list_all_feedback_labels(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_bulk_upload_feedback_labels_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.bulk_upload_feedback_labels
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.bulk_upload_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        client.bulk_upload_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.bulk_upload_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_bulk_upload_feedback_labels_rest_required_fields(
+    request_type=contact_center_insights.BulkUploadFeedbackLabelsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_upload_feedback_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_upload_feedback_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.bulk_upload_feedback_labels(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_bulk_upload_feedback_labels_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.bulk_upload_feedback_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+def test_bulk_upload_feedback_labels_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.bulk_upload_feedback_labels(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}:bulkUploadFeedbackLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_bulk_upload_feedback_labels_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.bulk_upload_feedback_labels(
+            contact_center_insights.BulkUploadFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_bulk_download_feedback_labels_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ContactCenterInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.bulk_download_feedback_labels
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.bulk_download_feedback_labels
+        ] = mock_rpc
+
+        request = {}
+        client.bulk_download_feedback_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.bulk_download_feedback_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_bulk_download_feedback_labels_rest_required_fields(
+    request_type=contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+):
+    transport_class = transports.ContactCenterInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_download_feedback_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_download_feedback_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.bulk_download_feedback_labels(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_bulk_download_feedback_labels_rest_unset_required_fields():
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.bulk_download_feedback_labels._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+def test_bulk_download_feedback_labels_rest_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.bulk_download_feedback_labels(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}:bulkDownloadFeedbackLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_bulk_download_feedback_labels_rest_flattened_error(transport: str = "rest"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.bulk_download_feedback_labels(
+            contact_center_insights.BulkDownloadFeedbackLabelsRequest(),
+            parent="parent_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ContactCenterInsightsGrpcTransport(
@@ -25600,6 +43500,121 @@ def test_update_settings_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_create_analysis_rule_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = resources.AnalysisRule()
+        client.create_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_analysis_rule_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = resources.AnalysisRule()
+        client.get_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_analysis_rules_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListAnalysisRulesResponse()
+        client.list_analysis_rules(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListAnalysisRulesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_analysis_rule_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = resources.AnalysisRule()
+        client.update_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_analysis_rule_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_encryption_spec_empty_call_grpc():
     client = ContactCenterInsightsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25745,6 +43760,598 @@ def test_delete_view_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = contact_center_insights.DeleteViewRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_query_metrics_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.query_metrics(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.QueryMetricsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_qa_question_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        call.return_value = resources.QaQuestion()
+        client.create_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_qa_question_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        call.return_value = resources.QaQuestion()
+        client.get_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_qa_question_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        call.return_value = resources.QaQuestion()
+        client.update_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_qa_question_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_qa_questions_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListQaQuestionsResponse()
+        client.list_qa_questions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaQuestionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_qa_scorecard_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecard()
+        client.create_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_qa_scorecard_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        call.return_value = resources.QaScorecard()
+        client.get_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_qa_scorecard_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecard()
+        client.update_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_qa_scorecard_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_qa_scorecards_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListQaScorecardsResponse()
+        client.list_qa_scorecards(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaScorecardsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_qa_scorecard_revision_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.create_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_qa_scorecard_revision_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.get_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_tune_qa_scorecard_revision_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.tune_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.TuneQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_deploy_qa_scorecard_revision_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.deploy_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeployQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_undeploy_qa_scorecard_revision_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = resources.QaScorecardRevision()
+        client.undeploy_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UndeployQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_qa_scorecard_revision_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_qa_scorecard_revisions_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+        client.list_qa_scorecard_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaScorecardRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_feedback_label_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        call.return_value = resources.FeedbackLabel()
+        client.create_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_feedback_labels_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListFeedbackLabelsResponse()
+        client.list_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_feedback_label_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        call.return_value = resources.FeedbackLabel()
+        client.get_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_feedback_label_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        call.return_value = resources.FeedbackLabel()
+        client.update_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_feedback_label_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_all_feedback_labels_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+        client.list_all_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListAllFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_bulk_upload_feedback_labels_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.bulk_upload_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_bulk_download_feedback_labels_empty_call_grpc():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.bulk_download_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
 
         assert args[0] == request_msg
 
@@ -26793,6 +45400,159 @@ async def test_update_settings_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_create_analysis_rule_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule(
+                name="name_value",
+                display_name="display_name_value",
+                conversation_filter="conversation_filter_value",
+                analysis_percentage=0.20170000000000002,
+                active=True,
+            )
+        )
+        await client.create_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_analysis_rule_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule(
+                name="name_value",
+                display_name="display_name_value",
+                conversation_filter="conversation_filter_value",
+                analysis_percentage=0.20170000000000002,
+                active=True,
+            )
+        )
+        await client.get_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_analysis_rules_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAnalysisRulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_analysis_rules(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListAnalysisRulesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_analysis_rule_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.AnalysisRule(
+                name="name_value",
+                display_name="display_name_value",
+                conversation_filter="conversation_filter_value",
+                analysis_percentage=0.20170000000000002,
+                active=True,
+            )
+        )
+        await client.update_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_analysis_rule_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_get_encryption_spec_empty_call_grpc_asyncio():
     client = ContactCenterInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -26984,6 +45744,762 @@ async def test_delete_view_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_query_metrics_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.query_metrics(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.QueryMetricsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_qa_question_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion(
+                name="name_value",
+                abbreviation="abbreviation_value",
+                question_body="question_body_value",
+                answer_instructions="answer_instructions_value",
+                tags=["tags_value"],
+                order=540,
+            )
+        )
+        await client.create_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_qa_question_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion(
+                name="name_value",
+                abbreviation="abbreviation_value",
+                question_body="question_body_value",
+                answer_instructions="answer_instructions_value",
+                tags=["tags_value"],
+                order=540,
+            )
+        )
+        await client.get_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_qa_question_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaQuestion(
+                name="name_value",
+                abbreviation="abbreviation_value",
+                question_body="question_body_value",
+                answer_instructions="answer_instructions_value",
+                tags=["tags_value"],
+                order=540,
+            )
+        )
+        await client.update_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_qa_question_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_qa_questions_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaQuestionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_qa_questions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaQuestionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.create_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.get_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_qa_scorecard_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecard(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        await client.update_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_qa_scorecards_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_qa_scorecards(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaScorecardsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_qa_scorecard_revision_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        await client.create_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_qa_scorecard_revision_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        await client.get_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_tune_qa_scorecard_revision_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.tune_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.TuneQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_deploy_qa_scorecard_revision_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        await client.deploy_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeployQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_undeploy_qa_scorecard_revision_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.QaScorecardRevision(
+                name="name_value",
+                alternate_ids=["alternate_ids_value"],
+                state=resources.QaScorecardRevision.State.EDITABLE,
+            )
+        )
+        await client.undeploy_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UndeployQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_qa_scorecard_revision_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_qa_scorecard_revisions_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListQaScorecardRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_qa_scorecard_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaScorecardRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_feedback_label_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel(
+                name="name_value",
+                labeled_resource="labeled_resource_value",
+            )
+        )
+        await client.create_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_feedback_labels_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListFeedbackLabelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_feedback_label_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel(
+                name="name_value",
+                labeled_resource="labeled_resource_value",
+            )
+        )
+        await client.get_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_feedback_label_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.FeedbackLabel(
+                name="name_value",
+                labeled_resource="labeled_resource_value",
+            )
+        )
+        await client.update_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_feedback_label_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_all_feedback_labels_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListAllFeedbackLabelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_all_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListAllFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_bulk_upload_feedback_labels_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.bulk_upload_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_bulk_download_feedback_labels_empty_call_grpc_asyncio():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.bulk_download_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_rest():
     transport = ContactCenterInsightsClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
@@ -27145,6 +46661,56 @@ def test_create_conversation_rest_call_success(request_type):
                         "issue_model": "issue_model_value",
                         "issues": {},
                     },
+                    "qa_scorecard_results": [
+                        {
+                            "name": "name_value",
+                            "qa_scorecard_revision": "qa_scorecard_revision_value",
+                            "conversation": "conversation_value",
+                            "create_time": {},
+                            "agent_id": "agent_id_value",
+                            "qa_answers": [
+                                {
+                                    "qa_question": "qa_question_value",
+                                    "conversation": "conversation_value",
+                                    "question_body": "question_body_value",
+                                    "answer_value": {
+                                        "str_value": "str_value_value",
+                                        "num_value": 0.972,
+                                        "bool_value": True,
+                                        "na_value": True,
+                                        "key": "key_value",
+                                        "score": 0.54,
+                                        "potential_score": 0.16110000000000002,
+                                        "normalized_score": 0.17120000000000002,
+                                    },
+                                    "tags": ["tags_value1", "tags_value2"],
+                                    "answer_sources": [
+                                        {"source_type": 1, "answer_value": {}}
+                                    ],
+                                }
+                            ],
+                            "score": 0.54,
+                            "potential_score": 0.16110000000000002,
+                            "normalized_score": 0.17120000000000002,
+                            "qa_tag_results": [
+                                {
+                                    "tag": "tag_value",
+                                    "score": 0.54,
+                                    "potential_score": 0.16110000000000002,
+                                    "normalized_score": 0.17120000000000002,
+                                }
+                            ],
+                            "score_sources": [
+                                {
+                                    "source_type": 1,
+                                    "score": 0.54,
+                                    "potential_score": 0.16110000000000002,
+                                    "normalized_score": 0.17120000000000002,
+                                    "qa_tag_results": {},
+                                }
+                            ],
+                        }
+                    ],
                 },
                 "end_time": {},
             },
@@ -27162,6 +46728,15 @@ def test_create_conversation_rest_call_success(request_type):
                 "summarization_config": {
                     "conversation_profile": "conversation_profile_value",
                     "summarization_model": 1,
+                },
+                "run_qa_annotator": True,
+                "qa_config": {
+                    "scorecard_list": {
+                        "qa_scorecard_revisions": [
+                            "qa_scorecard_revisions_value1",
+                            "qa_scorecard_revisions_value2",
+                        ]
+                    }
                 },
             },
         },
@@ -27666,6 +47241,56 @@ def test_update_conversation_rest_call_success(request_type):
                         "issue_model": "issue_model_value",
                         "issues": {},
                     },
+                    "qa_scorecard_results": [
+                        {
+                            "name": "name_value",
+                            "qa_scorecard_revision": "qa_scorecard_revision_value",
+                            "conversation": "conversation_value",
+                            "create_time": {},
+                            "agent_id": "agent_id_value",
+                            "qa_answers": [
+                                {
+                                    "qa_question": "qa_question_value",
+                                    "conversation": "conversation_value",
+                                    "question_body": "question_body_value",
+                                    "answer_value": {
+                                        "str_value": "str_value_value",
+                                        "num_value": 0.972,
+                                        "bool_value": True,
+                                        "na_value": True,
+                                        "key": "key_value",
+                                        "score": 0.54,
+                                        "potential_score": 0.16110000000000002,
+                                        "normalized_score": 0.17120000000000002,
+                                    },
+                                    "tags": ["tags_value1", "tags_value2"],
+                                    "answer_sources": [
+                                        {"source_type": 1, "answer_value": {}}
+                                    ],
+                                }
+                            ],
+                            "score": 0.54,
+                            "potential_score": 0.16110000000000002,
+                            "normalized_score": 0.17120000000000002,
+                            "qa_tag_results": [
+                                {
+                                    "tag": "tag_value",
+                                    "score": 0.54,
+                                    "potential_score": 0.16110000000000002,
+                                    "normalized_score": 0.17120000000000002,
+                                }
+                            ],
+                            "score_sources": [
+                                {
+                                    "source_type": 1,
+                                    "score": 0.54,
+                                    "potential_score": 0.16110000000000002,
+                                    "normalized_score": 0.17120000000000002,
+                                    "qa_tag_results": {},
+                                }
+                            ],
+                        }
+                    ],
                 },
                 "end_time": {},
             },
@@ -27683,6 +47308,15 @@ def test_update_conversation_rest_call_success(request_type):
                 "summarization_config": {
                     "conversation_profile": "conversation_profile_value",
                     "summarization_model": 1,
+                },
+                "run_qa_annotator": True,
+                "qa_config": {
+                    "scorecard_list": {
+                        "qa_scorecard_revisions": [
+                            "qa_scorecard_revisions_value1",
+                            "qa_scorecard_revisions_value2",
+                        ]
+                    }
                 },
             },
         },
@@ -28366,6 +48000,56 @@ def test_create_analysis_rest_call_success(request_type):
                     "issue_model": "issue_model_value",
                     "issues": {},
                 },
+                "qa_scorecard_results": [
+                    {
+                        "name": "name_value",
+                        "qa_scorecard_revision": "qa_scorecard_revision_value",
+                        "conversation": "conversation_value",
+                        "create_time": {},
+                        "agent_id": "agent_id_value",
+                        "qa_answers": [
+                            {
+                                "qa_question": "qa_question_value",
+                                "conversation": "conversation_value",
+                                "question_body": "question_body_value",
+                                "answer_value": {
+                                    "str_value": "str_value_value",
+                                    "num_value": 0.972,
+                                    "bool_value": True,
+                                    "na_value": True,
+                                    "key": "key_value",
+                                    "score": 0.54,
+                                    "potential_score": 0.16110000000000002,
+                                    "normalized_score": 0.17120000000000002,
+                                },
+                                "tags": ["tags_value1", "tags_value2"],
+                                "answer_sources": [
+                                    {"source_type": 1, "answer_value": {}}
+                                ],
+                            }
+                        ],
+                        "score": 0.54,
+                        "potential_score": 0.16110000000000002,
+                        "normalized_score": 0.17120000000000002,
+                        "qa_tag_results": [
+                            {
+                                "tag": "tag_value",
+                                "score": 0.54,
+                                "potential_score": 0.16110000000000002,
+                                "normalized_score": 0.17120000000000002,
+                            }
+                        ],
+                        "score_sources": [
+                            {
+                                "source_type": 1,
+                                "score": 0.54,
+                                "potential_score": 0.16110000000000002,
+                                "normalized_score": 0.17120000000000002,
+                                "qa_tag_results": {},
+                            }
+                        ],
+                    }
+                ],
             },
             "end_time": {},
         },
@@ -28383,6 +48067,15 @@ def test_create_analysis_rest_call_success(request_type):
             "summarization_config": {
                 "conversation_profile": "conversation_profile_value",
                 "summarization_model": 1,
+            },
+            "run_qa_annotator": True,
+            "qa_config": {
+                "scorecard_list": {
+                    "qa_scorecard_revisions": [
+                        "qa_scorecard_revisions_value1",
+                        "qa_scorecard_revisions_value2",
+                    ]
+                }
             },
         },
     }
@@ -32419,6 +52112,15 @@ def test_update_settings_rest_call_success(request_type):
                     "conversation_profile": "conversation_profile_value",
                     "summarization_model": 1,
                 },
+                "run_qa_annotator": True,
+                "qa_config": {
+                    "scorecard_list": {
+                        "qa_scorecard_revisions": [
+                            "qa_scorecard_revisions_value1",
+                            "qa_scorecard_revisions_value2",
+                        ]
+                    }
+                },
             },
         },
         "redaction_config": {
@@ -32575,6 +52277,830 @@ def test_update_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+
+
+def test_create_analysis_rule_rest_bad_request(
+    request_type=contact_center_insights.CreateAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_analysis_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_create_analysis_rule_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["analysis_rule"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "display_name": "display_name_value",
+        "conversation_filter": "conversation_filter_value",
+        "annotator_selector": {
+            "run_interruption_annotator": True,
+            "run_silence_annotator": True,
+            "run_phrase_matcher_annotator": True,
+            "phrase_matchers": ["phrase_matchers_value1", "phrase_matchers_value2"],
+            "run_sentiment_annotator": True,
+            "run_entity_annotator": True,
+            "run_intent_annotator": True,
+            "run_issue_model_annotator": True,
+            "issue_models": ["issue_models_value1", "issue_models_value2"],
+            "run_summarization_annotator": True,
+            "summarization_config": {
+                "conversation_profile": "conversation_profile_value",
+                "summarization_model": 1,
+            },
+            "run_qa_annotator": True,
+            "qa_config": {
+                "scorecard_list": {
+                    "qa_scorecard_revisions": [
+                        "qa_scorecard_revisions_value1",
+                        "qa_scorecard_revisions_value2",
+                    ]
+                }
+            },
+        },
+        "analysis_percentage": 0.20170000000000002,
+        "active": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateAnalysisRuleRequest.meta.fields[
+        "analysis_rule"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["analysis_rule"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["analysis_rule"][field])):
+                    del request_init["analysis_rule"][field][i][subfield]
+            else:
+                del request_init["analysis_rule"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AnalysisRule(
+            name="name_value",
+            display_name="display_name_value",
+            conversation_filter="conversation_filter_value",
+            analysis_percentage=0.20170000000000002,
+            active=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.AnalysisRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_analysis_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_analysis_rule_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_create_analysis_rule"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_create_analysis_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.CreateAnalysisRuleRequest.pb(
+            contact_center_insights.CreateAnalysisRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.AnalysisRule.to_json(resources.AnalysisRule())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.CreateAnalysisRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.AnalysisRule()
+
+        client.create_analysis_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_analysis_rule_rest_bad_request(
+    request_type=contact_center_insights.GetAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/analysisRules/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_analysis_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_get_analysis_rule_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/analysisRules/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AnalysisRule(
+            name="name_value",
+            display_name="display_name_value",
+            conversation_filter="conversation_filter_value",
+            analysis_percentage=0.20170000000000002,
+            active=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.AnalysisRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_analysis_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_analysis_rule_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_get_analysis_rule"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_get_analysis_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.GetAnalysisRuleRequest.pb(
+            contact_center_insights.GetAnalysisRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.AnalysisRule.to_json(resources.AnalysisRule())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.GetAnalysisRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.AnalysisRule()
+
+        client.get_analysis_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_analysis_rules_rest_bad_request(
+    request_type=contact_center_insights.ListAnalysisRulesRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_analysis_rules(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListAnalysisRulesRequest,
+        dict,
+    ],
+)
+def test_list_analysis_rules_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListAnalysisRulesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListAnalysisRulesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_analysis_rules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAnalysisRulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_analysis_rules_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_list_analysis_rules"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_list_analysis_rules"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ListAnalysisRulesRequest.pb(
+            contact_center_insights.ListAnalysisRulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = contact_center_insights.ListAnalysisRulesResponse.to_json(
+            contact_center_insights.ListAnalysisRulesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.ListAnalysisRulesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = contact_center_insights.ListAnalysisRulesResponse()
+
+        client.list_analysis_rules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_analysis_rule_rest_bad_request(
+    request_type=contact_center_insights.UpdateAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "analysis_rule": {
+            "name": "projects/sample1/locations/sample2/analysisRules/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_analysis_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_update_analysis_rule_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "analysis_rule": {
+            "name": "projects/sample1/locations/sample2/analysisRules/sample3"
+        }
+    }
+    request_init["analysis_rule"] = {
+        "name": "projects/sample1/locations/sample2/analysisRules/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "display_name": "display_name_value",
+        "conversation_filter": "conversation_filter_value",
+        "annotator_selector": {
+            "run_interruption_annotator": True,
+            "run_silence_annotator": True,
+            "run_phrase_matcher_annotator": True,
+            "phrase_matchers": ["phrase_matchers_value1", "phrase_matchers_value2"],
+            "run_sentiment_annotator": True,
+            "run_entity_annotator": True,
+            "run_intent_annotator": True,
+            "run_issue_model_annotator": True,
+            "issue_models": ["issue_models_value1", "issue_models_value2"],
+            "run_summarization_annotator": True,
+            "summarization_config": {
+                "conversation_profile": "conversation_profile_value",
+                "summarization_model": 1,
+            },
+            "run_qa_annotator": True,
+            "qa_config": {
+                "scorecard_list": {
+                    "qa_scorecard_revisions": [
+                        "qa_scorecard_revisions_value1",
+                        "qa_scorecard_revisions_value2",
+                    ]
+                }
+            },
+        },
+        "analysis_percentage": 0.20170000000000002,
+        "active": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateAnalysisRuleRequest.meta.fields[
+        "analysis_rule"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["analysis_rule"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["analysis_rule"][field])):
+                    del request_init["analysis_rule"][field][i][subfield]
+            else:
+                del request_init["analysis_rule"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.AnalysisRule(
+            name="name_value",
+            display_name="display_name_value",
+            conversation_filter="conversation_filter_value",
+            analysis_percentage=0.20170000000000002,
+            active=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.AnalysisRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_analysis_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.AnalysisRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.conversation_filter == "conversation_filter_value"
+    assert math.isclose(response.analysis_percentage, 0.20170000000000002, rel_tol=1e-6)
+    assert response.active is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_analysis_rule_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_update_analysis_rule"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_update_analysis_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.UpdateAnalysisRuleRequest.pb(
+            contact_center_insights.UpdateAnalysisRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.AnalysisRule.to_json(resources.AnalysisRule())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.UpdateAnalysisRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.AnalysisRule()
+
+        client.update_analysis_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_analysis_rule_rest_bad_request(
+    request_type=contact_center_insights.DeleteAnalysisRuleRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/analysisRules/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_analysis_rule(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteAnalysisRuleRequest,
+        dict,
+    ],
+)
+def test_delete_analysis_rule_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/analysisRules/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_analysis_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_analysis_rule_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_delete_analysis_rule"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = contact_center_insights.DeleteAnalysisRuleRequest.pb(
+            contact_center_insights.DeleteAnalysisRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = contact_center_insights.DeleteAnalysisRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_analysis_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
 
 
 def test_get_encryption_spec_rest_bad_request(
@@ -33565,6 +54091,3813 @@ def test_delete_view_rest_interceptors(null_interceptor):
         pre.assert_called_once()
 
 
+def test_query_metrics_rest_bad_request(
+    request_type=contact_center_insights.QueryMetricsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.query_metrics(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.QueryMetricsRequest,
+        dict,
+    ],
+)
+def test_query_metrics_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.query_metrics(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_query_metrics_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_query_metrics"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_query_metrics"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.QueryMetricsRequest.pb(
+            contact_center_insights.QueryMetricsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.QueryMetricsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.query_metrics(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_qa_question_rest_bad_request(
+    request_type=contact_center_insights.CreateQaQuestionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_qa_question(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateQaQuestionRequest,
+        dict,
+    ],
+)
+def test_create_qa_question_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request_init["qa_question"] = {
+        "name": "name_value",
+        "abbreviation": "abbreviation_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "question_body": "question_body_value",
+        "answer_instructions": "answer_instructions_value",
+        "answer_choices": [
+            {
+                "str_value": "str_value_value",
+                "num_value": 0.972,
+                "bool_value": True,
+                "na_value": True,
+                "key": "key_value",
+                "score": 0.54,
+            }
+        ],
+        "tags": ["tags_value1", "tags_value2"],
+        "order": 540,
+        "metrics": {"accuracy": 0.843},
+        "tuning_metadata": {
+            "total_valid_label_count": 2426,
+            "dataset_validation_warnings": [1],
+            "tuning_error": "tuning_error_value",
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateQaQuestionRequest.meta.fields[
+        "qa_question"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["qa_question"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["qa_question"][field])):
+                    del request_init["qa_question"][field][i][subfield]
+            else:
+                del request_init["qa_question"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaQuestion(
+            name="name_value",
+            abbreviation="abbreviation_value",
+            question_body="question_body_value",
+            answer_instructions="answer_instructions_value",
+            tags=["tags_value"],
+            order=540,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaQuestion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_qa_question(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_qa_question_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_create_qa_question"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_create_qa_question"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.CreateQaQuestionRequest.pb(
+            contact_center_insights.CreateQaQuestionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaQuestion.to_json(resources.QaQuestion())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.CreateQaQuestionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaQuestion()
+
+        client.create_qa_question(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_qa_question_rest_bad_request(
+    request_type=contact_center_insights.GetQaQuestionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_qa_question(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetQaQuestionRequest,
+        dict,
+    ],
+)
+def test_get_qa_question_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaQuestion(
+            name="name_value",
+            abbreviation="abbreviation_value",
+            question_body="question_body_value",
+            answer_instructions="answer_instructions_value",
+            tags=["tags_value"],
+            order=540,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaQuestion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_qa_question(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_qa_question_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_get_qa_question"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_get_qa_question"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.GetQaQuestionRequest.pb(
+            contact_center_insights.GetQaQuestionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaQuestion.to_json(resources.QaQuestion())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.GetQaQuestionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaQuestion()
+
+        client.get_qa_question(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_qa_question_rest_bad_request(
+    request_type=contact_center_insights.UpdateQaQuestionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "qa_question": {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_qa_question(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateQaQuestionRequest,
+        dict,
+    ],
+)
+def test_update_qa_question_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "qa_question": {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+        }
+    }
+    request_init["qa_question"] = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5",
+        "abbreviation": "abbreviation_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "question_body": "question_body_value",
+        "answer_instructions": "answer_instructions_value",
+        "answer_choices": [
+            {
+                "str_value": "str_value_value",
+                "num_value": 0.972,
+                "bool_value": True,
+                "na_value": True,
+                "key": "key_value",
+                "score": 0.54,
+            }
+        ],
+        "tags": ["tags_value1", "tags_value2"],
+        "order": 540,
+        "metrics": {"accuracy": 0.843},
+        "tuning_metadata": {
+            "total_valid_label_count": 2426,
+            "dataset_validation_warnings": [1],
+            "tuning_error": "tuning_error_value",
+        },
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateQaQuestionRequest.meta.fields[
+        "qa_question"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["qa_question"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["qa_question"][field])):
+                    del request_init["qa_question"][field][i][subfield]
+            else:
+                del request_init["qa_question"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaQuestion(
+            name="name_value",
+            abbreviation="abbreviation_value",
+            question_body="question_body_value",
+            answer_instructions="answer_instructions_value",
+            tags=["tags_value"],
+            order=540,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaQuestion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_qa_question(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaQuestion)
+    assert response.name == "name_value"
+    assert response.abbreviation == "abbreviation_value"
+    assert response.question_body == "question_body_value"
+    assert response.answer_instructions == "answer_instructions_value"
+    assert response.tags == ["tags_value"]
+    assert response.order == 540
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_qa_question_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_update_qa_question"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_update_qa_question"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.UpdateQaQuestionRequest.pb(
+            contact_center_insights.UpdateQaQuestionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaQuestion.to_json(resources.QaQuestion())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.UpdateQaQuestionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaQuestion()
+
+        client.update_qa_question(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_qa_question_rest_bad_request(
+    request_type=contact_center_insights.DeleteQaQuestionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_qa_question(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteQaQuestionRequest,
+        dict,
+    ],
+)
+def test_delete_qa_question_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4/qaQuestions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_qa_question(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_qa_question_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_delete_qa_question"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = contact_center_insights.DeleteQaQuestionRequest.pb(
+            contact_center_insights.DeleteQaQuestionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = contact_center_insights.DeleteQaQuestionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_qa_question(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_qa_questions_rest_bad_request(
+    request_type=contact_center_insights.ListQaQuestionsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_qa_questions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListQaQuestionsRequest,
+        dict,
+    ],
+)
+def test_list_qa_questions_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListQaQuestionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListQaQuestionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_qa_questions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaQuestionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_qa_questions_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_list_qa_questions"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_list_qa_questions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ListQaQuestionsRequest.pb(
+            contact_center_insights.ListQaQuestionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = contact_center_insights.ListQaQuestionsResponse.to_json(
+            contact_center_insights.ListQaQuestionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.ListQaQuestionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = contact_center_insights.ListQaQuestionsResponse()
+
+        client.list_qa_questions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_qa_scorecard_rest_bad_request(
+    request_type=contact_center_insights.CreateQaScorecardRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_qa_scorecard(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateQaScorecardRequest,
+        dict,
+    ],
+)
+def test_create_qa_scorecard_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["qa_scorecard"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateQaScorecardRequest.meta.fields[
+        "qa_scorecard"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["qa_scorecard"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["qa_scorecard"][field])):
+                    del request_init["qa_scorecard"][field][i][subfield]
+            else:
+                del request_init["qa_scorecard"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecard(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_qa_scorecard(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_qa_scorecard_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_create_qa_scorecard"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_create_qa_scorecard"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.CreateQaScorecardRequest.pb(
+            contact_center_insights.CreateQaScorecardRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaScorecard.to_json(resources.QaScorecard())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.CreateQaScorecardRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaScorecard()
+
+        client.create_qa_scorecard(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_qa_scorecard_rest_bad_request(
+    request_type=contact_center_insights.GetQaScorecardRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_qa_scorecard(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetQaScorecardRequest,
+        dict,
+    ],
+)
+def test_get_qa_scorecard_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecard(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_qa_scorecard(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_qa_scorecard_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_get_qa_scorecard"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_get_qa_scorecard"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.GetQaScorecardRequest.pb(
+            contact_center_insights.GetQaScorecardRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaScorecard.to_json(resources.QaScorecard())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.GetQaScorecardRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaScorecard()
+
+        client.get_qa_scorecard(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_qa_scorecard_rest_bad_request(
+    request_type=contact_center_insights.UpdateQaScorecardRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "qa_scorecard": {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_qa_scorecard(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateQaScorecardRequest,
+        dict,
+    ],
+)
+def test_update_qa_scorecard_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "qa_scorecard": {
+            "name": "projects/sample1/locations/sample2/qaScorecards/sample3"
+        }
+    }
+    request_init["qa_scorecard"] = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateQaScorecardRequest.meta.fields[
+        "qa_scorecard"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["qa_scorecard"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["qa_scorecard"][field])):
+                    del request_init["qa_scorecard"][field][i][subfield]
+            else:
+                del request_init["qa_scorecard"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecard(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_qa_scorecard(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecard)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_qa_scorecard_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_update_qa_scorecard"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_update_qa_scorecard"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.UpdateQaScorecardRequest.pb(
+            contact_center_insights.UpdateQaScorecardRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaScorecard.to_json(resources.QaScorecard())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.UpdateQaScorecardRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaScorecard()
+
+        client.update_qa_scorecard(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_qa_scorecard_rest_bad_request(
+    request_type=contact_center_insights.DeleteQaScorecardRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_qa_scorecard(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteQaScorecardRequest,
+        dict,
+    ],
+)
+def test_delete_qa_scorecard_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_qa_scorecard(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_qa_scorecard_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_delete_qa_scorecard"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = contact_center_insights.DeleteQaScorecardRequest.pb(
+            contact_center_insights.DeleteQaScorecardRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = contact_center_insights.DeleteQaScorecardRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_qa_scorecard(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_qa_scorecards_rest_bad_request(
+    request_type=contact_center_insights.ListQaScorecardsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_qa_scorecards(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListQaScorecardsRequest,
+        dict,
+    ],
+)
+def test_list_qa_scorecards_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListQaScorecardsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListQaScorecardsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_qa_scorecards(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaScorecardsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_qa_scorecards_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_list_qa_scorecards"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_list_qa_scorecards"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ListQaScorecardsRequest.pb(
+            contact_center_insights.ListQaScorecardsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = contact_center_insights.ListQaScorecardsResponse.to_json(
+            contact_center_insights.ListQaScorecardsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.ListQaScorecardsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = contact_center_insights.ListQaScorecardsResponse()
+
+        client.list_qa_scorecards(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_qa_scorecard_revision_rest_bad_request(
+    request_type=contact_center_insights.CreateQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_qa_scorecard_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_create_qa_scorecard_revision_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request_init["qa_scorecard_revision"] = {
+        "name": "name_value",
+        "snapshot": {
+            "name": "name_value",
+            "display_name": "display_name_value",
+            "description": "description_value",
+            "create_time": {"seconds": 751, "nanos": 543},
+            "update_time": {},
+        },
+        "create_time": {},
+        "alternate_ids": ["alternate_ids_value1", "alternate_ids_value2"],
+        "state": 12,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateQaScorecardRevisionRequest.meta.fields[
+        "qa_scorecard_revision"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "qa_scorecard_revision"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["qa_scorecard_revision"][field])):
+                    del request_init["qa_scorecard_revision"][field][i][subfield]
+            else:
+                del request_init["qa_scorecard_revision"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecardRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_qa_scorecard_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_qa_scorecard_revision_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_create_qa_scorecard_revision",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_create_qa_scorecard_revision",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.CreateQaScorecardRevisionRequest.pb(
+            contact_center_insights.CreateQaScorecardRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaScorecardRevision.to_json(
+            resources.QaScorecardRevision()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.CreateQaScorecardRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaScorecardRevision()
+
+        client.create_qa_scorecard_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_qa_scorecard_revision_rest_bad_request(
+    request_type=contact_center_insights.GetQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_qa_scorecard_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_get_qa_scorecard_revision_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecardRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_qa_scorecard_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_qa_scorecard_revision_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_get_qa_scorecard_revision",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_get_qa_scorecard_revision"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.GetQaScorecardRevisionRequest.pb(
+            contact_center_insights.GetQaScorecardRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaScorecardRevision.to_json(
+            resources.QaScorecardRevision()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.GetQaScorecardRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaScorecardRevision()
+
+        client.get_qa_scorecard_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_tune_qa_scorecard_revision_rest_bad_request(
+    request_type=contact_center_insights.TuneQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.tune_qa_scorecard_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.TuneQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_tune_qa_scorecard_revision_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.tune_qa_scorecard_revision(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_tune_qa_scorecard_revision_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_tune_qa_scorecard_revision",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_tune_qa_scorecard_revision",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.TuneQaScorecardRevisionRequest.pb(
+            contact_center_insights.TuneQaScorecardRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.TuneQaScorecardRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.tune_qa_scorecard_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_deploy_qa_scorecard_revision_rest_bad_request(
+    request_type=contact_center_insights.DeployQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.deploy_qa_scorecard_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeployQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_deploy_qa_scorecard_revision_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecardRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.deploy_qa_scorecard_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_deploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_deploy_qa_scorecard_revision",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_deploy_qa_scorecard_revision",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.DeployQaScorecardRevisionRequest.pb(
+            contact_center_insights.DeployQaScorecardRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaScorecardRevision.to_json(
+            resources.QaScorecardRevision()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.DeployQaScorecardRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaScorecardRevision()
+
+        client.deploy_qa_scorecard_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_undeploy_qa_scorecard_revision_rest_bad_request(
+    request_type=contact_center_insights.UndeployQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.undeploy_qa_scorecard_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UndeployQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_undeploy_qa_scorecard_revision_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.QaScorecardRevision(
+            name="name_value",
+            alternate_ids=["alternate_ids_value"],
+            state=resources.QaScorecardRevision.State.EDITABLE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.QaScorecardRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.undeploy_qa_scorecard_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.QaScorecardRevision)
+    assert response.name == "name_value"
+    assert response.alternate_ids == ["alternate_ids_value"]
+    assert response.state == resources.QaScorecardRevision.State.EDITABLE
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_undeploy_qa_scorecard_revision_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_undeploy_qa_scorecard_revision",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_undeploy_qa_scorecard_revision",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.UndeployQaScorecardRevisionRequest.pb(
+            contact_center_insights.UndeployQaScorecardRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.QaScorecardRevision.to_json(
+            resources.QaScorecardRevision()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.UndeployQaScorecardRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.QaScorecardRevision()
+
+        client.undeploy_qa_scorecard_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_qa_scorecard_revision_rest_bad_request(
+    request_type=contact_center_insights.DeleteQaScorecardRevisionRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_qa_scorecard_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteQaScorecardRevisionRequest,
+        dict,
+    ],
+)
+def test_delete_qa_scorecard_revision_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/qaScorecards/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_qa_scorecard_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_qa_scorecard_revision_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_delete_qa_scorecard_revision",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = contact_center_insights.DeleteQaScorecardRevisionRequest.pb(
+            contact_center_insights.DeleteQaScorecardRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = contact_center_insights.DeleteQaScorecardRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_qa_scorecard_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_qa_scorecard_revisions_rest_bad_request(
+    request_type=contact_center_insights.ListQaScorecardRevisionsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_qa_scorecard_revisions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListQaScorecardRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_qa_scorecard_revisions_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/qaScorecards/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListQaScorecardRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListQaScorecardRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_qa_scorecard_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListQaScorecardRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_qa_scorecard_revisions_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_list_qa_scorecard_revisions",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_list_qa_scorecard_revisions",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ListQaScorecardRevisionsRequest.pb(
+            contact_center_insights.ListQaScorecardRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = contact_center_insights.ListQaScorecardRevisionsResponse.to_json(
+            contact_center_insights.ListQaScorecardRevisionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.ListQaScorecardRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = contact_center_insights.ListQaScorecardRevisionsResponse()
+
+        client.list_qa_scorecard_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_feedback_label_rest_bad_request(
+    request_type=contact_center_insights.CreateFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/conversations/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_feedback_label(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.CreateFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_create_feedback_label_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/conversations/sample3"
+    }
+    request_init["feedback_label"] = {
+        "label": "label_value",
+        "qa_answer_label": {
+            "str_value": "str_value_value",
+            "num_value": 0.972,
+            "bool_value": True,
+            "na_value": True,
+            "key": "key_value",
+            "score": 0.54,
+            "potential_score": 0.16110000000000002,
+            "normalized_score": 0.17120000000000002,
+        },
+        "name": "name_value",
+        "labeled_resource": "labeled_resource_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateFeedbackLabelRequest.meta.fields[
+        "feedback_label"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["feedback_label"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["feedback_label"][field])):
+                    del request_init["feedback_label"][field][i][subfield]
+            else:
+                del request_init["feedback_label"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FeedbackLabel(
+            name="name_value",
+            labeled_resource="labeled_resource_value",
+            label="label_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.FeedbackLabel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_feedback_label(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_feedback_label_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_create_feedback_label"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_create_feedback_label"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.CreateFeedbackLabelRequest.pb(
+            contact_center_insights.CreateFeedbackLabelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.FeedbackLabel.to_json(resources.FeedbackLabel())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.CreateFeedbackLabelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.FeedbackLabel()
+
+        client.create_feedback_label(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_feedback_labels_rest_bad_request(
+    request_type=contact_center_insights.ListFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/conversations/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_feedback_labels(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_list_feedback_labels_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/conversations/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListFeedbackLabelsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListFeedbackLabelsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_feedback_labels(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFeedbackLabelsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_feedback_labels_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_list_feedback_labels"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_list_feedback_labels"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ListFeedbackLabelsRequest.pb(
+            contact_center_insights.ListFeedbackLabelsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = contact_center_insights.ListFeedbackLabelsResponse.to_json(
+            contact_center_insights.ListFeedbackLabelsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.ListFeedbackLabelsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = contact_center_insights.ListFeedbackLabelsResponse()
+
+        client.list_feedback_labels(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_feedback_label_rest_bad_request(
+    request_type=contact_center_insights.GetFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_feedback_label(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.GetFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_get_feedback_label_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FeedbackLabel(
+            name="name_value",
+            labeled_resource="labeled_resource_value",
+            label="label_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.FeedbackLabel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_feedback_label(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_feedback_label_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_get_feedback_label"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_get_feedback_label"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.GetFeedbackLabelRequest.pb(
+            contact_center_insights.GetFeedbackLabelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.FeedbackLabel.to_json(resources.FeedbackLabel())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.GetFeedbackLabelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.FeedbackLabel()
+
+        client.get_feedback_label(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_feedback_label_rest_bad_request(
+    request_type=contact_center_insights.UpdateFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "feedback_label": {
+            "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_feedback_label(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.UpdateFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_update_feedback_label_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "feedback_label": {
+            "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+        }
+    }
+    request_init["feedback_label"] = {
+        "label": "label_value",
+        "qa_answer_label": {
+            "str_value": "str_value_value",
+            "num_value": 0.972,
+            "bool_value": True,
+            "na_value": True,
+            "key": "key_value",
+            "score": 0.54,
+            "potential_score": 0.16110000000000002,
+            "normalized_score": 0.17120000000000002,
+        },
+        "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4",
+        "labeled_resource": "labeled_resource_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateFeedbackLabelRequest.meta.fields[
+        "feedback_label"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["feedback_label"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["feedback_label"][field])):
+                    del request_init["feedback_label"][field][i][subfield]
+            else:
+                del request_init["feedback_label"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.FeedbackLabel(
+            name="name_value",
+            labeled_resource="labeled_resource_value",
+            label="label_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.FeedbackLabel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_feedback_label(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.FeedbackLabel)
+    assert response.name == "name_value"
+    assert response.labeled_resource == "labeled_resource_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_feedback_label_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_update_feedback_label"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_update_feedback_label"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.UpdateFeedbackLabelRequest.pb(
+            contact_center_insights.UpdateFeedbackLabelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.FeedbackLabel.to_json(resources.FeedbackLabel())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.UpdateFeedbackLabelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.FeedbackLabel()
+
+        client.update_feedback_label(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_feedback_label_rest_bad_request(
+    request_type=contact_center_insights.DeleteFeedbackLabelRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_feedback_label(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.DeleteFeedbackLabelRequest,
+        dict,
+    ],
+)
+def test_delete_feedback_label_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/conversations/sample3/feedbackLabels/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_feedback_label(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_feedback_label_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_delete_feedback_label"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = contact_center_insights.DeleteFeedbackLabelRequest.pb(
+            contact_center_insights.DeleteFeedbackLabelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = contact_center_insights.DeleteFeedbackLabelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_feedback_label(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_all_feedback_labels_rest_bad_request(
+    request_type=contact_center_insights.ListAllFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_all_feedback_labels(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.ListAllFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_list_all_feedback_labels_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = contact_center_insights.ListAllFeedbackLabelsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListAllFeedbackLabelsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_all_feedback_labels(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAllFeedbackLabelsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_all_feedback_labels_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "post_list_all_feedback_labels"
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor, "pre_list_all_feedback_labels"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.ListAllFeedbackLabelsRequest.pb(
+            contact_center_insights.ListAllFeedbackLabelsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = contact_center_insights.ListAllFeedbackLabelsResponse.to_json(
+            contact_center_insights.ListAllFeedbackLabelsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = contact_center_insights.ListAllFeedbackLabelsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = contact_center_insights.ListAllFeedbackLabelsResponse()
+
+        client.list_all_feedback_labels(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_bulk_upload_feedback_labels_rest_bad_request(
+    request_type=contact_center_insights.BulkUploadFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.bulk_upload_feedback_labels(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.BulkUploadFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_bulk_upload_feedback_labels_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.bulk_upload_feedback_labels(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_bulk_upload_feedback_labels_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_bulk_upload_feedback_labels",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_bulk_upload_feedback_labels",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.BulkUploadFeedbackLabelsRequest.pb(
+            contact_center_insights.BulkUploadFeedbackLabelsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.bulk_upload_feedback_labels(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_bulk_download_feedback_labels_rest_bad_request(
+    request_type=contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.bulk_download_feedback_labels(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        contact_center_insights.BulkDownloadFeedbackLabelsRequest,
+        dict,
+    ],
+)
+def test_bulk_download_feedback_labels_rest_call_success(request_type):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.bulk_download_feedback_labels(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_bulk_download_feedback_labels_rest_interceptors(null_interceptor):
+    transport = transports.ContactCenterInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ContactCenterInsightsRestInterceptor(),
+    )
+    client = ContactCenterInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "post_bulk_download_feedback_labels",
+    ) as post, mock.patch.object(
+        transports.ContactCenterInsightsRestInterceptor,
+        "pre_bulk_download_feedback_labels",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = contact_center_insights.BulkDownloadFeedbackLabelsRequest.pb(
+            contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.bulk_download_feedback_labels(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
 def test_cancel_operation_rest_bad_request(
     request_type=operations_pb2.CancelOperationRequest,
 ):
@@ -34520,6 +58853,116 @@ def test_update_settings_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_create_analysis_rule_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_analysis_rule), "__call__"
+    ) as call:
+        client.create_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_analysis_rule_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_analysis_rule), "__call__"
+    ) as call:
+        client.get_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_analysis_rules_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_analysis_rules), "__call__"
+    ) as call:
+        client.list_analysis_rules(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListAnalysisRulesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_analysis_rule_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_analysis_rule), "__call__"
+    ) as call:
+        client.update_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_analysis_rule_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_analysis_rule), "__call__"
+    ) as call:
+        client.delete_analysis_rule(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteAnalysisRuleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_encryption_spec_empty_call_rest():
     client = ContactCenterInsightsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34662,6 +59105,572 @@ def test_delete_view_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_query_metrics_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_metrics), "__call__") as call:
+        client.query_metrics(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.QueryMetricsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_qa_question_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_question), "__call__"
+    ) as call:
+        client.create_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_qa_question_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_question), "__call__") as call:
+        client.get_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_qa_question_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_question), "__call__"
+    ) as call:
+        client.update_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_qa_question_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_question), "__call__"
+    ) as call:
+        client.delete_qa_question(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaQuestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_qa_questions_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_questions), "__call__"
+    ) as call:
+        client.list_qa_questions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaQuestionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_qa_scorecard_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard), "__call__"
+    ) as call:
+        client.create_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_qa_scorecard_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_qa_scorecard), "__call__") as call:
+        client.get_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_qa_scorecard_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_qa_scorecard), "__call__"
+    ) as call:
+        client.update_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_qa_scorecard_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard), "__call__"
+    ) as call:
+        client.delete_qa_scorecard(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaScorecardRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_qa_scorecards_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecards), "__call__"
+    ) as call:
+        client.list_qa_scorecards(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaScorecardsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_qa_scorecard_revision_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_qa_scorecard_revision), "__call__"
+    ) as call:
+        client.create_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_qa_scorecard_revision_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_qa_scorecard_revision), "__call__"
+    ) as call:
+        client.get_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_tune_qa_scorecard_revision_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.tune_qa_scorecard_revision), "__call__"
+    ) as call:
+        client.tune_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.TuneQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_deploy_qa_scorecard_revision_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        client.deploy_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeployQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_undeploy_qa_scorecard_revision_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undeploy_qa_scorecard_revision), "__call__"
+    ) as call:
+        client.undeploy_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UndeployQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_qa_scorecard_revision_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_qa_scorecard_revision), "__call__"
+    ) as call:
+        client.delete_qa_scorecard_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteQaScorecardRevisionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_qa_scorecard_revisions_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_qa_scorecard_revisions), "__call__"
+    ) as call:
+        client.list_qa_scorecard_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListQaScorecardRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_feedback_label_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_feedback_label), "__call__"
+    ) as call:
+        client.create_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.CreateFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_feedback_labels_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_feedback_labels), "__call__"
+    ) as call:
+        client.list_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_feedback_label_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_feedback_label), "__call__"
+    ) as call:
+        client.get_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.GetFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_feedback_label_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_feedback_label), "__call__"
+    ) as call:
+        client.update_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.UpdateFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_feedback_label_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_feedback_label), "__call__"
+    ) as call:
+        client.delete_feedback_label(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.DeleteFeedbackLabelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_all_feedback_labels_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_all_feedback_labels), "__call__"
+    ) as call:
+        client.list_all_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.ListAllFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_bulk_upload_feedback_labels_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_upload_feedback_labels), "__call__"
+    ) as call:
+        client.bulk_upload_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.BulkUploadFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_bulk_download_feedback_labels_empty_call_rest():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bulk_download_feedback_labels), "__call__"
+    ) as call:
+        client.bulk_download_feedback_labels(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = contact_center_insights.BulkDownloadFeedbackLabelsRequest()
+
+        assert args[0] == request_msg
+
+
 def test_contact_center_insights_rest_lro_client():
     client = ContactCenterInsightsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34748,6 +59757,11 @@ def test_contact_center_insights_base_transport():
         "calculate_stats",
         "get_settings",
         "update_settings",
+        "create_analysis_rule",
+        "get_analysis_rule",
+        "list_analysis_rules",
+        "update_analysis_rule",
+        "delete_analysis_rule",
         "get_encryption_spec",
         "initialize_encryption_spec",
         "create_view",
@@ -34755,6 +59769,32 @@ def test_contact_center_insights_base_transport():
         "list_views",
         "update_view",
         "delete_view",
+        "query_metrics",
+        "create_qa_question",
+        "get_qa_question",
+        "update_qa_question",
+        "delete_qa_question",
+        "list_qa_questions",
+        "create_qa_scorecard",
+        "get_qa_scorecard",
+        "update_qa_scorecard",
+        "delete_qa_scorecard",
+        "list_qa_scorecards",
+        "create_qa_scorecard_revision",
+        "get_qa_scorecard_revision",
+        "tune_qa_scorecard_revision",
+        "deploy_qa_scorecard_revision",
+        "undeploy_qa_scorecard_revision",
+        "delete_qa_scorecard_revision",
+        "list_qa_scorecard_revisions",
+        "create_feedback_label",
+        "list_feedback_labels",
+        "get_feedback_label",
+        "update_feedback_label",
+        "delete_feedback_label",
+        "list_all_feedback_labels",
+        "bulk_upload_feedback_labels",
+        "bulk_download_feedback_labels",
         "get_operation",
         "cancel_operation",
         "list_operations",
@@ -35133,6 +60173,21 @@ def test_contact_center_insights_client_transport_session_collision(transport_na
     session1 = client1.transport.update_settings._session
     session2 = client2.transport.update_settings._session
     assert session1 != session2
+    session1 = client1.transport.create_analysis_rule._session
+    session2 = client2.transport.create_analysis_rule._session
+    assert session1 != session2
+    session1 = client1.transport.get_analysis_rule._session
+    session2 = client2.transport.get_analysis_rule._session
+    assert session1 != session2
+    session1 = client1.transport.list_analysis_rules._session
+    session2 = client2.transport.list_analysis_rules._session
+    assert session1 != session2
+    session1 = client1.transport.update_analysis_rule._session
+    session2 = client2.transport.update_analysis_rule._session
+    assert session1 != session2
+    session1 = client1.transport.delete_analysis_rule._session
+    session2 = client2.transport.delete_analysis_rule._session
+    assert session1 != session2
     session1 = client1.transport.get_encryption_spec._session
     session2 = client2.transport.get_encryption_spec._session
     assert session1 != session2
@@ -35153,6 +60208,84 @@ def test_contact_center_insights_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.delete_view._session
     session2 = client2.transport.delete_view._session
+    assert session1 != session2
+    session1 = client1.transport.query_metrics._session
+    session2 = client2.transport.query_metrics._session
+    assert session1 != session2
+    session1 = client1.transport.create_qa_question._session
+    session2 = client2.transport.create_qa_question._session
+    assert session1 != session2
+    session1 = client1.transport.get_qa_question._session
+    session2 = client2.transport.get_qa_question._session
+    assert session1 != session2
+    session1 = client1.transport.update_qa_question._session
+    session2 = client2.transport.update_qa_question._session
+    assert session1 != session2
+    session1 = client1.transport.delete_qa_question._session
+    session2 = client2.transport.delete_qa_question._session
+    assert session1 != session2
+    session1 = client1.transport.list_qa_questions._session
+    session2 = client2.transport.list_qa_questions._session
+    assert session1 != session2
+    session1 = client1.transport.create_qa_scorecard._session
+    session2 = client2.transport.create_qa_scorecard._session
+    assert session1 != session2
+    session1 = client1.transport.get_qa_scorecard._session
+    session2 = client2.transport.get_qa_scorecard._session
+    assert session1 != session2
+    session1 = client1.transport.update_qa_scorecard._session
+    session2 = client2.transport.update_qa_scorecard._session
+    assert session1 != session2
+    session1 = client1.transport.delete_qa_scorecard._session
+    session2 = client2.transport.delete_qa_scorecard._session
+    assert session1 != session2
+    session1 = client1.transport.list_qa_scorecards._session
+    session2 = client2.transport.list_qa_scorecards._session
+    assert session1 != session2
+    session1 = client1.transport.create_qa_scorecard_revision._session
+    session2 = client2.transport.create_qa_scorecard_revision._session
+    assert session1 != session2
+    session1 = client1.transport.get_qa_scorecard_revision._session
+    session2 = client2.transport.get_qa_scorecard_revision._session
+    assert session1 != session2
+    session1 = client1.transport.tune_qa_scorecard_revision._session
+    session2 = client2.transport.tune_qa_scorecard_revision._session
+    assert session1 != session2
+    session1 = client1.transport.deploy_qa_scorecard_revision._session
+    session2 = client2.transport.deploy_qa_scorecard_revision._session
+    assert session1 != session2
+    session1 = client1.transport.undeploy_qa_scorecard_revision._session
+    session2 = client2.transport.undeploy_qa_scorecard_revision._session
+    assert session1 != session2
+    session1 = client1.transport.delete_qa_scorecard_revision._session
+    session2 = client2.transport.delete_qa_scorecard_revision._session
+    assert session1 != session2
+    session1 = client1.transport.list_qa_scorecard_revisions._session
+    session2 = client2.transport.list_qa_scorecard_revisions._session
+    assert session1 != session2
+    session1 = client1.transport.create_feedback_label._session
+    session2 = client2.transport.create_feedback_label._session
+    assert session1 != session2
+    session1 = client1.transport.list_feedback_labels._session
+    session2 = client2.transport.list_feedback_labels._session
+    assert session1 != session2
+    session1 = client1.transport.get_feedback_label._session
+    session2 = client2.transport.get_feedback_label._session
+    assert session1 != session2
+    session1 = client1.transport.update_feedback_label._session
+    session2 = client2.transport.update_feedback_label._session
+    assert session1 != session2
+    session1 = client1.transport.delete_feedback_label._session
+    session2 = client2.transport.delete_feedback_label._session
+    assert session1 != session2
+    session1 = client1.transport.list_all_feedback_labels._session
+    session2 = client2.transport.list_all_feedback_labels._session
+    assert session1 != session2
+    session1 = client1.transport.bulk_upload_feedback_labels._session
+    session2 = client2.transport.bulk_upload_feedback_labels._session
+    assert session1 != session2
+    session1 = client1.transport.bulk_download_feedback_labels._session
+    session2 = client2.transport.bulk_download_feedback_labels._session
     assert session1 != session2
 
 
@@ -35347,10 +60480,40 @@ def test_parse_analysis_path():
     assert expected == actual
 
 
-def test_conversation_path():
+def test_analysis_rule_path():
     project = "winkle"
     location = "nautilus"
-    conversation = "scallop"
+    analysis_rule = "scallop"
+    expected = (
+        "projects/{project}/locations/{location}/analysisRules/{analysis_rule}".format(
+            project=project,
+            location=location,
+            analysis_rule=analysis_rule,
+        )
+    )
+    actual = ContactCenterInsightsClient.analysis_rule_path(
+        project, location, analysis_rule
+    )
+    assert expected == actual
+
+
+def test_parse_analysis_rule_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "analysis_rule": "clam",
+    }
+    path = ContactCenterInsightsClient.analysis_rule_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_analysis_rule_path(path)
+    assert expected == actual
+
+
+def test_conversation_path():
+    project = "whelk"
+    location = "octopus"
+    conversation = "oyster"
     expected = (
         "projects/{project}/locations/{location}/conversations/{conversation}".format(
             project=project,
@@ -35366,9 +60529,9 @@ def test_conversation_path():
 
 def test_parse_conversation_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "conversation": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "conversation": "mussel",
     }
     path = ContactCenterInsightsClient.conversation_path(**expected)
 
@@ -35378,9 +60541,9 @@ def test_parse_conversation_path():
 
 
 def test_conversation_profile_path():
-    project = "whelk"
-    location = "octopus"
-    conversation_profile = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    conversation_profile = "scallop"
     expected = "projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}".format(
         project=project,
         location=location,
@@ -35394,9 +60557,9 @@ def test_conversation_profile_path():
 
 def test_parse_conversation_profile_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "conversation_profile": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "conversation_profile": "clam",
     }
     path = ContactCenterInsightsClient.conversation_profile_path(**expected)
 
@@ -35406,8 +60569,8 @@ def test_parse_conversation_profile_path():
 
 
 def test_encryption_spec_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}/encryptionSpec".format(
         project=project,
         location=location,
@@ -35418,8 +60581,8 @@ def test_encryption_spec_path():
 
 def test_parse_encryption_spec_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ContactCenterInsightsClient.encryption_spec_path(**expected)
 
@@ -35428,11 +60591,42 @@ def test_parse_encryption_spec_path():
     assert expected == actual
 
 
+def test_feedback_label_path():
+    project = "cuttlefish"
+    location = "mussel"
+    conversation = "winkle"
+    feedback_label = "nautilus"
+    expected = "projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}".format(
+        project=project,
+        location=location,
+        conversation=conversation,
+        feedback_label=feedback_label,
+    )
+    actual = ContactCenterInsightsClient.feedback_label_path(
+        project, location, conversation, feedback_label
+    )
+    assert expected == actual
+
+
+def test_parse_feedback_label_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "conversation": "squid",
+        "feedback_label": "clam",
+    }
+    path = ContactCenterInsightsClient.feedback_label_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_feedback_label_path(path)
+    assert expected == actual
+
+
 def test_issue_path():
-    project = "squid"
-    location = "clam"
-    issue_model = "whelk"
-    issue = "octopus"
+    project = "whelk"
+    location = "octopus"
+    issue_model = "oyster"
+    issue = "nudibranch"
     expected = "projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}".format(
         project=project,
         location=location,
@@ -35447,10 +60641,10 @@ def test_issue_path():
 
 def test_parse_issue_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "issue_model": "cuttlefish",
-        "issue": "mussel",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "issue_model": "winkle",
+        "issue": "nautilus",
     }
     path = ContactCenterInsightsClient.issue_path(**expected)
 
@@ -35460,9 +60654,9 @@ def test_parse_issue_path():
 
 
 def test_issue_model_path():
-    project = "winkle"
-    location = "nautilus"
-    issue_model = "scallop"
+    project = "scallop"
+    location = "abalone"
+    issue_model = "squid"
     expected = (
         "projects/{project}/locations/{location}/issueModels/{issue_model}".format(
             project=project,
@@ -35478,9 +60672,9 @@ def test_issue_model_path():
 
 def test_parse_issue_model_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "issue_model": "clam",
+        "project": "clam",
+        "location": "whelk",
+        "issue_model": "octopus",
     }
     path = ContactCenterInsightsClient.issue_model_path(**expected)
 
@@ -35490,9 +60684,9 @@ def test_parse_issue_model_path():
 
 
 def test_participant_path():
-    project = "whelk"
-    conversation = "octopus"
-    participant = "oyster"
+    project = "oyster"
+    conversation = "nudibranch"
+    participant = "cuttlefish"
     expected = "projects/{project}/conversations/{conversation}/participants/{participant}".format(
         project=project,
         conversation=conversation,
@@ -35506,9 +60700,9 @@ def test_participant_path():
 
 def test_parse_participant_path():
     expected = {
-        "project": "nudibranch",
-        "conversation": "cuttlefish",
-        "participant": "mussel",
+        "project": "mussel",
+        "conversation": "winkle",
+        "participant": "nautilus",
     }
     path = ContactCenterInsightsClient.participant_path(**expected)
 
@@ -35518,9 +60712,9 @@ def test_parse_participant_path():
 
 
 def test_phrase_matcher_path():
-    project = "winkle"
-    location = "nautilus"
-    phrase_matcher = "scallop"
+    project = "scallop"
+    location = "abalone"
+    phrase_matcher = "squid"
     expected = "projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}".format(
         project=project,
         location=location,
@@ -35534,9 +60728,9 @@ def test_phrase_matcher_path():
 
 def test_parse_phrase_matcher_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "phrase_matcher": "clam",
+        "project": "clam",
+        "location": "whelk",
+        "phrase_matcher": "octopus",
     }
     path = ContactCenterInsightsClient.phrase_matcher_path(**expected)
 
@@ -35545,10 +60739,133 @@ def test_parse_phrase_matcher_path():
     assert expected == actual
 
 
-def test_recognizer_path():
+def test_qa_question_path():
+    project = "oyster"
+    location = "nudibranch"
+    qa_scorecard = "cuttlefish"
+    revision = "mussel"
+    qa_question = "winkle"
+    expected = "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}/qaQuestions/{qa_question}".format(
+        project=project,
+        location=location,
+        qa_scorecard=qa_scorecard,
+        revision=revision,
+        qa_question=qa_question,
+    )
+    actual = ContactCenterInsightsClient.qa_question_path(
+        project, location, qa_scorecard, revision, qa_question
+    )
+    assert expected == actual
+
+
+def test_parse_qa_question_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "qa_scorecard": "abalone",
+        "revision": "squid",
+        "qa_question": "clam",
+    }
+    path = ContactCenterInsightsClient.qa_question_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_qa_question_path(path)
+    assert expected == actual
+
+
+def test_qa_scorecard_path():
     project = "whelk"
     location = "octopus"
-    recognizer = "oyster"
+    qa_scorecard = "oyster"
+    expected = (
+        "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}".format(
+            project=project,
+            location=location,
+            qa_scorecard=qa_scorecard,
+        )
+    )
+    actual = ContactCenterInsightsClient.qa_scorecard_path(
+        project, location, qa_scorecard
+    )
+    assert expected == actual
+
+
+def test_parse_qa_scorecard_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "qa_scorecard": "mussel",
+    }
+    path = ContactCenterInsightsClient.qa_scorecard_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_qa_scorecard_path(path)
+    assert expected == actual
+
+
+def test_qa_scorecard_result_path():
+    project = "winkle"
+    location = "nautilus"
+    qa_scorecard_result = "scallop"
+    expected = "projects/{project}/locations/{location}/qaScorecardResults/{qa_scorecard_result}".format(
+        project=project,
+        location=location,
+        qa_scorecard_result=qa_scorecard_result,
+    )
+    actual = ContactCenterInsightsClient.qa_scorecard_result_path(
+        project, location, qa_scorecard_result
+    )
+    assert expected == actual
+
+
+def test_parse_qa_scorecard_result_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "qa_scorecard_result": "clam",
+    }
+    path = ContactCenterInsightsClient.qa_scorecard_result_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_qa_scorecard_result_path(path)
+    assert expected == actual
+
+
+def test_qa_scorecard_revision_path():
+    project = "whelk"
+    location = "octopus"
+    qa_scorecard = "oyster"
+    revision = "nudibranch"
+    expected = "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}".format(
+        project=project,
+        location=location,
+        qa_scorecard=qa_scorecard,
+        revision=revision,
+    )
+    actual = ContactCenterInsightsClient.qa_scorecard_revision_path(
+        project, location, qa_scorecard, revision
+    )
+    assert expected == actual
+
+
+def test_parse_qa_scorecard_revision_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "qa_scorecard": "winkle",
+        "revision": "nautilus",
+    }
+    path = ContactCenterInsightsClient.qa_scorecard_revision_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_qa_scorecard_revision_path(path)
+    assert expected == actual
+
+
+def test_recognizer_path():
+    project = "scallop"
+    location = "abalone"
+    recognizer = "squid"
     expected = (
         "projects/{project}/locations/{location}/recognizers/{recognizer}".format(
             project=project,
@@ -35562,9 +60879,9 @@ def test_recognizer_path():
 
 def test_parse_recognizer_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "recognizer": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "recognizer": "octopus",
     }
     path = ContactCenterInsightsClient.recognizer_path(**expected)
 
@@ -35574,8 +60891,8 @@ def test_parse_recognizer_path():
 
 
 def test_settings_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}/settings".format(
         project=project,
         location=location,
@@ -35586,8 +60903,8 @@ def test_settings_path():
 
 def test_parse_settings_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ContactCenterInsightsClient.settings_path(**expected)
 
@@ -35597,9 +60914,9 @@ def test_parse_settings_path():
 
 
 def test_view_path():
-    project = "squid"
-    location = "clam"
-    view = "whelk"
+    project = "winkle"
+    location = "nautilus"
+    view = "scallop"
     expected = "projects/{project}/locations/{location}/views/{view}".format(
         project=project,
         location=location,
@@ -35611,9 +60928,9 @@ def test_view_path():
 
 def test_parse_view_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "view": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "view": "clam",
     }
     path = ContactCenterInsightsClient.view_path(**expected)
 
@@ -35623,7 +60940,7 @@ def test_parse_view_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -35633,7 +60950,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = ContactCenterInsightsClient.common_billing_account_path(**expected)
 
@@ -35643,7 +60960,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -35653,7 +60970,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = ContactCenterInsightsClient.common_folder_path(**expected)
 
@@ -35663,7 +60980,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -35673,7 +60990,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = ContactCenterInsightsClient.common_organization_path(**expected)
 
@@ -35683,7 +61000,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -35693,7 +61010,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = ContactCenterInsightsClient.common_project_path(**expected)
 
@@ -35703,8 +61020,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -35715,8 +61032,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = ContactCenterInsightsClient.common_location_path(**expected)
 
