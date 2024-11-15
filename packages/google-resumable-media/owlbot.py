@@ -20,7 +20,7 @@ s.move(templated_files / "docs", excludes=[
 s.replace(
     ".kokoro/docs/common.cfg",
     r'value: "docs-staging-v2"',
-    r'value: "docs-staging-v2-staging"'
+    r'value: "docs-staging-v2-dev"'
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
