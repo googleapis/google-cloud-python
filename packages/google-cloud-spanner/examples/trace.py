@@ -32,14 +32,17 @@ def main():
     tracer_provider = TracerProvider(sampler=ALWAYS_ON)
     trace_exporter = CloudTraceSpanExporter(project_id=project_id)
     tracer_provider.add_span_processor(BatchSpanProcessor(trace_exporter))
-    trace.set_tracer_provider(tracer_provider)
-    # Retrieve a tracer from the global tracer provider.
-    tracer = tracer_provider.get_tracer('MyApp')
 
     # Setup the Cloud Spanner Client.
-    spanner_client = spanner.Client(project_id)
+    spanner_client = spanner.Client(
+        project_id,
+        observability_options=dict(tracer_provider=tracer_provider, enable_extended_tracing=True),
+    )
     instance = spanner_client.instance('test-instance')
     database = instance.database('test-db')
+
+    # Retrieve a tracer from our custom tracer provider.
+    tracer = tracer_provider.get_tracer('MyApp')
 
     # Now run our queries
     with tracer.start_as_current_span('QueryInformationSchema'):

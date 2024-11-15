@@ -142,7 +142,13 @@ class Session(object):
         if self._labels:
             request.session.labels = self._labels
 
-        with trace_call("CloudSpanner.CreateSession", self, self._labels):
+        observability_options = getattr(self._database, "observability_options", None)
+        with trace_call(
+            "CloudSpanner.CreateSession",
+            self,
+            self._labels,
+            observability_options=observability_options,
+        ):
             session_pb = api.create_session(
                 request=request,
                 metadata=metadata,
@@ -169,7 +175,10 @@ class Session(object):
                 )
             )
 
-        with trace_call("CloudSpanner.GetSession", self) as span:
+        observability_options = getattr(self._database, "observability_options", None)
+        with trace_call(
+            "CloudSpanner.GetSession", self, observability_options=observability_options
+        ) as span:
             try:
                 api.get_session(name=self.name, metadata=metadata)
                 if span:
@@ -194,7 +203,12 @@ class Session(object):
             raise ValueError("Session ID not set by back-end")
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
-        with trace_call("CloudSpanner.DeleteSession", self):
+        observability_options = getattr(self._database, "observability_options", None)
+        with trace_call(
+            "CloudSpanner.DeleteSession",
+            self,
+            observability_options=observability_options,
+        ):
             api.delete_session(name=self.name, metadata=metadata)
 
     def ping(self):

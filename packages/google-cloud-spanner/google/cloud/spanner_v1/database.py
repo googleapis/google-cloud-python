@@ -718,6 +718,7 @@ class Database(object):
                     method=method,
                     request=request,
                     transaction_selector=txn_selector,
+                    observability_options=self.observability_options,
                 )
 
                 result_set = StreamedResultSet(iterator)
@@ -1105,6 +1106,17 @@ class Database(object):
         )
         response = api.set_iam_policy(request=request, metadata=metadata)
         return response
+
+    @property
+    def observability_options(self):
+        """
+        Returns the observability options that you set when creating
+        the SpannerClient.
+        """
+        if not (self._instance and self._instance._client):
+            return None
+
+        return getattr(self._instance._client, "observability_options", None)
 
 
 class BatchCheckout(object):

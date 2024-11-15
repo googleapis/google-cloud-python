@@ -98,7 +98,13 @@ class Transaction(_SnapshotBase, _BatchBase):
             return TransactionSelector(id=self._transaction_id)
 
     def _execute_request(
-        self, method, request, trace_name=None, session=None, attributes=None
+        self,
+        method,
+        request,
+        trace_name=None,
+        session=None,
+        attributes=None,
+        observability_options=None,
     ):
         """Helper method to execute request after fetching transaction selector.
 
@@ -110,7 +116,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         """
         transaction = self._make_txn_selector()
         request.transaction = transaction
-        with trace_call(trace_name, session, attributes):
+        with trace_call(
+            trace_name, session, attributes, observability_options=observability_options
+        ):
             method = functools.partial(method, request=request)
             response = _retry(
                 method,
@@ -147,7 +155,12 @@ class Transaction(_SnapshotBase, _BatchBase):
             read_write=TransactionOptions.ReadWrite(),
             exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
         )
-        with trace_call("CloudSpanner.BeginTransaction", self._session):
+        observability_options = getattr(database, "observability_options", None)
+        with trace_call(
+            "CloudSpanner.BeginTransaction",
+            self._session,
+            observability_options=observability_options,
+        ):
             method = functools.partial(
                 api.begin_transaction,
                 session=self._session.name,
@@ -175,7 +188,12 @@ class Transaction(_SnapshotBase, _BatchBase):
                         database._route_to_leader_enabled
                     )
                 )
-            with trace_call("CloudSpanner.Rollback", self._session):
+            observability_options = getattr(database, "observability_options", None)
+            with trace_call(
+                "CloudSpanner.Rollback",
+                self._session,
+                observability_options=observability_options,
+            ):
                 method = functools.partial(
                     api.rollback,
                     session=self._session.name,
@@ -248,7 +266,13 @@ class Transaction(_SnapshotBase, _BatchBase):
             max_commit_delay=max_commit_delay,
             request_options=request_options,
         )
-        with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
+        observability_options = getattr(database, "observability_options", None)
+        with trace_call(
+            "CloudSpanner.Commit",
+            self._session,
+            trace_attributes,
+            observability_options,
+        ):
             method = functools.partial(
                 api.commit,
                 request=request,
@@ -362,6 +386,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         # environment-level options
         default_query_options = database._instance._client._query_options
         query_options = _merge_query_options(default_query_options, query_options)
+        observability_options = getattr(
+            database._instance._client, "observability_options", None
+        )
 
         if request_options is None:
             request_options = RequestOptions()
@@ -399,6 +426,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                     "CloudSpanner.ReadWriteTransaction",
                     self._session,
                     trace_attributes,
+                    observability_options=observability_options,
                 )
                 # Setting the transaction id because the transaction begin was inlined for first rpc.
                 if (
@@ -415,6 +443,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 "CloudSpanner.ReadWriteTransaction",
                 self._session,
                 trace_attributes,
+                observability_options=observability_options,
             )
 
         return response.stats.row_count_exact
@@ -481,6 +510,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
         api = database.spanner_api
+        observability_options = getattr(database, "observability_options", None)
 
         seqno, self._execute_sql_count = (
             self._execute_sql_count,
@@ -521,6 +551,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                     "CloudSpanner.DMLTransaction",
                     self._session,
                     trace_attributes,
+                    observability_options=observability_options,
                 )
                 # Setting the transaction id because the transaction begin was inlined for first rpc.
                 for result_set in response.result_sets:
@@ -538,6 +569,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 "CloudSpanner.DMLTransaction",
                 self._session,
                 trace_attributes,
+                observability_options=observability_options,
             )
 
         row_counts = [

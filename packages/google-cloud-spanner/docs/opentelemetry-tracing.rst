@@ -25,12 +25,21 @@ We also need to tell OpenTelemetry which exporter to use. To export Spanner trac
 
     # Create and export one trace every 1000 requests
     sampler = TraceIdRatioBased(1/1000)
-    # Use the default tracer provider
-    trace.set_tracer_provider(TracerProvider(sampler=sampler))
-    trace.get_tracer_provider().add_span_processor(
+    tracer_provider = TracerProvider(sampler=sampler)
+    tracer_provider.add_span_processor(
         # Initialize the cloud tracing exporter
         BatchSpanProcessor(CloudTraceSpanExporter())
     )
+    observability_options = dict(
+        tracer_provider=tracer_provider,
+
+        # By default extended_tracing is set to True due
+        # to legacy reasons to avoid breaking changes, you
+        # can modify it though using the environment variable
+        # SPANNER_ENABLE_EXTENDED_TRACING=false.
+        enable_extended_tracing=False,
+    )
+    spanner = spanner.NewClient(project_id, observability_options=observability_options)
 
 
 To get more fine-grained traces from gRPC, you can enable the gRPC instrumentation by the following
@@ -52,3 +61,13 @@ Generated spanner traces should now be available on `Cloud Trace <https://consol
 
 Tracing is most effective when many libraries are instrumented to provide insight over the entire lifespan of a request.
 For a list of libraries that can be instrumented, see the `OpenTelemetry Integrations` section of the `OpenTelemetry Python docs <https://opentelemetry-python.readthedocs.io/en/stable/>`_
+
+Annotating spans with SQL
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default your spans will be annotated with SQL statements where appropriate, but that can be a PII (Personally Identifiable Information)
+leak. Sadly due to legacy behavior, we cannot simply turn off this behavior by default. However you can control this behavior by setting
+
+    SPANNER_ENABLE_EXTENDED_TRACING=false
+
+to turn it off globally or when creating each SpannerClient, please set `observability_options.enable_extended_tracing=false`

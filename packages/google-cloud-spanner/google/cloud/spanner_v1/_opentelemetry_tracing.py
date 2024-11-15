@@ -15,6 +15,7 @@
 """Manages OpenTelemetry trace creation and handling"""
 
 from contextlib import contextmanager
+import os
 
 from google.cloud.spanner_v1 import SpannerClient
 from google.cloud.spanner_v1 import gapic_version
@@ -33,6 +34,9 @@ except ImportError:
 
 TRACER_NAME = "cloud.google.com/python/spanner"
 TRACER_VERSION = gapic_version.__version__
+extended_tracing_globally_disabled = (
+    os.getenv("SPANNER_ENABLE_EXTENDED_TRACING", "").lower() == "false"
+)
 
 
 def get_tracer(tracer_provider=None):
@@ -51,13 +55,26 @@ def get_tracer(tracer_provider=None):
 
 
 @contextmanager
-def trace_call(name, session, extra_attributes=None):
+def trace_call(name, session, extra_attributes=None, observability_options=None):
     if not HAS_OPENTELEMETRY_INSTALLED or not session:
         # Empty context manager. Users will have to check if the generated value is None or a span
         yield None
         return
 
-    tracer = get_tracer()
+    tracer_provider = None
+
+    # By default enable_extended_tracing=True because in a bid to minimize
+    # breaking changes and preserve legacy behavior, we are keeping it turned
+    # on by default.
+    enable_extended_tracing = True
+
+    if isinstance(observability_options, dict):  # Avoid false positives with mock.Mock
+        tracer_provider = observability_options.get("tracer_provider", None)
+        enable_extended_tracing = observability_options.get(
+            "enable_extended_tracing", enable_extended_tracing
+        )
+
+    tracer = get_tracer(tracer_provider)
 
     # Set base attributes that we know for every trace created
     attributes = {
@@ -71,6 +88,12 @@ def trace_call(name, session, extra_attributes=None):
 
     if extra_attributes:
         attributes.update(extra_attributes)
+
+    if extended_tracing_globally_disabled:
+        enable_extended_tracing = False
+
+    if not enable_extended_tracing:
+        attributes.pop("db.statement", False)
 
     with tracer.start_as_current_span(
         name, kind=trace.SpanKind.CLIENT, attributes=attributes
