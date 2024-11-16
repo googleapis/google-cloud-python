@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import abc
 import dataclasses
 import math
 import os
@@ -80,7 +81,111 @@ class ExecuteResult:
         )
 
 
-class BigQueryCachingExecutor:
+class Executor(abc.ABC):
+    """
+    Interface for an executor, which compiles and executes ArrayValue objects.
+    """
+
+    def to_sql(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        offset_column: Optional[str] = None,
+        col_id_overrides: Mapping[str, str] = {},
+        ordered: bool = False,
+        enable_cache: bool = True,
+    ) -> str:
+        """
+        Convert an ArrayValue to a sql query that will yield its value.
+        """
+        raise NotImplementedError("to_sql not implemented for this executor")
+
+    def execute(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        *,
+        ordered: bool = True,
+        col_id_overrides: Mapping[str, str] = {},
+        use_explicit_destination: bool = False,
+        get_size_bytes: bool = False,
+        page_size: Optional[int] = None,
+        max_results: Optional[int] = None,
+    ):
+        """
+        Execute the ArrayValue, storing the result to a temporary session-owned table.
+        """
+        raise NotImplementedError("execute not implemented for this executor")
+
+    def export_gbq(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        col_id_overrides: Mapping[str, str],
+        destination: bigquery.TableReference,
+        if_exists: Literal["fail", "replace", "append"] = "fail",
+        cluster_cols: Sequence[str] = [],
+    ) -> bigquery.QueryJob:
+        """
+        Export the ArrayValue to an existing BigQuery table.
+        """
+        raise NotImplementedError("export_gbq not implemented for this executor")
+
+    def export_gcs(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        col_id_overrides: Mapping[str, str],
+        uri: str,
+        format: Literal["json", "csv", "parquet"],
+        export_options: Mapping[str, Union[bool, str]],
+    ) -> bigquery.QueryJob:
+        """
+        Export the ArrayValue to gcs.
+        """
+        raise NotImplementedError("export_gcs not implemented for this executor")
+
+    def dry_run(
+        self, array_value: bigframes.core.ArrayValue, ordered: bool = True
+    ) -> bigquery.QueryJob:
+        """
+        Dry run executing the ArrayValue.
+
+        Does not actually execute the data but will get stats and indicate any invalid query errors.
+        """
+        raise NotImplementedError("dry_run not implemented for this executor")
+
+    def peek(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        n_rows: int,
+    ) -> ExecuteResult:
+        """
+        A 'peek' efficiently accesses a small number of rows in the dataframe.
+        """
+        raise NotImplementedError("peek not implemented for this executor")
+
+    # TODO: Remove this and replace with efficient slice operator that can use execute()
+    def head(
+        self, array_value: bigframes.core.ArrayValue, n_rows: int
+    ) -> ExecuteResult:
+        """
+        Preview the first n rows of the dataframe. This is less efficient than the unordered peek preview op.
+        """
+        raise NotImplementedError("head not implemented for this executor")
+
+    # TODO: This should be done through execute()
+    def get_row_count(self, array_value: bigframes.core.ArrayValue) -> int:
+        raise NotImplementedError("get_row_count not implemented for this executor")
+
+    def cached(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        *,
+        force: bool = False,
+        use_session: bool = False,
+        cluster_cols: Sequence[str] = (),
+    ) -> None:
+        raise NotImplementedError("cached not implemented for this executor")
+
+
+class BigQueryCachingExecutor(Executor):
     """Computes BigFrames values using BigQuery Engine.
 
     This executor can cache expressions. If those expressions are executed later, this session
@@ -118,9 +223,6 @@ class BigQueryCachingExecutor:
         ordered: bool = False,
         enable_cache: bool = True,
     ) -> str:
-        """
-        Convert an ArrayValue to a sql query that will yield its value.
-        """
         if offset_column:
             array_value, internal_offset_col = array_value.promote_offsets()
             col_id_overrides = dict(col_id_overrides)
@@ -147,9 +249,6 @@ class BigQueryCachingExecutor:
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
     ):
-        """
-        Execute the ArrayValue, storing the result to a temporary session-owned table.
-        """
         if bigframes.options.compute.enable_multi_query_execution:
             self._simplify_with_caching(array_value)
 
@@ -236,9 +335,6 @@ class BigQueryCachingExecutor:
         format: Literal["json", "csv", "parquet"],
         export_options: Mapping[str, Union[bool, str]],
     ):
-        """
-        Export the ArrayValue to gcs.
-        """
         query_job = self.execute(
             array_value,
             ordered=False,
@@ -260,11 +356,6 @@ class BigQueryCachingExecutor:
     def dry_run(
         self, array_value: bigframes.core.ArrayValue, ordered: bool = True
     ) -> bigquery.QueryJob:
-        """
-        Dry run executing the ArrayValue.
-
-        Does not actually execute the data but will get stats and indicate any invalid query errors.
-        """
         sql = self.to_sql(array_value, ordered=ordered)
         job_config = bigquery.QueryJobConfig(dry_run=True)
         bq_io.add_labels(job_config)
@@ -299,14 +390,9 @@ class BigQueryCachingExecutor:
             total_rows=iterator.total_rows,
         )
 
-    # This is used exclusively to optimize __repr__
-    # TODO: We need to model this
     def head(
         self, array_value: bigframes.core.ArrayValue, n_rows: int
     ) -> ExecuteResult:
-        """
-        Preview the first n rows of the dataframe. This is less efficient than the unordered peek preview op.
-        """
         maybe_row_count = self._local_get_row_count(array_value)
         if (maybe_row_count is not None) and (maybe_row_count <= n_rows):
             return self.execute(array_value, ordered=True)
@@ -342,7 +428,6 @@ class BigQueryCachingExecutor:
             total_rows=iterator.total_rows,
         )
 
-    # TODO: Remove. We shouldn't need this method, row count node can automatically be detected
     def get_row_count(self, array_value: bigframes.core.ArrayValue) -> int:
         count = self._local_get_row_count(array_value)
         if count is not None:

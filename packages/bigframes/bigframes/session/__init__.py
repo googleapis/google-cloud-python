@@ -27,7 +27,6 @@ from typing import (
     IO,
     Iterable,
     Literal,
-    Mapping,
     MutableSequence,
     Optional,
     Sequence,
@@ -59,7 +58,6 @@ import pyarrow as pa
 
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
-import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.compile
 import bigframes.core.guid
@@ -258,12 +256,14 @@ class Session(
                 kms_key=self._bq_kms_key_name,
             )
         )
-        self._executor = bigframes.session.executor.BigQueryCachingExecutor(
-            bqclient=self._clients_provider.bqclient,
-            bqstoragereadclient=self._clients_provider.bqstoragereadclient,
-            storage_manager=self._temp_storage_manager,
-            strictly_ordered=self._strictly_ordered,
-            metrics=self._metrics,
+        self._executor: bigframes.session.executor.Executor = (
+            bigframes.session.executor.BigQueryCachingExecutor(
+                bqclient=self._clients_provider.bqclient,
+                bqstoragereadclient=self._clients_provider.bqstoragereadclient,
+                storage_manager=self._temp_storage_manager,
+                strictly_ordered=self._strictly_ordered,
+                metrics=self._metrics,
+            )
         )
         self._loader = bigframes.session.loader.GbqDataLoader(
             session=self,
@@ -1421,24 +1421,6 @@ class Session(
 
         return bf_io_bigquery.start_query_with_client(
             self.bqclient, sql, job_config, metrics=self._metrics
-        )
-
-    def _export(
-        self,
-        array_value: core.ArrayValue,
-        destination: bigquery.TableReference,
-        *,
-        if_exists: Literal["fail", "replace", "append"] = "fail",
-        col_id_overrides: Mapping[str, str] = {},
-        cluster_cols: Sequence[str],
-    ) -> tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
-        # Note: cluster_cols use pre-override column ids
-        return self._executor.export_gbq(
-            array_value,
-            destination=destination,
-            col_id_overrides=col_id_overrides,
-            if_exists=if_exists,
-            cluster_cols=cluster_cols,
         )
 
 

@@ -59,5 +59,8 @@ def arrow_type_replacements(type: pa.DataType) -> pa.DataType:
     if pa.types.is_time64(type):
         # This is potentially lossy, but BigFrames doesn't support ns
         return pa.time64("us")
+    if pa.types.is_large_string(type):
+        # simple string type can handle the largest strings needed
+        return pa.string()
     else:
         return type
