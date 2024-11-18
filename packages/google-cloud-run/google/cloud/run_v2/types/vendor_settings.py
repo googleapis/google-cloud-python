@@ -279,6 +279,9 @@ class ServiceScaling(proto.Message):
     r"""Scaling settings applied at the service level rather than
     at the revision level.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         min_instance_count (int):
             Optional. total min instances for the
@@ -287,6 +290,14 @@ class ServiceScaling(proto.Message):
             on the percent of traffic they are receiving.
         scaling_mode (google.cloud.run_v2.types.ServiceScaling.ScalingMode):
             Optional. The scaling mode for the service.
+        manual_instance_count (int):
+            Optional. total instance count for the
+            service in manual scaling mode. This number of
+            instances is divided among all revisions with
+            specified traffic based on the percent of
+            traffic they are receiving.
+
+            This field is a member of `oneof`_ ``_manual_instance_count``.
     """
 
     class ScalingMode(proto.Enum):
@@ -315,6 +326,11 @@ class ServiceScaling(proto.Message):
         proto.ENUM,
         number=3,
         enum=ScalingMode,
+    )
+    manual_instance_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+        optional=True,
     )
 
 
