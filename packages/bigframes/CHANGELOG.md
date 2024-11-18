@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.27.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.26.0...v1.27.0) (2024-11-16)
+
+
+### Features
+
+* Add astype(type, errors='null') to cast safely ([#1122](https://github.com/googleapis/python-bigquery-dataframes/issues/1122)) ([b4d17ff](https://github.com/googleapis/python-bigquery-dataframes/commit/b4d17ffdd891da266ad9765a087d3512c0e056fc))
+
+
+### Bug Fixes
+
+* Dataframe fillna with scalar. ([#1132](https://github.com/googleapis/python-bigquery-dataframes/issues/1132)) ([37f8c32](https://github.com/googleapis/python-bigquery-dataframes/commit/37f8c32a541565208602f3f6ed37dded13e16b9b))
+* Exclude index columns from model fitting processes. ([#1138](https://github.com/googleapis/python-bigquery-dataframes/issues/1138)) ([8d4da15](https://github.com/googleapis/python-bigquery-dataframes/commit/8d4da1582a5965e6a1f9732ec0ce592ea47ce5fa))
+* Unordered mode too many labels issue. ([#1148](https://github.com/googleapis/python-bigquery-dataframes/issues/1148)) ([7216b21](https://github.com/googleapis/python-bigquery-dataframes/commit/7216b21abd01bc61878bb5686f83ee13ef297912))
+
+
+### Documentation
+
+* Document groupby.head and groupby.size methods ([#1111](https://github.com/googleapis/python-bigquery-dataframes/issues/1111)) ([a61eb4d](https://github.com/googleapis/python-bigquery-dataframes/commit/a61eb4d6e323e5001715d402e0e67054df6e62af))
+
 ## [1.26.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.25.0...v1.26.0) (2024-11-12)
 
 
