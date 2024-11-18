@@ -4388,6 +4388,7 @@ def test_get_git_repository_link(request_type, transport: str = "grpc"):
             etag="etag_value",
             reconciling=True,
             uid="uid_value",
+            webhook_id="webhook_id_value",
         )
         response = client.get_git_repository_link(request)
 
@@ -4404,6 +4405,7 @@ def test_get_git_repository_link(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.reconciling is True
     assert response.uid == "uid_value"
+    assert response.webhook_id == "webhook_id_value"
 
 
 def test_get_git_repository_link_non_empty_request_with_auto_populated_field():
@@ -4544,6 +4546,7 @@ async def test_get_git_repository_link_async(
                 etag="etag_value",
                 reconciling=True,
                 uid="uid_value",
+                webhook_id="webhook_id_value",
             )
         )
         response = await client.get_git_repository_link(request)
@@ -4561,6 +4564,7 @@ async def test_get_git_repository_link_async(
     assert response.etag == "etag_value"
     assert response.reconciling is True
     assert response.uid == "uid_value"
+    assert response.webhook_id == "webhook_id_value"
 
 
 @pytest.mark.asyncio
@@ -10542,6 +10546,7 @@ async def test_get_git_repository_link_empty_call_grpc_asyncio():
                 etag="etag_value",
                 reconciling=True,
                 uid="uid_value",
+                webhook_id="webhook_id_value",
             )
         )
         await client.get_git_repository_link(request=None)
@@ -11003,6 +11008,35 @@ def test_create_connection_rest_call_success(request_type):
             "app_installation_id": 2014,
             "installation_uri": "installation_uri_value",
         },
+        "github_enterprise_config": {
+            "host_uri": "host_uri_value",
+            "app_id": 621,
+            "app_slug": "app_slug_value",
+            "private_key_secret_version": "private_key_secret_version_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "app_installation_id": 2014,
+            "installation_uri": "installation_uri_value",
+            "service_directory_config": {"service": "service_value"},
+            "server_version": "server_version_value",
+            "ssl_ca_certificate": "ssl_ca_certificate_value",
+        },
+        "gitlab_config": {
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {
+                "user_token_secret_version": "user_token_secret_version_value",
+                "username": "username_value",
+            },
+            "authorizer_credential": {},
+        },
+        "gitlab_enterprise_config": {
+            "host_uri": "host_uri_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {},
+            "authorizer_credential": {},
+            "service_directory_config": {},
+            "ssl_ca_certificate": "ssl_ca_certificate_value",
+            "server_version": "server_version_value",
+        },
         "name": "name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -11018,6 +11052,7 @@ def test_create_connection_rest_call_success(request_type):
         "annotations": {},
         "etag": "etag_value",
         "uid": "uid_value",
+        "crypto_key_config": {"key_reference": "key_reference_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11215,6 +11250,35 @@ def test_update_connection_rest_call_success(request_type):
             "app_installation_id": 2014,
             "installation_uri": "installation_uri_value",
         },
+        "github_enterprise_config": {
+            "host_uri": "host_uri_value",
+            "app_id": 621,
+            "app_slug": "app_slug_value",
+            "private_key_secret_version": "private_key_secret_version_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "app_installation_id": 2014,
+            "installation_uri": "installation_uri_value",
+            "service_directory_config": {"service": "service_value"},
+            "server_version": "server_version_value",
+            "ssl_ca_certificate": "ssl_ca_certificate_value",
+        },
+        "gitlab_config": {
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {
+                "user_token_secret_version": "user_token_secret_version_value",
+                "username": "username_value",
+            },
+            "authorizer_credential": {},
+        },
+        "gitlab_enterprise_config": {
+            "host_uri": "host_uri_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {},
+            "authorizer_credential": {},
+            "service_directory_config": {},
+            "ssl_ca_certificate": "ssl_ca_certificate_value",
+            "server_version": "server_version_value",
+        },
         "name": "projects/sample1/locations/sample2/connections/sample3",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -11230,6 +11294,7 @@ def test_update_connection_rest_call_success(request_type):
         "annotations": {},
         "etag": "etag_value",
         "uid": "uid_value",
+        "crypto_key_config": {"key_reference": "key_reference_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11539,6 +11604,7 @@ def test_create_git_repository_link_rest_call_success(request_type):
         "reconciling": True,
         "annotations": {},
         "uid": "uid_value",
+        "webhook_id": "webhook_id_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11981,6 +12047,7 @@ def test_get_git_repository_link_rest_call_success(request_type):
             etag="etag_value",
             reconciling=True,
             uid="uid_value",
+            webhook_id="webhook_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -12001,6 +12068,7 @@ def test_get_git_repository_link_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.reconciling is True
     assert response.uid == "uid_value"
+    assert response.webhook_id == "webhook_id_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -13923,11 +13991,42 @@ def test_parse_connection_path():
     assert expected == actual
 
 
-def test_git_repository_link_path():
+def test_crypto_key_path():
     project = "cuttlefish"
     location = "mussel"
-    connection = "winkle"
-    git_repository_link = "nautilus"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = DeveloperConnectClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
+    }
+    path = DeveloperConnectClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DeveloperConnectClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_git_repository_link_path():
+    project = "whelk"
+    location = "octopus"
+    connection = "oyster"
+    git_repository_link = "nudibranch"
     expected = "projects/{project}/locations/{location}/connections/{connection}/gitRepositoryLinks/{git_repository_link}".format(
         project=project,
         location=location,
@@ -13942,10 +14041,10 @@ def test_git_repository_link_path():
 
 def test_parse_git_repository_link_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "connection": "squid",
-        "git_repository_link": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "connection": "winkle",
+        "git_repository_link": "nautilus",
     }
     path = DeveloperConnectClient.git_repository_link_path(**expected)
 
@@ -13955,9 +14054,9 @@ def test_parse_git_repository_link_path():
 
 
 def test_secret_version_path():
-    project = "whelk"
-    secret = "octopus"
-    secret_version = "oyster"
+    project = "scallop"
+    secret = "abalone"
+    secret_version = "squid"
     expected = "projects/{project}/secrets/{secret}/versions/{secret_version}".format(
         project=project,
         secret=secret,
@@ -13969,9 +14068,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "nudibranch",
-        "secret": "cuttlefish",
-        "secret_version": "mussel",
+        "project": "clam",
+        "secret": "whelk",
+        "secret_version": "octopus",
     }
     path = DeveloperConnectClient.secret_version_path(**expected)
 
@@ -13980,8 +14079,37 @@ def test_parse_secret_version_path():
     assert expected == actual
 
 
+def test_service_path():
+    project = "oyster"
+    location = "nudibranch"
+    namespace = "cuttlefish"
+    service = "mussel"
+    expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
+        project=project,
+        location=location,
+        namespace=namespace,
+        service=service,
+    )
+    actual = DeveloperConnectClient.service_path(project, location, namespace, service)
+    assert expected == actual
+
+
+def test_parse_service_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "namespace": "scallop",
+        "service": "abalone",
+    }
+    path = DeveloperConnectClient.service_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DeveloperConnectClient.parse_service_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -13991,7 +14119,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "clam",
     }
     path = DeveloperConnectClient.common_billing_account_path(**expected)
 
@@ -14001,7 +14129,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -14011,7 +14139,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "octopus",
     }
     path = DeveloperConnectClient.common_folder_path(**expected)
 
@@ -14021,7 +14149,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -14031,7 +14159,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nudibranch",
     }
     path = DeveloperConnectClient.common_organization_path(**expected)
 
@@ -14041,7 +14169,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -14051,7 +14179,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "mussel",
     }
     path = DeveloperConnectClient.common_project_path(**expected)
 
@@ -14061,8 +14189,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -14073,8 +14201,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = DeveloperConnectClient.common_location_path(**expected)
 
