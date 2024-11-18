@@ -3222,6 +3222,57 @@ def create_instance_with_autoscaling_config(instance_id):
 # [END spanner_create_instance_with_autoscaling_config]
 
 
+# [START spanner_create_instance_without_default_backup_schedule]
+def create_instance_without_default_backup_schedules(instance_id):
+    spanner_client = spanner.Client()
+    config_name = "{}/instanceConfigs/regional-me-central2".format(
+        spanner_client.project_name
+    )
+
+    operation = spanner_client.instance_admin_api.create_instance(
+      parent=spanner_client.project_name,
+      instance_id=instance_id,
+      instance=spanner_instance_admin.Instance(
+          config=config_name,
+          display_name="This is a display name.",
+          node_count=1,
+          default_backup_schedule_type=spanner_instance_admin.Instance.DefaultBackupScheduleType.NONE,  # Optional
+      ),
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print("Created instance {} without default backup schedules".format(instance_id))
+
+
+# [END spanner_create_instance_without_default_backup_schedule]
+
+
+# [START spanner_update_instance_default_backup_schedule_type]
+def update_instance_default_backup_schedule_type(instance_id):
+    spanner_client = spanner.Client()
+
+    name = "{}/instances/{}".format(spanner_client.project_name, instance_id)
+
+    operation = spanner_client.instance_admin_api.update_instance(
+      instance=spanner_instance_admin.Instance(
+          name=name,
+          default_backup_schedule_type=spanner_instance_admin.Instance.DefaultBackupScheduleType.AUTOMATIC,  # Optional
+      ),
+      field_mask=field_mask_pb2.FieldMask(
+          paths=["default_backup_schedule_type"]
+      ),
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print("Updated instance {} to have default backup schedules".format(instance_id))
+
+# [END spanner_update_instance_default_backup_schedule_type]
+
+
 def add_proto_type_columns(instance_id, database_id):
     # [START spanner_add_proto_type_columns]
     # instance_id = "your-spanner-instance"

@@ -197,6 +197,25 @@ def test_create_instance_with_autoscaling_config(capsys, lci_instance_id):
     retry_429(instance.delete)()
 
 
+def test_create_and_update_instance_default_backup_schedule_type(capsys, lci_instance_id):
+    retry_429(snippets.create_instance_without_default_backup_schedules)(
+        lci_instance_id,
+    )
+    create_out, _ = capsys.readouterr()
+    assert lci_instance_id in create_out
+    assert "without default backup schedules" in create_out
+
+    retry_429(snippets.update_instance_default_backup_schedule_type)(
+        lci_instance_id,
+    )
+    update_out, _ = capsys.readouterr()
+    assert lci_instance_id in update_out
+    assert "to have default backup schedules" in update_out
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(lci_instance_id)
+    retry_429(instance.delete)()
+
+
 def test_create_instance_partition(capsys, instance_partition_instance_id):
     # Unable to use create_instance since it has editions set where partitions are unsupported.
     # The minimal requirement for editions is ENTERPRISE_PLUS for the paritions to get supported.
