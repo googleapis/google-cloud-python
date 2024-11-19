@@ -348,7 +348,8 @@ class Dataset(proto.Message):
 
     Attributes:
         examples (google.ai.generativelanguage_v1beta.types.TuningExamples):
-            Optional. Inline examples.
+            Optional. Inline examples with simple
+            input/output text.
 
             This field is a member of `oneof`_ ``dataset``.
     """
@@ -366,9 +367,9 @@ class TuningExamples(proto.Message):
 
     Attributes:
         examples (MutableSequence[google.ai.generativelanguage_v1beta.types.TuningExample]):
-            Required. The examples. Example input can be
-            for text or discuss, but all examples in a set
-            must be of the same type.
+            The examples. Example input can be for text
+            or discuss, but all examples in a set must be of
+            the same type.
     """
 
     examples: MutableSequence["TuningExample"] = proto.RepeatedField(
