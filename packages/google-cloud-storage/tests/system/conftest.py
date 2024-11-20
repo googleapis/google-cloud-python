@@ -384,3 +384,33 @@ def universe_domain_client(
     )
     with contextlib.closing(ud_storage_client):
         yield ud_storage_client
+
+
+@pytest.fixture(scope="function")
+def universe_domain_bucket(universe_domain_client, test_universe_location):
+    bucket_name = _helpers.unique_name("gcp-systest-ud")
+    bucket = universe_domain_client.create_bucket(
+        bucket_name, location=test_universe_location
+    )
+
+    blob = bucket.blob("README.txt")
+    blob.upload_from_string(_helpers.signing_blob_content)
+
+    yield bucket
+
+    _helpers.delete_bucket(bucket)
+
+
+@pytest.fixture(scope="function")
+def universe_domain_iam_client(
+    test_universe_domain, test_universe_project_id, universe_domain_credential
+):
+    from google.cloud import iam_credentials_v1
+
+    client_options = {"universe_domain": test_universe_domain}
+    iam_client = iam_credentials_v1.IAMCredentialsClient(
+        credentials=universe_domain_credential,
+        client_options=client_options,
+    )
+
+    return iam_client

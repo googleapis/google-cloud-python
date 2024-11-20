@@ -28,8 +28,10 @@ import google.auth.credentials
 from google.auth import exceptions
 from google.auth.transport import requests
 from google.cloud import _helpers
+from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
 from google.cloud.storage._helpers import _NOW
 from google.cloud.storage._helpers import _UTC
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 # `google.cloud.storage._signing.NOW` is deprecated.
@@ -271,6 +273,7 @@ def generate_signed_url_v2(
     query_parameters=None,
     service_account_email=None,
     access_token=None,
+    universe_domain=None,
 ):
     """Generate a V2 signed URL to provide query-string auth'n to a resource.
 
@@ -384,7 +387,9 @@ def generate_signed_url_v2(
     # See https://github.com/googleapis/google-cloud-python/issues/922
     # Set the right query parameters.
     if access_token and service_account_email:
-        signature = _sign_message(string_to_sign, access_token, service_account_email)
+        signature = _sign_message(
+            string_to_sign, access_token, service_account_email, universe_domain
+        )
         signed_query_params = {
             "GoogleAccessId": service_account_email,
             "Expires": expiration_stamp,
@@ -432,6 +437,7 @@ def generate_signed_url_v4(
     query_parameters=None,
     service_account_email=None,
     access_token=None,
+    universe_domain=None,
     _request_timestamp=None,  # for testing only
 ):
     """Generate a V4 signed URL to provide query-string auth'n to a resource.
@@ -623,7 +629,9 @@ def generate_signed_url_v4(
     string_to_sign = "\n".join(string_elements)
 
     if access_token and service_account_email:
-        signature = _sign_message(string_to_sign, access_token, service_account_email)
+        signature = _sign_message(
+            string_to_sign, access_token, service_account_email, universe_domain
+        )
         signature_bytes = base64.b64decode(signature)
         signature = binascii.hexlify(signature_bytes).decode("ascii")
     else:
@@ -647,7 +655,12 @@ def get_v4_now_dtstamps():
     return timestamp, datestamp
 
 
-def _sign_message(message, access_token, service_account_email):
+def _sign_message(
+    message,
+    access_token,
+    service_account_email,
+    universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
+):
     """Signs a message.
 
     :type message: str
@@ -669,17 +682,22 @@ def _sign_message(message, access_token, service_account_email):
     message = _helpers._to_bytes(message)
 
     method = "POST"
-    url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/{}:signBlob?alt=json".format(
-        service_account_email
-    )
+    url = f"https://iamcredentials.{universe_domain}/v1/projects/-/serviceAccounts/{service_account_email}:signBlob?alt=json"
     headers = {
         "Authorization": "Bearer " + access_token,
         "Content-type": "application/json",
     }
     body = json.dumps({"payload": base64.b64encode(message).decode("utf-8")})
-
     request = requests.Request()
-    response = request(url=url, method=method, body=body, headers=headers)
+
+    def retriable_request():
+        response = request(url=url, method=method, body=body, headers=headers)
+        return response
+
+    # Apply the default retry object to the signBlob call.
+    retry = DEFAULT_RETRY
+    call = retry(retriable_request)
+    response = call()
 
     if response.status != http.client.OK:
         raise exceptions.TransportError(

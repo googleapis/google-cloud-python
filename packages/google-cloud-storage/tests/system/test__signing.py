@@ -287,6 +287,35 @@ def test_create_signed_read_url_v4_w_access_token(
     )
 
 
+def test_create_signed_read_url_v4_w_access_token_universe_domain(
+    universe_domain_iam_client,
+    universe_domain_client,
+    test_universe_location,
+    universe_domain_credential,
+    universe_domain_bucket,
+    no_mtls,
+):
+    service_account_email = universe_domain_credential.service_account_email
+    name = path_template.expand(
+        "projects/{project}/serviceAccounts/{service_account}",
+        project="-",
+        service_account=service_account_email,
+    )
+    scope = [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+        "https://www.googleapis.com/auth/iam",
+    ]
+    response = universe_domain_iam_client.generate_access_token(name=name, scope=scope)
+
+    _create_signed_read_url_helper(
+        universe_domain_client,
+        universe_domain_bucket,
+        version="v4",
+        service_account_email=service_account_email,
+        access_token=response.access_token,
+    )
+
+
 def _create_signed_delete_url_helper(client, bucket, version="v2", expiration=None):
     expiration = _morph_expiration(version, expiration)
 

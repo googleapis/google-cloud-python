@@ -487,6 +487,8 @@ class Test_Blob(unittest.TestCase):
             expected_creds = credentials
             client = self._make_client(_credentials=object())
 
+        expected_universe_domain = client.universe_domain
+
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket, encryption_key=encryption_key)
 
@@ -564,6 +566,7 @@ class Test_Blob(unittest.TestCase):
             "query_parameters": query_parameters,
             "access_token": access_token,
             "service_account_email": service_account_email,
+            "universe_domain": expected_universe_domain,
         }
         signer.assert_called_once_with(expected_creds, **expected_kwargs)
 
