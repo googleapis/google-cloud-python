@@ -366,3 +366,15 @@ class RowMutationEntry:
                 Mutation._from_dict(mutation) for mutation in input_dict["mutations"]
             ],
         )
+
+
+@dataclass
+class _EntryWithProto:
+    """
+    A dataclass to hold a RowMutationEntry and its corresponding proto representation.
+
+    Used in _MutateRowsOperation to avoid repeated conversion of RowMutationEntry to proto.
+    """
+
+    entry: RowMutationEntry
+    proto: types_pb.MutateRowsRequest.Entry

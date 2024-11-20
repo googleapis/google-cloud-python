@@ -41,6 +41,21 @@ class _RowSetComplete(Exception):
     pass
 
 
+class _ResetRow(Exception):  # noqa: F811
+    """
+    Internal exception for _ReadRowsOperation
+
+    Denotes that the server sent a reset_row marker, telling the client to drop
+    all previous chunks for row_key and re-read from the beginning.
+
+    Args:
+        chunk: the reset_row chunk
+    """
+
+    def __init__(self, chunk):
+        self.chunk = chunk
+
+
 class _MutateRowsIncomplete(RuntimeError):
     """
     Exception raised when a mutate_rows call has unfinished work.

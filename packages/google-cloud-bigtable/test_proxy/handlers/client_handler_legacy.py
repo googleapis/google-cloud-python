@@ -19,13 +19,13 @@ import os
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.cloud.bigtable.client import Client
 
-import client_handler_data as client_handler
+import client_handler_data_async as client_handler
 
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-class LegacyTestProxyClientHandler(client_handler.TestProxyClientHandler):
+class LegacyTestProxyClientHandler(client_handler.TestProxyClientHandlerAsync):
 
     def __init__(
         self,

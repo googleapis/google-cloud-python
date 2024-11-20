@@ -17,18 +17,8 @@ Bigtable database for testing purposes.
 """
 
 import pytest
-import pytest_asyncio
 import os
-import asyncio
 import uuid
-
-
-@pytest.fixture(scope="session")
-def event_loop():
-    loop = asyncio.get_event_loop()
-    yield loop
-    loop.stop()
-    loop.close()
 
 
 @pytest.fixture(scope="session")
@@ -150,22 +140,7 @@ def table_id(
         print(f"Table {init_table_id} not found, skipping deletion")
 
 
-@pytest_asyncio.fixture(scope="session")
-async def client():
-    from google.cloud.bigtable.data import BigtableDataClientAsync
-
-    project = os.getenv("GOOGLE_CLOUD_PROJECT") or None
-    async with BigtableDataClientAsync(project=project, pool_size=4) as client:
-        yield client
-
-
 @pytest.fixture(scope="session")
 def project_id(client):
     """Returns the project ID from the client."""
     yield client.project
-
-
-@pytest_asyncio.fixture(scope="session")
-async def table(client, table_id, instance_id):
-    async with client.get_table(instance_id, table_id) as table:
-        yield table

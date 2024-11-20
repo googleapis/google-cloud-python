@@ -8,7 +8,7 @@ You can run the conformance tests in a single line by calling `nox -s conformanc
 
 
 ```
-cd python-bigtable/test_proxy
+cd python-bigtable
 nox -s conformance
 ```
 
@@ -30,10 +30,11 @@ cd python-bigtable/test_proxy
 python test_proxy.py --port 8080
 ```
 
-You can run the test proxy against the previous `v2` client by running it with the `--legacy-client` flag:
+By default, the test_proxy targets the async client. You can change this by passing in the `--client_type` flag.
+Valid options are `async` and `legacy`.
 
 ```
-python test_proxy.py --legacy-client
+python test_proxy.py --client_type=legacy
 ```
 
 ### Run the test cases

@@ -13,3 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+TEST_FAMILY = "test-family"
+TEST_FAMILY_2 = "test-family-2"

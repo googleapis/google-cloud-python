@@ -23,7 +23,6 @@ PROXY_ARGS=""
 TEST_ARGS=""
 if [[ "${CLIENT_TYPE^^}" == "LEGACY" ]]; then
   echo "Using legacy client"
-  PROXY_ARGS="--legacy-client"
   # legacy client does not expose mutate_row. Disable those tests
   TEST_ARGS="-skip TestMutateRow_"
 fi
@@ -31,7 +30,7 @@ fi
 # Build and start the proxy in a separate process
 PROXY_PORT=9999
 pushd test_proxy
-nohup python test_proxy.py --port $PROXY_PORT $PROXY_ARGS &
+nohup python test_proxy.py --port $PROXY_PORT --client_type=$CLIENT_TYPE &
 proxyPID=$!
 popd
 
