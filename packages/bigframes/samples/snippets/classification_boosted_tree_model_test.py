@@ -62,7 +62,7 @@ def test_boosted_tree_model(random_model_id: str) -> None:
         replace=True,
     )
     # [END bigquery_dataframes_bqml_boosted_tree_create]
-    # [START bigquery_dataframes_bqml_boosted_tree_explain]
+    # [START bigquery_dataframes_bqml_boosted_tree_evaluate]
     # Select model you'll use for predictions. `read_gbq_model` loads model
     # data from BigQuery, but you could also use the `tree_model` object
     # from the previous step.
@@ -82,8 +82,33 @@ def test_boosted_tree_model(random_model_id: str) -> None:
     # Output:
     #    precision    recall  accuracy  f1_score  log_loss   roc_auc
     # 0   0.671924  0.578804  0.839429  0.621897  0.344054  0.887335
-    # [END bigquery_dataframes_bqml_boosted_tree_explain]
+    # [END bigquery_dataframes_bqml_boosted_tree_evaluate]
+    # [START bigquery_dataframes_bqml_boosted_tree_predict]
+    # Select model you'll use for predictions. `read_gbq_model` loads model
+    # data from BigQuery, but you could also use the `tree_model` object
+    # from previous steps.
+    tree_model = bpd.read_gbq_model(
+        your_model_id,  # For example: "your-project.bqml_tutorial.tree_model"
+    )
+
+    # input_data is defined in an earlier step.
+    prediction_data = input_data[input_data["dataframe"] == "prediction"]
+
+    predictions = tree_model.predict(prediction_data)
+    predictions.peek()
+    # Output:
+    # predicted_income_bracket   predicted_income_bracket_probs.label  predicted_income_bracket_probs.prob
+    #                   <=50K                                   >50K                   0.05183430016040802
+    #                                                           <50K                   0.94816571474075317
+    #                   <=50K                                   >50K                   0.00365859130397439
+    #                                                           <50K                   0.99634140729904175
+    #                   <=50K                                   >50K                   0.037775970995426178
+    #                                                           <50K                   0.96222406625747681
+    # [END bigquery_dataframes_bqml_boosted_tree_predict]
+    assert input_data is not None
+    assert training_data is not None
     assert tree_model is not None
     assert evaluation_data is not None
     assert score is not None
-    assert input_data is not None
+    assert prediction_data is not None
+    assert predictions is not None
