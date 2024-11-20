@@ -1392,6 +1392,95 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             )
         return self._stubs["import_entries"]
 
+    @property
+    def set_config(
+        self,
+    ) -> Callable[[datacatalog.SetConfigRequest], datacatalog.MigrationConfig]:
+        r"""Return a callable for the set config method over gRPC.
+
+        Sets the configuration related to the migration to
+        Dataplex for an organization or project.
+
+        Returns:
+            Callable[[~.SetConfigRequest],
+                    ~.MigrationConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_config" not in self._stubs:
+            self._stubs["set_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/SetConfig",
+                request_serializer=datacatalog.SetConfigRequest.serialize,
+                response_deserializer=datacatalog.MigrationConfig.deserialize,
+            )
+        return self._stubs["set_config"]
+
+    @property
+    def retrieve_config(
+        self,
+    ) -> Callable[[datacatalog.RetrieveConfigRequest], datacatalog.OrganizationConfig]:
+        r"""Return a callable for the retrieve config method over gRPC.
+
+        Retrieves the configuration related to the migration
+        from Data Catalog to Dataplex for a specific
+        organization, including all the projects under it which
+        have a separate configuration set.
+
+        Returns:
+            Callable[[~.RetrieveConfigRequest],
+                    ~.OrganizationConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "retrieve_config" not in self._stubs:
+            self._stubs["retrieve_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/RetrieveConfig",
+                request_serializer=datacatalog.RetrieveConfigRequest.serialize,
+                response_deserializer=datacatalog.OrganizationConfig.deserialize,
+            )
+        return self._stubs["retrieve_config"]
+
+    @property
+    def retrieve_effective_config(
+        self,
+    ) -> Callable[
+        [datacatalog.RetrieveEffectiveConfigRequest], datacatalog.MigrationConfig
+    ]:
+        r"""Return a callable for the retrieve effective config method over gRPC.
+
+        Retrieves the effective configuration related to the
+        migration from Data Catalog to Dataplex for a specific
+        organization or project. If there is no specific
+        configuration set for the resource, the setting is
+        checked hierarchicahlly through the ancestors of the
+        resource, starting from the resource itself.
+
+        Returns:
+            Callable[[~.RetrieveEffectiveConfigRequest],
+                    ~.MigrationConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "retrieve_effective_config" not in self._stubs:
+            self._stubs["retrieve_effective_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/RetrieveEffectiveConfig",
+                request_serializer=datacatalog.RetrieveEffectiveConfigRequest.serialize,
+                response_deserializer=datacatalog.MigrationConfig.deserialize,
+            )
+        return self._stubs["retrieve_effective_config"]
+
     def close(self):
         self.grpc_channel.close()
 
