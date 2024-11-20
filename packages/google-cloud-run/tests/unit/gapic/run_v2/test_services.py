@@ -5865,7 +5865,11 @@ def test_create_service_rest_call_success(request_type):
                 "tag": "tag_value",
             }
         ],
-        "scaling": {"min_instance_count": 1920, "scaling_mode": 1},
+        "scaling": {
+            "min_instance_count": 1920,
+            "scaling_mode": 1,
+            "manual_instance_count": 2234,
+        },
         "invoker_iam_disabled": True,
         "default_uri_disabled": True,
         "urls": ["urls_value1", "urls_value2"],
@@ -6486,7 +6490,11 @@ def test_update_service_rest_call_success(request_type):
                 "tag": "tag_value",
             }
         ],
-        "scaling": {"min_instance_count": 1920, "scaling_mode": 1},
+        "scaling": {
+            "min_instance_count": 1920,
+            "scaling_mode": 1,
+            "manual_instance_count": 2234,
+        },
         "invoker_iam_disabled": True,
         "default_uri_disabled": True,
         "urls": ["urls_value1", "urls_value2"],
