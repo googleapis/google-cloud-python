@@ -211,7 +211,11 @@ class _BaseModelServiceRestTransport(ModelServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=generatedFiles/*}/operations/*",
+                    "uri": "/v1/{name=generatedFiles/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=models/*/operations/*}",
                 },
             ]
             return http_options
@@ -241,6 +245,10 @@ class _BaseModelServiceRestTransport(ModelServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=tunedModels/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=models/*}/operations",
                 },
             ]
             return http_options

@@ -1544,6 +1544,7 @@ def test_create_entry_group(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            transferred_to_dataplex=True,
         )
         response = client.create_entry_group(request)
 
@@ -1558,6 +1559,7 @@ def test_create_entry_group(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.transferred_to_dataplex is True
 
 
 def test_create_entry_group_non_empty_request_with_auto_populated_field():
@@ -1696,6 +1698,7 @@ async def test_create_entry_group_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                transferred_to_dataplex=True,
             )
         )
         response = await client.create_entry_group(request)
@@ -1711,6 +1714,7 @@ async def test_create_entry_group_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.transferred_to_dataplex is True
 
 
 @pytest.mark.asyncio
@@ -1913,6 +1917,7 @@ def test_get_entry_group(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            transferred_to_dataplex=True,
         )
         response = client.get_entry_group(request)
 
@@ -1927,6 +1932,7 @@ def test_get_entry_group(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.transferred_to_dataplex is True
 
 
 def test_get_entry_group_non_empty_request_with_auto_populated_field():
@@ -2055,6 +2061,7 @@ async def test_get_entry_group_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                transferred_to_dataplex=True,
             )
         )
         response = await client.get_entry_group(request)
@@ -2070,6 +2077,7 @@ async def test_get_entry_group_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.transferred_to_dataplex is True
 
 
 @pytest.mark.asyncio
@@ -2256,6 +2264,7 @@ def test_update_entry_group(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            transferred_to_dataplex=True,
         )
         response = client.update_entry_group(request)
 
@@ -2270,6 +2279,7 @@ def test_update_entry_group(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.transferred_to_dataplex is True
 
 
 def test_update_entry_group_non_empty_request_with_auto_populated_field():
@@ -2402,6 +2412,7 @@ async def test_update_entry_group_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                transferred_to_dataplex=True,
             )
         )
         response = await client.update_entry_group(request)
@@ -2417,6 +2428,7 @@ async def test_update_entry_group_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.transferred_to_dataplex is True
 
 
 @pytest.mark.asyncio
@@ -9319,6 +9331,7 @@ def test_create_tag(request_type, transport: str = "grpc"):
             name="name_value",
             template="template_value",
             template_display_name="template_display_name_value",
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             column="column_value",
         )
         response = client.create_tag(request)
@@ -9334,6 +9347,10 @@ def test_create_tag(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.template == "template_value"
     assert response.template_display_name == "template_display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_create_tag_non_empty_request_with_auto_populated_field():
@@ -9460,6 +9477,7 @@ async def test_create_tag_async(
                 name="name_value",
                 template="template_value",
                 template_display_name="template_display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.create_tag(request)
@@ -9475,6 +9493,10 @@ async def test_create_tag_async(
     assert response.name == "name_value"
     assert response.template == "template_value"
     assert response.template_display_name == "template_display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
@@ -9655,6 +9677,7 @@ def test_update_tag(request_type, transport: str = "grpc"):
             name="name_value",
             template="template_value",
             template_display_name="template_display_name_value",
+            dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             column="column_value",
         )
         response = client.update_tag(request)
@@ -9670,6 +9693,10 @@ def test_update_tag(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.template == "template_value"
     assert response.template_display_name == "template_display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 def test_update_tag_non_empty_request_with_auto_populated_field():
@@ -9792,6 +9819,7 @@ async def test_update_tag_async(
                 name="name_value",
                 template="template_value",
                 template_display_name="template_display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         response = await client.update_tag(request)
@@ -9807,6 +9835,10 @@ async def test_update_tag_async(
     assert response.name == "name_value"
     assert response.template == "template_value"
     assert response.template_display_name == "template_display_name_value"
+    assert (
+        response.dataplex_transfer_status
+        == tags.TagTemplate.DataplexTransferStatus.MIGRATED
+    )
 
 
 @pytest.mark.asyncio
@@ -12873,6 +12905,769 @@ async def test_import_entries_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datacatalog.SetConfigRequest,
+        dict,
+    ],
+)
+def test_set_config(request_type, transport: str = "grpc"):
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.MigrationConfig(
+            tag_template_migration=datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED,
+            catalog_ui_experience=datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED,
+        )
+        response = client.set_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = datacatalog.SetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.MigrationConfig)
+    assert (
+        response.tag_template_migration
+        == datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED
+    )
+    assert (
+        response.catalog_ui_experience
+        == datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED
+    )
+
+
+def test_set_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.SetConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_config), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.set_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.SetConfigRequest(
+            name="name_value",
+        )
+
+
+def test_set_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataCatalogClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.set_config in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.set_config] = mock_rpc
+        request = {}
+        client.set_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.set_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_set_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DataCatalogAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.set_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.set_config
+        ] = mock_rpc
+
+        request = {}
+        await client.set_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.set_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_set_config_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.SetConfigRequest
+):
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.MigrationConfig(
+                tag_template_migration=datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED,
+                catalog_ui_experience=datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED,
+            )
+        )
+        response = await client.set_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = datacatalog.SetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.MigrationConfig)
+    assert (
+        response.tag_template_migration
+        == datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED
+    )
+    assert (
+        response.catalog_ui_experience
+        == datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED
+    )
+
+
+@pytest.mark.asyncio
+async def test_set_config_async_from_dict():
+    await test_set_config_async(request_type=dict)
+
+
+def test_set_config_field_headers():
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.SetConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_config), "__call__") as call:
+        call.return_value = datacatalog.MigrationConfig()
+        client.set_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_set_config_field_headers_async():
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.SetConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.MigrationConfig()
+        )
+        await client.set_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datacatalog.RetrieveConfigRequest,
+        dict,
+    ],
+)
+def test_retrieve_config(request_type, transport: str = "grpc"):
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.retrieve_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.OrganizationConfig()
+        response = client.retrieve_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = datacatalog.RetrieveConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.OrganizationConfig)
+
+
+def test_retrieve_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.RetrieveConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.retrieve_config), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.retrieve_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.RetrieveConfigRequest(
+            name="name_value",
+        )
+
+
+def test_retrieve_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataCatalogClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.retrieve_config in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.retrieve_config] = mock_rpc
+        request = {}
+        client.retrieve_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.retrieve_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_retrieve_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DataCatalogAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.retrieve_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.retrieve_config
+        ] = mock_rpc
+
+        request = {}
+        await client.retrieve_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.retrieve_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_retrieve_config_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.RetrieveConfigRequest
+):
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.retrieve_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.OrganizationConfig()
+        )
+        response = await client.retrieve_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = datacatalog.RetrieveConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.OrganizationConfig)
+
+
+@pytest.mark.asyncio
+async def test_retrieve_config_async_from_dict():
+    await test_retrieve_config_async(request_type=dict)
+
+
+def test_retrieve_config_field_headers():
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.RetrieveConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.retrieve_config), "__call__") as call:
+        call.return_value = datacatalog.OrganizationConfig()
+        client.retrieve_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_retrieve_config_field_headers_async():
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.RetrieveConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.retrieve_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.OrganizationConfig()
+        )
+        await client.retrieve_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datacatalog.RetrieveEffectiveConfigRequest,
+        dict,
+    ],
+)
+def test_retrieve_effective_config(request_type, transport: str = "grpc"):
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_effective_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.MigrationConfig(
+            tag_template_migration=datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED,
+            catalog_ui_experience=datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED,
+        )
+        response = client.retrieve_effective_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = datacatalog.RetrieveEffectiveConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.MigrationConfig)
+    assert (
+        response.tag_template_migration
+        == datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED
+    )
+    assert (
+        response.catalog_ui_experience
+        == datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED
+    )
+
+
+def test_retrieve_effective_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datacatalog.RetrieveEffectiveConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_effective_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.retrieve_effective_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.RetrieveEffectiveConfigRequest(
+            name="name_value",
+        )
+
+
+def test_retrieve_effective_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DataCatalogClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.retrieve_effective_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.retrieve_effective_config
+        ] = mock_rpc
+        request = {}
+        client.retrieve_effective_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.retrieve_effective_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_retrieve_effective_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DataCatalogAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.retrieve_effective_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.retrieve_effective_config
+        ] = mock_rpc
+
+        request = {}
+        await client.retrieve_effective_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.retrieve_effective_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_retrieve_effective_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=datacatalog.RetrieveEffectiveConfigRequest,
+):
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_effective_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.MigrationConfig(
+                tag_template_migration=datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED,
+                catalog_ui_experience=datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED,
+            )
+        )
+        response = await client.retrieve_effective_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = datacatalog.RetrieveEffectiveConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.MigrationConfig)
+    assert (
+        response.tag_template_migration
+        == datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED
+    )
+    assert (
+        response.catalog_ui_experience
+        == datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED
+    )
+
+
+@pytest.mark.asyncio
+async def test_retrieve_effective_config_async_from_dict():
+    await test_retrieve_effective_config_async(request_type=dict)
+
+
+def test_retrieve_effective_config_field_headers():
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.RetrieveEffectiveConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_effective_config), "__call__"
+    ) as call:
+        call.return_value = datacatalog.MigrationConfig()
+        client.retrieve_effective_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_retrieve_effective_config_field_headers_async():
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.RetrieveEffectiveConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_effective_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.MigrationConfig()
+        )
+        await client.retrieve_effective_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataCatalogGrpcTransport(
@@ -13722,6 +14517,71 @@ def test_import_entries_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_config_empty_call_grpc():
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_config), "__call__") as call:
+        call.return_value = datacatalog.MigrationConfig()
+        client.set_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datacatalog.SetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_retrieve_config_empty_call_grpc():
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.retrieve_config), "__call__") as call:
+        call.return_value = datacatalog.OrganizationConfig()
+        client.retrieve_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datacatalog.RetrieveConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_retrieve_effective_config_empty_call_grpc():
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_effective_config), "__call__"
+    ) as call:
+        call.return_value = datacatalog.MigrationConfig()
+        client.retrieve_effective_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datacatalog.RetrieveEffectiveConfigRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = DataCatalogAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -13784,6 +14644,7 @@ async def test_create_entry_group_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                transferred_to_dataplex=True,
             )
         )
         await client.create_entry_group(request=None)
@@ -13813,6 +14674,7 @@ async def test_get_entry_group_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                transferred_to_dataplex=True,
             )
         )
         await client.get_entry_group(request=None)
@@ -13844,6 +14706,7 @@ async def test_update_entry_group_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                transferred_to_dataplex=True,
             )
         )
         await client.update_entry_group(request=None)
@@ -14433,6 +15296,7 @@ async def test_create_tag_empty_call_grpc_asyncio():
                 name="name_value",
                 template="template_value",
                 template_display_name="template_display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         await client.create_tag(request=None)
@@ -14462,6 +15326,7 @@ async def test_update_tag_empty_call_grpc_asyncio():
                 name="name_value",
                 template="template_value",
                 template_display_name="template_display_name_value",
+                dataplex_transfer_status=tags.TagTemplate.DataplexTransferStatus.MIGRATED,
             )
         )
         await client.update_tag(request=None)
@@ -14709,6 +15574,89 @@ async def test_import_entries_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_set_config_empty_call_grpc_asyncio():
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.MigrationConfig(
+                tag_template_migration=datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED,
+                catalog_ui_experience=datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED,
+            )
+        )
+        await client.set_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datacatalog.SetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_retrieve_config_empty_call_grpc_asyncio():
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.retrieve_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.OrganizationConfig()
+        )
+        await client.retrieve_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datacatalog.RetrieveConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_retrieve_effective_config_empty_call_grpc_asyncio():
+    client = DataCatalogAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.retrieve_effective_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.MigrationConfig(
+                tag_template_migration=datacatalog.TagTemplateMigration.TAG_TEMPLATE_MIGRATION_ENABLED,
+                catalog_ui_experience=datacatalog.CatalogUIExperience.CATALOG_UI_EXPERIENCE_ENABLED,
+            )
+        )
+        await client.retrieve_effective_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datacatalog.RetrieveEffectiveConfigRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DataCatalogClient(
@@ -14776,6 +15724,9 @@ def test_data_catalog_base_transport():
         "get_iam_policy",
         "test_iam_permissions",
         "import_entries",
+        "set_config",
+        "retrieve_config",
+        "retrieve_effective_config",
         "get_operation",
         "cancel_operation",
         "delete_operation",

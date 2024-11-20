@@ -343,6 +343,11 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                     "uri": "/v1/{model=models/*}:streamGenerateContent",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{model=tunedModels/*}:streamGenerateContent",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -422,7 +427,11 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=generatedFiles/*}/operations/*",
+                    "uri": "/v1/{name=generatedFiles/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=models/*/operations/*}",
                 },
             ]
             return http_options
@@ -452,6 +461,10 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=tunedModels/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=models/*}/operations",
                 },
             ]
             return http_options

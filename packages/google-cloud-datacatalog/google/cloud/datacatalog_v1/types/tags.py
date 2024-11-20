@@ -79,6 +79,9 @@ class Tag(proto.Message):
             Tag template defines valid field IDs. A tag
             must have at least 1 field and at most 500
             fields.
+        dataplex_transfer_status (google.cloud.datacatalog_v1.types.TagTemplate.DataplexTransferStatus):
+            Output only. Denotes the transfer status of
+            the Tag Template.
     """
 
     name: str = proto.Field(
@@ -103,6 +106,11 @@ class Tag(proto.Message):
         proto.MESSAGE,
         number=3,
         message="TagField",
+    )
+    dataplex_transfer_status: "TagTemplate.DataplexTransferStatus" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="TagTemplate.DataplexTransferStatus",
     )
 
 
@@ -288,9 +296,14 @@ class TagTemplate(proto.Message):
                 Deprecated: Individual TagTemplate migration is
                 deprecated in favor of organization or project
                 wide TagTemplate migration opt-in.
+            TRANSFERRED (2):
+                TagTemplate and its tags are auto-copied to
+                Dataplex service. Visible in both services.
+                Editable in Dataplex, read-only in DataCatalog.
         """
         DATAPLEX_TRANSFER_STATUS_UNSPECIFIED = 0
         MIGRATED = 1
+        TRANSFERRED = 2
 
     name: str = proto.Field(
         proto.STRING,

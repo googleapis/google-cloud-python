@@ -32,6 +32,12 @@ __protobuf__ = proto.module(
         "GenerateContentResponse",
         "Candidate",
         "LogprobsResult",
+        "RetrievalMetadata",
+        "GroundingMetadata",
+        "SearchEntryPoint",
+        "GroundingChunk",
+        "Segment",
+        "GroundingSupport",
         "EmbedContentRequest",
         "ContentEmbedding",
         "EmbedContentResponse",
@@ -265,7 +271,7 @@ class GenerationConfig(proto.Message):
             the model to start repeating a common token until it hits
             the
             [max_output_tokens][google.ai.generativelanguage.v1.GenerationConfig.max_output_tokens]
-            limit: "...the the the the the...".
+            limit.
 
             This field is a member of `oneof`_ ``_frequency_penalty``.
         response_logprobs (bool):
@@ -356,6 +362,9 @@ class GenerateContentResponse(proto.Message):
         usage_metadata (google.ai.generativelanguage_v1.types.GenerateContentResponse.UsageMetadata):
             Output only. Metadata on the generation
             requests' token usage.
+        model_version (str):
+            Output only. The model version used to
+            generate the response.
     """
 
     class PromptFeedback(proto.Message):
@@ -452,6 +461,10 @@ class GenerateContentResponse(proto.Message):
         number=3,
         message=UsageMetadata,
     )
+    model_version: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class Candidate(proto.Message):
@@ -487,8 +500,13 @@ class Candidate(proto.Message):
             foundational LLM's training data.
         token_count (int):
             Output only. Token count for this candidate.
+        grounding_metadata (google.ai.generativelanguage_v1.types.GroundingMetadata):
+            Output only. Grounding metadata for the candidate.
+
+            This field is populated for ``GenerateContent`` calls.
         avg_logprobs (float):
-            Output only.
+            Output only. Average log probability score of
+            the candidate.
         logprobs_result (google.ai.generativelanguage_v1.types.LogprobsResult):
             Output only. Log-likelihood scores for the
             response tokens and top tokens
@@ -572,6 +590,11 @@ class Candidate(proto.Message):
         proto.INT32,
         number=7,
     )
+    grounding_metadata: "GroundingMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="GroundingMetadata",
+    )
     avg_logprobs: float = proto.Field(
         proto.DOUBLE,
         number=10,
@@ -654,6 +677,226 @@ class LogprobsResult(proto.Message):
         proto.MESSAGE,
         number=2,
         message=Candidate,
+    )
+
+
+class RetrievalMetadata(proto.Message):
+    r"""Metadata related to retrieval in the grounding flow.
+
+    Attributes:
+        google_search_dynamic_retrieval_score (float):
+            Optional. Score indicating how likely information from
+            google search could help answer the prompt. The score is in
+            the range [0, 1], where 0 is the least likely and 1 is the
+            most likely. This score is only populated when google search
+            grounding and dynamic retrieval is enabled. It will be
+            compared to the threshold to determine whether to trigger
+            google search.
+    """
+
+    google_search_dynamic_retrieval_score: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+
+
+class GroundingMetadata(proto.Message):
+    r"""Metadata returned to client when grounding is enabled.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        search_entry_point (google.ai.generativelanguage_v1.types.SearchEntryPoint):
+            Optional. Google search entry for the
+            following-up web searches.
+
+            This field is a member of `oneof`_ ``_search_entry_point``.
+        grounding_chunks (MutableSequence[google.ai.generativelanguage_v1.types.GroundingChunk]):
+            List of supporting references retrieved from
+            specified grounding source.
+        grounding_supports (MutableSequence[google.ai.generativelanguage_v1.types.GroundingSupport]):
+            List of grounding support.
+        retrieval_metadata (google.ai.generativelanguage_v1.types.RetrievalMetadata):
+            Metadata related to retrieval in the
+            grounding flow.
+
+            This field is a member of `oneof`_ ``_retrieval_metadata``.
+        web_search_queries (MutableSequence[str]):
+            Web search queries for the following-up web
+            search.
+    """
+
+    search_entry_point: "SearchEntryPoint" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message="SearchEntryPoint",
+    )
+    grounding_chunks: MutableSequence["GroundingChunk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="GroundingChunk",
+    )
+    grounding_supports: MutableSequence["GroundingSupport"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="GroundingSupport",
+    )
+    retrieval_metadata: "RetrievalMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message="RetrievalMetadata",
+    )
+    web_search_queries: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+
+
+class SearchEntryPoint(proto.Message):
+    r"""Google search entry point.
+
+    Attributes:
+        rendered_content (str):
+            Optional. Web content snippet that can be
+            embedded in a web page or an app webview.
+        sdk_blob (bytes):
+            Optional. Base64 encoded JSON representing
+            array of <search term, search url> tuple.
+    """
+
+    rendered_content: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    sdk_blob: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+
+
+class GroundingChunk(proto.Message):
+    r"""Grounding chunk.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        web (google.ai.generativelanguage_v1.types.GroundingChunk.Web):
+            Grounding chunk from the web.
+
+            This field is a member of `oneof`_ ``chunk_type``.
+    """
+
+    class Web(proto.Message):
+        r"""Chunk from the web.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            uri (str):
+                URI reference of the chunk.
+
+                This field is a member of `oneof`_ ``_uri``.
+            title (str):
+                Title of the chunk.
+
+                This field is a member of `oneof`_ ``_title``.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        title: str = proto.Field(
+            proto.STRING,
+            number=2,
+            optional=True,
+        )
+
+    web: Web = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="chunk_type",
+        message=Web,
+    )
+
+
+class Segment(proto.Message):
+    r"""Segment of the content.
+
+    Attributes:
+        part_index (int):
+            Output only. The index of a Part object
+            within its parent Content object.
+        start_index (int):
+            Output only. Start index in the given Part,
+            measured in bytes. Offset from the start of the
+            Part, inclusive, starting at zero.
+        end_index (int):
+            Output only. End index in the given Part,
+            measured in bytes. Offset from the start of the
+            Part, exclusive, starting at zero.
+        text (str):
+            Output only. The text corresponding to the
+            segment from the response.
+    """
+
+    part_index: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    start_index: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    end_index: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    text: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class GroundingSupport(proto.Message):
+    r"""Grounding support.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        segment (google.ai.generativelanguage_v1.types.Segment):
+            Segment of the content this support belongs
+            to.
+
+            This field is a member of `oneof`_ ``_segment``.
+        grounding_chunk_indices (MutableSequence[int]):
+            A list of indices (into 'grounding_chunk') specifying the
+            citations associated with the claim. For instance [1,3,4]
+            means that grounding_chunk[1], grounding_chunk[3],
+            grounding_chunk[4] are the retrieved content attributed to
+            the claim.
+        confidence_scores (MutableSequence[float]):
+            Confidence score of the support references. Ranges from 0 to
+            1. 1 is the most confident. This list must have the same
+            size as the grounding_chunk_indices.
+    """
+
+    segment: "Segment" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message="Segment",
+    )
+    grounding_chunk_indices: MutableSequence[int] = proto.RepeatedField(
+        proto.INT32,
+        number=2,
+    )
+    confidence_scores: MutableSequence[float] = proto.RepeatedField(
+        proto.FLOAT,
+        number=3,
     )
 
 

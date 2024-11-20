@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateTunedModel
+# Snippet for RetrieveEffectiveConfig
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-ai-generativelanguage
+#   python3 -m pip install google-cloud-datacatalog
 
 
-# [START generativelanguage_v1beta_generated_ModelService_UpdateTunedModel_sync]
+# [START datacatalog_v1_generated_DataCatalog_RetrieveEffectiveConfig_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,21 +31,22 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.ai import generativelanguage_v1beta
+from google.cloud import datacatalog_v1
 
 
-def sample_update_tuned_model():
+def sample_retrieve_effective_config():
     # Create a client
-    client = generativelanguage_v1beta.ModelServiceClient()
+    client = datacatalog_v1.DataCatalogClient()
 
     # Initialize request argument(s)
-    request = generativelanguage_v1beta.UpdateTunedModelRequest(
+    request = datacatalog_v1.RetrieveEffectiveConfigRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.update_tuned_model(request=request)
+    response = client.retrieve_effective_config(request=request)
 
     # Handle the response
     print(response)
 
-# [END generativelanguage_v1beta_generated_ModelService_UpdateTunedModel_sync]
+# [END datacatalog_v1_generated_DataCatalog_RetrieveEffectiveConfig_sync]

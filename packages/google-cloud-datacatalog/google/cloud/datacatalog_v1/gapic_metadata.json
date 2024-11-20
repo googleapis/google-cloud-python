@@ -130,9 +130,24 @@
                 "rename_tag_template_field_enum_value"
               ]
             },
+            "RetrieveConfig": {
+              "methods": [
+                "retrieve_config"
+              ]
+            },
+            "RetrieveEffectiveConfig": {
+              "methods": [
+                "retrieve_effective_config"
+              ]
+            },
             "SearchCatalog": {
               "methods": [
                 "search_catalog"
+              ]
+            },
+            "SetConfig": {
+              "methods": [
+                "set_config"
               ]
             },
             "SetIamPolicy": {
@@ -305,9 +320,24 @@
                 "rename_tag_template_field_enum_value"
               ]
             },
+            "RetrieveConfig": {
+              "methods": [
+                "retrieve_config"
+              ]
+            },
+            "RetrieveEffectiveConfig": {
+              "methods": [
+                "retrieve_effective_config"
+              ]
+            },
             "SearchCatalog": {
               "methods": [
                 "search_catalog"
+              ]
+            },
+            "SetConfig": {
+              "methods": [
+                "set_config"
               ]
             },
             "SetIamPolicy": {
