@@ -347,7 +347,7 @@ class GenerationConfig(proto.Message):
             the model to start repeating a common token until it hits
             the
             [max_output_tokens][google.ai.generativelanguage.v1beta.GenerationConfig.max_output_tokens]
-            limit: "...the the the the the...".
+            limit.
 
             This field is a member of `oneof`_ ``_frequency_penalty``.
         response_logprobs (bool):
@@ -502,6 +502,9 @@ class GenerateContentResponse(proto.Message):
         usage_metadata (google.ai.generativelanguage_v1beta.types.GenerateContentResponse.UsageMetadata):
             Output only. Metadata on the generation
             requests' token usage.
+        model_version (str):
+            Output only. The model version used to
+            generate the response.
     """
 
     class PromptFeedback(proto.Message):
@@ -605,6 +608,10 @@ class GenerateContentResponse(proto.Message):
         number=3,
         message=UsageMetadata,
     )
+    model_version: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class Candidate(proto.Message):
@@ -650,7 +657,8 @@ class Candidate(proto.Message):
 
             This field is populated for ``GenerateContent`` calls.
         avg_logprobs (float):
-            Output only.
+            Output only. Average log probability score of
+            the candidate.
         logprobs_result (google.ai.generativelanguage_v1beta.types.LogprobsResult):
             Output only. Log-likelihood scores for the
             response tokens and top tokens
@@ -976,6 +984,9 @@ class GroundingMetadata(proto.Message):
             grounding flow.
 
             This field is a member of `oneof`_ ``_retrieval_metadata``.
+        web_search_queries (MutableSequence[str]):
+            Web search queries for the following-up web
+            search.
     """
 
     search_entry_point: "SearchEntryPoint" = proto.Field(
@@ -999,6 +1010,10 @@ class GroundingMetadata(proto.Message):
         number=4,
         optional=True,
         message="RetrievalMetadata",
+    )
+    web_search_queries: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
     )
 
 

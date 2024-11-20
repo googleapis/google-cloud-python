@@ -299,7 +299,7 @@ class UpdateTunedModelRequest(proto.Message):
         tuned_model (google.ai.generativelanguage_v1beta.types.TunedModel):
             Required. The tuned model to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     tuned_model: gag_tuned_model.TunedModel = proto.Field(

@@ -400,6 +400,11 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                     "uri": "/v1beta/{model=models/*}:streamGenerateContent",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{model=tunedModels/*}:streamGenerateContent",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -433,6 +438,68 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseGetOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=tunedModels/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=generatedFiles/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=models/*/operations/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
+    class _BaseListOperations:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=tunedModels/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=models/*}/operations",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
 
