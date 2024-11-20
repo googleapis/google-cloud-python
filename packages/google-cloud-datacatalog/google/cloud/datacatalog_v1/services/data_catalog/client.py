@@ -4964,6 +4964,276 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         # Done; return the response.
         return response
 
+    def set_config(
+        self,
+        request: Optional[Union[datacatalog.SetConfigRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datacatalog.MigrationConfig:
+        r"""Sets the configuration related to the migration to
+        Dataplex for an organization or project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_v1
+
+            def sample_set_config():
+                # Create a client
+                client = datacatalog_v1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1.SetConfigRequest(
+                    tag_template_migration="TAG_TEMPLATE_MIGRATION_DISABLED",
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.set_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.datacatalog_v1.types.SetConfigRequest, dict]):
+                The request object. Request message for
+                [SetConfig][google.cloud.datacatalog.v1.DataCatalog.SetConfig].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datacatalog_v1.types.MigrationConfig:
+                The configuration related to the migration to Dataplex applied to an
+                   organization or project. It is the response message
+                   for
+                   [SetConfig][google.cloud.datacatalog.v1.DataCatalog.SetConfig]
+                   and
+                   [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.SetConfigRequest):
+            request = datacatalog.SetConfigRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def retrieve_config(
+        self,
+        request: Optional[Union[datacatalog.RetrieveConfigRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datacatalog.OrganizationConfig:
+        r"""Retrieves the configuration related to the migration
+        from Data Catalog to Dataplex for a specific
+        organization, including all the projects under it which
+        have a separate configuration set.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_v1
+
+            def sample_retrieve_config():
+                # Create a client
+                client = datacatalog_v1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1.RetrieveConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.retrieve_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.datacatalog_v1.types.RetrieveConfigRequest, dict]):
+                The request object. Request message for
+                [RetrieveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveConfig].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datacatalog_v1.types.OrganizationConfig:
+                The configuration related to the migration from Data Catalog to Dataplex that
+                   has been applied to an organization and any projects
+                   under it. It is the response message for
+                   [RetrieveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveConfig].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.RetrieveConfigRequest):
+            request = datacatalog.RetrieveConfigRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.retrieve_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def retrieve_effective_config(
+        self,
+        request: Optional[
+            Union[datacatalog.RetrieveEffectiveConfigRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datacatalog.MigrationConfig:
+        r"""Retrieves the effective configuration related to the
+        migration from Data Catalog to Dataplex for a specific
+        organization or project. If there is no specific
+        configuration set for the resource, the setting is
+        checked hierarchicahlly through the ancestors of the
+        resource, starting from the resource itself.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import datacatalog_v1
+
+            def sample_retrieve_effective_config():
+                # Create a client
+                client = datacatalog_v1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1.RetrieveEffectiveConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.retrieve_effective_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.datacatalog_v1.types.RetrieveEffectiveConfigRequest, dict]):
+                The request object. Request message for
+                [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datacatalog_v1.types.MigrationConfig:
+                The configuration related to the migration to Dataplex applied to an
+                   organization or project. It is the response message
+                   for
+                   [SetConfig][google.cloud.datacatalog.v1.DataCatalog.SetConfig]
+                   and
+                   [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, datacatalog.RetrieveEffectiveConfigRequest):
+            request = datacatalog.RetrieveEffectiveConfigRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.retrieve_effective_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "DataCatalogClient":
         return self
 

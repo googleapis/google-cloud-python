@@ -39,12 +39,7 @@ def sample_create_tuned_model():
     client = generativelanguage_v1beta.ModelServiceClient()
 
     # Initialize request argument(s)
-    tuned_model = generativelanguage_v1beta.TunedModel()
-    tuned_model.tuning_task.training_data.examples.examples.text_input = "text_input_value"
-    tuned_model.tuning_task.training_data.examples.examples.output = "output_value"
-
     request = generativelanguage_v1beta.CreateTunedModelRequest(
-        tuned_model=tuned_model,
     )
 
     # Make the request
