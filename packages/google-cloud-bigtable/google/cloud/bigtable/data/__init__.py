@@ -45,16 +45,30 @@ from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
 from google.cloud.bigtable.data._helpers import RowKeySamples
 from google.cloud.bigtable.data._helpers import ShardedQuery
 
+# setup custom CrossSync mappings for library
+from google.cloud.bigtable_v2.services.bigtable.async_client import (
+    BigtableAsyncClient,
+)
+from google.cloud.bigtable.data._async._read_rows import _ReadRowsOperationAsync
+from google.cloud.bigtable.data._async._mutate_rows import _MutateRowsOperationAsync
+
+from google.cloud.bigtable.data._cross_sync import CrossSync
+
+CrossSync.add_mapping("GapicClient", BigtableAsyncClient)
+CrossSync.add_mapping("_ReadRowsOperation", _ReadRowsOperationAsync)
+CrossSync.add_mapping("_MutateRowsOperation", _MutateRowsOperationAsync)
+CrossSync.add_mapping("MutationsBatcher", MutationsBatcherAsync)
+
 
 __version__: str = package_version.__version__
 
 __all__ = (
     "BigtableDataClientAsync",
     "TableAsync",
+    "MutationsBatcherAsync",
     "RowKeySamples",
     "ReadRowsQuery",
     "RowRange",
-    "MutationsBatcherAsync",
     "Mutation",
     "RowMutationEntry",
     "SetCell",

@@ -26,9 +26,9 @@ jobs:
       matrix:
         test-version: [ "v0.0.2" ]
         py-version: [ 3.8 ]
-        client-type: [ "Async v3", "Legacy" ]
+        client-type: [ "async", "legacy" ]
       fail-fast: false
-    name: "${{ matrix.client-type }} Client / Python ${{ matrix.py-version }} / Test Tag ${{ matrix.test-version }}"
+    name: "${{ matrix.client-type }} client / python ${{ matrix.py-version }} / test tag ${{ matrix.test-version }}"
     steps:
     - uses: actions/checkout@v4
       name: "Checkout python-bigtable"

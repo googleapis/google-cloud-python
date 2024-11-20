@@ -14,10 +14,8 @@
 
 from __future__ import annotations
 
-import asyncio
 from typing import (
     Any,
-    AsyncIterator,
     Dict,
     Optional,
     Sequence,
@@ -43,40 +41,31 @@ from google.cloud.bigtable_v2.types.bigtable import (
     ExecuteQueryRequest as ExecuteQueryRequestPB,
 )
 
+from google.cloud.bigtable.data._cross_sync import CrossSync
+
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data import BigtableDataClientAsync
+    if CrossSync.is_async:
+        from google.cloud.bigtable.data import BigtableDataClientAsync as DataClientType
+
+__CROSS_SYNC_OUTPUT__ = (
+    "google.cloud.bigtable.data.execute_query._sync_autogen.execute_query_iterator"
+)
 
 
+@CrossSync.convert_class(sync_name="ExecuteQueryIterator")
 class ExecuteQueryIteratorAsync:
-    """
-    ExecuteQueryIteratorAsync handles collecting streaming responses from the
-    ExecuteQuery RPC and parsing them to QueryResultRows.
-
-    ExecuteQueryIteratorAsync implements Asynchronous Iterator interface and can
-    be used with "async for" syntax. It is also a context manager.
-
-    It is **not thread-safe**. It should not be used by multiple asyncio Tasks.
-
-    Args:
-        client: bigtable client
-        instance_id: id of the instance on which the query is executed
-        request_body: dict representing the body of the ExecuteQueryRequest
-        attempt_timeout: the time budget for the entire operation, in seconds.
-            Failed requests will be retried within the budget.
-            Defaults to 600 seconds.
-        operation_timeout: the time budget for an individual network request, in seconds.
-            If it takes longer than this time to complete, the request will be cancelled with
-            a DeadlineExceeded exception, and a retry will be attempted.
-            Defaults to the 20 seconds. If None, defaults to operation_timeout.
-        req_metadata: metadata used while sending the gRPC request
-        retryable_excs: a list of errors that will be retried if encountered.
-    Raises:
-        RuntimeError: if the instance is not created within an async event loop context.
-    """
-
+    @CrossSync.convert(
+        docstring_format_vars={
+            "NO_LOOP": (
+                "RuntimeError: if the instance is not created within an async event loop context.",
+                "None",
+            ),
+            "TASK_OR_THREAD": ("asyncio Tasks", "threads"),
+        }
+    )
     def __init__(
         self,
-        client: BigtableDataClientAsync,
+        client: DataClientType,
         instance_id: str,
         app_profile_id: Optional[str],
         request_body: Dict[str, Any],
@@ -85,6 +74,25 @@ class ExecuteQueryIteratorAsync:
         req_metadata: Sequence[Tuple[str, str]] = (),
         retryable_excs: Sequence[type[Exception]] = (),
     ) -> None:
+        """
+        Collects responses from ExecuteQuery requests and parses them into QueryResultRows.
+
+        It is **not thread-safe**. It should not be used by multiple {TASK_OR_THREAD}.
+
+        Args:
+            client: bigtable client
+            instance_id: id of the instance on which the query is executed
+            request_body: dict representing the body of the ExecuteQueryRequest
+            attempt_timeout: the time budget for an individual network request, in seconds.
+                If it takes longer than this time to complete, the request will be cancelled with
+                a DeadlineExceeded exception, and a retry will be attempted.
+            operation_timeout: the time budget for the entire operation, in seconds.
+                Failed requests will be retried within the budget
+            req_metadata: metadata used while sending the gRPC request
+            retryable_excs: a list of errors that will be retried if encountered.
+        Raises:
+            {NO_LOOP}
+        """
         self._table_name = None
         self._app_profile_id = app_profile_id
         self._client = client
@@ -98,8 +106,7 @@ class ExecuteQueryIteratorAsync:
         self._attempt_timeout_gen = _attempt_timeout_generator(
             attempt_timeout, operation_timeout
         )
-        retryable_excs = retryable_excs or []
-        self._async_stream = retries.retry_target_stream_async(
+        self._stream = CrossSync.retry_target_stream(
             self._make_request_with_resume_token,
             retries.if_exception_type(*retryable_excs),
             retries.exponential_sleep_generator(0.01, 60, multiplier=2),
@@ -109,8 +116,11 @@ class ExecuteQueryIteratorAsync:
         self._req_metadata = req_metadata
 
         try:
-            self._register_instance_task = asyncio.create_task(
-                self._client._register_instance(instance_id, self)
+            self._register_instance_task = CrossSync.create_task(
+                self._client._register_instance,
+                instance_id,
+                self,
+                sync_executor=self._client._executor,
             )
         except RuntimeError as e:
             raise RuntimeError(
@@ -132,6 +142,7 @@ class ExecuteQueryIteratorAsync:
         """Returns the table_name of the iterator."""
         return self._table_name
 
+    @CrossSync.convert
     async def _make_request_with_resume_token(self):
         """
         perfoms the rpc call using the correct resume token.
@@ -150,23 +161,25 @@ class ExecuteQueryIteratorAsync:
             retry=None,
         )
 
-    async def _await_metadata(self) -> None:
+    @CrossSync.convert(replace_symbols={"__anext__": "__next__"})
+    async def _fetch_metadata(self) -> None:
         """
         If called before the first response was recieved, the first response
-        is awaited as part of this call.
+        is retrieved as part of this call.
         """
         if self._byte_cursor.metadata is None:
-            metadata_msg = await self._async_stream.__anext__()
+            metadata_msg = await self._stream.__anext__()
             self._byte_cursor.consume_metadata(metadata_msg)
 
-    async def _next_impl(self) -> AsyncIterator[QueryResultRow]:
+    @CrossSync.convert
+    async def _next_impl(self) -> CrossSync.Iterator[QueryResultRow]:
         """
         Generator wrapping the response stream which parses the stream results
         and returns full `QueryResultRow`s.
         """
-        await self._await_metadata()
+        await self._fetch_metadata()
 
-        async for response in self._async_stream:
+        async for response in self._stream:
             try:
                 bytes_to_parse = self._byte_cursor.consume(response)
                 if bytes_to_parse is None:
@@ -185,14 +198,17 @@ class ExecuteQueryIteratorAsync:
                 yield result
         await self.close()
 
+    @CrossSync.convert(sync_name="__next__", replace_symbols={"__anext__": "__next__"})
     async def __anext__(self) -> QueryResultRow:
         if self._is_closed:
-            raise StopAsyncIteration
+            raise CrossSync.StopIteration
         return await self._result_generator.__anext__()
 
+    @CrossSync.convert(sync_name="__iter__")
     def __aiter__(self):
         return self
 
+    @CrossSync.convert
     async def metadata(self) -> Optional[Metadata]:
         """
         Returns query metadata from the server or None if the iterator was
@@ -203,11 +219,12 @@ class ExecuteQueryIteratorAsync:
         # Metadata should be present in the first response in a stream.
         if self._byte_cursor.metadata is None:
             try:
-                await self._await_metadata()
-            except StopIteration:
+                await self._fetch_metadata()
+            except CrossSync.StopIteration:
                 return None
         return self._byte_cursor.metadata
 
+    @CrossSync.convert
     async def close(self) -> None:
         """
         Cancel all background tasks. Should be called all rows were processed.

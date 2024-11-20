@@ -35,7 +35,8 @@ if [ ! -d "cloud-bigtable-clients-test" ]; then
 fi
 
 # start proxy
-python test_proxy.py --port $PROXY_SERVER_PORT &
+echo "starting with client type: $CLIENT_TYPE"
+python test_proxy.py --port $PROXY_SERVER_PORT --client_type $CLIENT_TYPE &
 PROXY_PID=$!
 function finish {
   kill $PROXY_PID 

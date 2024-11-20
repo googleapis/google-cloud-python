@@ -55,7 +55,7 @@ def grpc_server_process(request_q, queue_pool, port=50055):
     server.wait_for_termination()
 
 
-async def client_handler_process_async(request_q, queue_pool, use_legacy_client=False):
+async def client_handler_process_async(request_q, queue_pool, client_type="async"):
     """
     Defines a process that recives Bigtable requests from a grpc_server_process,
     and runs the request using a client library instance
@@ -64,8 +64,7 @@ async def client_handler_process_async(request_q, queue_pool, use_legacy_client=
     import re
     import asyncio
     import warnings
-    import client_handler_data
-    import client_handler_legacy
+    import client_handler_data_async
     warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*Bigtable emulator.*")
 
     def camel_to_snake(str):
@@ -98,9 +97,7 @@ async def client_handler_process_async(request_q, queue_pool, use_legacy_client=
             return input_obj
 
     # Listen to requests from grpc server process
-    print_msg = "client_handler_process started"
-    if use_legacy_client:
-        print_msg += ", using legacy client"
+    print_msg = f"client_handler_process started with client_type={client_type}"
     print(print_msg)
     client_map = {}
     background_tasks = set()
@@ -114,10 +111,11 @@ async def client_handler_process_async(request_q, queue_pool, use_legacy_client=
             client = client_map.get(client_id, None)
             # handle special cases for client creation and deletion
             if fn_name == "CreateClient":
-                if use_legacy_client:
+                if client_type == "legacy":
+                    import client_handler_legacy
                     client = client_handler_legacy.LegacyTestProxyClientHandler(**json_data)
                 else:
-                    client = client_handler_data.TestProxyClientHandler(**json_data)
+                    client = client_handler_data_async.TestProxyClientHandlerAsync(**json_data)
                 client_map[client_id] = client
                 out_q.put(True)
             elif client is None:
@@ -142,21 +140,21 @@ async def client_handler_process_async(request_q, queue_pool, use_legacy_client=
         await asyncio.sleep(0.01)
 
 
-def client_handler_process(request_q, queue_pool, legacy_client=False):
+def client_handler_process(request_q, queue_pool, client_type="async"):
     """
     Sync entrypoint for client_handler_process_async
     """
     import asyncio
-    asyncio.run(client_handler_process_async(request_q, queue_pool, legacy_client))
+    asyncio.run(client_handler_process_async(request_q, queue_pool, client_type))
 
 
 p = argparse.ArgumentParser()
 p.add_argument("--port", dest='port', default="50055")
-p.add_argument('--legacy-client', dest='use_legacy', action='store_true', default=False)
+p.add_argument("--client_type", dest='client_type', default="async", choices=["async", "legacy"])
 
 if __name__ == "__main__":
     port = p.parse_args().port
-    use_legacy_client = p.parse_args().use_legacy
+    client_type = p.parse_args().client_type
 
     # start and run both processes
     # larger pools support more concurrent requests
@@ -176,7 +174,7 @@ if __name__ == "__main__":
             ),
         )
         proxy.start()
-        client_handler_process(request_q, response_queue_pool, use_legacy_client)
+        client_handler_process(request_q, response_queue_pool, client_type)
         proxy.join()
     else:
         # run proxy in forground and client in background

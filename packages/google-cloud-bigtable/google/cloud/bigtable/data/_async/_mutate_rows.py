@@ -15,37 +15,38 @@
 from __future__ import annotations
 
 from typing import Sequence, TYPE_CHECKING
-from dataclasses import dataclass
 import functools
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.cloud.bigtable_v2.types.bigtable as types_pb
 import google.cloud.bigtable.data.exceptions as bt_exceptions
 from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
 from google.cloud.bigtable.data._helpers import _retry_exception_factory
 
 # mutate_rows requests are limited to this number of mutations
 from google.cloud.bigtable.data.mutations import _MUTATE_ROWS_REQUEST_MUTATION_LIMIT
+from google.cloud.bigtable.data.mutations import _EntryWithProto
+
+from google.cloud.bigtable.data._cross_sync import CrossSync
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable_v2.services.bigtable.async_client import (
-        BigtableAsyncClient,
-    )
     from google.cloud.bigtable.data.mutations import RowMutationEntry
-    from google.cloud.bigtable.data._async.client import TableAsync
+
+    if CrossSync.is_async:
+        from google.cloud.bigtable_v2.services.bigtable.async_client import (
+            BigtableAsyncClient as GapicClientType,
+        )
+        from google.cloud.bigtable.data._async.client import TableAsync as TableType
+    else:
+        from google.cloud.bigtable_v2.services.bigtable.client import (  # type: ignore
+            BigtableClient as GapicClientType,
+        )
+        from google.cloud.bigtable.data._sync_autogen.client import Table as TableType  # type: ignore
+
+__CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen._mutate_rows"
 
 
-@dataclass
-class _EntryWithProto:
-    """
-    A dataclass to hold a RowMutationEntry and its corresponding proto representation.
-    """
-
-    entry: RowMutationEntry
-    proto: types_pb.MutateRowsRequest.Entry
-
-
+@CrossSync.convert_class("_MutateRowsOperation")
 class _MutateRowsOperationAsync:
     """
     MutateRowsOperation manages the logic of sending a set of row mutations,
@@ -65,10 +66,11 @@ class _MutateRowsOperationAsync:
             If not specified, the request will run until operation_timeout is reached.
     """
 
+    @CrossSync.convert
     def __init__(
         self,
-        gapic_client: "BigtableAsyncClient",
-        table: "TableAsync",
+        gapic_client: GapicClientType,
+        table: TableType,
         mutation_entries: list["RowMutationEntry"],
         operation_timeout: float,
         attempt_timeout: float | None,
@@ -97,7 +99,7 @@ class _MutateRowsOperationAsync:
             bt_exceptions._MutateRowsIncomplete,
         )
         sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
-        self._operation = retries.retry_target_async(
+        self._operation = lambda: CrossSync.retry_target(
             self._run_attempt,
             self.is_retryable,
             sleep_generator,
@@ -112,6 +114,7 @@ class _MutateRowsOperationAsync:
         self.remaining_indices = list(range(len(self.mutations)))
         self.errors: dict[int, list[Exception]] = {}
 
+    @CrossSync.convert
     async def start(self):
         """
         Start the operation, and run until completion
@@ -121,7 +124,7 @@ class _MutateRowsOperationAsync:
         """
         try:
             # trigger mutate_rows
-            await self._operation
+            await self._operation()
         except Exception as exc:
             # exceptions raised by retryable are added to the list of exceptions for all unfinalized mutations
             incomplete_indices = self.remaining_indices.copy()
@@ -148,6 +151,7 @@ class _MutateRowsOperationAsync:
                     all_errors, len(self.mutations)
                 )
 
+    @CrossSync.convert
     async def _run_attempt(self):
         """
         Run a single attempt of the mutate_rows rpc.
