@@ -158,10 +158,12 @@ class GbqDataLoader:
             ordering_col = f"rowid_{suffix}"
             suffix += 1
 
+        # Maybe should just convert to pyarrow or parquet?
         pandas_dataframe_copy = pandas_dataframe.copy()
         pandas_dataframe_copy.index.names = new_idx_ids
         pandas_dataframe_copy.columns = pandas.Index(new_col_ids)
         pandas_dataframe_copy[ordering_col] = np.arange(pandas_dataframe_copy.shape[0])
+        pandas_dataframe_copy = pandas_dataframe_copy.reset_index(drop=False)
 
         job_config = bigquery.LoadJobConfig()
         # Specify the datetime dtypes, which is auto-detected as timestamp types.

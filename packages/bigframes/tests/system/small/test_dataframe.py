@@ -99,6 +99,20 @@ def test_df_construct_pandas_load_job(scalars_dfs_maybe_ordered):
     assert_dfs_equivalent(pd_result, bf_result)
 
 
+def test_df_construct_structs(session):
+    pd_frame = pd.Series(
+        [
+            {"version": 1, "project": "pandas"},
+            {"version": 2, "project": "pandas"},
+            {"version": 1, "project": "numpy"},
+        ]
+    ).to_frame()
+    bf_series = session.read_pandas(pd_frame)
+    pd.testing.assert_frame_equal(
+        bf_series.to_pandas(), pd_frame, check_index_type=False, check_dtype=False
+    )
+
+
 def test_df_construct_pandas_set_dtype(scalars_dfs):
     columns = [
         "int64_too",
