@@ -18,7 +18,6 @@ import json
 import typing
 from typing import Collection, Literal, Mapping, Optional, Union
 
-import bigframes_vendored.constants as constants
 import google.cloud.bigquery as bigquery
 
 import bigframes.core.sql
@@ -96,10 +95,10 @@ def vector_search(
     query: Union[dataframe.DataFrame, series.Series],
     *,
     query_column_to_search: Optional[str] = None,
-    top_k: Optional[int] = 10,
-    distance_type: Literal["euclidean", "cosine"] = "euclidean",
+    top_k: Optional[int] = None,
+    distance_type: Optional[Literal["euclidean", "cosine", "dot_product"]] = None,
     fraction_lists_to_search: Optional[float] = None,
-    use_brute_force: bool = False,
+    use_brute_force: Optional[bool] = None,
 ) -> dataframe.DataFrame:
     """
     Conduct vector search which searches embeddings to find semantically similar entities.
@@ -141,7 +140,8 @@ def vector_search(
         ...             base_table="bigframes-dev.bigframes_tests_sys.base_table",
         ...             column_to_search="my_embedding",
         ...             query=search_query,
-        ...             top_k=2)
+        ...             top_k=2,
+        ...             use_brute_force=True)
              embedding  id my_embedding  distance
         dog    [1. 2.]   1      [1. 2.]       0.0
         cat  [3.  5.2]   5    [5.  5.4]  2.009975
@@ -185,17 +185,18 @@ def vector_search(
             find nearest neighbors. The column must have a type of ``ARRAY<FLOAT64>``. All elements in
             the array must be non-NULL and all values in the column must have the same array dimensions
             as the values in the ``column_to_search`` column. Can only be set when query is a DataFrame.
-        top_k (int, default 10):
+        top_k (int):
             Sepecifies the number of nearest neighbors to return. Default to 10.
         distance_type (str, defalt "euclidean"):
             Specifies the type of metric to use to compute the distance between two vectors.
-            Possible values are "euclidean" and "cosine". Default to "euclidean".
+            Possible values are "euclidean", "cosine" and "dot_product".
+            Default to "euclidean".
         fraction_lists_to_search (float, range in [0.0, 1.0]):
             Specifies the percentage of lists to search. Specifying a higher percentage leads to
             higher recall and slower performance, and the converse is true when specifying a lower
             percentage. It is only used when a vector index is also used. You can only specify
             ``fraction_lists_to_search`` when ``use_brute_force`` is set to False.
-        use_brute_force (bool, default False):
+        use_brute_force (bool):
             Determines whether to use brute force search by skipping the vector index if one is available.
             Default to False.
 
@@ -204,10 +205,6 @@ def vector_search(
     """
     import bigframes.series
 
-    if not fraction_lists_to_search and use_brute_force is True:
-        raise ValueError(
-            "You can't specify fraction_lists_to_search when use_brute_force is set to True."
-        )
     if (
         isinstance(query, bigframes.series.Series)
         and query_column_to_search is not None
@@ -215,26 +212,28 @@ def vector_search(
         raise ValueError(
             "You can't specify query_column_to_search when query is a Series."
         )
-    # TODO(ashleyxu): Support options in vector search. b/344019989
-    if fraction_lists_to_search is not None or use_brute_force is True:
-        raise NotImplementedError(
-            f"fraction_lists_to_search and use_brute_force is not supported. {constants.FEEDBACK_LINK}"
-        )
-    options = {
-        "base_table": base_table,
-        "column_to_search": column_to_search,
-        "query_column_to_search": query_column_to_search,
-        "distance_type": distance_type,
-        "top_k": top_k,
-        "fraction_lists_to_search": fraction_lists_to_search,
-        "use_brute_force": use_brute_force,
-    }
+
+    # Only populate options if not set to the default value.
+    # This avoids accidentally setting options that are mutually exclusive.
+    options = None
+    if fraction_lists_to_search is not None:
+        options = {} if options is None else options
+        options["fraction_lists_to_search"] = fraction_lists_to_search
+    if use_brute_force is not None:
+        options = {} if options is None else options
+        options["use_brute_force"] = use_brute_force
 
     (query,) = utils.convert_to_dataframe(query)
     sql_string, index_col_ids, index_labels = query._to_sql_query(include_index=True)
 
     sql = bigframes.core.sql.create_vector_search_sql(
-        sql_string=sql_string, options=options  # type: ignore
+        sql_string=sql_string,
+        base_table=base_table,
+        column_to_search=column_to_search,
+        query_column_to_search=query_column_to_search,
+        top_k=top_k,
+        distance_type=distance_type,
+        options=options,
     )
     if index_col_ids is not None:
         df = query._session.read_gbq(sql, index_col=index_col_ids)
