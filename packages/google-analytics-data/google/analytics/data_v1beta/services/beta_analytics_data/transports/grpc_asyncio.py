@@ -344,7 +344,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         r"""Return a callable for the batch run reports method over gRPC.
 
         Returns multiple reports in a batch. All reports must
-        be for the same GA4 Property.
+        be for the same Google Analytics property.
 
         Returns:
             Callable[[~.BatchRunReportsRequest],
@@ -374,7 +374,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         r"""Return a callable for the batch run pivot reports method over gRPC.
 
         Returns multiple pivot reports in a batch. All
-        reports must be for the same GA4 Property.
+        reports must be for the same Google Analytics property.
 
         Returns:
             Callable[[~.BatchRunPivotReportsRequest],
@@ -404,7 +404,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
 
         Returns metadata for dimensions and metrics available in
         reporting methods. Used to explore the dimensions and metrics.
-        In this method, a Google Analytics GA4 Property Identifier is
+        In this method, a Google Analytics property identifier is
         specified in the request, and the metadata response includes
         Custom dimensions and metrics as well as Universal metadata.
 

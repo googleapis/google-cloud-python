@@ -62,7 +62,7 @@ class CheckCompatibilityRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics GA4 property identifier whose events are
+            A Google Analytics property identifier whose events are
             tracked. To learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
             ``property`` should be the same value as in your
@@ -187,7 +187,7 @@ class RunReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics GA4 property identifier whose events are
+            A Google Analytics property identifier whose events are
             tracked. Specified in the URL path and not the body. To
             learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
@@ -247,10 +247,14 @@ class RunReportRequest(proto.Message):
         metric_aggregations (MutableSequence[google.analytics.data_v1beta.types.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
-            "RESERVED_(MetricAggregation)".
+            "RESERVED_(MetricAggregation)". Aggregates including both
+            comparisons and multiple date ranges will be aggregated
+            based on the date ranges.
         order_bys (MutableSequence[google.analytics.data_v1beta.types.OrderBy]):
             Specifies how rows are ordered in the
-            response.
+            response. Requests including both comparisons
+            and multiple date ranges will have order bys
+            applied on the comparisons.
         currency_code (str):
             A currency code in ISO4217 format, such as
             "AED", "USD", "JPY". If the field is empty, the
@@ -265,16 +269,16 @@ class RunReportRequest(proto.Message):
             if they are not separately removed by a filter.
 
             Regardless of this ``keep_empty_rows`` setting, only data
-            recorded by the Google Analytics (GA4) property can be
-            displayed in a report.
+            recorded by the Google Analytics property can be displayed
+            in a report.
 
             For example if a property never logs a ``purchase`` event,
             then a query for the ``eventName`` dimension and
             ``eventCount`` metric will not have a row eventName:
             "purchase" and eventCount: 0.
         return_property_quota (bool):
-            Toggles whether to return the current state of this
-            Analytics Property's quota. Quota is returned in
+            Toggles whether to return the current state of this Google
+            Analytics property's quota. Quota is returned in
             `PropertyQuota <#PropertyQuota>`__.
         comparisons (MutableSequence[google.analytics.data_v1beta.types.Comparison]):
             Optional. The configuration of comparisons
@@ -390,7 +394,7 @@ class RunReportResponse(proto.Message):
         metadata (google.analytics.data_v1beta.types.ResponseMetaData):
             Metadata for the report.
         property_quota (google.analytics.data_v1beta.types.PropertyQuota):
-            This Analytics Property's quota state
+            This Google Analytics property's quota state
             including this request.
         kind (str):
             Identifies what kind of resource this message is. This
@@ -454,7 +458,7 @@ class RunPivotReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics GA4 property identifier whose events are
+            A Google Analytics property identifier whose events are
             tracked. Specified in the URL path and not the body. To
             learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
@@ -510,16 +514,16 @@ class RunPivotReportRequest(proto.Message):
             if they are not separately removed by a filter.
 
             Regardless of this ``keep_empty_rows`` setting, only data
-            recorded by the Google Analytics (GA4) property can be
-            displayed in a report.
+            recorded by the Google Analytics property can be displayed
+            in a report.
 
             For example if a property never logs a ``purchase`` event,
             then a query for the ``eventName`` dimension and
             ``eventCount`` metric will not have a row eventName:
             "purchase" and eventCount: 0.
         return_property_quota (bool):
-            Toggles whether to return the current state of this
-            Analytics Property's quota. Quota is returned in
+            Toggles whether to return the current state of this Google
+            Analytics property's quota. Quota is returned in
             `PropertyQuota <#PropertyQuota>`__.
         comparisons (MutableSequence[google.analytics.data_v1beta.types.Comparison]):
             Optional. The configuration of comparisons
@@ -654,7 +658,7 @@ class RunPivotReportResponse(proto.Message):
         metadata (google.analytics.data_v1beta.types.ResponseMetaData):
             Metadata for the report.
         property_quota (google.analytics.data_v1beta.types.PropertyQuota):
-            This Analytics Property's quota state
+            This Google Analytics property's quota state
             including this request.
         kind (str):
             Identifies what kind of resource this message is. This
@@ -709,7 +713,7 @@ class BatchRunReportsRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics GA4 property identifier whose events are
+            A Google Analytics property identifier whose events are
             tracked. Specified in the URL path and not the body. To
             learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
@@ -765,7 +769,7 @@ class BatchRunPivotReportsRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics GA4 property identifier whose events are
+            A Google Analytics property identifier whose events are
             tracked. Specified in the URL path and not the body. To
             learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
@@ -823,9 +827,8 @@ class GetMetadataRequest(proto.Message):
         name (str):
             Required. The resource name of the metadata to retrieve.
             This name field is specified in the URL path and not URL
-            parameters. Property is a numeric Google Analytics GA4
-            Property identifier. To learn more, see `where to find your
-            Property
+            parameters. Property is a numeric Google Analytics property
+            identifier. To learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
             Example: properties/1234/metadata
@@ -846,7 +849,7 @@ class RunRealtimeReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics GA4 property identifier whose events are
+            A Google Analytics property identifier whose events are
             tracked. Specified in the URL path and not the body. To
             learn more, see `where to find your Property
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
@@ -883,8 +886,8 @@ class RunRealtimeReportRequest(proto.Message):
             Specifies how rows are ordered in the
             response.
         return_property_quota (bool):
-            Toggles whether to return the current state of this
-            Analytics Property's Realtime quota. Quota is returned in
+            Toggles whether to return the current state of this Google
+            Analytics property's Realtime quota. Quota is returned in
             `PropertyQuota <#PropertyQuota>`__.
         minute_ranges (MutableSequence[google.analytics.data_v1beta.types.MinuteRange]):
             The minute ranges of event data to read. If
@@ -977,8 +980,8 @@ class RunRealtimeReportResponse(proto.Message):
             API request, the response will contain ``rowCount`` of 175
             but only 50 rows.
         property_quota (google.analytics.data_v1beta.types.PropertyQuota):
-            This Analytics Property's Realtime quota
-            state including this request.
+            This Google Analytics property's Realtime
+            quota state including this request.
         kind (str):
             Identifies what kind of resource this message is. This
             ``kind`` is always the fixed string
