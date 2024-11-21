@@ -268,6 +268,25 @@ def test_null_index_series_self_join(
     )
 
 
+def test_null_index_series_self_join_on(
+    scalars_df_null_index, scalars_pandas_df_default_index
+):
+    # caller doesn't need index, but do need index on arg to join with 'on'
+    bf_result = scalars_df_null_index[["int64_col", "string_col"]].join(
+        scalars_df_null_index[["int64_too", "bool_col"]].set_index("int64_too"),
+        on="int64_col",
+    )
+    pd_result = scalars_pandas_df_default_index[["int64_col", "string_col"]].join(
+        scalars_pandas_df_default_index[["int64_too", "bool_col"]].set_index(
+            "int64_too"
+        ),
+        on="int64_col",
+    )
+    pd.testing.assert_frame_equal(
+        bf_result.to_pandas(), pd_result.reset_index(drop=True), check_dtype=False
+    )
+
+
 def test_null_index_series_self_aligns(
     scalars_df_null_index, scalars_pandas_df_default_index
 ):
@@ -318,6 +337,25 @@ def test_null_index_df_concat(scalars_df_null_index, scalars_pandas_df_default_i
         [scalars_pandas_df_default_index, scalars_pandas_df_default_index]
     )
     pd.testing.assert_frame_equal(
+        bf_result.to_pandas(), pd_result.reset_index(drop=True), check_dtype=False
+    )
+
+
+def test_null_index_map_dict_input(
+    scalars_df_null_index, scalars_pandas_df_default_index
+):
+
+    local_map = dict()
+    # construct a local map, incomplete to cover <NA> behavior
+    for s in scalars_pandas_df_default_index.string_col[:-3]:
+        if isinstance(s, str):
+            local_map[s] = ord(s[0])
+
+    pd_result = scalars_pandas_df_default_index.string_col.map(local_map)
+    pd_result = pd_result.astype("Int64")  # pandas type differences
+    bf_result = scalars_df_null_index.string_col.map(local_map)
+
+    pd.testing.assert_series_equal(
         bf_result.to_pandas(), pd_result.reset_index(drop=True), check_dtype=False
     )
 
