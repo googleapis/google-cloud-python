@@ -72,6 +72,17 @@ setup.py file. Applications which do not import directly from
 `google-resumable-media` can safely disregard this dependency. This backwards
 compatibility feature will be removed in a future major version update.
 
+Checksum Defaults
+~~~~~~~~~~~~~~~~~
+
+In Python Storage 3.0, uploads and downloads now have a default of "auto" where
+applicable. "Auto" will use crc32c checksums, except for unusual cases where the
+fast (C extension) crc32c implementation is not available, in which case it will
+use md5 instead. Before Python Storage 3.0, the default was md5 for most
+downloads and None for most uploads. Note that ranged downloads ("start" or
+"end" set) still do not support any checksumming, and some features in
+`transfer_manager.py` still support crc32c only.
+
 Miscellaneous
 ~~~~~~~~~~~~~
 

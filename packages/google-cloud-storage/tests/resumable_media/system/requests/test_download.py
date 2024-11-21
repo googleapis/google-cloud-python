@@ -31,6 +31,8 @@ from google.cloud.storage.exceptions import InvalidResponse
 from google.cloud.storage.exceptions import DataCorruption
 from .. import utils
 
+import google_crc32c
+
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURR_DIR, "..", "..", "data")
@@ -62,7 +64,7 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
     """
 
     EMPTY_MD5 = base64.b64encode(hashlib.md5(b"").digest()).decode("utf-8")
-    crc32c = _helpers._get_crc32c_object()
+    crc32c = google_crc32c.Checksum()
     crc32c.update(b"")
     EMPTY_CRC32C = base64.b64encode(crc32c.digest()).decode("utf-8")
 
@@ -269,7 +271,7 @@ class TestDownload(object):
     def _read_response_content(response):
         return response.content
 
-    @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+    @pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
     def test_download_full(self, add_files, authorized_transport, checksum):
         for info in ALL_FILES:
             actual_contents = self._get_contents(info)

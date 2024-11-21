@@ -1280,7 +1280,7 @@ class Test_Blob(unittest.TestCase):
                 headers=headers,
                 start=1,
                 end=3,
-                checksum="md5",
+                checksum="auto",
             )
         else:
             patched.assert_called_once_with(
@@ -1289,7 +1289,7 @@ class Test_Blob(unittest.TestCase):
                 headers=headers,
                 start=None,
                 end=None,
-                checksum="md5",
+                checksum="auto",
             )
 
         patched.return_value.consume.assert_called_once_with(
@@ -1490,7 +1490,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=False,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=DEFAULT_RETRY,
             )
 
@@ -1521,7 +1521,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=False,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=DEFAULT_RETRY,
             )
 
@@ -1548,7 +1548,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=False,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=DEFAULT_RETRY,
             )
 
@@ -1575,7 +1575,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=False,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=DEFAULT_RETRY,
             )
 
@@ -1623,7 +1623,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=raw_download,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=expected_retry,
             )
 
@@ -1702,7 +1702,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_match=None,
                 if_metageneration_not_match=None,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=expected_retry,
             )
             stream = blob._prep_and_do_download.mock_calls[0].args[0]
@@ -1758,7 +1758,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=False,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=DEFAULT_RETRY,
             )
             stream = blob._prep_and_do_download.mock_calls[0].args[0]
@@ -1791,7 +1791,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=False,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=DEFAULT_RETRY,
             )
             stream = blob._prep_and_do_download.mock_calls[0].args[0]
@@ -1833,7 +1833,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_not_match=None,
                 raw_download=False,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=DEFAULT_RETRY,
             )
             stream = blob._prep_and_do_download.mock_calls[0].args[0]
@@ -1873,7 +1873,7 @@ class Test_Blob(unittest.TestCase):
                 if_metageneration_match=None,
                 if_metageneration_not_match=None,
                 timeout=expected_timeout,
-                checksum="md5",
+                checksum="auto",
                 retry=expected_retry,
             )
             stream = blob._prep_and_do_download.mock_calls[0].args[0]
@@ -1908,7 +1908,7 @@ class Test_Blob(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            checksum="md5",
+            checksum="auto",
             retry=DEFAULT_RETRY,
         )
 
@@ -1938,7 +1938,7 @@ class Test_Blob(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            checksum="md5",
+            checksum="auto",
             retry=DEFAULT_RETRY,
         )
 
@@ -2175,7 +2175,7 @@ class Test_Blob(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            checksum="md5",
+            checksum="auto",
             retry=DEFAULT_RETRY,
         )
 
@@ -2213,7 +2213,7 @@ class Test_Blob(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            checksum="md5",
+            checksum="auto",
             retry=None,
         )
 
@@ -2414,6 +2414,7 @@ class Test_Blob(unittest.TestCase):
                 if_generation_not_match,
                 if_metageneration_match,
                 if_metageneration_not_match,
+                checksum=None,
                 retry=retry,
                 **timeout_kwarg,
             )
@@ -3118,6 +3119,7 @@ class Test_Blob(unittest.TestCase):
                 if_generation_not_match,
                 if_metageneration_match,
                 if_metageneration_not_match,
+                checksum=None,
                 retry=retry,
                 **timeout_kwarg,
             )
@@ -3245,6 +3247,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_not_match,
             if_metageneration_match,
             if_metageneration_not_match,
+            checksum=None,
             retry=retry,
             **timeout_kwarg,
         )
@@ -3347,7 +3350,12 @@ class Test_Blob(unittest.TestCase):
         default_retry = DEFAULT_RETRY_IF_GENERATION_SPECIFIED
         retry = kwargs.get("retry", default_retry)
         ret_val = blob.upload_from_file(
-            stream, size=len(data), content_type=content_type, client=client, **kwargs
+            stream,
+            size=len(data),
+            content_type=content_type,
+            client=client,
+            checksum=None,
+            **kwargs,
         )
 
         # Check the response and side-effects.
@@ -3461,7 +3469,7 @@ class Test_Blob(unittest.TestCase):
                 file_obj.write(data)
 
             ret_val = blob.upload_from_filename(
-                temp.name, content_type=content_type, client=client
+                temp.name, content_type=content_type, client=client, checksum=None
             )
 
         # Check the response and side-effects.
@@ -3492,7 +3500,11 @@ class Test_Blob(unittest.TestCase):
                 file_obj.write(data)
 
             ret_val = blob.upload_from_filename(
-                temp.name, content_type=content_type, client=client, retry=DEFAULT_RETRY
+                temp.name,
+                content_type=content_type,
+                client=client,
+                retry=DEFAULT_RETRY,
+                checksum=None,
             )
 
         # Check the response and side-effects.
@@ -3525,7 +3537,11 @@ class Test_Blob(unittest.TestCase):
                 file_obj.write(data)
 
             blob.upload_from_filename(
-                temp.name, content_type=content_type, client=client, timeout=9.58
+                temp.name,
+                content_type=content_type,
+                client=client,
+                timeout=9.58,
+                checksum=None,
             )
 
         # Check the mock.
@@ -3545,7 +3561,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.component_count)
 
         client = mock.sentinel.client
-        ret_val = blob.upload_from_string(data, client=client, **kwargs)
+        ret_val = blob.upload_from_string(data, client=client, checksum=None, **kwargs)
 
         # Check the response and side-effects.
         self.assertIsNone(ret_val)

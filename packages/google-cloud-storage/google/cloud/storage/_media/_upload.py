@@ -249,19 +249,25 @@ class MultipartUpload(UploadBase):
         upload_url (str): The URL where the content will be uploaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
-        checksum (Optional([str])): The type of checksum to compute to verify
+        checksum Optional([str]): The type of checksum to compute to verify
             the integrity of the object. The request metadata will be amended
             to include the computed value. Using this option will override a
-            manually-set checksum value. Supported values are "md5", "crc32c"
-            and None. The default is None.
+            manually-set checksum value. Supported values are "md5",
+            "crc32c", "auto", and None. The default is "auto", which will try
+            to detect if the C extension for crc32c is installed and fall back
+            to md5 otherwise.
 
     Attributes:
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def __init__(self, upload_url, headers=None, checksum=None):
+    def __init__(self, upload_url, headers=None, checksum="auto"):
         super(MultipartUpload, self).__init__(upload_url, headers=headers)
         self._checksum_type = checksum
+        if self._checksum_type == "auto":
+            self._checksum_type = (
+                "crc32c" if _helpers._is_crc32c_available_and_fast() else "md5"
+            )
 
     def _prepare_request(self, data, metadata, content_type):
         """Prepare the contents of an HTTP request.
@@ -355,13 +361,15 @@ class ResumableUpload(UploadBase):
         chunk_size (int): The size of each chunk used to upload the resource.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with every request.
-        checksum (Optional([str])): The type of checksum to compute to verify
+        checksum Optional([str]): The type of checksum to compute to verify
             the integrity of the object. After the upload is complete, the
-            server-computed checksum of the resulting object will be read
+            server-computed checksum of the resulting object will be checked
             and google.cloud.storage.exceptions.DataCorruption will be raised on
             a mismatch. The corrupted file will not be deleted from the remote
-            host automatically. Supported values are "md5", "crc32c" and None.
-            The default is None.
+            host automatically. Supported values are "md5", "crc32c", "auto",
+            and None. The default is "auto", which will try to detect if the C
+            extension for crc32c is installed and fall back to md5 otherwise.
+
 
     Attributes:
         upload_url (str): The URL where the content will be uploaded.
@@ -371,7 +379,7 @@ class ResumableUpload(UploadBase):
             :data:`.UPLOAD_CHUNK_SIZE`.
     """
 
-    def __init__(self, upload_url, chunk_size, checksum=None, headers=None):
+    def __init__(self, upload_url, chunk_size, checksum="auto", headers=None):
         super(ResumableUpload, self).__init__(upload_url, headers=headers)
         if chunk_size % UPLOAD_CHUNK_SIZE != 0:
             raise ValueError(
@@ -383,6 +391,10 @@ class ResumableUpload(UploadBase):
         self._bytes_uploaded = 0
         self._bytes_checksummed = 0
         self._checksum_type = checksum
+        if self._checksum_type == "auto":
+            self._checksum_type = (
+                "crc32c" if _helpers._is_crc32c_available_and_fast() else "md5"
+            )
         self._checksum_object = None
         self._total_bytes = None
         self._resumable_url = None
@@ -1185,9 +1197,10 @@ class XMLMPUPart(UploadBase):
             be sent with every request.
         checksum (Optional([str])): The type of checksum to compute to verify
             the integrity of the object. The request headers will be amended
-            to include the computed value. Supported values are "md5", "crc32c"
-            and None. The default is None.
-
+            to include the computed value. Supported values are "md5", "crc32c",
+            "auto" and None. The default is "auto", which will try to detect if
+            the C extension for crc32c is installed and fall back to md5
+            otherwise.
     Attributes:
         upload_url (str): The URL of the object (without query parameters).
         upload_id (str): The ID of the upload from the initialization response.
@@ -1208,7 +1221,7 @@ class XMLMPUPart(UploadBase):
         end,
         part_number,
         headers=None,
-        checksum=None,
+        checksum="auto",
     ):
         super().__init__(upload_url, headers=headers)
         self._filename = filename
@@ -1218,6 +1231,10 @@ class XMLMPUPart(UploadBase):
         self._part_number = part_number
         self._etag = None
         self._checksum_type = checksum
+        if self._checksum_type == "auto":
+            self._checksum_type = (
+                "crc32c" if _helpers._is_crc32c_available_and_fast() else "md5"
+            )
         self._checksum_object = None
 
     @property

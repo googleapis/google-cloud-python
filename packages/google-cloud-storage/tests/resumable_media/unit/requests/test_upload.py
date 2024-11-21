@@ -389,7 +389,9 @@ def test_mpu_container_cancel():
 
 
 def test_mpu_part(filename):
-    part = upload_mod.XMLMPUPart(EXAMPLE_XML_UPLOAD_URL, UPLOAD_ID, filename, 0, 128, 1)
+    part = upload_mod.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL, UPLOAD_ID, filename, 0, 128, 1, checksum=None
+    )
 
     transport = mock.Mock(spec=["request"])
     transport.request.return_value = _make_response(headers={"etag": PARTS[1]})

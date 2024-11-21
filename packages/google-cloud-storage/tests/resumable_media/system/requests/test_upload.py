@@ -231,7 +231,7 @@ def test_simple_upload_with_headers(authorized_transport, bucket, cleanup):
     check_tombstoned(upload, authorized_transport, data, BYTES_CONTENT_TYPE)
 
 
-@pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+@pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
 def test_multipart_upload(authorized_transport, bucket, cleanup, checksum):
     with open(ICO_FILE, "rb") as file_obj:
         actual_contents = file_obj.read()
@@ -355,7 +355,7 @@ def _resumable_upload_helper(
     check_tombstoned(upload, authorized_transport)
 
 
-@pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+@pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
 def test_resumable_upload(authorized_transport, img_stream, bucket, cleanup, checksum):
     _resumable_upload_helper(
         authorized_transport, img_stream, cleanup, checksum=checksum
@@ -477,7 +477,7 @@ def _resumable_upload_recover_helper(
     check_tombstoned(upload, authorized_transport)
 
 
-@pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+@pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
 def test_resumable_upload_recover(authorized_transport, bucket, cleanup, checksum):
     _resumable_upload_recover_helper(authorized_transport, cleanup, checksum=checksum)
 
@@ -515,7 +515,7 @@ class TestResumableUploadUnknownSize(object):
         self._check_range_sent(response, start_byte, end_byte, "*")
         self._check_range_received(response, end_byte + 1)
 
-    @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+    @pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
     def test_smaller_than_chunk_size(
         self, authorized_transport, bucket, cleanup, checksum
     ):
@@ -556,7 +556,7 @@ class TestResumableUploadUnknownSize(object):
             # Make sure the upload is tombstoned.
             check_tombstoned(upload, authorized_transport)
 
-    @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+    @pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
     def test_finish_at_chunk(self, authorized_transport, bucket, cleanup, checksum):
         blob_name = "some-clean-stuff.bin"
         chunk_size = _media.UPLOAD_CHUNK_SIZE
@@ -611,7 +611,7 @@ class TestResumableUploadUnknownSize(object):
         # Go back to where we were before the write.
         stream.seek(curr_pos)
 
-    @pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+    @pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
     def test_interleave_writes(self, authorized_transport, bucket, cleanup, checksum):
         blob_name = "some-moar-stuff.bin"
         chunk_size = _media.UPLOAD_CHUNK_SIZE
@@ -662,7 +662,7 @@ class TestResumableUploadUnknownSize(object):
         self._check_range_sent(response2, 2 * chunk_size, total_bytes - 1, total_bytes)
 
 
-@pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+@pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
 def test_XMLMPU(authorized_transport, bucket, cleanup, checksum):
     with open(ICO_FILE, "rb") as file_obj:
         actual_contents = file_obj.read()

@@ -69,7 +69,9 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             appropriate checksum (for instance in the case of transcoded or
             ranged downloads where the remote service does not know the
             correct checksum) an INFO-level log will be emitted. Supported
-            values are "md5", "crc32c" and None. The default is "md5".
+            values are "md5", "crc32c", "auto" and None. The default is "auto",
+            which will try to detect if the C extension for crc32c is installed
+            and fall back to md5 otherwise.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -263,7 +265,9 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             appropriate checksum (for instance in the case of transcoded or
             ranged downloads where the remote service does not know the
             correct checksum) an INFO-level log will be emitted. Supported
-            values are "md5", "crc32c" and None. The default is "md5".
+            values are "md5", "crc32c", "auto" and None. The default is "auto",
+            which will try to detect if the C extension for crc32c is installed
+            and fall back to md5 otherwise.
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
         start (Optional[int]): The first byte in a range to be downloaded.

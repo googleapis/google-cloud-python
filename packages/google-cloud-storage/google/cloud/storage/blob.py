@@ -978,7 +978,7 @@ class Blob(_PropertyMixin):
         end=None,
         raw_download=False,
         timeout=_DEFAULT_TIMEOUT,
-        checksum="md5",
+        checksum="auto",
         retry=None,
     ):
         """Perform a download without any error handling.
@@ -1024,8 +1024,9 @@ class Blob(_PropertyMixin):
             instance in the case of transcoded or ranged downloads where the
             remote service does not know the correct checksum, including
             downloads where chunk_size is set) an INFO-level log will be
-            emitted. Supported values are "md5", "crc32c" and None. The default
-            is "md5".
+            emitted. Supported values are "md5", "crc32c", "auto" and None. The
+            default is "auto", which will try to detect if the C extension for
+            crc32c is installed and fall back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -1122,7 +1123,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum="md5",
+        checksum="auto",
         retry=DEFAULT_RETRY,
     ):
         """Download the contents of this blob into a file-like object.
@@ -1198,8 +1199,9 @@ class Blob(_PropertyMixin):
             instance in the case of transcoded or ranged downloads where the
             remote service does not know the correct checksum, including
             downloads where chunk_size is set) an INFO-level log will be
-            emitted. Supported values are "md5", "crc32c" and None. The default
-            is "md5".
+            emitted. Supported values are "md5", "crc32c", "auto" and None. The
+            default is "auto", which will try to detect if the C extension for
+            crc32c is installed and fall back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -1285,7 +1287,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum="md5",
+        checksum="auto",
         retry=DEFAULT_RETRY,
     ):
         """Download the contents of this blob into a named file.
@@ -1351,8 +1353,9 @@ class Blob(_PropertyMixin):
             instance in the case of transcoded or ranged downloads where the
             remote service does not know the correct checksum, including
             downloads where chunk_size is set) an INFO-level log will be
-            emitted. Supported values are "md5", "crc32c" and None. The default
-            is "md5".
+            emitted. Supported values are "md5", "crc32c", "auto" and None. The
+            default is "auto", which will try to detect if the C extension for
+            crc32c is installed and fall back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -1410,7 +1413,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum="md5",
+        checksum="auto",
         retry=DEFAULT_RETRY,
     ):
         """Download the contents of this blob as a bytes object.
@@ -1470,8 +1473,9 @@ class Blob(_PropertyMixin):
             instance in the case of transcoded or ranged downloads where the
             remote service does not know the correct checksum, including
             downloads where chunk_size is set) an INFO-level log will be
-            emitted. Supported values are "md5", "crc32c" and None. The default
-            is "md5".
+            emitted. Supported values are "md5", "crc32c", "auto" and None. The
+            default is "auto", which will try to detect if the C extension for
+            crc32c is installed and fall back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -1868,7 +1872,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match,
         if_metageneration_not_match,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=None,
         command=None,
     ):
@@ -1927,9 +1931,10 @@ class Blob(_PropertyMixin):
             (Optional) The type of checksum to compute to verify
             the integrity of the object. The request metadata will be amended
             to include the computed value. Using this option will override a
-            manually-set checksum value. Supported values are "md5",
-            "crc32c" and None. The default is None.
-
+            manually-set checksum value. Supported values are "md5", "crc32c",
+            "auto" and None. The default is "auto", which will try to detect if
+            the C extension for crc32c is installed and fall back to md5
+            otherwise.
         :type retry: google.api_core.retry.Retry
         :param retry: (Optional) How to retry the RPC. A None value will disable
             retries. A google.api_core.retry.Retry value will enable retries,
@@ -2045,7 +2050,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=None,
         command=None,
     ):
@@ -2119,8 +2124,10 @@ class Blob(_PropertyMixin):
             server-computed checksum of the resulting object will be checked
             and google.cloud.storage.exceptions.DataCorruption will be raised on
             a mismatch. On a validation failure, the client will attempt to
-            delete the uploaded object automatically. Supported values
-            are "md5", "crc32c" and None. The default is None.
+            delete the uploaded object automatically. Supported values are
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -2233,7 +2240,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match,
         if_metageneration_not_match,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=None,
         command=None,
     ):
@@ -2297,8 +2304,10 @@ class Blob(_PropertyMixin):
             server-computed checksum of the resulting object will be checked
             and google.cloud.storage.exceptions.DataCorruption will be raised on
             a mismatch. On a validation failure, the client will attempt to
-            delete the uploaded object automatically. Supported values
-            are "md5", "crc32c" and None. The default is None.
+            delete the uploaded object automatically. Supported values are
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -2373,7 +2382,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match,
         if_metageneration_not_match,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=None,
         command=None,
     ):
@@ -2442,7 +2451,9 @@ class Blob(_PropertyMixin):
             verification and error handling, raising
             google.cloud.storage.exceptions.DataCorruption on a mismatch and
             attempting to delete the corrupted file. Supported values are
-            "md5", "crc32c" and None. The default is None.
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -2538,7 +2549,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         command=None,
     ):
@@ -2628,7 +2639,9 @@ class Blob(_PropertyMixin):
             verification and error handling, raising
             google.cloud.storage.exceptions.DataCorruption on a mismatch and
             attempting to delete the corrupted file. Supported values are
-            "md5", "crc32c" and None. The default is None.
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable
@@ -2698,7 +2711,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Upload the contents of this blob from a file-like object.
@@ -2787,7 +2800,9 @@ class Blob(_PropertyMixin):
             verification and error handling, raising
             google.cloud.storage.exceptions.DataCorruption on a mismatch and
             attempting to delete the corrupted file. Supported values are
-            "md5", "crc32c" and None. The default is None.
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC.
@@ -2857,7 +2872,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Upload this blob's contents from the content of a named file.
@@ -2933,7 +2948,9 @@ class Blob(_PropertyMixin):
             verification and error handling, raising
             google.cloud.storage.exceptions.DataCorruption on a mismatch and
             attempting to delete the corrupted file. Supported values are
-            "md5", "crc32c" and None. The default is None.
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC.
@@ -2975,7 +2992,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Upload contents of this blob from the provided string.
@@ -3043,7 +3060,9 @@ class Blob(_PropertyMixin):
             verification and error handling, raising
             google.cloud.storage.exceptions.DataCorruption on a mismatch and
             attempting to delete the corrupted file. Supported values are
-            "md5", "crc32c" and None. The default is None.
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC.
@@ -3083,7 +3102,7 @@ class Blob(_PropertyMixin):
         origin=None,
         client=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum=None,
+        checksum="auto",
         predefined_acl=None,
         if_generation_match=None,
         if_generation_not_match=None,
@@ -3160,8 +3179,10 @@ class Blob(_PropertyMixin):
             server-computed checksum of the resulting object will be checked
             and google.cloud.storage.exceptions.DataCorruption will be raised on
             a mismatch. On a validation failure, the client will attempt to
-            delete the uploaded object automatically. Supported values
-            are "md5", "crc32c" and None. The default is None.
+            delete the uploaded object automatically. Supported values are
+            "md5", "crc32c", "auto" and None. The default is "auto", which will
+            try to detect if the C extension for crc32c is installed and fall
+            back to md5 otherwise.
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
@@ -4211,7 +4232,7 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        checksum="md5",
+        checksum="auto",
         retry=DEFAULT_RETRY,
         command=None,
     ):
@@ -4277,8 +4298,9 @@ class Blob(_PropertyMixin):
             instance in the case of transcoded or ranged downloads where the
             remote service does not know the correct checksum, including
             downloads where chunk_size is set) an INFO-level log will be
-            emitted. Supported values are "md5", "crc32c" and None. The default
-            is "md5".
+            emitted. Supported values are "md5", "crc32c", "auto" and None. The
+            default is "auto", which will try to detect if the C extension for
+            crc32c is installed and fall back to md5 otherwise.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable

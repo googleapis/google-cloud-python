@@ -965,7 +965,7 @@ def upload_chunks_concurrently(
     worker_type=PROCESS,
     max_workers=DEFAULT_MAX_WORKERS,
     *,
-    checksum="md5",
+    checksum="auto",
     timeout=_DEFAULT_TIMEOUT,
     retry=DEFAULT_RETRY,
 ):
@@ -1051,12 +1051,14 @@ def upload_chunks_concurrently(
 
     :type checksum: str
     :param checksum:
-        (Optional) The checksum scheme to use: either "md5", "crc32c" or None.
-        Each individual part is checksummed. At present, the selected checksum
-        rule is only applied to parts and a separate checksum of the entire
-        resulting blob is not computed. Please compute and compare the checksum
-        of the file to the resulting blob separately if needed, using the
-        "crc32c" algorithm as per the XML MPU documentation.
+        (Optional) The checksum scheme to use: either "md5", "crc32c", "auto"
+        or None. The default is "auto", which will try to detect if the C
+        extension for crc32c is installed and fall back to md5 otherwise.
+        Each individual part is checksummed. At present, the selected
+        checksum rule is only applied to parts and a separate checksum of the
+        entire resulting blob is not computed. Please compute and compare the
+        checksum of the file to the resulting blob separately if needed, using
+        the "crc32c" algorithm as per the XML MPU documentation.
 
     :type timeout: float or tuple
     :param timeout:

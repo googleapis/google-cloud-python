@@ -130,16 +130,28 @@ class Download(DownloadBase):
             appropriate checksum (for instance in the case of transcoded or
             ranged downloads where the remote service does not know the
             correct checksum) an INFO-level log will be emitted. Supported
-            values are "md5", "crc32c" and None.
+            values are "md5", "crc32c", "auto" and None. The default is "auto",
+            which will try to detect if the C extension for crc32c is installed
+            and fall back to md5 otherwise.
     """
 
     def __init__(
-        self, media_url, stream=None, start=None, end=None, headers=None, checksum="md5"
+        self,
+        media_url,
+        stream=None,
+        start=None,
+        end=None,
+        headers=None,
+        checksum="auto",
     ):
         super(Download, self).__init__(
             media_url, stream=stream, start=start, end=end, headers=headers
         )
         self.checksum = checksum
+        if self.checksum == "auto":
+            self.checksum = (
+                "crc32c" if _helpers._is_crc32c_available_and_fast() else "md5"
+            )
         self._bytes_downloaded = 0
         self._expected_checksum = None
         self._checksum_object = None

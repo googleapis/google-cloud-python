@@ -24,6 +24,8 @@ from google.cloud.storage._media import _helpers
 from google.cloud.storage._media import common
 from google.cloud.storage.exceptions import InvalidResponse
 
+import google_crc32c
+
 
 def test_do_nothing():
     ret_val = _helpers.do_nothing()
@@ -196,7 +198,7 @@ def test__get_checksum_object(checksum):
 
     checksum_types = {
         "md5": type(hashlib.md5()),
-        "crc32c": type(_helpers._get_crc32c_object()),
+        "crc32c": type(google_crc32c.Checksum()),
         None: type(None),
     }
     assert isinstance(checksum_object, checksum_types[checksum])
@@ -207,80 +209,26 @@ def test__get_checksum_object_invalid():
         _helpers._get_checksum_object("invalid")
 
 
-@mock.patch("builtins.__import__")
-def test__get_crc32_object_wo_google_crc32c_wo_crcmod(mock_import):
-    mock_import.side_effect = ImportError("testing")
+def test__is_crc32c_available_and_fast():
+    import sys
 
-    with pytest.raises(ImportError):
-        _helpers._get_crc32c_object()
+    import google_crc32c
 
-    expected_calls = [
-        mock.call("google_crc32c", mock.ANY, None, None, 0),
-        mock.call("crcmod", mock.ANY, None, None, 0),
-    ]
-    mock_import.assert_has_calls(expected_calls)
+    assert google_crc32c.implementation == "c"
+    assert _helpers._is_crc32c_available_and_fast() is True
 
+    del sys.modules["google_crc32c"]
+    with mock.patch("builtins.__import__", side_effect=ImportError):
+        assert _helpers._is_crc32c_available_and_fast() is False
 
-@mock.patch("builtins.__import__")
-def test__get_crc32_object_w_google_crc32c(mock_import):
-    google_crc32c = mock.Mock(spec=["Checksum"])
-    mock_import.return_value = google_crc32c
+    import google_crc32c
 
-    found = _helpers._get_crc32c_object()
+    assert google_crc32c.implementation == "c"
+    with mock.patch("google_crc32c.implementation", new="python"):
+        assert _helpers._is_crc32c_available_and_fast() is False
 
-    assert found is google_crc32c.Checksum.return_value
-    google_crc32c.Checksum.assert_called_once_with()
-
-    mock_import.assert_called_once_with("google_crc32c", mock.ANY, None, None, 0)
-
-
-@mock.patch("builtins.__import__")
-def test__get_crc32_object_wo_google_crc32c_w_crcmod(mock_import):
-    crcmod = mock.Mock(spec=["predefined", "crcmod"])
-    crcmod.predefined = mock.Mock(spec=["Crc"])
-    crcmod.crcmod = mock.Mock(spec=["_usingExtension"])
-    mock_import.side_effect = [ImportError("testing"), crcmod, crcmod.crcmod]
-
-    found = _helpers._get_crc32c_object()
-
-    assert found is crcmod.predefined.Crc.return_value
-    crcmod.predefined.Crc.assert_called_once_with("crc-32c")
-
-    expected_calls = [
-        mock.call("google_crc32c", mock.ANY, None, None, 0),
-        mock.call("crcmod", mock.ANY, None, None, 0),
-        mock.call("crcmod.crcmod", mock.ANY, {}, ["_usingExtension"], 0),
-    ]
-    mock_import.assert_has_calls(expected_calls)
-
-
-@pytest.mark.filterwarnings("ignore::RuntimeWarning")
-@mock.patch("builtins.__import__")
-def test__is_fast_crcmod_wo_extension_warning(mock_import):
-    crcmod = mock.Mock(spec=["crcmod"])
-    crcmod.crcmod = mock.Mock(spec=["_usingExtension"])
-    crcmod.crcmod._usingExtension = False
-    mock_import.return_value = crcmod.crcmod
-
-    assert not _helpers._is_fast_crcmod()
-
-    mock_import.assert_called_once_with(
-        "crcmod.crcmod",
-        mock.ANY,
-        {},
-        ["_usingExtension"],
-        0,
-    )
-
-
-@mock.patch("builtins.__import__")
-def test__is_fast_crcmod_w_extension(mock_import):
-    crcmod = mock.Mock(spec=["crcmod"])
-    crcmod.crcmod = mock.Mock(spec=["_usingExtension"])
-    crcmod.crcmod._usingExtension = True
-    mock_import.return_value = crcmod.crcmod
-
-    assert _helpers._is_fast_crcmod()
+    # Run this again to confirm we're back to the initial state.
+    assert _helpers._is_crc32c_available_and_fast() is True
 
 
 def test__DoNothingHash():
@@ -310,7 +258,7 @@ class Test__get_expected_checksum(object):
 
         checksum_types = {
             "md5": type(hashlib.md5()),
-            "crc32c": type(_helpers._get_crc32c_object()),
+            "crc32c": type(google_crc32c.Checksum()),
         }
         assert isinstance(checksum_obj, checksum_types[checksum])
 

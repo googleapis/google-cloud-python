@@ -191,7 +191,7 @@ class TestMultipartUpload(object):
         upload = _upload.MultipartUpload(MULTIPART_URL)
         assert upload.upload_url == MULTIPART_URL
         assert upload._headers == {}
-        assert upload._checksum_type is None
+        assert upload._checksum_type == "crc32c"  # converted from "auto"
         assert not upload._finished
         _check_retry_strategy(upload)
 
@@ -201,6 +201,17 @@ class TestMultipartUpload(object):
         assert upload.upload_url == MULTIPART_URL
         assert upload._headers is headers
         assert upload._checksum_type == "md5"
+        assert not upload._finished
+        _check_retry_strategy(upload)
+
+    def test_constructor_explicit_auto(self):
+        headers = {"spin": "doctors"}
+        upload = _upload.MultipartUpload(
+            MULTIPART_URL, headers=headers, checksum="auto"
+        )
+        assert upload.upload_url == MULTIPART_URL
+        assert upload._headers is headers
+        assert upload._checksum_type == "crc32c"
         assert not upload._finished
         _check_retry_strategy(upload)
 
@@ -345,7 +356,7 @@ class TestResumableUpload(object):
         assert upload._checksum_object is None
         assert upload._total_bytes is None
         assert upload._resumable_url is None
-        assert upload._checksum_type is None
+        assert upload._checksum_type == "crc32c"  # converted from "auto"
 
     def test_constructor_bad_chunk_size(self):
         with pytest.raises(ValueError):
@@ -771,7 +782,7 @@ class TestResumableUpload(object):
         assert upload.invalid
 
     def test__process_resumable_response_success(self):
-        upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB, checksum=None)
         _fix_up_virtual(upload)
 
         # Check / set status before.
@@ -1401,6 +1412,28 @@ def test_xml_mpu_part(filename):
         END,
         PART_NUMBER,
         headers=EXAMPLE_HEADERS,
+        checksum="auto",
+    )
+    assert part.upload_url == EXAMPLE_XML_UPLOAD_URL
+    assert part.upload_id == UPLOAD_ID
+    assert part.filename == filename
+    assert part.etag is None
+    assert part.start == START
+    assert part.end == END
+    assert part.part_number == PART_NUMBER
+    assert part._headers == EXAMPLE_HEADERS
+    assert part._checksum_type == "crc32c"  # transformed from "auto"
+    assert part._checksum_object is None
+
+    part = _upload.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        START,
+        END,
+        PART_NUMBER,
+        headers=EXAMPLE_HEADERS,
+        checksum=None,
     )
     verb, url, payload, headers = part._prepare_upload_request()
     assert verb == _upload._PUT
