@@ -47,6 +47,7 @@ dependencies = [
     "opentelemetry-api >= 1.9.0",
     "proto-plus >= 1.22.0, <2.0.0dev",
     "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
+    "proto-plus >= 1.25.0, <2.0.0dev; python_version>='3.13'",
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 url = "https://github.com/googleapis/python-logging"
