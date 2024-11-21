@@ -14,6 +14,7 @@
 
 import abc
 import typing
+import warnings
 
 import bigframes_vendored.constants as constants
 import pandas as pd
@@ -46,9 +47,14 @@ class MPLPlot(abc.ABC):
 
 
 class SamplingPlot(MPLPlot):
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def _kind(self):
         pass
+
+    @property
+    def _sampling_warning_msg(self) -> typing.Optional[str]:
+        return None
 
     def __init__(self, data, **kwargs) -> None:
         self.kwargs = kwargs
@@ -61,6 +67,15 @@ class SamplingPlot(MPLPlot):
     def _compute_sample_data(self, data):
         # TODO: Cache the sampling data in the PlotAccessor.
         sampling_n = self.kwargs.pop("sampling_n", DEFAULT_SAMPLING_N)
+        if self._sampling_warning_msg is not None:
+            total_n = data.shape[0]
+            if sampling_n < total_n:
+                warnings.warn(
+                    self._sampling_warning_msg.format(
+                        sampling_n=sampling_n, total_n=total_n
+                    )
+                )
+
         sampling_random_state = self.kwargs.pop(
             "sampling_random_state", DEFAULT_SAMPLING_STATE
         )
@@ -74,16 +89,31 @@ class SamplingPlot(MPLPlot):
         return self._compute_sample_data(self.data)
 
 
-class LinePlot(SamplingPlot):
-    @property
-    def _kind(self) -> typing.Literal["line"]:
-        return "line"
-
-
 class AreaPlot(SamplingPlot):
     @property
     def _kind(self) -> typing.Literal["area"]:
         return "area"
+
+
+class BarPlot(SamplingPlot):
+    @property
+    def _kind(self) -> typing.Literal["bar"]:
+        return "bar"
+
+    @property
+    def _sampling_warning_msg(self) -> typing.Optional[str]:
+        return (
+            "To optimize plotting performance, your data has been downsampled to {sampling_n} "
+            "rows from the original {total_n} rows. This may result in some data points "
+            "not being displayed. For a more comprehensive view, consider pre-processing "
+            "your data by aggregating it or selecting the top categories."
+        )
+
+
+class LinePlot(SamplingPlot):
+    @property
+    def _kind(self) -> typing.Literal["line"]:
+        return "line"
 
 
 class ScatterPlot(SamplingPlot):

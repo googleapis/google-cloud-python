@@ -23,7 +23,7 @@ import bigframes.operations._matplotlib as bfplt
 class PlotAccessor(vendordt.PlotAccessor):
     __doc__ = vendordt.PlotAccessor.__doc__
 
-    _common_kinds = ("line", "area", "hist")
+    _common_kinds = ("line", "area", "hist", "bar")
     _dataframe_kinds = ("scatter",)
     _all_kinds = _common_kinds + _dataframe_kinds
 
@@ -71,6 +71,14 @@ class PlotAccessor(vendordt.PlotAccessor):
         **kwargs,
     ):
         return self(kind="area", x=x, y=y, stacked=stacked, **kwargs)
+
+    def bar(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return self(kind="bar", x=x, y=y, **kwargs)
 
     def scatter(
         self,

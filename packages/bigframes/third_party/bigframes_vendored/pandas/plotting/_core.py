@@ -215,6 +215,66 @@ class PlotAccessor:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def bar(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        """
+        Draw a vertical bar plot.
+
+        This function calls `pandas.plot` to generate a plot with a random sample
+        of items. For consistent results, the random sampling is reproducible.
+        Use the `sampling_random_state` parameter to modify the sampling seed.
+
+        **Examples:**
+
+        Basic plot.
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame({'lab':['A', 'B', 'C'], 'val':[10, 30, 20]})
+            >>> ax = df.plot.bar(x='lab', y='val', rot=0)
+
+        Plot a whole dataframe to a bar plot. Each column is assigned a distinct color,
+        and each row is nested in a group along the horizontal axis.
+
+            >>> speed = [0.1, 17.5, 40, 48, 52, 69, 88]
+            >>> lifespan = [2, 8, 70, 1.5, 25, 12, 28]
+            >>> index = ['snail', 'pig', 'elephant',
+            ...          'rabbit', 'giraffe', 'coyote', 'horse']
+            >>> df = bpd.DataFrame({'speed': speed, 'lifespan': lifespan}, index=index)
+            >>> ax = df.plot.bar(rot=0)
+
+        Plot stacked bar charts for the DataFrame.
+
+            >>> ax = df.plot.bar(stacked=True)
+
+        If you don’t like the default colours, you can specify how you’d like each column
+        to be colored.
+
+            >>> axes = df.plot.bar(
+            ...     rot=0, subplots=True, color={"speed": "red", "lifespan": "green"}
+            ... )
+
+        Args:
+            x (label or position, optional):
+                Allows plotting of one column versus another. If not specified, the index
+                of the DataFrame is used.
+            y (label or position, optional):
+                Allows plotting of one column versus another. If not specified, all numerical
+                columns are used.
+            **kwargs:
+                Additional keyword arguments are documented in
+                :meth:`DataFrame.plot`.
+
+        Returns:
+            matplotlib.axes.Axes or numpy.ndarray:
+                Area plot, or array of area plots if subplots is True.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def scatter(
         self,
         x: typing.Optional[typing.Hashable] = None,

@@ -195,6 +195,18 @@ def test_area(scalars_dfs):
         tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
 
 
+def test_bar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_names = ["int64_col", "float64_col", "int64_too"]
+    ax = scalars_df[col_names].plot.bar()
+    pd_ax = scalars_pandas_df[col_names].plot.bar()
+    tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
+    tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
+    for line, pd_line in zip(ax.lines, pd_ax.lines):
+        # Compare y coordinates between the lines
+        tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
+
+
 def test_scatter(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_names = ["int64_col", "float64_col", "int64_too", "bool_col"]
