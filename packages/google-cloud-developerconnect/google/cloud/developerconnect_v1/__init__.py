@@ -26,6 +26,7 @@ from .types.developer_connect import (
     Connection,
     CreateConnectionRequest,
     CreateGitRepositoryLinkRequest,
+    CryptoKeyConfig,
     DeleteConnectionRequest,
     DeleteGitRepositoryLinkRequest,
     FetchGitHubInstallationsRequest,
@@ -41,6 +42,9 @@ from .types.developer_connect import (
     GetConnectionRequest,
     GetGitRepositoryLinkRequest,
     GitHubConfig,
+    GitHubEnterpriseConfig,
+    GitLabConfig,
+    GitLabEnterpriseConfig,
     GitRepositoryLink,
     InstallationState,
     LinkableGitRepository,
@@ -50,7 +54,9 @@ from .types.developer_connect import (
     ListGitRepositoryLinksResponse,
     OAuthCredential,
     OperationMetadata,
+    ServiceDirectoryConfig,
     UpdateConnectionRequest,
+    UserCredential,
 )
 
 __all__ = (
@@ -58,6 +64,7 @@ __all__ = (
     "Connection",
     "CreateConnectionRequest",
     "CreateGitRepositoryLinkRequest",
+    "CryptoKeyConfig",
     "DeleteConnectionRequest",
     "DeleteGitRepositoryLinkRequest",
     "DeveloperConnectClient",
@@ -74,6 +81,9 @@ __all__ = (
     "GetConnectionRequest",
     "GetGitRepositoryLinkRequest",
     "GitHubConfig",
+    "GitHubEnterpriseConfig",
+    "GitLabConfig",
+    "GitLabEnterpriseConfig",
     "GitRepositoryLink",
     "InstallationState",
     "LinkableGitRepository",
@@ -83,5 +93,7 @@ __all__ = (
     "ListGitRepositoryLinksResponse",
     "OAuthCredential",
     "OperationMetadata",
+    "ServiceDirectoryConfig",
     "UpdateConnectionRequest",
+    "UserCredential",
 )

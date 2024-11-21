@@ -25,9 +25,15 @@ __protobuf__ = proto.module(
     package="google.cloud.developerconnect.v1",
     manifest={
         "Connection",
+        "CryptoKeyConfig",
         "InstallationState",
         "GitHubConfig",
+        "GitHubEnterpriseConfig",
+        "ServiceDirectoryConfig",
         "OAuthCredential",
+        "GitLabConfig",
+        "UserCredential",
+        "GitLabEnterpriseConfig",
         "ListConnectionsRequest",
         "ListConnectionsResponse",
         "GetConnectionRequest",
@@ -59,11 +65,30 @@ __protobuf__ = proto.module(
 class Connection(proto.Message):
     r"""Message describing Connection object
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         github_config (google.cloud.developerconnect_v1.types.GitHubConfig):
             Configuration for connections to github.com.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        github_enterprise_config (google.cloud.developerconnect_v1.types.GitHubEnterpriseConfig):
+            Configuration for connections to an instance
+            of GitHub Enterprise.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        gitlab_config (google.cloud.developerconnect_v1.types.GitLabConfig):
+            Configuration for connections to gitlab.com.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        gitlab_enterprise_config (google.cloud.developerconnect_v1.types.GitLabEnterpriseConfig):
+            Configuration for connections to an instance
+            of GitLab Enterprise.
 
             This field is a member of `oneof`_ ``connection_config``.
         name (str):
@@ -102,6 +127,10 @@ class Connection(proto.Message):
         uid (str):
             Output only. A system-assigned unique
             identifier for a the GitRepositoryLink.
+        crypto_key_config (google.cloud.developerconnect_v1.types.CryptoKeyConfig):
+            Optional. The crypto key configuration. This
+            field is used by the Customer-Managed Encryption
+            Keys (CMEK) feature.
     """
 
     github_config: "GitHubConfig" = proto.Field(
@@ -109,6 +138,24 @@ class Connection(proto.Message):
         number=5,
         oneof="connection_config",
         message="GitHubConfig",
+    )
+    github_enterprise_config: "GitHubEnterpriseConfig" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="connection_config",
+        message="GitHubEnterpriseConfig",
+    )
+    gitlab_config: "GitLabConfig" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="connection_config",
+        message="GitLabConfig",
+    )
+    gitlab_enterprise_config: "GitLabEnterpriseConfig" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="connection_config",
+        message="GitLabEnterpriseConfig",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -159,6 +206,29 @@ class Connection(proto.Message):
     uid: str = proto.Field(
         proto.STRING,
         number=12,
+    )
+    crypto_key_config: "CryptoKeyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="CryptoKeyConfig",
+    )
+
+
+class CryptoKeyConfig(proto.Message):
+    r"""The crypto key configuration. This field is used by the
+    Customer-managed encryption keys (CMEK) feature.
+
+    Attributes:
+        key_reference (str):
+            Required. The name of the key which is used to
+            encrypt/decrypt customer data. For key in Cloud KMS, the key
+            should be in the format of
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+    """
+
+    key_reference: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -280,6 +350,113 @@ class GitHubConfig(proto.Message):
     )
 
 
+class GitHubEnterpriseConfig(proto.Message):
+    r"""Configuration for connections to an instance of GitHub
+    Enterprise.
+
+    Attributes:
+        host_uri (str):
+            Required. The URI of the GitHub Enterprise
+            host this connection is for.
+        app_id (int):
+            Optional. ID of the GitHub App created from
+            the manifest.
+        app_slug (str):
+            Output only. The URL-friendly name of the
+            GitHub App.
+        private_key_secret_version (str):
+            Optional. SecretManager resource containing the private key
+            of the GitHub App, formatted as
+            ``projects/*/secrets/*/versions/*``.
+        webhook_secret_secret_version (str):
+            Optional. SecretManager resource containing the webhook
+            secret of the GitHub App, formatted as
+            ``projects/*/secrets/*/versions/*``.
+        app_installation_id (int):
+            Optional. ID of the installation of the
+            GitHub App.
+        installation_uri (str):
+            Output only. The URI to navigate to in order
+            to manage the installation associated with this
+            GitHubEnterpriseConfig.
+        service_directory_config (google.cloud.developerconnect_v1.types.ServiceDirectoryConfig):
+            Optional. Configuration for using Service
+            Directory to privately connect to a GitHub
+            Enterprise server. This should only be set if
+            the GitHub Enterprise server is hosted
+            on-premises and not reachable by public
+            internet. If this field is left empty, calls to
+            the GitHub Enterprise server will be made over
+            the public internet.
+        server_version (str):
+            Output only. GitHub Enterprise version installed at the
+            host_uri.
+        ssl_ca_certificate (str):
+            Optional. SSL certificate to use for requests
+            to GitHub Enterprise.
+    """
+
+    host_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    app_id: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    app_slug: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    private_key_secret_version: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    app_installation_id: int = proto.Field(
+        proto.INT64,
+        number=8,
+    )
+    installation_uri: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    service_directory_config: "ServiceDirectoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="ServiceDirectoryConfig",
+    )
+    server_version: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    ssl_ca_certificate: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+
+
+class ServiceDirectoryConfig(proto.Message):
+    r"""ServiceDirectoryConfig represents Service Directory
+    configuration for a connection.
+
+    Attributes:
+        service (str):
+            Required. The Service Directory service name.
+            Format:
+
+            projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}.
+    """
+
+    service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class OAuthCredential(proto.Message):
     r"""Represents an OAuth token of the account that authorized the
     Connection, and associated metadata.
@@ -301,6 +478,143 @@ class OAuthCredential(proto.Message):
     username: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GitLabConfig(proto.Message):
+    r"""Configuration for connections to gitlab.com.
+
+    Attributes:
+        webhook_secret_secret_version (str):
+            Required. Immutable. SecretManager resource containing the
+            webhook secret of a GitLab project, formatted as
+            ``projects/*/secrets/*/versions/*``. This is used to
+            validate webhooks.
+        read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. A GitLab personal access token with the minimum
+            ``read_api`` scope access and a minimum role of
+            ``reporter``. The GitLab Projects visible to this Personal
+            Access Token will control which Projects Developer Connect
+            has access to.
+        authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. A GitLab personal access token with the minimum
+            ``api`` scope access and a minimum role of ``maintainer``.
+            The GitLab Projects visible to this Personal Access Token
+            will control which Projects Developer Connect has access to.
+    """
+
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="UserCredential",
+    )
+    authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UserCredential",
+    )
+
+
+class UserCredential(proto.Message):
+    r"""Represents a personal access token that authorized the
+    Connection, and associated metadata.
+
+    Attributes:
+        user_token_secret_version (str):
+            Required. A SecretManager resource containing the user token
+            that authorizes the Developer Connect connection. Format:
+            ``projects/*/secrets/*/versions/*``.
+        username (str):
+            Output only. The username associated with
+            this token.
+    """
+
+    user_token_secret_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GitLabEnterpriseConfig(proto.Message):
+    r"""Configuration for connections to an instance of GitLab
+    Enterprise.
+
+    Attributes:
+        host_uri (str):
+            Required. The URI of the GitLab Enterprise
+            host this connection is for.
+        webhook_secret_secret_version (str):
+            Required. Immutable. SecretManager resource containing the
+            webhook secret of a GitLab project, formatted as
+            ``projects/*/secrets/*/versions/*``. This is used to
+            validate webhooks.
+        read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. A GitLab personal access token with the minimum
+            ``read_api`` scope access and a minimum role of
+            ``reporter``. The GitLab Projects visible to this Personal
+            Access Token will control which Projects Developer Connect
+            has access to.
+        authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. A GitLab personal access token with the minimum
+            ``api`` scope access and a minimum role of ``maintainer``.
+            The GitLab Projects visible to this Personal Access Token
+            will control which Projects Developer Connect has access to.
+        service_directory_config (google.cloud.developerconnect_v1.types.ServiceDirectoryConfig):
+            Optional. Configuration for using Service
+            Directory to privately connect to a GitLab
+            Enterprise instance. This should only be set if
+            the GitLab Enterprise server is hosted
+            on-premises and not reachable by public
+            internet. If this field is left empty, calls to
+            the GitLab Enterprise server will be made over
+            the public internet.
+        ssl_ca_certificate (str):
+            Optional. SSL Certificate Authority
+            certificate to use for requests to GitLab
+            Enterprise instance.
+        server_version (str):
+            Output only. Version of the GitLab Enterprise server running
+            on the ``host_uri``.
+    """
+
+    host_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UserCredential",
+    )
+    authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="UserCredential",
+    )
+    service_directory_config: "ServiceDirectoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ServiceDirectoryConfig",
+    )
+    ssl_ca_certificate: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    server_version: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -598,7 +912,9 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have been
-            cancelled successfully have [Operation.error][] value with a
+            cancelled successfully have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
             [google.rpc.Status.code][google.rpc.Status.code] of 1,
             corresponding to ``Code.CANCELLED``.
         api_version (str):
@@ -670,6 +986,9 @@ class GitRepositoryLink(proto.Message):
         uid (str):
             Output only. A system-assigned unique
             identifier for a the GitRepositoryLink.
+        webhook_id (str):
+            Output only. External ID of the webhook
+            created for the repository.
     """
 
     name: str = proto.Field(
@@ -716,6 +1035,10 @@ class GitRepositoryLink(proto.Message):
     uid: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    webhook_id: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 
