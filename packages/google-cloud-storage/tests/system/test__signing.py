@@ -287,6 +287,10 @@ def test_create_signed_read_url_v4_w_access_token(
     )
 
 
+@pytest.mark.skipif(
+    _helpers.is_api_endpoint_override,
+    reason="Credentials not yet supported in preprod testing.",
+)
 def test_create_signed_read_url_v4_w_access_token_universe_domain(
     universe_domain_iam_client,
     universe_domain_client,
