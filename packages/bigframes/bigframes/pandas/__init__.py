@@ -594,8 +594,13 @@ if resource is not None:
 # Use __all__ to let type checkers know what is part of the public API.
 __all__ = [
     # Functions
+    "clean_up_by_session_id",
     "concat",
+    "cut",
+    "get_default_session_id",
+    "get_dummies",
     "merge",
+    "qcut",
     "read_csv",
     "read_gbq",
     "read_gbq_function",
