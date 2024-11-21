@@ -115,6 +115,11 @@
                 "lookup_stream_object"
               ]
             },
+            "RunStream": {
+              "methods": [
+                "run_stream"
+              ]
+            },
             "StartBackfillJob": {
               "methods": [
                 "start_backfill_job"
@@ -245,6 +250,11 @@
                 "lookup_stream_object"
               ]
             },
+            "RunStream": {
+              "methods": [
+                "run_stream"
+              ]
+            },
             "StartBackfillJob": {
               "methods": [
                 "start_backfill_job"
@@ -373,6 +383,11 @@
             "LookupStreamObject": {
               "methods": [
                 "lookup_stream_object"
+              ]
+            },
+            "RunStream": {
+              "methods": [
+                "run_stream"
               ]
             },
             "StartBackfillJob": {

@@ -25,8 +25,10 @@ __protobuf__ = proto.module(
     package="google.cloud.datastream.v1",
     manifest={
         "OracleProfile",
+        "OracleAsmConfig",
         "MysqlProfile",
         "PostgresqlProfile",
+        "SqlServerProfile",
         "GcsProfile",
         "BigQueryProfile",
         "StaticServiceIpConnectivity",
@@ -36,6 +38,7 @@ __protobuf__ = proto.module(
         "PrivateConnectivity",
         "Route",
         "MysqlSslConfig",
+        "OracleSslConfig",
         "ConnectionProfile",
         "OracleColumn",
         "OracleTable",
@@ -47,6 +50,13 @@ __protobuf__ = proto.module(
         "PostgresqlSchema",
         "PostgresqlRdbms",
         "PostgresqlSourceConfig",
+        "SqlServerColumn",
+        "SqlServerTable",
+        "SqlServerSchema",
+        "SqlServerRdbms",
+        "SqlServerSourceConfig",
+        "SqlServerTransactionLogs",
+        "SqlServerChangeTables",
         "MysqlColumn",
         "MysqlTable",
         "MysqlDatabase",
@@ -66,12 +76,17 @@ __protobuf__ = proto.module(
         "ValidationResult",
         "Validation",
         "ValidationMessage",
+        "CdcStrategy",
+        "SqlServerLsnPosition",
+        "OracleScnPosition",
+        "MysqlLogPosition",
     },
 )
 
 
 class OracleProfile(proto.Message):
     r"""Oracle database profile.
+    Next ID: 10.
 
     Attributes:
         hostname (str):
@@ -82,11 +97,22 @@ class OracleProfile(proto.Message):
         username (str):
             Required. Username for the Oracle connection.
         password (str):
-            Required. Password for the Oracle connection.
+            Optional. Password for the Oracle connection. Mutually
+            exclusive with the ``secret_manager_stored_password`` field.
         database_service (str):
             Required. Database for the Oracle connection.
         connection_attributes (MutableMapping[str, str]):
             Connection string attributes
+        oracle_ssl_config (google.cloud.datastream_v1.types.OracleSslConfig):
+            Optional. SSL configuration for the Oracle
+            connection.
+        oracle_asm_config (google.cloud.datastream_v1.types.OracleAsmConfig):
+            Optional. Configuration for Oracle ASM
+            connection.
+        secret_manager_stored_password (str):
+            Optional. A reference to a Secret Manager resource name
+            storing the Oracle connection password. Mutually exclusive
+            with the ``password`` field.
     """
 
     hostname: str = proto.Field(
@@ -114,10 +140,83 @@ class OracleProfile(proto.Message):
         proto.STRING,
         number=6,
     )
+    oracle_ssl_config: "OracleSslConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="OracleSslConfig",
+    )
+    oracle_asm_config: "OracleAsmConfig" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="OracleAsmConfig",
+    )
+    secret_manager_stored_password: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+
+
+class OracleAsmConfig(proto.Message):
+    r"""Configuration for Oracle Automatic Storage Management (ASM)
+    connection.
+
+    Attributes:
+        hostname (str):
+            Required. Hostname for the Oracle ASM
+            connection.
+        port (int):
+            Required. Port for the Oracle ASM connection.
+        username (str):
+            Required. Username for the Oracle ASM
+            connection.
+        password (str):
+            Required. Password for the Oracle ASM
+            connection.
+        asm_service (str):
+            Required. ASM service name for the Oracle ASM
+            connection.
+        connection_attributes (MutableMapping[str, str]):
+            Optional. Connection string attributes
+        oracle_ssl_config (google.cloud.datastream_v1.types.OracleSslConfig):
+            Optional. SSL configuration for the Oracle
+            connection.
+    """
+
+    hostname: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    asm_service: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    connection_attributes: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    oracle_ssl_config: "OracleSslConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="OracleSslConfig",
+    )
 
 
 class MysqlProfile(proto.Message):
     r"""MySQL database profile.
+    Next ID: 7.
 
     Attributes:
         hostname (str):
@@ -128,8 +227,9 @@ class MysqlProfile(proto.Message):
         username (str):
             Required. Username for the MySQL connection.
         password (str):
-            Required. Input only. Password for the MySQL
-            connection.
+            Optional. Input only. Password for the MySQL connection.
+            Mutually exclusive with the
+            ``secret_manager_stored_password`` field.
         ssl_config (google.cloud.datastream_v1.types.MysqlSslConfig):
             SSL configuration for the MySQL connection.
     """
@@ -171,10 +271,54 @@ class PostgresqlProfile(proto.Message):
             Required. Username for the PostgreSQL
             connection.
         password (str):
-            Required. Password for the PostgreSQL
-            connection.
+            Optional. Password for the PostgreSQL connection. Mutually
+            exclusive with the ``secret_manager_stored_password`` field.
         database (str):
             Required. Database for the PostgreSQL
+            connection.
+    """
+
+    hostname: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class SqlServerProfile(proto.Message):
+    r"""SQLServer database profile.
+    Next ID: 8.
+
+    Attributes:
+        hostname (str):
+            Required. Hostname for the SQLServer
+            connection.
+        port (int):
+            Port for the SQLServer connection, default
+            value is 1433.
+        username (str):
+            Required. Username for the SQLServer
+            connection.
+        password (str):
+            Optional. Password for the SQLServer connection. Mutually
+            exclusive with the ``secret_manager_stored_password`` field.
+        database (str):
+            Required. Database for the SQLServer
             connection.
     """
 
@@ -525,6 +669,29 @@ class MysqlSslConfig(proto.Message):
     )
 
 
+class OracleSslConfig(proto.Message):
+    r"""Oracle SSL configuration information.
+
+    Attributes:
+        ca_certificate (str):
+            Input only. PEM-encoded certificate of the CA
+            that signed the source database server's
+            certificate.
+        ca_certificate_set (bool):
+            Output only. Indicates whether the ca_certificate field has
+            been set for this Connection-Profile.
+    """
+
+    ca_certificate: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ca_certificate_set: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
 class ConnectionProfile(proto.Message):
     r"""A set of reusable connection configurations to be used as a
     source or destination for a stream.
@@ -566,6 +733,10 @@ class ConnectionProfile(proto.Message):
             This field is a member of `oneof`_ ``profile``.
         postgresql_profile (google.cloud.datastream_v1.types.PostgresqlProfile):
             PostgreSQL Connection Profile configuration.
+
+            This field is a member of `oneof`_ ``profile``.
+        sql_server_profile (google.cloud.datastream_v1.types.SqlServerProfile):
+            SQLServer Connection Profile configuration.
 
             This field is a member of `oneof`_ ``profile``.
         static_service_ip_connectivity (google.cloud.datastream_v1.types.StaticServiceIpConnectivity):
@@ -634,6 +805,12 @@ class ConnectionProfile(proto.Message):
         number=104,
         oneof="profile",
         message="PostgresqlProfile",
+    )
+    sql_server_profile: "SqlServerProfile" = proto.Field(
+        proto.MESSAGE,
+        number=105,
+        oneof="profile",
+        message="SqlServerProfile",
     )
     static_service_ip_connectivity: "StaticServiceIpConnectivity" = proto.Field(
         proto.MESSAGE,
@@ -809,10 +986,17 @@ class OracleSourceConfig(proto.Message):
 
             This field is a member of `oneof`_ ``large_objects_handling``.
         stream_large_objects (google.cloud.datastream_v1.types.OracleSourceConfig.StreamLargeObjects):
-            Stream large object values. NOTE: This
-            feature is currently experimental.
+            Stream large object values.
 
             This field is a member of `oneof`_ ``large_objects_handling``.
+        log_miner (google.cloud.datastream_v1.types.OracleSourceConfig.LogMiner):
+            Use LogMiner.
+
+            This field is a member of `oneof`_ ``cdc_method``.
+        binary_log_parser (google.cloud.datastream_v1.types.OracleSourceConfig.BinaryLogParser):
+            Use Binary Log Parser.
+
+            This field is a member of `oneof`_ ``cdc_method``.
     """
 
     class DropLargeObjects(proto.Message):
@@ -820,6 +1004,66 @@ class OracleSourceConfig(proto.Message):
 
     class StreamLargeObjects(proto.Message):
         r"""Configuration to stream large object values."""
+
+    class LogMiner(proto.Message):
+        r"""Configuration to use LogMiner CDC method."""
+
+    class BinaryLogParser(proto.Message):
+        r"""Configuration to use Binary Log Parser CDC technique.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            oracle_asm_log_file_access (google.cloud.datastream_v1.types.OracleSourceConfig.BinaryLogParser.OracleAsmLogFileAccess):
+                Use Oracle ASM.
+
+                This field is a member of `oneof`_ ``log_file_access``.
+            log_file_directories (google.cloud.datastream_v1.types.OracleSourceConfig.BinaryLogParser.LogFileDirectories):
+                Use Oracle directories.
+
+                This field is a member of `oneof`_ ``log_file_access``.
+        """
+
+        class OracleAsmLogFileAccess(proto.Message):
+            r"""Configuration to use Oracle ASM to access the log files."""
+
+        class LogFileDirectories(proto.Message):
+            r"""Configuration to specify the Oracle directories to access the
+            log files.
+
+            Attributes:
+                online_log_directory (str):
+                    Required. Oracle directory for online logs.
+                archived_log_directory (str):
+                    Required. Oracle directory for archived logs.
+            """
+
+            online_log_directory: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            archived_log_directory: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        oracle_asm_log_file_access: "OracleSourceConfig.BinaryLogParser.OracleAsmLogFileAccess" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="log_file_access",
+            message="OracleSourceConfig.BinaryLogParser.OracleAsmLogFileAccess",
+        )
+        log_file_directories: "OracleSourceConfig.BinaryLogParser.LogFileDirectories" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="log_file_access",
+            message="OracleSourceConfig.BinaryLogParser.LogFileDirectories",
+        )
 
     include_objects: "OracleRdbms" = proto.Field(
         proto.MESSAGE,
@@ -850,6 +1094,18 @@ class OracleSourceConfig(proto.Message):
         number=102,
         oneof="large_objects_handling",
         message=StreamLargeObjects,
+    )
+    log_miner: LogMiner = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="cdc_method",
+        message=LogMiner,
+    )
+    binary_log_parser: BinaryLogParser = proto.Field(
+        proto.MESSAGE,
+        number=104,
+        oneof="cdc_method",
+        message=BinaryLogParser,
     )
 
 
@@ -1019,6 +1275,193 @@ class PostgresqlSourceConfig(proto.Message):
     )
 
 
+class SqlServerColumn(proto.Message):
+    r"""SQLServer Column.
+
+    Attributes:
+        column (str):
+            Column name.
+        data_type (str):
+            The SQLServer data type.
+        length (int):
+            Column length.
+        precision (int):
+            Column precision.
+        scale (int):
+            Column scale.
+        primary_key (bool):
+            Whether or not the column represents a
+            primary key.
+        nullable (bool):
+            Whether or not the column can accept a null
+            value.
+        ordinal_position (int):
+            The ordinal position of the column in the
+            table.
+    """
+
+    column: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    length: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    precision: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    scale: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    primary_key: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    nullable: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    ordinal_position: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+
+
+class SqlServerTable(proto.Message):
+    r"""SQLServer table.
+
+    Attributes:
+        table (str):
+            Table name.
+        columns (MutableSequence[google.cloud.datastream_v1.types.SqlServerColumn]):
+            SQLServer columns in the schema.
+            When unspecified as part of include/exclude
+            objects, includes/excludes everything.
+    """
+
+    table: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    columns: MutableSequence["SqlServerColumn"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="SqlServerColumn",
+    )
+
+
+class SqlServerSchema(proto.Message):
+    r"""SQLServer schema.
+
+    Attributes:
+        schema (str):
+            Schema name.
+        tables (MutableSequence[google.cloud.datastream_v1.types.SqlServerTable]):
+            Tables in the schema.
+    """
+
+    schema: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tables: MutableSequence["SqlServerTable"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="SqlServerTable",
+    )
+
+
+class SqlServerRdbms(proto.Message):
+    r"""SQLServer database structure.
+
+    Attributes:
+        schemas (MutableSequence[google.cloud.datastream_v1.types.SqlServerSchema]):
+            SQLServer schemas in the database server.
+    """
+
+    schemas: MutableSequence["SqlServerSchema"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SqlServerSchema",
+    )
+
+
+class SqlServerSourceConfig(proto.Message):
+    r"""SQLServer data source configuration
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        include_objects (google.cloud.datastream_v1.types.SqlServerRdbms):
+            SQLServer objects to include in the stream.
+        exclude_objects (google.cloud.datastream_v1.types.SqlServerRdbms):
+            SQLServer objects to exclude from the stream.
+        max_concurrent_cdc_tasks (int):
+            Max concurrent CDC tasks.
+        max_concurrent_backfill_tasks (int):
+            Max concurrent backfill tasks.
+        transaction_logs (google.cloud.datastream_v1.types.SqlServerTransactionLogs):
+            CDC reader reads from transaction logs.
+
+            This field is a member of `oneof`_ ``cdc_method``.
+        change_tables (google.cloud.datastream_v1.types.SqlServerChangeTables):
+            CDC reader reads from change tables.
+
+            This field is a member of `oneof`_ ``cdc_method``.
+    """
+
+    include_objects: "SqlServerRdbms" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SqlServerRdbms",
+    )
+    exclude_objects: "SqlServerRdbms" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SqlServerRdbms",
+    )
+    max_concurrent_cdc_tasks: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    max_concurrent_backfill_tasks: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    transaction_logs: "SqlServerTransactionLogs" = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="cdc_method",
+        message="SqlServerTransactionLogs",
+    )
+    change_tables: "SqlServerChangeTables" = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="cdc_method",
+        message="SqlServerChangeTables",
+    )
+
+
+class SqlServerTransactionLogs(proto.Message):
+    r"""Configuration to use Transaction Logs CDC read method."""
+
+
+class SqlServerChangeTables(proto.Message):
+    r"""Configuration to use Change Tables CDC read method."""
+
+
 class MysqlColumn(proto.Message):
     r"""MySQL Column.
 
@@ -1148,6 +1591,13 @@ class MysqlRdbms(proto.Message):
 class MysqlSourceConfig(proto.Message):
     r"""MySQL source configuration
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         include_objects (google.cloud.datastream_v1.types.MysqlRdbms):
             MySQL objects to retrieve from the source.
@@ -1163,7 +1613,21 @@ class MysqlSourceConfig(proto.Message):
             The number should be non negative. If not set
             (or set to 0), the system's default value will
             be used.
+        binary_log_position (google.cloud.datastream_v1.types.MysqlSourceConfig.BinaryLogPosition):
+            Use Binary log position based replication.
+
+            This field is a member of `oneof`_ ``cdc_method``.
+        gtid (google.cloud.datastream_v1.types.MysqlSourceConfig.Gtid):
+            Use GTID based replication.
+
+            This field is a member of `oneof`_ ``cdc_method``.
     """
+
+    class BinaryLogPosition(proto.Message):
+        r"""Use Binary log position based replication."""
+
+    class Gtid(proto.Message):
+        r"""Use GTID based replication."""
 
     include_objects: "MysqlRdbms" = proto.Field(
         proto.MESSAGE,
@@ -1182,6 +1646,18 @@ class MysqlSourceConfig(proto.Message):
     max_concurrent_backfill_tasks: int = proto.Field(
         proto.INT32,
         number=4,
+    )
+    binary_log_position: BinaryLogPosition = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="cdc_method",
+        message=BinaryLogPosition,
+    )
+    gtid: Gtid = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="cdc_method",
+        message=Gtid,
     )
 
 
@@ -1211,6 +1687,10 @@ class SourceConfig(proto.Message):
             PostgreSQL data source configuration.
 
             This field is a member of `oneof`_ ``source_stream_config``.
+        sql_server_source_config (google.cloud.datastream_v1.types.SqlServerSourceConfig):
+            SQLServer data source configuration.
+
+            This field is a member of `oneof`_ ``source_stream_config``.
     """
 
     source_connection_profile: str = proto.Field(
@@ -1234,6 +1714,12 @@ class SourceConfig(proto.Message):
         number=102,
         oneof="source_stream_config",
         message="PostgresqlSourceConfig",
+    )
+    sql_server_source_config: "SqlServerSourceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="source_stream_config",
+        message="SqlServerSourceConfig",
     )
 
 
@@ -1379,6 +1865,14 @@ class BigQueryDestinationConfig(proto.Message):
             not be impacted. Lower values mean that queries
             will return fresher data, but may result in
             higher cost.
+        merge (google.cloud.datastream_v1.types.BigQueryDestinationConfig.Merge):
+            The standard mode
+
+            This field is a member of `oneof`_ ``write_mode``.
+        append_only (google.cloud.datastream_v1.types.BigQueryDestinationConfig.AppendOnly):
+            Append only mode
+
+            This field is a member of `oneof`_ ``write_mode``.
     """
 
     class SingleTargetDataset(proto.Message):
@@ -1387,6 +1881,9 @@ class BigQueryDestinationConfig(proto.Message):
         Attributes:
             dataset_id (str):
                 The dataset ID of the target dataset.
+                DatasetIds allowed characters:
+
+                https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#datasetreference.
         """
 
         dataset_id: str = proto.Field(
@@ -1447,6 +1944,18 @@ class BigQueryDestinationConfig(proto.Message):
             message="BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate",
         )
 
+    class AppendOnly(proto.Message):
+        r"""AppendOnly mode defines that all changes to a table will be
+        written to the destination table.
+
+        """
+
+    class Merge(proto.Message):
+        r"""Merge mode defines that all changes to a table will be merged
+        at the destination table.
+
+        """
+
     single_target_dataset: SingleTargetDataset = proto.Field(
         proto.MESSAGE,
         number=201,
@@ -1463,6 +1972,18 @@ class BigQueryDestinationConfig(proto.Message):
         proto.MESSAGE,
         number=300,
         message=duration_pb2.Duration,
+    )
+    merge: Merge = proto.Field(
+        proto.MESSAGE,
+        number=301,
+        oneof="write_mode",
+        message=Merge,
+    )
+    append_only: AppendOnly = proto.Field(
+        proto.MESSAGE,
+        number=302,
+        oneof="write_mode",
+        message=AppendOnly,
     )
 
 
@@ -1560,6 +2081,10 @@ class Stream(proto.Message):
             provisioned through KMS.
 
             This field is a member of `oneof`_ ``_customer_managed_encryption_key``.
+        last_recovery_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. If the stream was recovered, the
+            time of the last recovery. Note: This field is
+            currently experimental.
     """
 
     class State(proto.Enum):
@@ -1629,6 +2154,11 @@ class Stream(proto.Message):
                 backfilling.
 
                 This field is a member of `oneof`_ ``excluded_objects``.
+            sql_server_excluded_objects (google.cloud.datastream_v1.types.SqlServerRdbms):
+                SQLServer data source objects to avoid
+                backfilling
+
+                This field is a member of `oneof`_ ``excluded_objects``.
         """
 
         oracle_excluded_objects: "OracleRdbms" = proto.Field(
@@ -1648,6 +2178,12 @@ class Stream(proto.Message):
             number=3,
             oneof="excluded_objects",
             message="PostgresqlRdbms",
+        )
+        sql_server_excluded_objects: "SqlServerRdbms" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="excluded_objects",
+            message="SqlServerRdbms",
         )
 
     class BackfillNoneStrategy(proto.Message):
@@ -1715,6 +2251,11 @@ class Stream(proto.Message):
         proto.STRING,
         number=10,
         optional=True,
+    )
+    last_recovery_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -1798,6 +2339,10 @@ class SourceObjectIdentifier(proto.Message):
             PostgreSQL data source object identifier.
 
             This field is a member of `oneof`_ ``source_identifier``.
+        sql_server_identifier (google.cloud.datastream_v1.types.SourceObjectIdentifier.SqlServerObjectIdentifier):
+            SQLServer data source object identifier.
+
+            This field is a member of `oneof`_ ``source_identifier``.
     """
 
     class OracleObjectIdentifier(proto.Message):
@@ -1857,6 +2402,25 @@ class SourceObjectIdentifier(proto.Message):
             number=2,
         )
 
+    class SqlServerObjectIdentifier(proto.Message):
+        r"""SQLServer data source object identifier.
+
+        Attributes:
+            schema (str):
+                Required. The schema name.
+            table (str):
+                Required. The table name.
+        """
+
+        schema: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        table: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     oracle_identifier: OracleObjectIdentifier = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -1875,6 +2439,12 @@ class SourceObjectIdentifier(proto.Message):
         oneof="source_identifier",
         message=PostgresqlObjectIdentifier,
     )
+    sql_server_identifier: SqlServerObjectIdentifier = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="source_identifier",
+        message=SqlServerObjectIdentifier,
+    )
 
 
 class BackfillJob(proto.Message):
@@ -1882,7 +2452,7 @@ class BackfillJob(proto.Message):
 
     Attributes:
         state (google.cloud.datastream_v1.types.BackfillJob.State):
-            Backfill job state.
+            Output only. Backfill job state.
         trigger (google.cloud.datastream_v1.types.BackfillJob.Trigger):
             Backfill job's triggering reason.
         last_start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2042,7 +2612,7 @@ class Validation(proto.Message):
         description (str):
             A short description of the validation.
         state (google.cloud.datastream_v1.types.Validation.State):
-            Validation execution status.
+            Output only. Validation execution status.
         message (MutableSequence[google.cloud.datastream_v1.types.ValidationMessage]):
             Messages reflecting the validation results.
         code (str):
@@ -2061,11 +2631,14 @@ class Validation(proto.Message):
                 Validation failed.
             PASSED (3):
                 Validation passed.
+            WARNING (4):
+                Validation executed with warnings.
         """
         STATE_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         FAILED = 2
         PASSED = 3
+        WARNING = 4
 
     description: str = proto.Field(
         proto.STRING,
@@ -2134,6 +2707,168 @@ class ValidationMessage(proto.Message):
     code: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class CdcStrategy(proto.Message):
+    r"""The strategy that the stream uses for CDC replication.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        most_recent_start_position (google.cloud.datastream_v1.types.CdcStrategy.MostRecentStartPosition):
+            Optional. Start replicating from the most
+            recent position in the source.
+
+            This field is a member of `oneof`_ ``start_position``.
+        next_available_start_position (google.cloud.datastream_v1.types.CdcStrategy.NextAvailableStartPosition):
+            Optional. Resume replication from the next
+            available position in the source.
+
+            This field is a member of `oneof`_ ``start_position``.
+        specific_start_position (google.cloud.datastream_v1.types.CdcStrategy.SpecificStartPosition):
+            Optional. Start replicating from a specific
+            position in the source.
+
+            This field is a member of `oneof`_ ``start_position``.
+    """
+
+    class MostRecentStartPosition(proto.Message):
+        r"""CDC strategy to start replicating from the most recent
+        position in the source.
+
+        """
+
+    class NextAvailableStartPosition(proto.Message):
+        r"""CDC strategy to resume replication from the next available
+        position in the source.
+
+        """
+
+    class SpecificStartPosition(proto.Message):
+        r"""CDC strategy to start replicating from a specific position in
+        the source.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            mysql_log_position (google.cloud.datastream_v1.types.MysqlLogPosition):
+                MySQL specific log position to start
+                replicating from.
+
+                This field is a member of `oneof`_ ``position``.
+            oracle_scn_position (google.cloud.datastream_v1.types.OracleScnPosition):
+                Oracle SCN to start replicating from.
+
+                This field is a member of `oneof`_ ``position``.
+            sql_server_lsn_position (google.cloud.datastream_v1.types.SqlServerLsnPosition):
+                SqlServer LSN to start replicating from.
+
+                This field is a member of `oneof`_ ``position``.
+        """
+
+        mysql_log_position: "MysqlLogPosition" = proto.Field(
+            proto.MESSAGE,
+            number=101,
+            oneof="position",
+            message="MysqlLogPosition",
+        )
+        oracle_scn_position: "OracleScnPosition" = proto.Field(
+            proto.MESSAGE,
+            number=102,
+            oneof="position",
+            message="OracleScnPosition",
+        )
+        sql_server_lsn_position: "SqlServerLsnPosition" = proto.Field(
+            proto.MESSAGE,
+            number=103,
+            oneof="position",
+            message="SqlServerLsnPosition",
+        )
+
+    most_recent_start_position: MostRecentStartPosition = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="start_position",
+        message=MostRecentStartPosition,
+    )
+    next_available_start_position: NextAvailableStartPosition = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="start_position",
+        message=NextAvailableStartPosition,
+    )
+    specific_start_position: SpecificStartPosition = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="start_position",
+        message=SpecificStartPosition,
+    )
+
+
+class SqlServerLsnPosition(proto.Message):
+    r"""SQL Server LSN position
+
+    Attributes:
+        lsn (str):
+            Required. Log sequence number (LSN) from
+            where Logs will be read
+    """
+
+    lsn: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class OracleScnPosition(proto.Message):
+    r"""Oracle SCN position
+
+    Attributes:
+        scn (int):
+            Required. SCN number from where Logs will be
+            read
+    """
+
+    scn: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+
+
+class MysqlLogPosition(proto.Message):
+    r"""MySQL log position
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        log_file (str):
+            Required. The binary log file name.
+        log_position (int):
+            Optional. The position within the binary log
+            file. Default is head of file.
+
+            This field is a member of `oneof`_ ``_log_position``.
+    """
+
+    log_file: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    log_position: int = proto.Field(
+        proto.INT32,
+        number=2,
+        optional=True,
     )
 
 
