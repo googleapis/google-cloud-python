@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.10.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.12...google-cloud-run-v0.10.13) (2024-11-21)
+
+
+### Features
+
+* support manual instance count in Cloud Run for manual scaling feature ([16b5ba7](https://github.com/googleapis/google-cloud-python/commit/16b5ba78a7316bd792be6f4a1608e7280b2ea0ce))
+
 ## [0.10.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.11...google-cloud-run-v0.10.12) (2024-11-14)
 
 
