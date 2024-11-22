@@ -290,11 +290,10 @@ class CreateBackupRequest(proto.Message):
         backup_id (str):
             Required. The ID to use for the backup.
             The ID must be unique within the specified
-            backupVault. Must contain only letters, numbers,
-            underscore and hyphen, with the first character
-            a letter or underscore, the last a letter or
-            underscore or a number, and a 63 character
-            maximum.
+            backupVault. Must contain only letters, numbers
+            and hyphen, with the first character a letter,
+            the last a letter or a
+            number, and a 63 character maximum.
         backup (google.cloud.netapp_v1.types.Backup):
             Required. A backup resource
     """
