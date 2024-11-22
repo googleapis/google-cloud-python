@@ -160,7 +160,10 @@ def test_generate_sample_basic():
                 {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'},
                 {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
                 {'type': 'float', 'name': 'timeout'},
-                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+                {
+                    'type': 'Sequence[Tuple[str, Union[str, bytes]]]',
+                    'name': 'metadata'
+                }
             ],
             'resultType': 'molluscs_v1.classification',
             'client': {
@@ -284,7 +287,10 @@ def test_generate_sample_basic_async():
                 {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'},
                 {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
                 {'type': 'float', 'name': 'timeout'},
-                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+                {
+                    'type': 'Sequence[Tuple[str, Union[str, bytes]]]',
+                    'name': 'metadata'
+                }
             ],
             'resultType': 'molluscs_v1.classification',
             'client': {
@@ -399,7 +405,10 @@ def test_generate_sample_basic_unflattenable():
                 {'type': 'molluscs_v1.classify_request', 'name': 'request'},
                 {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
                 {'type': 'float', 'name': 'timeout'},
-                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+                {
+                    'type': 'Sequence[Tuple[str, Union[str, bytes]]]',
+                    'name': 'metadata'
+                }
             ],
             'resultType': 'molluscs_v1.classification',
             'client': {
@@ -505,7 +514,10 @@ def test_generate_sample_void_method():
                 {'type': 'molluscs_v1.ClassifyTarget', 'name': 'classify_target'},
                 {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
                 {'type': 'float', 'name': 'timeout'},
-                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+                {
+                    'type': 'Sequence[Tuple[str, Union[str, bytes]]]',
+                    'name': 'metadata'
+                }
             ],
             'client': {
                 'shortName': 'MolluscServiceClient',

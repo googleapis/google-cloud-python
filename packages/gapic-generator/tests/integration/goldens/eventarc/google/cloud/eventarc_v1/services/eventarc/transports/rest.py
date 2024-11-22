@@ -225,7 +225,7 @@ class EventarcRestInterceptor:
 
 
     """
-    def pre_create_channel(self, request: eventarc.CreateChannelRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.CreateChannelRequest, Sequence[Tuple[str, str]]]:
+    def pre_create_channel(self, request: eventarc.CreateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.CreateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -242,7 +242,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_create_channel_connection(self, request: eventarc.CreateChannelConnectionRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.CreateChannelConnectionRequest, Sequence[Tuple[str, str]]]:
+    def pre_create_channel_connection(self, request: eventarc.CreateChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.CreateChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -259,7 +259,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_create_trigger(self, request: eventarc.CreateTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.CreateTriggerRequest, Sequence[Tuple[str, str]]]:
+    def pre_create_trigger(self, request: eventarc.CreateTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.CreateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -276,7 +276,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_delete_channel(self, request: eventarc.DeleteChannelRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.DeleteChannelRequest, Sequence[Tuple[str, str]]]:
+    def pre_delete_channel(self, request: eventarc.DeleteChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.DeleteChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -293,7 +293,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_delete_channel_connection(self, request: eventarc.DeleteChannelConnectionRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.DeleteChannelConnectionRequest, Sequence[Tuple[str, str]]]:
+    def pre_delete_channel_connection(self, request: eventarc.DeleteChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.DeleteChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -310,7 +310,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_delete_trigger(self, request: eventarc.DeleteTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.DeleteTriggerRequest, Sequence[Tuple[str, str]]]:
+    def pre_delete_trigger(self, request: eventarc.DeleteTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.DeleteTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -327,7 +327,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_get_channel(self, request: eventarc.GetChannelRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetChannelRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_channel(self, request: eventarc.GetChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -344,7 +344,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_get_channel_connection(self, request: eventarc.GetChannelConnectionRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetChannelConnectionRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_channel_connection(self, request: eventarc.GetChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -361,7 +361,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_get_google_channel_config(self, request: eventarc.GetGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetGoogleChannelConfigRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_google_channel_config(self, request: eventarc.GetGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_google_channel_config
 
         Override in a subclass to manipulate the request or metadata
@@ -378,7 +378,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_get_provider(self, request: eventarc.GetProviderRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetProviderRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_provider(self, request: eventarc.GetProviderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetProviderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_provider
 
         Override in a subclass to manipulate the request or metadata
@@ -395,7 +395,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_get_trigger(self, request: eventarc.GetTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.GetTriggerRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_trigger(self, request: eventarc.GetTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -412,7 +412,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_list_channel_connections(self, request: eventarc.ListChannelConnectionsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListChannelConnectionsRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_channel_connections(self, request: eventarc.ListChannelConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channel_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -429,7 +429,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_list_channels(self, request: eventarc.ListChannelsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListChannelsRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_channels(self, request: eventarc.ListChannelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channels
 
         Override in a subclass to manipulate the request or metadata
@@ -446,7 +446,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_list_providers(self, request: eventarc.ListProvidersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListProvidersRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_providers(self, request: eventarc.ListProvidersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListProvidersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_providers
 
         Override in a subclass to manipulate the request or metadata
@@ -463,7 +463,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_list_triggers(self, request: eventarc.ListTriggersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.ListTriggersRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_triggers(self, request: eventarc.ListTriggersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_triggers
 
         Override in a subclass to manipulate the request or metadata
@@ -480,7 +480,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_update_channel(self, request: eventarc.UpdateChannelRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.UpdateChannelRequest, Sequence[Tuple[str, str]]]:
+    def pre_update_channel(self, request: eventarc.UpdateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.UpdateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -497,7 +497,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_update_google_channel_config(self, request: eventarc.UpdateGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.UpdateGoogleChannelConfigRequest, Sequence[Tuple[str, str]]]:
+    def pre_update_google_channel_config(self, request: eventarc.UpdateGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.UpdateGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_google_channel_config
 
         Override in a subclass to manipulate the request or metadata
@@ -514,7 +514,7 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def pre_update_trigger(self, request: eventarc.UpdateTriggerRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[eventarc.UpdateTriggerRequest, Sequence[Tuple[str, str]]]:
+    def pre_update_trigger(self, request: eventarc.UpdateTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.UpdateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -532,8 +532,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_get_location(
-        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -553,8 +553,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_list_locations(
-        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -574,8 +574,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -595,8 +595,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -616,8 +616,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -637,8 +637,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -658,8 +658,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -679,8 +679,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_get_operation(
-        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -700,8 +700,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_list_operations(
-        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -893,7 +893,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.CreateChannelRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create channel method over HTTP.
 
@@ -904,8 +904,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -969,7 +971,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.CreateChannelConnectionRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create channel connection method over HTTP.
 
@@ -980,8 +982,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1045,7 +1049,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.CreateTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create trigger method over HTTP.
 
@@ -1056,8 +1060,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1120,7 +1126,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.DeleteChannelRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete channel method over HTTP.
 
@@ -1131,8 +1137,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1193,7 +1201,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.DeleteChannelConnectionRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete channel connection method over HTTP.
 
@@ -1204,8 +1212,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1266,7 +1276,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.DeleteTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete trigger method over HTTP.
 
@@ -1277,8 +1287,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1339,7 +1351,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.GetChannelRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> channel.Channel:
             r"""Call the get channel method over HTTP.
 
@@ -1350,8 +1362,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.channel.Channel:
@@ -1419,7 +1433,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.GetChannelConnectionRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> channel_connection.ChannelConnection:
             r"""Call the get channel connection method over HTTP.
 
@@ -1430,8 +1444,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.channel_connection.ChannelConnection:
@@ -1498,7 +1514,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.GetGoogleChannelConfigRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> google_channel_config.GoogleChannelConfig:
             r"""Call the get google channel config method over HTTP.
 
@@ -1509,8 +1525,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.google_channel_config.GoogleChannelConfig:
@@ -1578,7 +1596,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.GetProviderRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> discovery.Provider:
             r"""Call the get provider method over HTTP.
 
@@ -1589,8 +1607,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.discovery.Provider:
@@ -1652,7 +1672,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.GetTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> trigger.Trigger:
             r"""Call the get trigger method over HTTP.
 
@@ -1663,8 +1683,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.trigger.Trigger:
@@ -1726,7 +1748,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.ListChannelConnectionsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> eventarc.ListChannelConnectionsResponse:
             r"""Call the list channel connections method over HTTP.
 
@@ -1737,8 +1759,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.eventarc.ListChannelConnectionsResponse:
@@ -1800,7 +1824,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.ListChannelsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> eventarc.ListChannelsResponse:
             r"""Call the list channels method over HTTP.
 
@@ -1811,8 +1835,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.eventarc.ListChannelsResponse:
@@ -1872,7 +1898,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.ListProvidersRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> eventarc.ListProvidersResponse:
             r"""Call the list providers method over HTTP.
 
@@ -1883,8 +1909,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.eventarc.ListProvidersResponse:
@@ -1944,7 +1972,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.ListTriggersRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> eventarc.ListTriggersResponse:
             r"""Call the list triggers method over HTTP.
 
@@ -1955,8 +1983,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.eventarc.ListTriggersResponse:
@@ -2017,7 +2047,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.UpdateChannelRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the update channel method over HTTP.
 
@@ -2028,8 +2058,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2093,7 +2125,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.UpdateGoogleChannelConfigRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> gce_google_channel_config.GoogleChannelConfig:
             r"""Call the update google channel
         config method over HTTP.
@@ -2105,8 +2137,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gce_google_channel_config.GoogleChannelConfig:
@@ -2177,7 +2211,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request: eventarc.UpdateTriggerRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the update trigger method over HTTP.
 
@@ -2188,8 +2222,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2400,7 +2436,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: locations_pb2.GetLocationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> locations_pb2.Location:
 
             r"""Call the get location method over HTTP.
@@ -2411,8 +2447,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2473,7 +2511,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: locations_pb2.ListLocationsRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> locations_pb2.ListLocationsResponse:
 
             r"""Call the list locations method over HTTP.
@@ -2484,8 +2522,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2546,7 +2586,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: iam_policy_pb2.GetIamPolicyRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> policy_pb2.Policy:
 
             r"""Call the get iam policy method over HTTP.
@@ -2557,8 +2597,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -2620,7 +2662,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: iam_policy_pb2.SetIamPolicyRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> policy_pb2.Policy:
 
             r"""Call the set iam policy method over HTTP.
@@ -2631,8 +2673,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -2696,7 +2740,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: iam_policy_pb2.TestIamPermissionsRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> iam_policy_pb2.TestIamPermissionsResponse:
 
             r"""Call the test iam permissions method over HTTP.
@@ -2707,8 +2751,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -2772,7 +2818,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: operations_pb2.CancelOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> None:
 
             r"""Call the cancel operation method over HTTP.
@@ -2783,8 +2829,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseEventarcRestTransport._BaseCancelOperation._get_http_options()
@@ -2840,7 +2888,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: operations_pb2.DeleteOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> None:
 
             r"""Call the delete operation method over HTTP.
@@ -2851,8 +2899,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteOperation._get_http_options()
@@ -2906,7 +2956,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: operations_pb2.GetOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> operations_pb2.Operation:
 
             r"""Call the get operation method over HTTP.
@@ -2917,8 +2967,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2979,7 +3031,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             request: operations_pb2.ListOperationsRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> operations_pb2.ListOperationsResponse:
 
             r"""Call the list operations method over HTTP.
@@ -2990,8 +3042,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.

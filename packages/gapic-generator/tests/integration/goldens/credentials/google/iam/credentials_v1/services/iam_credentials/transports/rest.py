@@ -102,7 +102,7 @@ class IAMCredentialsRestInterceptor:
 
 
     """
-    def pre_generate_access_token(self, request: common.GenerateAccessTokenRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[common.GenerateAccessTokenRequest, Sequence[Tuple[str, str]]]:
+    def pre_generate_access_token(self, request: common.GenerateAccessTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -119,7 +119,7 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
-    def pre_generate_id_token(self, request: common.GenerateIdTokenRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[common.GenerateIdTokenRequest, Sequence[Tuple[str, str]]]:
+    def pre_generate_id_token(self, request: common.GenerateIdTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateIdTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_id_token
 
         Override in a subclass to manipulate the request or metadata
@@ -136,7 +136,7 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
-    def pre_sign_blob(self, request: common.SignBlobRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[common.SignBlobRequest, Sequence[Tuple[str, str]]]:
+    def pre_sign_blob(self, request: common.SignBlobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignBlobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sign_blob
 
         Override in a subclass to manipulate the request or metadata
@@ -153,7 +153,7 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
-    def pre_sign_jwt(self, request: common.SignJwtRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[common.SignJwtRequest, Sequence[Tuple[str, str]]]:
+    def pre_sign_jwt(self, request: common.SignJwtRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignJwtRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sign_jwt
 
         Override in a subclass to manipulate the request or metadata
@@ -299,7 +299,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request: common.GenerateAccessTokenRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> common.GenerateAccessTokenResponse:
             r"""Call the generate access token method over HTTP.
 
@@ -309,8 +309,10 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.GenerateAccessTokenResponse:
@@ -373,7 +375,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request: common.GenerateIdTokenRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> common.GenerateIdTokenResponse:
             r"""Call the generate id token method over HTTP.
 
@@ -383,8 +385,10 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.GenerateIdTokenResponse:
@@ -447,7 +451,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request: common.SignBlobRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> common.SignBlobResponse:
             r"""Call the sign blob method over HTTP.
 
@@ -457,8 +461,10 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.SignBlobResponse:
@@ -521,7 +527,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request: common.SignJwtRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> common.SignJwtResponse:
             r"""Call the sign jwt method over HTTP.
 
@@ -531,8 +537,10 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.SignJwtResponse:

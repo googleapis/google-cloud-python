@@ -564,7 +564,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             lifetime: Optional[duration_pb2.Duration] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
         account.
@@ -653,8 +653,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.iam.credentials_v1.types.GenerateAccessTokenResponse:
@@ -718,7 +720,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             include_email: Optional[bool] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
         account.
@@ -801,8 +803,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.iam.credentials_v1.types.GenerateIdTokenResponse:
@@ -865,7 +869,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             payload: Optional[bytes] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
         private key.
@@ -937,8 +941,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.iam.credentials_v1.types.SignBlobResponse:
@@ -999,7 +1005,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             payload: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
         private key.
@@ -1074,8 +1080,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.iam.credentials_v1.types.SignJwtResponse:

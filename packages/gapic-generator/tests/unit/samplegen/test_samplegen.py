@@ -2301,7 +2301,10 @@ def test__set_sample_metadata_server_streaming():
                 },
                 {"type": "google.api_core.retry.Retry", "name": "retry"},
                 {"type": "float", "name": "timeout"},
-                {"type": "Sequence[Tuple[str, str]", "name": "metadata"},
+                {
+                    "type": "Sequence[Tuple[str, Union[str, bytes]]]",
+                    "name": "metadata"
+                },
             ],
             "resultType": "Iterable[animalia.mollusca_v1.types.Mollusc]",
             "client": {
@@ -2385,7 +2388,10 @@ def test__set_sample_metadata_client_streaming():
                 },
                 {"type": "google.api_core.retry.Retry", "name": "retry"},
                 {"type": "float", "name": "timeout"},
-                {"type": "Sequence[Tuple[str, str]", "name": "metadata"},
+                {
+                    "type": "Sequence[Tuple[str, Union[str, bytes]]]",
+                    "name": "metadata"
+                },
             ],
             "resultType": "animalia.mollusca_v1.types.Mollusc",
             "client": {

@@ -161,7 +161,7 @@ class CloudRedisRestInterceptor:
 
 
     """
-    def pre_create_instance(self, request: cloud_redis.CreateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.CreateInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_create_instance(self, request: cloud_redis.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -178,7 +178,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_delete_instance(self, request: cloud_redis.DeleteInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_delete_instance(self, request: cloud_redis.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -195,7 +195,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_export_instance(self, request: cloud_redis.ExportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_export_instance(self, request: cloud_redis.ExportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -212,7 +212,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_failover_instance(self, request: cloud_redis.FailoverInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_failover_instance(self, request: cloud_redis.FailoverInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for failover_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -229,7 +229,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -246,7 +246,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance_auth_string
 
         Override in a subclass to manipulate the request or metadata
@@ -263,7 +263,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -280,7 +280,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -297,7 +297,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reschedule_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -314,7 +314,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -331,7 +331,7 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_upgrade_instance(self, request: cloud_redis.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, str]]]:
+    def pre_upgrade_instance(self, request: cloud_redis.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upgrade_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -349,8 +349,8 @@ class CloudRedisRestInterceptor:
         return response
 
     def pre_get_location(
-        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -370,8 +370,8 @@ class CloudRedisRestInterceptor:
         return response
 
     def pre_list_locations(
-        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -391,8 +391,8 @@ class CloudRedisRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -412,8 +412,8 @@ class CloudRedisRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -433,8 +433,8 @@ class CloudRedisRestInterceptor:
         return response
 
     def pre_get_operation(
-        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -454,8 +454,8 @@ class CloudRedisRestInterceptor:
         return response
 
     def pre_list_operations(
-        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -475,8 +475,8 @@ class CloudRedisRestInterceptor:
         return response
 
     def pre_wait_operation(
-        self, request: operations_pb2.WaitOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.WaitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -692,7 +692,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.CreateInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -703,8 +703,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -767,7 +769,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.DeleteInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
@@ -778,8 +780,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -841,7 +845,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.ExportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the export instance method over HTTP.
 
@@ -852,8 +856,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -917,7 +923,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.FailoverInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the failover instance method over HTTP.
 
@@ -928,8 +934,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -992,7 +1000,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.GetInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> cloud_redis.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -1003,8 +1011,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_redis.Instance:
@@ -1064,7 +1074,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.GetInstanceAuthStringRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> cloud_redis.InstanceAuthString:
             r"""Call the get instance auth string method over HTTP.
 
@@ -1075,8 +1085,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_redis.InstanceAuthString:
@@ -1137,7 +1149,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.ImportInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the import instance method over HTTP.
 
@@ -1148,8 +1160,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1212,7 +1226,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.ListInstancesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> cloud_redis.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -1223,8 +1237,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_redis.ListInstancesResponse:
@@ -1287,7 +1303,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.RescheduleMaintenanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the reschedule maintenance method over HTTP.
 
@@ -1298,8 +1314,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1363,7 +1381,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.UpdateInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -1374,8 +1392,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1439,7 +1459,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request: cloud_redis.UpgradeInstanceRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the upgrade instance method over HTTP.
 
@@ -1450,8 +1470,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1606,7 +1628,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             request: locations_pb2.GetLocationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> locations_pb2.Location:
 
             r"""Call the get location method over HTTP.
@@ -1617,8 +1639,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1679,7 +1703,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             request: locations_pb2.ListLocationsRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> locations_pb2.ListLocationsResponse:
 
             r"""Call the list locations method over HTTP.
@@ -1690,8 +1714,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1752,7 +1778,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             request: operations_pb2.CancelOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> None:
 
             r"""Call the cancel operation method over HTTP.
@@ -1763,8 +1789,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseCancelOperation._get_http_options()
@@ -1818,7 +1846,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             request: operations_pb2.DeleteOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> None:
 
             r"""Call the delete operation method over HTTP.
@@ -1829,8 +1857,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_http_options()
@@ -1884,7 +1914,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             request: operations_pb2.GetOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> operations_pb2.Operation:
 
             r"""Call the get operation method over HTTP.
@@ -1895,8 +1925,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1957,7 +1989,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             request: operations_pb2.ListOperationsRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> operations_pb2.ListOperationsResponse:
 
             r"""Call the list operations method over HTTP.
@@ -1968,8 +2000,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2031,7 +2065,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             request: operations_pb2.WaitOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> operations_pb2.Operation:
 
             r"""Call the wait operation method over HTTP.
@@ -2042,8 +2076,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from WaitOperation method.

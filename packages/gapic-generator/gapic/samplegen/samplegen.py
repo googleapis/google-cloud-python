@@ -1107,7 +1107,7 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
         name="timeout", type="float"))
     parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-        name="metadata", type="Sequence[Tuple[str, str]"))
+        name="metadata", type="Sequence[Tuple[str, Union[str, bytes]]]"))
 
     return snippet_metadata
 
