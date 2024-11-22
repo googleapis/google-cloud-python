@@ -5822,3 +5822,73 @@ def test_table_reference_to_bqstorage_v1_stable(table_path):
     for klass in (mut.TableReference, mut.Table, mut.TableListItem):
         got = klass.from_string(table_path).to_bqstorage()
         assert got == expected
+
+
+@pytest.mark.parametrize("preserve_order", [True, False])
+def test_to_arrow_iterable_w_bqstorage_max_stream_count(preserve_order):
+    pytest.importorskip("pandas")
+    pytest.importorskip("google.cloud.bigquery_storage")
+    from google.cloud.bigquery import schema
+    from google.cloud.bigquery import table as mut
+    from google.cloud import bigquery_storage
+
+    bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    session = bigquery_storage.types.ReadSession()
+    bqstorage_client.create_read_session.return_value = session
+
+    row_iterator = mut.RowIterator(
+        _mock_client(),
+        api_request=None,
+        path=None,
+        schema=[
+            schema.SchemaField("colA", "INTEGER"),
+        ],
+        table=mut.TableReference.from_string("proj.dset.tbl"),
+    )
+    row_iterator._preserve_order = preserve_order
+
+    max_stream_count = 132
+    result_iterable = row_iterator.to_arrow_iterable(
+        bqstorage_client=bqstorage_client, max_stream_count=max_stream_count
+    )
+    list(result_iterable)
+    bqstorage_client.create_read_session.assert_called_once_with(
+        parent=mock.ANY,
+        read_session=mock.ANY,
+        max_stream_count=max_stream_count if not preserve_order else 1,
+    )
+
+
+@pytest.mark.parametrize("preserve_order", [True, False])
+def test_to_dataframe_iterable_w_bqstorage_max_stream_count(preserve_order):
+    pytest.importorskip("pandas")
+    pytest.importorskip("google.cloud.bigquery_storage")
+    from google.cloud.bigquery import schema
+    from google.cloud.bigquery import table as mut
+    from google.cloud import bigquery_storage
+
+    bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    session = bigquery_storage.types.ReadSession()
+    bqstorage_client.create_read_session.return_value = session
+
+    row_iterator = mut.RowIterator(
+        _mock_client(),
+        api_request=None,
+        path=None,
+        schema=[
+            schema.SchemaField("colA", "INTEGER"),
+        ],
+        table=mut.TableReference.from_string("proj.dset.tbl"),
+    )
+    row_iterator._preserve_order = preserve_order
+
+    max_stream_count = 132
+    result_iterable = row_iterator.to_dataframe_iterable(
+        bqstorage_client=bqstorage_client, max_stream_count=max_stream_count
+    )
+    list(result_iterable)
+    bqstorage_client.create_read_session.assert_called_once_with(
+        parent=mock.ANY,
+        read_session=mock.ANY,
+        max_stream_count=max_stream_count if not preserve_order else 1,
+    )
