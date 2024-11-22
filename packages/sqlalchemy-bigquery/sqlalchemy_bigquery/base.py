@@ -812,42 +812,99 @@ class BigQueryDDLCompiler(DDLCompiler):
             )
 
     def _process_time_partitioning(
-        self, table: Table, time_partitioning: TimePartitioning
+        self,
+        table: Table,
+        time_partitioning: TimePartitioning,
     ):
         """
-        Generates a SQL 'PARTITION BY' clause for partitioning a table by a date or timestamp.
+        Generates a SQL 'PARTITION BY' clause for partitioning a table,
 
         Args:
-        - table (Table): The SQLAlchemy table object representing the BigQuery table to be partitioned.
+        - table (Table): The SQLAlchemy table object representing the BigQuery
+            table to be partitioned.
         - time_partitioning (TimePartitioning): The time partitioning details,
             including the field to be used for partitioning.
 
         Returns:
-        - str: A SQL 'PARTITION BY' clause that uses either TIMESTAMP_TRUNC or DATE_TRUNC to
-        partition data on the specified field.
+        - str: A SQL 'PARTITION BY' clause.
 
         Example:
-        - Given a table with a TIMESTAMP type column 'event_timestamp' and setting
-        'time_partitioning.field' to 'event_timestamp', the function returns
+        - Given a table with an 'event_timestamp' and setting time_partitioning.type
+        as DAY and by setting 'time_partitioning.field' as 'event_timestamp', the
+        function returns:
         "PARTITION BY TIMESTAMP_TRUNC(event_timestamp, DAY)".
-        """
-        field = "_PARTITIONDATE"
-        trunc_fn = "DATE_TRUNC"
 
+        Current inputs allowed by BQ and covered by this function include:
+        * _PARTITIONDATE
+        * DATETIME_TRUNC(<datetime_column>, DAY/HOUR/MONTH/YEAR)
+        * TIMESTAMP_TRUNC(<timestamp_column>, DAY/HOUR/MONTH/YEAR)
+        * DATE_TRUNC(<date_column>, MONTH/YEAR)
+
+        Additional options allowed by BQ but not explicitly covered by this
+        function include:
+        * DATE(_PARTITIONTIME)
+        * DATE(<timestamp_column>)
+        * DATE(<datetime_column>)
+        * DATE column
+        """
+
+        sqltypes = {
+            "_PARTITIONDATE": ("_PARTITIONDATE", None),
+            "TIMESTAMP": ("TIMESTAMP_TRUNC", {"DAY", "HOUR", "MONTH", "YEAR"}),
+            "DATETIME": ("DATETIME_TRUNC", {"DAY", "HOUR", "MONTH", "YEAR"}),
+            "DATE": ("DATE_TRUNC", {"MONTH", "YEAR"}),
+        }
+
+        # Extract field (i.e <column_name> or _PARTITIONDATE)
+        # AND extract the name of the column_type (i.e. "TIMESTAMP", "DATE",
+        # "DATETIME", "_PARTITIONDATE")
         if time_partitioning.field is not None:
             field = time_partitioning.field
-            if isinstance(
-                table.columns[time_partitioning.field].type,
-                sqlalchemy.sql.sqltypes.DATE,
-            ):
-                return f"PARTITION BY {field}"
-            elif isinstance(
-                table.columns[time_partitioning.field].type,
-                sqlalchemy.sql.sqltypes.TIMESTAMP,
-            ):
-                trunc_fn = "TIMESTAMP_TRUNC"
+            column_type = table.columns[field].type.__visit_name__.upper()
 
-        return f"PARTITION BY {trunc_fn}({field}, {time_partitioning.type_})"
+        else:
+            field = "_PARTITIONDATE"
+            column_type = "_PARTITIONDATE"
+
+        # Extract time_partitioning.type_ (DAY, HOUR, MONTH, YEAR)
+        # i.e. generates one partition per type (1/DAY, 1/HOUR)
+        # NOTE: if time_partitioning.type_ == None, it gets
+        # immediately overwritten by python-bigquery to a default of DAY.
+        partitioning_period = time_partitioning.type_
+
+        # Extract the truncation_function (i.e. DATE_TRUNC)
+        # and the set of allowable partition_periods
+        # that can be used in that function
+        trunc_fn, allowed_partitions = sqltypes[column_type]
+
+        # Create output:
+        # Special Case: _PARTITIONDATE does NOT use a function or partitioning_period
+        if trunc_fn == "_PARTITIONDATE":
+            return f"PARTITION BY {field}"
+
+        # Special Case: BigQuery will not accept DAY as partitioning_period for
+        # DATE_TRUNC.
+        # However, the default argument in python-bigquery for TimePartioning
+        # is DAY. This case overwrites that to avoid making a breaking change in
+        # python-bigquery.
+        # https://github.com/googleapis/python-bigquery/blob/a4d9534a900f13ae7355904cda05097d781f27e3/google/cloud/bigquery/table.py#L2916
+        if trunc_fn == "DATE_TRUNC" and partitioning_period == "DAY":
+            raise ValueError(
+                "The TimePartitioning.type_ must be one of: "
+                f"{allowed_partitions}, received {partitioning_period}."
+                "NOTE: the `default` value for TimePartioning.type_ as set in "
+                "python-bigquery is 'DAY', if you wish to use 'DATE_TRUNC' "
+                "ensure that you overwrite the default TimePartitioning.type_. "
+            )
+
+        # Generic Case
+        if partitioning_period not in allowed_partitions:
+            raise ValueError(
+                "The TimePartitioning.type_ must be one of: "
+                f"{allowed_partitions}, received {partitioning_period}."
+            )
+
+        return f"PARTITION BY {trunc_fn}({field}, {partitioning_period})"
 
     def _process_range_partitioning(
         self, table: Table, range_partitioning: RangePartitioning

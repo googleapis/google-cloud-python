@@ -104,111 +104,161 @@ def test_table_clustering_fields_dialect_option_type_error(faux_conn):
         )
 
 
-def test_table_time_partitioning_dialect_option(faux_conn):
-    # expect table creation to fail as SQLite does not support partitioned tables
+@pytest.mark.parametrize(
+    "column_dtype,time_partitioning_type,func_name",
+    [
+        # DATE dtype
+        pytest.param(
+            sqlalchemy.DATE,
+            TimePartitioningType.HOUR,  # Only MONTH/YEAR are permitted in BigQuery
+            "DATE_TRUNC",
+            marks=pytest.mark.xfail,
+        ),
+        pytest.param(
+            sqlalchemy.DATE,
+            TimePartitioningType.DAY,  # Only MONTH/YEAR are permitted in BigQuery
+            "DATE_TRUNC",
+            marks=pytest.mark.xfail,
+        ),
+        (sqlalchemy.DATE, TimePartitioningType.MONTH, "DATE_TRUNC"),
+        (sqlalchemy.DATE, TimePartitioningType.YEAR, "DATE_TRUNC"),
+        # TIMESTAMP dtype
+        (sqlalchemy.TIMESTAMP, TimePartitioningType.HOUR, "TIMESTAMP_TRUNC"),
+        (sqlalchemy.TIMESTAMP, TimePartitioningType.DAY, "TIMESTAMP_TRUNC"),
+        (sqlalchemy.TIMESTAMP, TimePartitioningType.MONTH, "TIMESTAMP_TRUNC"),
+        (sqlalchemy.TIMESTAMP, TimePartitioningType.YEAR, "TIMESTAMP_TRUNC"),
+        # DATETIME dtype
+        (sqlalchemy.DATETIME, TimePartitioningType.HOUR, "DATETIME_TRUNC"),
+        (sqlalchemy.DATETIME, TimePartitioningType.DAY, "DATETIME_TRUNC"),
+        (sqlalchemy.DATETIME, TimePartitioningType.MONTH, "DATETIME_TRUNC"),
+        (sqlalchemy.DATETIME, TimePartitioningType.YEAR, "DATETIME_TRUNC"),
+        # TimePartitioning.type_ == None
+        (sqlalchemy.DATETIME, None, "DATETIME_TRUNC"),
+    ],
+)
+def test_table_time_partitioning_given_field_and_type__dialect_options(
+    faux_conn, column_dtype, time_partitioning_type, func_name
+):
+    """NOTE: Expect table creation to fail as SQLite does not support
+    partitioned tables, despite that, we are still able to test the generation
+    of SQL statements.
+
+    Each parametrization ensures that the appropriate function is generated
+    depending on whether the column datatype is DATE, TIMESTAMP, DATETIME and
+    whether the TimePartitioningType is HOUR, DAY, MONTH, YEAR.
+
+    `DATE_TRUNC` only returns a result if TimePartitioningType is DAY, MONTH,
+    YEAR. BigQuery cannot partition on DATE by HOUR, so that is expected to
+    xfail.
+
+    A distinguishing characteristic of this test is we provide an argument to
+    the TimePartitioning class for both field and type_.
+
+    Special case: IF time_partitioning_type is None, the __init__() in the
+    TimePartitioning class will overwrite it with TimePartitioningType.DAY as
+    the default.
+    """
+
+    if time_partitioning_type is None:
+        time_partitioning_type = TimePartitioningType.DAY
+
     with pytest.raises(sqlite3.OperationalError):
         setup_table(
             faux_conn,
             "some_table",
             sqlalchemy.Column("id", sqlalchemy.Integer),
-            sqlalchemy.Column("createdAt", sqlalchemy.DateTime),
-            bigquery_time_partitioning=TimePartitioning(),
-        )
-
-    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
-        "CREATE TABLE `some_table` ( `id` INT64, `createdAt` DATETIME )"
-        " PARTITION BY DATE_TRUNC(_PARTITIONDATE, DAY)"
-    )
-
-
-def test_table_require_partition_filter_dialect_option(faux_conn):
-    # expect table creation to fail as SQLite does not support partitioned tables
-    with pytest.raises(sqlite3.OperationalError):
-        setup_table(
-            faux_conn,
-            "some_table",
-            sqlalchemy.Column("createdAt", sqlalchemy.DateTime),
-            bigquery_time_partitioning=TimePartitioning(field="createdAt"),
-            bigquery_require_partition_filter=True,
-        )
-
-    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
-        "CREATE TABLE `some_table` ( `createdAt` DATETIME )"
-        " PARTITION BY DATE_TRUNC(createdAt, DAY)"
-        " OPTIONS(require_partition_filter=true)"
-    )
-
-
-def test_table_time_partitioning_with_field_dialect_option(faux_conn):
-    # expect table creation to fail as SQLite does not support partitioned tables
-    with pytest.raises(sqlite3.OperationalError):
-        setup_table(
-            faux_conn,
-            "some_table",
-            sqlalchemy.Column("id", sqlalchemy.Integer),
-            sqlalchemy.Column("createdAt", sqlalchemy.DateTime),
-            bigquery_time_partitioning=TimePartitioning(field="createdAt"),
-        )
-
-    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
-        "CREATE TABLE `some_table` ( `id` INT64, `createdAt` DATETIME )"
-        " PARTITION BY DATE_TRUNC(createdAt, DAY)"
-    )
-
-
-def test_table_time_partitioning_by_month_dialect_option(faux_conn):
-    # expect table creation to fail as SQLite does not support partitioned tables
-    with pytest.raises(sqlite3.OperationalError):
-        setup_table(
-            faux_conn,
-            "some_table",
-            sqlalchemy.Column("id", sqlalchemy.Integer),
-            sqlalchemy.Column("createdAt", sqlalchemy.DateTime),
+            sqlalchemy.Column("createdAt", column_dtype),
             bigquery_time_partitioning=TimePartitioning(
-                field="createdAt",
-                type_=TimePartitioningType.MONTH,
+                field="createdAt", type_=time_partitioning_type
             ),
         )
 
-    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
-        "CREATE TABLE `some_table` ( `id` INT64, `createdAt` DATETIME )"
-        " PARTITION BY DATE_TRUNC(createdAt, MONTH)"
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
+        f"CREATE TABLE `some_table` ( `id` INT64, `createdAt` {column_dtype.__visit_name__} )"
+        f" PARTITION BY {func_name}(createdAt, {time_partitioning_type})"
     )
+    assert result == expected
 
 
-def test_table_time_partitioning_with_timestamp_dialect_option(faux_conn):
-    # expect table creation to fail as SQLite does not support partitioned tables
+def test_table_time_partitioning_given_field_but_no_type__dialect_option(faux_conn):
+    """Expect table creation to fail as SQLite does not support partitioned tables
+
+    Confirms that if the column datatype is DATETIME but no TimePartitioning.type_
+    has been supplied, the system will default to DAY.
+
+    A distinguishing characteristic of this test is we provide an argument to
+    the TimePartitioning class for field but not type_.
+    """
+
     with pytest.raises(sqlite3.OperationalError):
         setup_table(
             faux_conn,
             "some_table",
             sqlalchemy.Column("id", sqlalchemy.Integer),
-            sqlalchemy.Column("createdAt", sqlalchemy.TIMESTAMP),
+            sqlalchemy.Column("createdAt", sqlalchemy.DateTime),
             bigquery_time_partitioning=TimePartitioning(field="createdAt"),
         )
-
-    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
-        "CREATE TABLE `some_table` ( `id` INT64, `createdAt` TIMESTAMP )"
-        " PARTITION BY TIMESTAMP_TRUNC(createdAt, DAY)"
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
+        "CREATE TABLE `some_table` ( `id` INT64, `createdAt` DATETIME )"
+        " PARTITION BY DATETIME_TRUNC(createdAt, DAY)"
     )
+    assert result == expected
 
 
-def test_table_time_partitioning_with_date_dialect_option(faux_conn):
-    # expect table creation to fail as SQLite does not support partitioned tables
+@pytest.mark.parametrize(
+    "column_dtype,time_partitioning_type",
+    [
+        pytest.param(
+            sqlalchemy.DATE,
+            TimePartitioningType.HOUR,
+            marks=pytest.mark.xfail,
+        ),
+        (sqlalchemy.DATE, TimePartitioningType.DAY),
+        (sqlalchemy.DATE, TimePartitioningType.MONTH),
+        (sqlalchemy.DATE, TimePartitioningType.YEAR),
+    ],
+)
+def test_table_time_partitioning_given_type__but_no_field_dialect_option(
+    faux_conn,
+    column_dtype,
+    time_partitioning_type,
+):
+    """NOTE: Expect table creation to fail as SQLite does not support
+    partitioned tables, despite that, we are still able to test the generation
+    of SQL statements
+
+    If the `field` argument to TimePartitioning() is not provided, it defaults to
+    None. That causes the pseudocolumn "_PARTITIONDATE" to be used by default as
+    the column to partition by.
+
+    _PARTITIONTIME only returns a result if TimePartitioningType is DAY, MONTH,
+    YEAR. BigQuery cannot partition on _PARTITIONDATE by HOUR, so that is
+    expected to xfail.
+
+    A distinguishing characteristic of this test is we provide an argument to
+    the TimePartitioning class for type_ but not field.
+    """
+
     with pytest.raises(sqlite3.OperationalError):
         setup_table(
             faux_conn,
             "some_table_2",
             sqlalchemy.Column("id", sqlalchemy.Integer),
-            sqlalchemy.Column("createdAt", sqlalchemy.DATE),
-            bigquery_time_partitioning=TimePartitioning(field="createdAt"),
+            sqlalchemy.Column("createdAt", column_dtype),
+            bigquery_time_partitioning=TimePartitioning(type_=time_partitioning_type),
         )
 
     # confirm that the following code creates the correct SQL string
-    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
-        "CREATE TABLE `some_table_2` ( `id` INT64, `createdAt` DATE )"
-        " PARTITION BY createdAt"
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+
+    # We need two versions of expected depending on whether we use _PARTITIONDATE
+    expected = (
+        f"CREATE TABLE `some_table_2` ( `id` INT64, `createdAt` {column_dtype.__visit_name__} )"
+        f" PARTITION BY _PARTITIONDATE"
     )
+    assert result == expected
 
 
 def test_table_time_partitioning_dialect_option_partition_expiration_days(faux_conn):
@@ -227,7 +277,7 @@ def test_table_time_partitioning_dialect_option_partition_expiration_days(faux_c
 
     assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
         "CREATE TABLE `some_table` ( `createdAt` DATETIME )"
-        " PARTITION BY DATE_TRUNC(createdAt, DAY)"
+        " PARTITION BY DATETIME_TRUNC(createdAt, DAY)"
         " OPTIONS(partition_expiration_days=0.25)"
     )
 
@@ -400,12 +450,15 @@ def test_table_all_dialect_option(faux_conn):
             ),
         )
 
-    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
+    result = " ".join(faux_conn.test_data["execute"][-1][0].strip().split())
+    expected = (
         "CREATE TABLE `some_table` ( `id` INT64, `country` STRING, `town` STRING, `createdAt` DATETIME )"
-        " PARTITION BY DATE_TRUNC(createdAt, DAY)"
+        " PARTITION BY DATETIME_TRUNC(createdAt, DAY)"
         " CLUSTER BY country, town"
         " OPTIONS(partition_expiration_days=30.0, expiration_timestamp=TIMESTAMP '2038-01-01 00:00:00+00:00', require_partition_filter=true, default_rounding_mode='ROUND_HALF_EVEN')"
     )
+
+    assert result == expected
 
 
 def test_validate_friendly_name_value_type(ddl_compiler):

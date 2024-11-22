@@ -561,7 +561,16 @@ def test_dml(engine, session, table_dml):
         assert len(result) == 0
 
 
-@pytest.mark.parametrize("time_partitioning_field", ["timestamp_c", "date_c"])
+@pytest.mark.parametrize(
+    "time_partitioning_field",
+    [
+        ("timestamp_c"),
+        ("datetime_c"),
+        # Fails because python-bigquery TimePartitioning.type_ defaults to "DAY", but
+        # the DATE_TRUNC() function only allows "MONTH"/"YEAR"
+        pytest.param("date_c", marks=[pytest.mark.xfail]),
+    ],
+)
 def test_create_table(engine, bigquery_dataset, time_partitioning_field):
     meta = MetaData()
     Table(
