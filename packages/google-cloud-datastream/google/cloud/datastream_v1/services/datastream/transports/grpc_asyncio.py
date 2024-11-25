@@ -585,6 +585,33 @@ class DatastreamGrpcAsyncIOTransport(DatastreamTransport):
         return self._stubs["delete_stream"]
 
     @property
+    def run_stream(
+        self,
+    ) -> Callable[[datastream.RunStreamRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the run stream method over gRPC.
+
+        Use this method to start, resume or recover a stream
+        with a non default CDC strategy.
+
+        Returns:
+            Callable[[~.RunStreamRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_stream" not in self._stubs:
+            self._stubs["run_stream"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datastream.v1.Datastream/RunStream",
+                request_serializer=datastream.RunStreamRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["run_stream"]
+
+    @property
     def get_stream_object(
         self,
     ) -> Callable[
@@ -1044,6 +1071,11 @@ class DatastreamGrpcAsyncIOTransport(DatastreamTransport):
             self.delete_stream: self._wrap_method(
                 self.delete_stream,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.run_stream: self._wrap_method(
+                self.run_stream,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_stream_object: self._wrap_method(

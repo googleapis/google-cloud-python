@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
         "CreateStreamRequest",
         "UpdateStreamRequest",
         "DeleteStreamRequest",
+        "RunStreamRequest",
         "GetStreamObjectRequest",
         "LookupStreamObjectRequest",
         "StartBackfillJobRequest",
@@ -114,6 +115,11 @@ class DiscoverConnectionProfileRequest(proto.Message):
             objects and metadata.
 
             This field is a member of `oneof`_ ``data_object``.
+        sql_server_rdbms (google.cloud.datastream_v1.types.SqlServerRdbms):
+            SQLServer RDBMS to enrich with child data
+            objects and metadata.
+
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     parent: str = proto.Field(
@@ -159,6 +165,12 @@ class DiscoverConnectionProfileRequest(proto.Message):
         oneof="data_object",
         message=datastream_resources.PostgresqlRdbms,
     )
+    sql_server_rdbms: datastream_resources.SqlServerRdbms = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="data_object",
+        message=datastream_resources.SqlServerRdbms,
+    )
 
 
 class DiscoverConnectionProfileResponse(proto.Message):
@@ -184,6 +196,10 @@ class DiscoverConnectionProfileResponse(proto.Message):
             Enriched PostgreSQL RDBMS object.
 
             This field is a member of `oneof`_ ``data_object``.
+        sql_server_rdbms (google.cloud.datastream_v1.types.SqlServerRdbms):
+            Enriched SQLServer RDBMS object.
+
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     oracle_rdbms: datastream_resources.OracleRdbms = proto.Field(
@@ -203,6 +219,12 @@ class DiscoverConnectionProfileResponse(proto.Message):
         number=102,
         oneof="data_object",
         message=datastream_resources.PostgresqlRdbms,
+    )
+    sql_server_rdbms: datastream_resources.SqlServerRdbms = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="data_object",
+        message=datastream_resources.SqlServerRdbms,
     )
 
 
@@ -799,6 +821,38 @@ class DeleteStreamRequest(proto.Message):
     )
 
 
+class RunStreamRequest(proto.Message):
+    r"""Request message for running a stream.
+
+    Attributes:
+        name (str):
+            Required. Name of the stream resource to start, in the
+            format:
+            projects/{project_id}/locations/{location}/streams/{stream_name}
+        cdc_strategy (google.cloud.datastream_v1.types.CdcStrategy):
+            Optional. The CDC strategy of the stream. If
+            not set, the system's default value will be
+            used.
+        force (bool):
+            Optional. Update the stream without
+            validating it.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cdc_strategy: datastream_resources.CdcStrategy = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=datastream_resources.CdcStrategy,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
 class GetStreamObjectRequest(proto.Message):
     r"""Request for fetching a specific stream object.
 
@@ -989,9 +1043,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.
