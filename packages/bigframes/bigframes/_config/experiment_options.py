@@ -21,8 +21,8 @@ class ExperimentOptions:
     """
 
     def __init__(self):
-        self._semantic_operators = False
-        self._blob = False
+        self._semantic_operators: bool = False
+        self._blob: bool = False
 
     @property
     def semantic_operators(self) -> bool:

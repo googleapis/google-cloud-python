@@ -186,6 +186,7 @@ class Session(
                 credentials=context.credentials,
                 application_name=context.application_name,
                 bq_kms_key_name=self._bq_kms_key_name,
+                client_endpoints_override=context.client_endpoints_override,
             )
 
         # TODO(shobs): Remove this logic after https://github.com/ibis-project/ibis/issues/8494

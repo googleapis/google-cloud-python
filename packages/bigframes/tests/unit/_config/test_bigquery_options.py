@@ -34,6 +34,7 @@ import bigframes.exceptions
         ("use_regional_endpoints", False, True),
         ("kms_key_name", "kms/key/name/1", "kms/key/name/2"),
         ("skip_bq_connection_check", False, True),
+        ("client_endpoints_override", {}, {"bqclient": "endpoint_address"}),
     ],
 )
 def test_setter_raises_if_session_started(attribute, original_value, new_value):
@@ -67,6 +68,7 @@ def test_setter_raises_if_session_started(attribute, original_value, new_value):
             "bq_connection",
             "use_regional_endpoints",
             "bq_kms_key_name",
+            "client_endpoints_override",
         ]
     ],
 )
@@ -152,3 +154,10 @@ def test_location_set_to_invalid_warning(invalid_location, possibility):
             ),
         ):
             op()
+
+
+def test_client_endpoints_override_set_shows_warning():
+    options = bigquery_options.BigQueryOptions()
+
+    with pytest.warns(UserWarning):
+        options.client_endpoints_override = {"bqclient": "endpoint_address"}

@@ -67,6 +67,7 @@ class ClientsProvider:
         credentials: Optional[google.auth.credentials.Credentials] = None,
         application_name: Optional[str] = None,
         bq_kms_key_name: Optional[str] = None,
+        client_endpoints_override: dict = {},
     ):
         credentials_project = None
         if credentials is None:
@@ -98,6 +99,7 @@ class ClientsProvider:
         self._use_regional_endpoints = use_regional_endpoints
         self._credentials = credentials
         self._bq_kms_key_name = bq_kms_key_name
+        self._client_endpoints_override = client_endpoints_override
 
         # cloud clients initialized for lazy load
         self._bqclient = None
@@ -126,6 +128,11 @@ class ClientsProvider:
                     else _BIGQUERY_LOCATIONAL_ENDPOINT
                 ).format(location=self._location),
             )
+        if "bqclient" in self._client_endpoints_override:
+            bq_options = google.api_core.client_options.ClientOptions(
+                api_endpoint=self._client_endpoints_override["bqclient"]
+            )
+
         bq_info = google.api_core.client_info.ClientInfo(
             user_agent=self._application_name
         )
@@ -172,6 +179,11 @@ class ClientsProvider:
                         location=self._location
                     )
                 )
+            if "bqconnectionclient" in self._client_endpoints_override:
+                bqconnection_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=self._client_endpoints_override["bqconnectionclient"]
+                )
+
             bqconnection_info = google.api_core.gapic_v1.client_info.ClientInfo(
                 user_agent=self._application_name
             )
@@ -198,6 +210,11 @@ class ClientsProvider:
                         in bigframes.constants.REP_ENABLED_BIGQUERY_LOCATIONS
                         else _BIGQUERYSTORAGE_LOCATIONAL_ENDPOINT
                     ).format(location=self._location),
+                )
+
+            if "bqstoragereadclient" in self._client_endpoints_override:
+                bqstorage_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=self._client_endpoints_override["bqstoragereadclient"]
                 )
             bqstorage_info = google.api_core.gapic_v1.client_info.ClientInfo(
                 user_agent=self._application_name
