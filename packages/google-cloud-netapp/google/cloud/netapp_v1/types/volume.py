@@ -50,6 +50,7 @@ __protobuf__ = proto.module(
         "RestoreParameters",
         "BackupConfig",
         "TieringPolicy",
+        "HybridReplicationParameters",
     },
 )
 
@@ -259,10 +260,9 @@ class CreateVolumeRequest(proto.Message):
         volume_id (str):
             Required. Id of the requesting volume. Must
             be unique within the parent resource. Must
-            contain only letters, numbers, underscore and
-            hyphen, with the first character a letter or
-            underscore, the last a letter or underscore or a
-            number, and a 63 character maximum.
+            contain only letters, numbers and hyphen, with
+            the first character a letter, the last a letter
+            or a number, and a 63 character maximum.
         volume (google.cloud.netapp_v1.types.Volume):
             Required. The volume being created.
     """
@@ -469,6 +469,9 @@ class Volume(proto.Message):
         cold_tier_size_gib (int):
             Output only. Size of the volume cold tier
             data in GiB.
+        hybrid_replication_parameters (google.cloud.netapp_v1.types.HybridReplicationParameters):
+            Optional. The Hybrid Replication parameters
+            for the volume.
     """
 
     class State(proto.Enum):
@@ -491,6 +494,14 @@ class Volume(proto.Message):
                 Volume State is Disabled
             ERROR (7):
                 Volume State is Error
+            PREPARING (8):
+                Volume State is Preparing. Note that this is
+                different from CREATING where CREATING means the
+                volume is being created, while PREPARING means
+                the volume is created and now being prepared for
+                the replication.
+            READ_ONLY (9):
+                Volume State is Read Only
         """
         STATE_UNSPECIFIED = 0
         READY = 1
@@ -500,6 +511,8 @@ class Volume(proto.Message):
         RESTORING = 5
         DISABLED = 6
         ERROR = 7
+        PREPARING = 8
+        READ_ONLY = 9
 
     name: str = proto.Field(
         proto.STRING,
@@ -665,6 +678,11 @@ class Volume(proto.Message):
     cold_tier_size_gib: int = proto.Field(
         proto.INT64,
         number=39,
+    )
+    hybrid_replication_parameters: "HybridReplicationParameters" = proto.Field(
+        proto.MESSAGE,
+        number=40,
+        message="HybridReplicationParameters",
     )
 
 
@@ -1226,6 +1244,74 @@ class TieringPolicy(proto.Message):
         proto.INT32,
         number=2,
         optional=True,
+    )
+
+
+class HybridReplicationParameters(proto.Message):
+    r"""The Hybrid Replication parameters for the volume.
+
+    Attributes:
+        replication (str):
+            Required. Desired Identifier (name) of the replication which
+            will be created for this volume. Format:
+            ``projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}``
+        peer_volume_name (str):
+            Required. Name of the user's local source
+            volume to be peered with the destination volume.
+        peer_cluster_name (str):
+            Required. Name of the user's local source
+            cluster to be peered with the destination
+            cluster.
+        peer_svm_name (str):
+            Required. Name of the user's local source
+            vserver svm to be peered with the destination
+            vserver svm.
+        peer_ip_addresses (MutableSequence[str]):
+            Required. List of node ip addresses to be
+            peered with.
+        cluster_location (str):
+            Optional. Name of source cluster location
+            associated with the Hybrid replication. This is
+            a free-form field for the display purpose only.
+        description (str):
+            Optional. Description of the replication.
+        labels (MutableMapping[str, str]):
+            Optional. Labels to be added to the
+            replication as the key value pairs.
+    """
+
+    replication: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    peer_volume_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    peer_cluster_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    peer_svm_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    peer_ip_addresses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    cluster_location: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
     )
 
 

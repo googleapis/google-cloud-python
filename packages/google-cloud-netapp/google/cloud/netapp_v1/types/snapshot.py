@@ -139,9 +139,9 @@ class CreateSnapshotRequest(proto.Message):
         snapshot_id (str):
             Required. ID of the snapshot to create. Must
             be unique within the parent resource. Must
-            contain only letters, numbers, underscore and
-            hyphen, with the first character a letter or
-            underscore, the last a letter or underscore or a
+            contain only letters, numbers and hyphen, with
+            the first character a letter, the last a letter
+            or a
             number, and a 63 character maximum.
     """
 
