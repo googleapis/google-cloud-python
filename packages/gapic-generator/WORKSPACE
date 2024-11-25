@@ -60,9 +60,9 @@ gapic_generator_python()
 
 gapic_generator_register_toolchains()
 
-_grpc_version = "1.64.2"
+_grpc_version = "1.67.1"
 
-_grpc_sha256 = "8579095a31e280d0c5fcc81ea0a2a0efb2900dbfbac0eb018a961a5be22e076e"
+_grpc_sha256 = "f83aedc91b84d4c396d30b0b2a30f7113c651fe5bc180c8ac08a5f0ff7dcffd2"
 
 http_archive(
     name = "com_github_grpc_grpc",
