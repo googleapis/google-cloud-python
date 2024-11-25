@@ -42,6 +42,14 @@ _NEG_INF = typing.cast(ibis_types.NumericValue, ibis_types.literal(-np.inf))
 # ln(2**(2**10)) == (2**10)*ln(2) ~= 709.78, so EXP(x) for x>709.78 will overflow.
 _FLOAT64_EXP_BOUND = typing.cast(ibis_types.NumericValue, ibis_types.literal(709.78))
 
+_OBJ_REF_STRUCT_SCHEMA = (
+    ("uri", ibis_dtypes.String),
+    ("version", ibis_dtypes.String),
+    ("authorizer", ibis_dtypes.String),
+    ("details", ibis_dtypes.JSON),
+)
+_OBJ_REF_IBIS_DTYPE = ibis_dtypes.Struct.from_tuples(_OBJ_REF_STRUCT_SCHEMA)
+
 # Datetime constants
 UNIT_TO_US_CONVERSION_FACTORS = {
     "W": 7 * 24 * 60 * 60 * 1000 * 1000,
@@ -1161,6 +1169,12 @@ def json_extract_string_array_op_impl(
     return json_extract_string_array(json_obj=x, json_path=op.json_path)
 
 
+# Blob Ops
+@scalar_op_compiler.register_unary_op(ops.obj_fetch_metadata_op)
+def obj_fetch_metadata_op_impl(x: ibis_types.Value):
+    return obj_fetch_metadata(obj_ref=x)
+
+
 ### Binary Ops
 def short_circuit_nulls(type_override: typing.Optional[ibis_dtypes.DataType] = None):
     """Wraps a binary operator to generate nulls of the expected type if either input is a null scalar."""
@@ -1832,3 +1846,8 @@ def json_extract_string_array(
 @ibis.udf.scalar.builtin(name="ML.DISTANCE")
 def vector_distance(vector1, vector2, type: str) -> ibis_dtypes.Float64:
     """Computes the distance between two vectors using specified type ("EUCLIDEAN", "MANHATTAN", or "COSINE")"""
+
+
+@ibis.udf.scalar.builtin(name="OBJ.FETCH_METADATA")
+def obj_fetch_metadata(obj_ref: _OBJ_REF_IBIS_DTYPE) -> _OBJ_REF_IBIS_DTYPE:  # type: ignore
+    """Fetch metadata from ObjectRef Struct."""

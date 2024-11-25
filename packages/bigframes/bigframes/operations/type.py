@@ -213,6 +213,7 @@ UNARY_NUMERIC = TypePreserving(bigframes.dtypes.is_numeric, description="numeric
 UNARY_REAL_NUMERIC = UnaryRealNumeric()
 BINARY_NUMERIC = BinaryNumeric()
 BINARY_REAL_NUMERIC = BinaryRealNumeric()
+BLOB_TRANSFORM = TypePreserving(bigframes.dtypes.is_struct_like, description="blob")
 COMPARISON = Comparison()
 COERCE = CoerceCommon()
 LOGICAL = Logical()

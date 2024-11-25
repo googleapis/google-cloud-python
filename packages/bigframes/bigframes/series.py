@@ -54,6 +54,7 @@ import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.base
+import bigframes.operations.blob as blob
 import bigframes.operations.datetimes as dt
 import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
@@ -186,6 +187,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     @property
     def list(self) -> lists.ListAccessor:
         return lists.ListAccessor(self._block)
+
+    @property
+    def blob(self) -> blob.BlobAccessor:
+        return blob.BlobAccessor(self._block)
 
     @property
     @validations.requires_ordering()
