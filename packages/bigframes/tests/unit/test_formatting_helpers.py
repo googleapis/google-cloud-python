@@ -56,3 +56,17 @@ def test_wait_for_job_error_includes_version():
 
     cap_exc.match("Test message 123.")
     cap_exc.match(bigframes.version.__version__)
+
+
+@pytest.mark.parametrize(
+    "test_input, expected", [(None, "N/A"), ("string", "N/A"), (100000, "100.0 kB")]
+)
+def test_get_formatted_bytes(test_input, expected):
+    assert formatting_helpers.get_formatted_bytes(test_input) == expected
+
+
+@pytest.mark.parametrize(
+    "test_input, expected", [(None, None), ("string", "string"), (100000, "a minute")]
+)
+def test_get_formatted_time(test_input, expected):
+    assert formatting_helpers.get_formatted_time(test_input) == expected

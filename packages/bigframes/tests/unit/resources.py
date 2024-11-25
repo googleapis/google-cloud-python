@@ -67,12 +67,6 @@ def create_bigquery_session(
         type(table).num_rows = mock.PropertyMock(return_value=1000000000)
         bqclient.get_table.return_value = table
 
-    if anonymous_dataset is None:
-        anonymous_dataset = google.cloud.bigquery.DatasetReference(
-            "test-project",
-            "test_dataset",
-        )
-
     def query_mock(query, *args, **kwargs):
         query_job = mock.create_autospec(google.cloud.bigquery.QueryJob)
         type(query_job).destination = mock.PropertyMock(
