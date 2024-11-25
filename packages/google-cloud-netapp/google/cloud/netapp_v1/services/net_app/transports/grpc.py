@@ -1265,6 +1265,59 @@ class NetAppGrpcTransport(NetAppTransport):
         return self._stubs["reverse_replication_direction"]
 
     @property
+    def establish_peering(
+        self,
+    ) -> Callable[[replication.EstablishPeeringRequest], operations_pb2.Operation]:
+        r"""Return a callable for the establish peering method over gRPC.
+
+        Establish replication peering.
+
+        Returns:
+            Callable[[~.EstablishPeeringRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "establish_peering" not in self._stubs:
+            self._stubs["establish_peering"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/EstablishPeering",
+                request_serializer=replication.EstablishPeeringRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["establish_peering"]
+
+    @property
+    def sync_replication(
+        self,
+    ) -> Callable[[replication.SyncReplicationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the sync replication method over gRPC.
+
+        Syncs the replication. This will invoke one time
+        volume data transfer from source to destination.
+
+        Returns:
+            Callable[[~.SyncReplicationRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "sync_replication" not in self._stubs:
+            self._stubs["sync_replication"] = self.grpc_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/SyncReplication",
+                request_serializer=replication.SyncReplicationRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["sync_replication"]
+
+    @property
     def create_backup_vault(
         self,
     ) -> Callable[

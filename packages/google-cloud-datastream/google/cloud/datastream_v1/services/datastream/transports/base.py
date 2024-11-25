@@ -187,6 +187,11 @@ class DatastreamTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.run_stream: gapic_v1.method.wrap_method(
+                self.run_stream,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_stream_object: gapic_v1.method.wrap_method(
                 self.get_stream_object,
                 default_timeout=None,
@@ -409,6 +414,15 @@ class DatastreamTransport(abc.ABC):
         self,
     ) -> Callable[
         [datastream.DeleteStreamRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_stream(
+        self,
+    ) -> Callable[
+        [datastream.RunStreamRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

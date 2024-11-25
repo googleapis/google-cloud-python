@@ -5176,6 +5176,249 @@ async def test_delete_stream_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        datastream.RunStreamRequest,
+        dict,
+    ],
+)
+def test_run_stream(request_type, transport: str = "grpc"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.run_stream(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = datastream.RunStreamRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_run_stream_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = datastream.RunStreamRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.run_stream(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.RunStreamRequest(
+            name="name_value",
+        )
+
+
+def test_run_stream_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatastreamClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.run_stream in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.run_stream] = mock_rpc
+        request = {}
+        client.run_stream(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.run_stream(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_run_stream_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DatastreamAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.run_stream
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.run_stream
+        ] = mock_rpc
+
+        request = {}
+        await client.run_stream(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.run_stream(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_run_stream_async(
+    transport: str = "grpc_asyncio", request_type=datastream.RunStreamRequest
+):
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.run_stream(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = datastream.RunStreamRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_run_stream_async_from_dict():
+    await test_run_stream_async(request_type=dict)
+
+
+def test_run_stream_field_headers():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.RunStreamRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.run_stream(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_run_stream_field_headers_async():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.RunStreamRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.run_stream(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         datastream.GetStreamObjectRequest,
         dict,
     ],
@@ -12897,6 +13140,125 @@ def test_delete_stream_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_run_stream_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatastreamClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.run_stream in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.run_stream] = mock_rpc
+
+        request = {}
+        client.run_stream(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.run_stream(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_run_stream_rest_required_fields(request_type=datastream.RunStreamRequest):
+    transport_class = transports.DatastreamRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).run_stream._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.run_stream(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_run_stream_rest_unset_required_fields():
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.run_stream._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
 def test_get_stream_object_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -16138,6 +16500,27 @@ def test_delete_stream_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_run_stream_empty_call_grpc():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.run_stream(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastream.RunStreamRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_stream_object_empty_call_grpc():
     client = DatastreamClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16759,6 +17142,31 @@ async def test_delete_stream_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = datastream.DeleteStreamRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_run_stream_empty_call_grpc_asyncio():
+    client = DatastreamAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.run_stream(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastream.RunStreamRequest()
 
         assert args[0] == request_msg
 
@@ -17465,6 +17873,20 @@ def test_create_connection_profile_rest_call_success(request_type):
             "password": "password_value",
             "database_service": "database_service_value",
             "connection_attributes": {},
+            "oracle_ssl_config": {
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+            },
+            "oracle_asm_config": {
+                "hostname": "hostname_value",
+                "port": 453,
+                "username": "username_value",
+                "password": "password_value",
+                "asm_service": "asm_service_value",
+                "connection_attributes": {},
+                "oracle_ssl_config": {},
+            },
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
         },
         "gcs_profile": {"bucket": "bucket_value", "root_path": "root_path_value"},
         "mysql_profile": {
@@ -17483,6 +17905,13 @@ def test_create_connection_profile_rest_call_success(request_type):
         },
         "bigquery_profile": {},
         "postgresql_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "database": "database_value",
+        },
+        "sql_server_profile": {
             "hostname": "hostname_value",
             "port": 453,
             "username": "username_value",
@@ -17704,6 +18133,20 @@ def test_update_connection_profile_rest_call_success(request_type):
             "password": "password_value",
             "database_service": "database_service_value",
             "connection_attributes": {},
+            "oracle_ssl_config": {
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+            },
+            "oracle_asm_config": {
+                "hostname": "hostname_value",
+                "port": 453,
+                "username": "username_value",
+                "password": "password_value",
+                "asm_service": "asm_service_value",
+                "connection_attributes": {},
+                "oracle_ssl_config": {},
+            },
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
         },
         "gcs_profile": {"bucket": "bucket_value", "root_path": "root_path_value"},
         "mysql_profile": {
@@ -17722,6 +18165,13 @@ def test_update_connection_profile_rest_call_success(request_type):
         },
         "bigquery_profile": {},
         "postgresql_profile": {
+            "hostname": "hostname_value",
+            "port": 453,
+            "username": "username_value",
+            "password": "password_value",
+            "database": "database_value",
+        },
+        "sql_server_profile": {
             "hostname": "hostname_value",
             "port": 453,
             "username": "username_value",
@@ -18441,6 +18891,14 @@ def test_create_stream_rest_call_success(request_type):
                 "max_concurrent_backfill_tasks": 3076,
                 "drop_large_objects": {},
                 "stream_large_objects": {},
+                "log_miner": {},
+                "binary_log_parser": {
+                    "oracle_asm_log_file_access": {},
+                    "log_file_directories": {
+                        "online_log_directory": "online_log_directory_value",
+                        "archived_log_directory": "archived_log_directory_value",
+                    },
+                },
             },
             "mysql_source_config": {
                 "include_objects": {
@@ -18471,6 +18929,8 @@ def test_create_stream_rest_call_success(request_type):
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
                 "max_concurrent_backfill_tasks": 3076,
+                "binary_log_position": {},
+                "gtid": {},
             },
             "postgresql_source_config": {
                 "include_objects": {
@@ -18502,6 +18962,37 @@ def test_create_stream_rest_call_success(request_type):
                 "publication": "publication_value",
                 "max_concurrent_backfill_tasks": 3076,
             },
+            "sql_server_source_config": {
+                "include_objects": {
+                    "schemas": [
+                        {
+                            "schema": "schema_value",
+                            "tables": [
+                                {
+                                    "table": "table_value",
+                                    "columns": [
+                                        {
+                                            "column": "column_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "precision": 972,
+                                            "scale": 520,
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "exclude_objects": {},
+                "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
+                "transaction_logs": {},
+                "change_tables": {},
+            },
         },
         "destination_config": {
             "destination_connection_profile": "destination_connection_profile_value",
@@ -18522,6 +19013,8 @@ def test_create_stream_rest_call_success(request_type):
                     }
                 },
                 "data_freshness": {},
+                "merge": {},
+                "append_only": {},
             },
         },
         "state": 1,
@@ -18529,6 +19022,7 @@ def test_create_stream_rest_call_success(request_type):
             "oracle_excluded_objects": {},
             "mysql_excluded_objects": {},
             "postgresql_excluded_objects": {},
+            "sql_server_excluded_objects": {},
         },
         "backfill_none": {},
         "errors": [
@@ -18541,6 +19035,7 @@ def test_create_stream_rest_call_success(request_type):
             }
         ],
         "customer_managed_encryption_key": "customer_managed_encryption_key_value",
+        "last_recovery_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -18763,6 +19258,14 @@ def test_update_stream_rest_call_success(request_type):
                 "max_concurrent_backfill_tasks": 3076,
                 "drop_large_objects": {},
                 "stream_large_objects": {},
+                "log_miner": {},
+                "binary_log_parser": {
+                    "oracle_asm_log_file_access": {},
+                    "log_file_directories": {
+                        "online_log_directory": "online_log_directory_value",
+                        "archived_log_directory": "archived_log_directory_value",
+                    },
+                },
             },
             "mysql_source_config": {
                 "include_objects": {
@@ -18793,6 +19296,8 @@ def test_update_stream_rest_call_success(request_type):
                 "exclude_objects": {},
                 "max_concurrent_cdc_tasks": 2550,
                 "max_concurrent_backfill_tasks": 3076,
+                "binary_log_position": {},
+                "gtid": {},
             },
             "postgresql_source_config": {
                 "include_objects": {
@@ -18824,6 +19329,37 @@ def test_update_stream_rest_call_success(request_type):
                 "publication": "publication_value",
                 "max_concurrent_backfill_tasks": 3076,
             },
+            "sql_server_source_config": {
+                "include_objects": {
+                    "schemas": [
+                        {
+                            "schema": "schema_value",
+                            "tables": [
+                                {
+                                    "table": "table_value",
+                                    "columns": [
+                                        {
+                                            "column": "column_value",
+                                            "data_type": "data_type_value",
+                                            "length": 642,
+                                            "precision": 972,
+                                            "scale": 520,
+                                            "primary_key": True,
+                                            "nullable": True,
+                                            "ordinal_position": 1725,
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "exclude_objects": {},
+                "max_concurrent_cdc_tasks": 2550,
+                "max_concurrent_backfill_tasks": 3076,
+                "transaction_logs": {},
+                "change_tables": {},
+            },
         },
         "destination_config": {
             "destination_connection_profile": "destination_connection_profile_value",
@@ -18844,6 +19380,8 @@ def test_update_stream_rest_call_success(request_type):
                     }
                 },
                 "data_freshness": {},
+                "merge": {},
+                "append_only": {},
             },
         },
         "state": 1,
@@ -18851,6 +19389,7 @@ def test_update_stream_rest_call_success(request_type):
             "oracle_excluded_objects": {},
             "mysql_excluded_objects": {},
             "postgresql_excluded_objects": {},
+            "sql_server_excluded_objects": {},
         },
         "backfill_none": {},
         "errors": [
@@ -18863,6 +19402,7 @@ def test_update_stream_rest_call_success(request_type):
             }
         ],
         "customer_managed_encryption_key": "customer_managed_encryption_key_value",
+        "last_recovery_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -19106,6 +19646,117 @@ def test_delete_stream_rest_interceptors(null_interceptor):
         post.return_value = operations_pb2.Operation()
 
         client.delete_stream(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_run_stream_rest_bad_request(request_type=datastream.RunStreamRequest):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.run_stream(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datastream.RunStreamRequest,
+        dict,
+    ],
+)
+def test_run_stream_rest_call_success(request_type):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/streams/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.run_stream(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_run_stream_rest_interceptors(null_interceptor):
+    transport = transports.DatastreamRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatastreamRestInterceptor(),
+    )
+    client = DatastreamClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.DatastreamRestInterceptor, "post_run_stream"
+    ) as post, mock.patch.object(
+        transports.DatastreamRestInterceptor, "pre_run_stream"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = datastream.RunStreamRequest.pb(datastream.RunStreamRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = datastream.RunStreamRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.run_stream(
             request,
             metadata=[
                 ("key", "val"),
@@ -21577,6 +22228,26 @@ def test_delete_stream_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_run_stream_empty_call_rest():
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_stream), "__call__") as call:
+        client.run_stream(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = datastream.RunStreamRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_stream_object_empty_call_rest():
     client = DatastreamClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21934,6 +22605,7 @@ def test_datastream_base_transport():
         "create_stream",
         "update_stream",
         "delete_stream",
+        "run_stream",
         "get_stream_object",
         "lookup_stream_object",
         "list_stream_objects",
@@ -22246,6 +22918,9 @@ def test_datastream_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_stream._session
     session2 = client2.transport.delete_stream._session
+    assert session1 != session2
+    session1 = client1.transport.run_stream._session
+    session2 = client2.transport.run_stream._session
     assert session1 != session2
     session1 = client1.transport.get_stream_object._session
     session2 = client2.transport.get_stream_object._session

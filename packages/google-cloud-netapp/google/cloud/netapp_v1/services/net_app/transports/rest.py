@@ -230,6 +230,14 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_establish_peering(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_establish_peering(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_active_directory(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -411,6 +419,14 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_switch_active_replica_zone(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_sync_replication(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_sync_replication(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -931,6 +947,29 @@ class NetAppRestInterceptor:
         """
         return response
 
+    def pre_establish_peering(
+        self,
+        request: replication.EstablishPeeringRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[replication.EstablishPeeringRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for establish_peering
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_establish_peering(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for establish_peering
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_active_directory(
         self,
         request: active_directory.GetActiveDirectoryRequest,
@@ -1433,6 +1472,29 @@ class NetAppRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for switch_active_replica_zone
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_sync_replication(
+        self,
+        request: replication.SyncReplicationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[replication.SyncReplicationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for sync_replication
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_sync_replication(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for sync_replication
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -3791,6 +3853,111 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = self._interceptor.post_encrypt_volumes(resp)
             return resp
 
+    class _EstablishPeering(
+        _BaseNetAppRestTransport._BaseEstablishPeering, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.EstablishPeering")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: replication.EstablishPeeringRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the establish peering method over HTTP.
+
+            Args:
+                request (~.replication.EstablishPeeringRequest):
+                    The request object. EstablishPeeringRequest establishes
+                cluster and svm peerings between the
+                source and the destination replications.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseEstablishPeering._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_establish_peering(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseEstablishPeering._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseNetAppRestTransport._BaseEstablishPeering._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseEstablishPeering._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = NetAppRestTransport._EstablishPeering._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_establish_peering(resp)
+            return resp
+
     class _GetActiveDirectory(
         _BaseNetAppRestTransport._BaseGetActiveDirectory, NetAppRestStub
     ):
@@ -5984,6 +6151,108 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = self._interceptor.post_switch_active_replica_zone(resp)
             return resp
 
+    class _SyncReplication(
+        _BaseNetAppRestTransport._BaseSyncReplication, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.SyncReplication")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: replication.SyncReplicationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the sync replication method over HTTP.
+
+            Args:
+                request (~.replication.SyncReplicationRequest):
+                    The request object. SyncReplicationRequest syncs the
+                replication from source to destination.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseSyncReplication._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_sync_replication(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseSyncReplication._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseNetAppRestTransport._BaseSyncReplication._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseSyncReplication._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            # Send the request
+            response = NetAppRestTransport._SyncReplication._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_sync_replication(resp)
+            return resp
+
     class _UpdateActiveDirectory(
         _BaseNetAppRestTransport._BaseUpdateActiveDirectory, NetAppRestStub
     ):
@@ -7161,6 +7430,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._EncryptVolumes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def establish_peering(
+        self,
+    ) -> Callable[[replication.EstablishPeeringRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._EstablishPeering(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_active_directory(
         self,
     ) -> Callable[
@@ -7355,6 +7632,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SwitchActiveReplicaZone(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def sync_replication(
+        self,
+    ) -> Callable[[replication.SyncReplicationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SyncReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_active_directory(

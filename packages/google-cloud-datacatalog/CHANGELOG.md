@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.22.0...google-cloud-datacatalog-v3.23.0) (2024-11-21)
+
+
+### Features
+
+* A new enum `CatalogUIExperience` is added ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new enum `TagTemplateMigration` is added ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new field `dataplex_transfer_status` is added to message `.google.cloud.datacatalog.v1.Tag` ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new field `transferred_to_dataplex` is added to message `.google.cloud.datacatalog.v1.EntryGroup` ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new message `MigrationConfig` is added ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new message `OrganizationConfig` is added ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new message `RetrieveConfigRequest` is added ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new message `RetrieveEffectiveConfigRequest` is added ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new message `SetConfigRequest` is added ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new method `RetrieveConfig` is added to service `DataCatalog` ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new method `RetrieveEffectiveConfig` is added to service `DataCatalog` ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new method `SetConfig` is added to service `DataCatalog` ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+* A new value `TRANSFERRED` is added to enum `DataplexTransferStatus` ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+
+
+### Documentation
+
+* A comment for message `EntryGroup` is changed ([09a3381](https://github.com/googleapis/google-cloud-python/commit/09a3381b370950980685d0aa2d1292db0d9f34c9))
+
 ## [3.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.21.1...google-cloud-datacatalog-v3.22.0) (2024-11-14)
 
 

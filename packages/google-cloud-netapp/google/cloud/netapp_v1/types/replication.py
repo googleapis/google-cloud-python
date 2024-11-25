@@ -22,11 +22,14 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.netapp_v1.types import volume
+
 __protobuf__ = proto.module(
     package="google.cloud.netapp.v1",
     manifest={
         "TransferStats",
         "Replication",
+        "HybridPeeringDetails",
         "ListReplicationsRequest",
         "ListReplicationsResponse",
         "GetReplicationRequest",
@@ -37,6 +40,8 @@ __protobuf__ = proto.module(
         "StopReplicationRequest",
         "ResumeReplicationRequest",
         "ReverseReplicationDirectionRequest",
+        "EstablishPeeringRequest",
+        "SyncReplicationRequest",
     },
 )
 
@@ -195,6 +200,12 @@ class Replication(proto.Message):
         source_volume (str):
             Output only. Full name of source volume resource. Example :
             "projects/{project}/locations/{location}/volumes/{volume_id}".
+        hybrid_peering_details (google.cloud.netapp_v1.types.HybridPeeringDetails):
+            Output only. Hybrid peering details.
+        cluster_location (str):
+            Optional. Location of the user cluster.
+        hybrid_replication_type (google.cloud.netapp_v1.types.Replication.HybridReplicationType):
+            Output only. Type of the hybrid replication.
     """
 
     class State(proto.Enum):
@@ -215,6 +226,12 @@ class Replication(proto.Message):
                 Replication is deleting.
             ERROR (6):
                 Replication is in error state.
+            PENDING_CLUSTER_PEERING (8):
+                Replication is waiting for cluster peering to
+                be established.
+            PENDING_SVM_PEERING (9):
+                Replication is waiting for SVM peering to be
+                established.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -222,6 +239,8 @@ class Replication(proto.Message):
         UPDATING = 3
         DELETING = 5
         ERROR = 6
+        PENDING_CLUSTER_PEERING = 8
+        PENDING_SVM_PEERING = 9
 
     class ReplicationRole(proto.Enum):
         r"""New enum values may be added in future to support different
@@ -276,12 +295,34 @@ class Replication(proto.Message):
                 replication transfers.
             TRANSFERRING (4):
                 Incremental replication is in progress.
+            BASELINE_TRANSFERRING (5):
+                Baseline replication is in progress.
+            ABORTED (6):
+                Replication is aborted.
         """
         MIRROR_STATE_UNSPECIFIED = 0
         PREPARING = 1
         MIRRORED = 2
         STOPPED = 3
         TRANSFERRING = 4
+        BASELINE_TRANSFERRING = 5
+        ABORTED = 6
+
+    class HybridReplicationType(proto.Enum):
+        r"""Hybrid replication type.
+
+        Values:
+            HYBRID_REPLICATION_TYPE_UNSPECIFIED (0):
+                Unspecified hybrid replication type.
+            MIGRATION (1):
+                Hybrid replication type for migration.
+            CONTINUOUS_REPLICATION (2):
+                Hybrid replication type for continuous
+                replication.
+        """
+        HYBRID_REPLICATION_TYPE_UNSPECIFIED = 0
+        MIGRATION = 1
+        CONTINUOUS_REPLICATION = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -348,6 +389,57 @@ class Replication(proto.Message):
     source_volume: str = proto.Field(
         proto.STRING,
         number=15,
+    )
+    hybrid_peering_details: "HybridPeeringDetails" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="HybridPeeringDetails",
+    )
+    cluster_location: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    hybrid_replication_type: HybridReplicationType = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=HybridReplicationType,
+    )
+
+
+class HybridPeeringDetails(proto.Message):
+    r"""HybridPeeringDetails contains details about the hybrid
+    peering.
+
+    Attributes:
+        subnet_ip (str):
+            Optional. IP address of the subnet.
+        command (str):
+            Optional. Copy-paste-able commands to be used
+            on user's ONTAP to accept peering requests.
+        command_expiry_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Expiration time for the peering
+            command to be executed on user's ONTAP.
+        passphrase (str):
+            Optional. Temporary passphrase generated to
+            accept cluster peering command.
+    """
+
+    subnet_ip: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    command: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    command_expiry_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    passphrase: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -469,6 +561,10 @@ class DestinationVolumeParameters(proto.Message):
             Description for the destination volume.
 
             This field is a member of `oneof`_ ``_description``.
+        tiering_policy (google.cloud.netapp_v1.types.TieringPolicy):
+            Optional. Tiering policy for the volume.
+
+            This field is a member of `oneof`_ ``_tiering_policy``.
     """
 
     storage_pool: str = proto.Field(
@@ -488,6 +584,12 @@ class DestinationVolumeParameters(proto.Message):
         number=4,
         optional=True,
     )
+    tiering_policy: volume.TieringPolicy = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        optional=True,
+        message=volume.TieringPolicy,
+    )
 
 
 class CreateReplicationRequest(proto.Message):
@@ -503,9 +605,9 @@ class CreateReplicationRequest(proto.Message):
         replication_id (str):
             Required. ID of the replication to create.
             Must be unique within the parent resource. Must
-            contain only letters, numbers, underscore and
-            hyphen, with the first character a letter or
-            underscore, the last a letter or underscore or a
+            contain only letters, numbers and hyphen, with
+            the first character a letter, the last a letter
+            or a
             number, and a 63 character maximum.
     """
 
@@ -611,6 +713,70 @@ class ReverseReplicationDirectionRequest(proto.Message):
     r"""ReverseReplicationDirectionRequest reverses direction of
     replication. Source becomes destination and destination becomes
     source.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the replication, in the
+            format of
+            projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class EstablishPeeringRequest(proto.Message):
+    r"""EstablishPeeringRequest establishes cluster and svm peerings
+    between the source and the destination replications.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the replication, in the
+            format of
+            projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
+        peer_cluster_name (str):
+            Required. Name of the user's local source
+            cluster to be peered with the destination
+            cluster.
+        peer_svm_name (str):
+            Required. Name of the user's local source
+            vserver svm to be peered with the destination
+            vserver svm.
+        peer_ip_addresses (MutableSequence[str]):
+            Optional. List of IPv4 ip addresses to be
+            used for peering.
+        peer_volume_name (str):
+            Required. Name of the user's local source
+            volume to be peered with the destination volume.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    peer_cluster_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    peer_svm_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    peer_ip_addresses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    peer_volume_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class SyncReplicationRequest(proto.Message):
+    r"""SyncReplicationRequest syncs the replication from source to
+    destination.
 
     Attributes:
         name (str):

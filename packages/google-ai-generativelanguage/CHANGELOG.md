@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.13](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.12...google-ai-generativelanguage-v0.6.13) (2024-11-21)
+
+
+### Features
+
+* Add GroundingMetadata.web_search_queries ([3535963](https://github.com/googleapis/google-cloud-python/commit/353596382dc59c4df75071846578ad09d5130e76))
+* Adds `GenerateContentResponse.model_version` output ([3535963](https://github.com/googleapis/google-cloud-python/commit/353596382dc59c4df75071846578ad09d5130e76))
+* Adds search grounding ([3535963](https://github.com/googleapis/google-cloud-python/commit/353596382dc59c4df75071846578ad09d5130e76))
+
+
+### Documentation
+
+* Some small updates. ([3535963](https://github.com/googleapis/google-cloud-python/commit/353596382dc59c4df75071846578ad09d5130e76))
+
 ## [0.6.12](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.11...google-ai-generativelanguage-v0.6.12) (2024-10-31)
 
 
