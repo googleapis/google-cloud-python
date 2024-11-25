@@ -142,7 +142,7 @@ class MetricType(proto.Enum):
 
 class RestrictedMetricType(proto.Enum):
     r"""Categories of data that you may be restricted from viewing on
-    certain GA4 properties.
+    certain Google Analytics properties.
 
     Values:
         RESTRICTED_METRIC_TYPE_UNSPECIFIED (0):
@@ -633,6 +633,11 @@ class Filter(proto.Message):
             A filter for two values.
 
             This field is a member of `oneof`_ ``one_filter``.
+        empty_filter (google.analytics.data_v1beta.types.Filter.EmptyFilter):
+            A filter for empty values such as "(not set)"
+            and "" values.
+
+            This field is a member of `oneof`_ ``one_filter``.
     """
 
     class StringFilter(proto.Message):
@@ -777,6 +782,9 @@ class Filter(proto.Message):
             message="NumericValue",
         )
 
+    class EmptyFilter(proto.Message):
+        r"""Filter for empty values."""
+
     field_name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -804,6 +812,12 @@ class Filter(proto.Message):
         number=6,
         oneof="one_filter",
         message=BetweenFilter,
+    )
+    empty_filter: EmptyFilter = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="one_filter",
+        message=EmptyFilter,
     )
 
 
