@@ -1,0 +1,2 @@
+recursive-include google/apps/script/type *.py
+recursive-include google/apps/script/type *.py
