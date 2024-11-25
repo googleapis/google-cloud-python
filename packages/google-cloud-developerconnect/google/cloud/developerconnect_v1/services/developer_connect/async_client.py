@@ -72,6 +72,8 @@ class DeveloperConnectAsyncClient:
 
     connection_path = staticmethod(DeveloperConnectClient.connection_path)
     parse_connection_path = staticmethod(DeveloperConnectClient.parse_connection_path)
+    crypto_key_path = staticmethod(DeveloperConnectClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DeveloperConnectClient.parse_crypto_key_path)
     git_repository_link_path = staticmethod(
         DeveloperConnectClient.git_repository_link_path
     )
@@ -82,6 +84,8 @@ class DeveloperConnectAsyncClient:
     parse_secret_version_path = staticmethod(
         DeveloperConnectClient.parse_secret_version_path
     )
+    service_path = staticmethod(DeveloperConnectClient.service_path)
+    parse_service_path = staticmethod(DeveloperConnectClient.parse_service_path)
     common_billing_account_path = staticmethod(
         DeveloperConnectClient.common_billing_account_path
     )

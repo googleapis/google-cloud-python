@@ -134,9 +134,9 @@ class CreateKmsConfigRequest(proto.Message):
         kms_config_id (str):
             Required. Id of the requesting KmsConfig.
             Must be unique within the parent resource. Must
-            contain only letters, numbers, underscore and
-            hyphen, with the first character a letter or
-            underscore, the last a letter or underscore or a
+            contain only letters, numbers and hyphen, with
+            the first character a letter, the last a letter
+            or a
             number, and a 63 character maximum.
         kms_config (google.cloud.netapp_v1.types.KmsConfig):
             Required. The required parameters to create a

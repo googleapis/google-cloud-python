@@ -105,6 +105,11 @@
                 "encrypt_volumes"
               ]
             },
+            "EstablishPeering": {
+              "methods": [
+                "establish_peering"
+              ]
+            },
             "GetActiveDirectory": {
               "methods": [
                 "get_active_directory"
@@ -218,6 +223,11 @@
             "SwitchActiveReplicaZone": {
               "methods": [
                 "switch_active_replica_zone"
+              ]
+            },
+            "SyncReplication": {
+              "methods": [
+                "sync_replication"
               ]
             },
             "UpdateActiveDirectory": {
@@ -370,6 +380,11 @@
                 "encrypt_volumes"
               ]
             },
+            "EstablishPeering": {
+              "methods": [
+                "establish_peering"
+              ]
+            },
             "GetActiveDirectory": {
               "methods": [
                 "get_active_directory"
@@ -483,6 +498,11 @@
             "SwitchActiveReplicaZone": {
               "methods": [
                 "switch_active_replica_zone"
+              ]
+            },
+            "SyncReplication": {
+              "methods": [
+                "sync_replication"
               ]
             },
             "UpdateActiveDirectory": {
@@ -635,6 +655,11 @@
                 "encrypt_volumes"
               ]
             },
+            "EstablishPeering": {
+              "methods": [
+                "establish_peering"
+              ]
+            },
             "GetActiveDirectory": {
               "methods": [
                 "get_active_directory"
@@ -748,6 +773,11 @@
             "SwitchActiveReplicaZone": {
               "methods": [
                 "switch_active_replica_zone"
+              ]
+            },
+            "SyncReplication": {
+              "methods": [
+                "sync_replication"
               ]
             },
             "UpdateActiveDirectory": {

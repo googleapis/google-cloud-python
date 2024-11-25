@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.4...google-cloud-developerconnect-v0.1.5) (2024-11-21)
+
+
+### Features
+
+* A new field `crypto_key_config` is added to message `.google.cloud.developerconnect.v1.Connection` ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new field `github_enterprise_config` is added to message `.google.cloud.developerconnect.v1.Connection` ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new field `gitlab_config` is added to message `.google.cloud.developerconnect.v1.Connection` ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new field `gitlab_enterprise_config` is added to message `.google.cloud.developerconnect.v1.Connection` ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new field `webhook_id` is added to message `.google.cloud.developerconnect.v1.GitRepositoryLink` ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new message `CryptoKeyConfig` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new message `GitHubEnterpriseConfig` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new message `GitLabConfig` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new message `GitLabEnterpriseConfig` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new message `ServiceDirectoryConfig` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new message `UserCredential` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new resource_definition `[cloudkms.googleapis.com/CryptoKey](https://www.google.com/url?sa=D&q=http%3A%2F%2Fcloudkms.googleapis.com%2FCryptoKey)` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+* A new resource_definition `[servicedirectory.googleapis.com/Service](https://www.google.com/url?sa=D&q=http%3A%2F%2Fservicedirectory.googleapis.com%2FService)` is added ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+
+
+### Documentation
+
+* A comment for field `requested_cancellation` in message `.google.cloud.developerconnect.v1.OperationMetadata` is changed ([48f25db](https://github.com/googleapis/google-cloud-python/commit/48f25db7772c9d22edac1e743b4eec97929542ec))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.3...google-cloud-developerconnect-v0.1.4) (2024-10-31)
 
 

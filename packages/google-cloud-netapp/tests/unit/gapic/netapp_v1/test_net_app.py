@@ -12437,6 +12437,8 @@ def test_get_replication(request_type, transport: str = "grpc"):
             destination_volume="destination_volume_value",
             description="description_value",
             source_volume="source_volume_value",
+            cluster_location="cluster_location_value",
+            hybrid_replication_type=replication.Replication.HybridReplicationType.MIGRATION,
         )
         response = client.get_replication(request)
 
@@ -12461,6 +12463,11 @@ def test_get_replication(request_type, transport: str = "grpc"):
     assert response.destination_volume == "destination_volume_value"
     assert response.description == "description_value"
     assert response.source_volume == "source_volume_value"
+    assert response.cluster_location == "cluster_location_value"
+    assert (
+        response.hybrid_replication_type
+        == replication.Replication.HybridReplicationType.MIGRATION
+    )
 
 
 def test_get_replication_non_empty_request_with_auto_populated_field():
@@ -12596,6 +12603,8 @@ async def test_get_replication_async(
                 destination_volume="destination_volume_value",
                 description="description_value",
                 source_volume="source_volume_value",
+                cluster_location="cluster_location_value",
+                hybrid_replication_type=replication.Replication.HybridReplicationType.MIGRATION,
             )
         )
         response = await client.get_replication(request)
@@ -12621,6 +12630,11 @@ async def test_get_replication_async(
     assert response.destination_volume == "destination_volume_value"
     assert response.description == "description_value"
     assert response.source_volume == "source_volume_value"
+    assert response.cluster_location == "cluster_location_value"
+    assert (
+        response.hybrid_replication_type
+        == replication.Replication.HybridReplicationType.MIGRATION
+    )
 
 
 @pytest.mark.asyncio
@@ -14589,6 +14603,516 @@ async def test_reverse_replication_direction_field_headers_async():
             operations_pb2.Operation(name="operations/op")
         )
         await client.reverse_replication_direction(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        replication.EstablishPeeringRequest,
+        dict,
+    ],
+)
+def test_establish_peering(request_type, transport: str = "grpc"):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.establish_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = replication.EstablishPeeringRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_establish_peering_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.EstablishPeeringRequest(
+        name="name_value",
+        peer_cluster_name="peer_cluster_name_value",
+        peer_svm_name="peer_svm_name_value",
+        peer_volume_name="peer_volume_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.establish_peering(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.EstablishPeeringRequest(
+            name="name_value",
+            peer_cluster_name="peer_cluster_name_value",
+            peer_svm_name="peer_svm_name_value",
+            peer_volume_name="peer_volume_name_value",
+        )
+
+
+def test_establish_peering_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.establish_peering in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.establish_peering
+        ] = mock_rpc
+        request = {}
+        client.establish_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.establish_peering(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_establish_peering_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = NetAppAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.establish_peering
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.establish_peering
+        ] = mock_rpc
+
+        request = {}
+        await client.establish_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.establish_peering(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_establish_peering_async(
+    transport: str = "grpc_asyncio", request_type=replication.EstablishPeeringRequest
+):
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.establish_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = replication.EstablishPeeringRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_establish_peering_async_from_dict():
+    await test_establish_peering_async(request_type=dict)
+
+
+def test_establish_peering_field_headers():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = replication.EstablishPeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.establish_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_establish_peering_field_headers_async():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = replication.EstablishPeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.establish_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        replication.SyncReplicationRequest,
+        dict,
+    ],
+)
+def test_sync_replication(request_type, transport: str = "grpc"):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.sync_replication(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = replication.SyncReplicationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_sync_replication_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = replication.SyncReplicationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.sync_replication(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == replication.SyncReplicationRequest(
+            name="name_value",
+        )
+
+
+def test_sync_replication_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sync_replication in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.sync_replication
+        ] = mock_rpc
+        request = {}
+        client.sync_replication(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.sync_replication(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_sync_replication_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = NetAppAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.sync_replication
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.sync_replication
+        ] = mock_rpc
+
+        request = {}
+        await client.sync_replication(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.sync_replication(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_sync_replication_async(
+    transport: str = "grpc_asyncio", request_type=replication.SyncReplicationRequest
+):
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.sync_replication(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = replication.SyncReplicationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_sync_replication_async_from_dict():
+    await test_sync_replication_async(request_type=dict)
+
+
+def test_sync_replication_field_headers():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = replication.SyncReplicationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.sync_replication(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_sync_replication_field_headers_async():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = replication.SyncReplicationRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.sync_replication(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -27368,6 +27892,274 @@ def test_reverse_replication_direction_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
+def test_establish_peering_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.establish_peering in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.establish_peering
+        ] = mock_rpc
+
+        request = {}
+        client.establish_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.establish_peering(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_establish_peering_rest_required_fields(
+    request_type=replication.EstablishPeeringRequest,
+):
+    transport_class = transports.NetAppRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["peer_cluster_name"] = ""
+    request_init["peer_svm_name"] = ""
+    request_init["peer_volume_name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).establish_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["peerClusterName"] = "peer_cluster_name_value"
+    jsonified_request["peerSvmName"] = "peer_svm_name_value"
+    jsonified_request["peerVolumeName"] = "peer_volume_name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).establish_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "peerClusterName" in jsonified_request
+    assert jsonified_request["peerClusterName"] == "peer_cluster_name_value"
+    assert "peerSvmName" in jsonified_request
+    assert jsonified_request["peerSvmName"] == "peer_svm_name_value"
+    assert "peerVolumeName" in jsonified_request
+    assert jsonified_request["peerVolumeName"] == "peer_volume_name_value"
+
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.establish_peering(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_establish_peering_rest_unset_required_fields():
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.establish_peering._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "peerClusterName",
+                "peerSvmName",
+                "peerVolumeName",
+            )
+        )
+    )
+
+
+def test_sync_replication_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = NetAppClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.sync_replication in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.sync_replication
+        ] = mock_rpc
+
+        request = {}
+        client.sync_replication(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.sync_replication(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_sync_replication_rest_required_fields(
+    request_type=replication.SyncReplicationRequest,
+):
+    transport_class = transports.NetAppRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).sync_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).sync_replication._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.sync_replication(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_sync_replication_rest_unset_required_fields():
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.sync_replication._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
 def test_create_backup_vault_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -31339,6 +32131,50 @@ def test_reverse_replication_direction_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_establish_peering_empty_call_grpc():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.establish_peering(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = replication.EstablishPeeringRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sync_replication_empty_call_grpc():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.sync_replication(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = replication.SyncReplicationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_backup_vault_empty_call_grpc():
     client = NetAppClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -32594,6 +33430,8 @@ async def test_get_replication_empty_call_grpc_asyncio():
                 destination_volume="destination_volume_value",
                 description="description_value",
                 source_volume="source_volume_value",
+                cluster_location="cluster_location_value",
+                hybrid_replication_type=replication.Replication.HybridReplicationType.MIGRATION,
             )
         )
         await client.get_replication(request=None)
@@ -32762,6 +33600,58 @@ async def test_reverse_replication_direction_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = replication.ReverseReplicationDirectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_establish_peering_empty_call_grpc_asyncio():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.establish_peering(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = replication.EstablishPeeringRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_sync_replication_empty_call_grpc_asyncio():
+    client = NetAppAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.sync_replication(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = replication.SyncReplicationRequest()
 
         assert args[0] == request_msg
 
@@ -34519,6 +35409,19 @@ def test_create_volume_rest_call_success(request_type):
         "replica_zone": "replica_zone_value",
         "zone": "zone_value",
         "cold_tier_size_gib": 1888,
+        "hybrid_replication_parameters": {
+            "replication": "replication_value",
+            "peer_volume_name": "peer_volume_name_value",
+            "peer_cluster_name": "peer_cluster_name_value",
+            "peer_svm_name": "peer_svm_name_value",
+            "peer_ip_addresses": [
+                "peer_ip_addresses_value1",
+                "peer_ip_addresses_value2",
+            ],
+            "cluster_location": "cluster_location_value",
+            "description": "description_value",
+            "labels": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34792,6 +35695,19 @@ def test_update_volume_rest_call_success(request_type):
         "replica_zone": "replica_zone_value",
         "zone": "zone_value",
         "cold_tier_size_gib": 1888,
+        "hybrid_replication_parameters": {
+            "replication": "replication_value",
+            "peer_volume_name": "peer_volume_name_value",
+            "peer_cluster_name": "peer_cluster_name_value",
+            "peer_svm_name": "peer_svm_name_value",
+            "peer_ip_addresses": [
+                "peer_ip_addresses_value1",
+                "peer_ip_addresses_value2",
+            ],
+            "cluster_location": "cluster_location_value",
+            "description": "description_value",
+            "labels": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -37851,6 +38767,8 @@ def test_get_replication_rest_call_success(request_type):
             destination_volume="destination_volume_value",
             description="description_value",
             source_volume="source_volume_value",
+            cluster_location="cluster_location_value",
+            hybrid_replication_type=replication.Replication.HybridReplicationType.MIGRATION,
         )
 
         # Wrap the value into a proper Response obj
@@ -37879,6 +38797,11 @@ def test_get_replication_rest_call_success(request_type):
     assert response.destination_volume == "destination_volume_value"
     assert response.description == "description_value"
     assert response.source_volume == "source_volume_value"
+    assert response.cluster_location == "cluster_location_value"
+    assert (
+        response.hybrid_replication_type
+        == replication.Replication.HybridReplicationType.MIGRATION
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -38000,8 +38923,17 @@ def test_create_replication_rest_call_success(request_type):
             "volume_id": "volume_id_value",
             "share_name": "share_name_value",
             "description": "description_value",
+            "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
         },
         "source_volume": "source_volume_value",
+        "hybrid_peering_details": {
+            "subnet_ip": "subnet_ip_value",
+            "command": "command_value",
+            "command_expiry_time": {},
+            "passphrase": "passphrase_value",
+        },
+        "cluster_location": "cluster_location_value",
+        "hybrid_replication_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -38335,8 +39267,17 @@ def test_update_replication_rest_call_success(request_type):
             "volume_id": "volume_id_value",
             "share_name": "share_name_value",
             "description": "description_value",
+            "tiering_policy": {"tier_action": 1, "cooling_threshold_days": 2343},
         },
         "source_volume": "source_volume_value",
+        "hybrid_peering_details": {
+            "subnet_ip": "subnet_ip_value",
+            "command": "command_value",
+            "command_expiry_time": {},
+            "passphrase": "passphrase_value",
+        },
+        "cluster_location": "cluster_location_value",
+        "hybrid_replication_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -38820,6 +39761,240 @@ def test_reverse_replication_direction_rest_interceptors(null_interceptor):
         post.return_value = operations_pb2.Operation()
 
         client.reverse_replication_direction(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_establish_peering_rest_bad_request(
+    request_type=replication.EstablishPeeringRequest,
+):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/replications/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.establish_peering(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        replication.EstablishPeeringRequest,
+        dict,
+    ],
+)
+def test_establish_peering_rest_call_success(request_type):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/replications/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.establish_peering(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_establish_peering_rest_interceptors(null_interceptor):
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.NetAppRestInterceptor(),
+    )
+    client = NetAppClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.NetAppRestInterceptor, "post_establish_peering"
+    ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "pre_establish_peering"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = replication.EstablishPeeringRequest.pb(
+            replication.EstablishPeeringRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = replication.EstablishPeeringRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.establish_peering(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_sync_replication_rest_bad_request(
+    request_type=replication.SyncReplicationRequest,
+):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/replications/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.sync_replication(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        replication.SyncReplicationRequest,
+        dict,
+    ],
+)
+def test_sync_replication_rest_call_success(request_type):
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/replications/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.sync_replication(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_sync_replication_rest_interceptors(null_interceptor):
+    transport = transports.NetAppRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.NetAppRestInterceptor(),
+    )
+    client = NetAppClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.NetAppRestInterceptor, "post_sync_replication"
+    ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "pre_sync_replication"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = replication.SyncReplicationRequest.pb(
+            replication.SyncReplicationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = replication.SyncReplicationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.sync_replication(
             request,
             metadata=[
                 ("key", "val"),
@@ -42217,6 +43392,48 @@ def test_reverse_replication_direction_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_establish_peering_empty_call_rest():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.establish_peering), "__call__"
+    ) as call:
+        client.establish_peering(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = replication.EstablishPeeringRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sync_replication_empty_call_rest():
+    client = NetAppClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.sync_replication), "__call__") as call:
+        client.sync_replication(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = replication.SyncReplicationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_backup_vault_empty_call_rest():
     client = NetAppClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -42620,6 +43837,8 @@ def test_net_app_base_transport():
         "stop_replication",
         "resume_replication",
         "reverse_replication_direction",
+        "establish_peering",
+        "sync_replication",
         "create_backup_vault",
         "get_backup_vault",
         "list_backup_vaults",
@@ -43011,6 +44230,12 @@ def test_net_app_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.reverse_replication_direction._session
     session2 = client2.transport.reverse_replication_direction._session
+    assert session1 != session2
+    session1 = client1.transport.establish_peering._session
+    session2 = client2.transport.establish_peering._session
+    assert session1 != session2
+    session1 = client1.transport.sync_replication._session
+    session2 = client2.transport.sync_replication._session
     assert session1 != session2
     session1 = client1.transport.create_backup_vault._session
     session2 = client2.transport.create_backup_vault._session

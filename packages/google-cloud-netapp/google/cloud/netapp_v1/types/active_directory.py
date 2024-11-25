@@ -138,10 +138,9 @@ class CreateActiveDirectoryRequest(proto.Message):
         active_directory_id (str):
             Required. ID of the active directory to
             create. Must be unique within the parent
-            resource. Must contain only letters, numbers,
-            underscore and hyphen, with the first character
-            a letter or underscore, the last a letter or
-            underscore or a number, and a 63 character
+            resource. Must contain only letters, numbers and
+            hyphen, with the first character a letter , the
+            last a letter or a number, and a 63 character
             maximum.
     """
 
@@ -293,6 +292,8 @@ class ActiveDirectory(proto.Message):
                 Active Directory State is Deleting
             ERROR (6):
                 Active Directory State is Error
+            DIAGNOSING (7):
+                Active Directory State is Diagnosing.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -301,6 +302,7 @@ class ActiveDirectory(proto.Message):
         IN_USE = 4
         DELETING = 5
         ERROR = 6
+        DIAGNOSING = 7
 
     name: str = proto.Field(
         proto.STRING,
