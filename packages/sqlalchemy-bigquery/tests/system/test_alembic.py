@@ -66,6 +66,10 @@ def test_alembic_scenario(alembic_table):
     table mods within a short time.
     """
     from alembic import op
+    from sqlalchemy_bigquery.base import SqlalchemyBigqueryImpl
+
+    # Register the BigQuery Implementation to test the customized methods.
+    op.implementation_for(SqlalchemyBigqueryImpl)
 
     assert alembic_table("account") is None
 
@@ -100,9 +104,11 @@ def test_alembic_scenario(alembic_table):
         "account", Column("last_transaction_date", DateTime, comment="when updated")
     )
 
+    # Tests customized visit_column_name()
+    op.alter_column("account", "name", new_column_name="friendly_name")
     assert alembic_table("account", "schema") == [
         SchemaField("id", "INTEGER", "REQUIRED"),
-        SchemaField("name", "STRING(50)", "REQUIRED", description="The name"),
+        SchemaField("friendly_name", "STRING(50)", "REQUIRED", description="The name"),
         SchemaField("description", "STRING(200)"),
         SchemaField("last_transaction_date", "DATETIME", description="when updated"),
     ]
@@ -131,7 +137,7 @@ def test_alembic_scenario(alembic_table):
     assert alembic_table("account") is None
     assert alembic_table("accounts", "schema") == [
         SchemaField("id", "INTEGER", "REQUIRED"),
-        SchemaField("name", "STRING(50)", "REQUIRED", description="The name"),
+        SchemaField("friendly_name", "STRING(50)", "REQUIRED", description="The name"),
         SchemaField("description", "STRING(200)"),
         SchemaField("last_transaction_date", "DATETIME", description="when updated"),
     ]
@@ -162,6 +168,7 @@ def test_alembic_scenario(alembic_table):
     # if allowed by BigQuery's type coercion rules
     op.create_table("identifiers", Column("id", Integer))
 
+    # Tests customized visit_column_type()
     op.alter_column("identifiers", "id", type_=Numeric)
     assert alembic_table("identifiers", "schema") == [SchemaField("id", "NUMERIC")]
 

@@ -1388,10 +1388,28 @@ except ImportError:  # pragma: NO COVER
     pass
 else:
     from alembic.ddl import impl
-    from alembic.ddl.base import ColumnType, format_type, alter_table, alter_column
+    from alembic.ddl.base import (
+        ColumnName,
+        ColumnType,
+        format_column_name,
+        format_type,
+        alter_table,
+        alter_column,
+    )
 
     class SqlalchemyBigqueryImpl(impl.DefaultImpl):
         __dialect__ = "bigquery"
+
+    @compiles(ColumnName, "bigquery")
+    def visit_column_name(element: ColumnName, compiler: DDLCompiler, **kw) -> str:
+        """Replaces the visit_column_name() function in alembic/alembic/ddl/base.py.
+        See https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1097"""
+
+        return "%s RENAME COLUMN %s TO %s" % (
+            alter_table(compiler, element.table_name, element.schema),
+            format_column_name(compiler, element.column_name),
+            format_column_name(compiler, element.newname),
+        )
 
     @compiles(ColumnType, "bigquery")
     def visit_column_type(element: ColumnType, compiler: DDLCompiler, **kw) -> str:
@@ -1399,7 +1417,7 @@ else:
         The alembic version ends in TYPE <element type>, but bigquery requires this syntax:
         SET DATA TYPE <element type>"""
 
-        return "%s %s %s" % (  # pragma: NO COVER
+        return "%s %s %s" % (
             alter_table(compiler, element.table_name, element.schema),
             alter_column(compiler, element.column_name),
             "SET DATA TYPE %s" % format_type(compiler, element.type_),
