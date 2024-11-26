@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of .
+This package includes clients for multiple versions of Memorystore.
 By default, you will get version ``memorystore_v1``.
 
 

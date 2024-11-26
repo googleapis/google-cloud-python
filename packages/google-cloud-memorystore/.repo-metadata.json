@@ -1,8 +1,8 @@
 {
     "name": "google-cloud-memorystore",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Memorystore",
+    "api_description": "Memorystore for Valkey is a fully managed Valkey Cluster service for Google Cloud. Applications running on Google Cloud can achieve extreme performance by leveraging the highly scalable, available, secure Valkey service without the burden of managing complex Valkey deployments.",
+    "product_documentation": "https://cloud.google.com/memorystore/docs/valkey",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-memorystore/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
