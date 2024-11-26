@@ -135,9 +135,9 @@ click==8.1.7 \
     # via
     #   -r requirements.in
     #   pip-tools
-deprecated==1.2.14 \
-    --hash=sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c \
-    --hash=sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3
+Deprecated==1.2.15 \
+    --hash=sha256:353bc4a8ac4bfc96800ddab349d89c25dec1079f65fd53acdcc1e0b975b21320 \
+    --hash=sha256:683e561a90de76239796e6b6feac66b99030d2dd3fcf61ef996330f14bbb9b0d
     # via
     #   opentelemetry-api
     #   opentelemetry-semantic-conventions
