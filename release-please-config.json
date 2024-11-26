@@ -1817,6 +1817,27 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-memorystore": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-memorystore",
+            "extra-files": [
+                "google/cloud/memorystore/gapic_version.py",
+                "google/cloud/memorystore_v1/gapic_version.py",
+                "google/cloud/memorystore_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.memorystore.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.memorystore.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-migrationcenter": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
