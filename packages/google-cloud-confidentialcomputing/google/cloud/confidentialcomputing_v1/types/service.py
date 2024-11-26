@@ -76,11 +76,14 @@ class TokenType(proto.Enum):
             Public Key Infrastructure (PKI) token type
         TOKEN_TYPE_LIMITED_AWS (3):
             Limited claim token type for AWS integration
+        TOKEN_TYPE_AWS_PRINCIPALTAGS (4):
+            Principal-tag-based token for AWS integration
     """
     TOKEN_TYPE_UNSPECIFIED = 0
     TOKEN_TYPE_OIDC = 1
     TOKEN_TYPE_PKI = 2
     TOKEN_TYPE_LIMITED_AWS = 3
+    TOKEN_TYPE_AWS_PRINCIPALTAGS = 4
 
 
 class Challenge(proto.Message):
@@ -347,7 +350,15 @@ class TokenOptions(proto.Message):
     r"""Options to modify claims in the token to generate
     custom-purpose tokens.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        aws_principal_tags_options (google.cloud.confidentialcomputing_v1.types.TokenOptions.AwsPrincipalTagsOptions):
+            Optional. Options for the Limited AWS token
+            type.
+
+            This field is a member of `oneof`_ ``token_type_options``.
         audience (str):
             Optional. Optional string to issue the token
             with a custom audience claim. Required if one or
@@ -362,6 +373,62 @@ class TokenOptions(proto.Message):
             type of token to return.
     """
 
+    class AwsPrincipalTagsOptions(proto.Message):
+        r"""Token options that only apply to the AWS Principal Tags token
+        type.
+
+        Attributes:
+            allowed_principal_tags (google.cloud.confidentialcomputing_v1.types.TokenOptions.AwsPrincipalTagsOptions.AllowedPrincipalTags):
+                Optional. Principal tags to allow in the
+                token.
+        """
+
+        class AllowedPrincipalTags(proto.Message):
+            r"""Allowed principal tags is used to define what principal tags
+            will be placed in the token.
+
+            Attributes:
+                container_image_signatures (google.cloud.confidentialcomputing_v1.types.TokenOptions.AwsPrincipalTagsOptions.AllowedPrincipalTags.ContainerImageSignatures):
+                    Optional. Container image signatures allowed
+                    in the token.
+            """
+
+            class ContainerImageSignatures(proto.Message):
+                r"""Allowed Container Image Signatures. Key IDs are required to
+                allow this claim to fit within the narrow AWS IAM restrictions.
+
+                Attributes:
+                    key_ids (MutableSequence[str]):
+                        Optional. List of key ids to filter into the
+                        Principal tags. Only keys that have been
+                        validated and added to the token will be
+                        filtered into principal tags. Unrecognized key
+                        ids will be ignored.
+                """
+
+                key_ids: MutableSequence[str] = proto.RepeatedField(
+                    proto.STRING,
+                    number=1,
+                )
+
+            container_image_signatures: "TokenOptions.AwsPrincipalTagsOptions.AllowedPrincipalTags.ContainerImageSignatures" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="TokenOptions.AwsPrincipalTagsOptions.AllowedPrincipalTags.ContainerImageSignatures",
+            )
+
+        allowed_principal_tags: "TokenOptions.AwsPrincipalTagsOptions.AllowedPrincipalTags" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="TokenOptions.AwsPrincipalTagsOptions.AllowedPrincipalTags",
+        )
+
+    aws_principal_tags_options: AwsPrincipalTagsOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="token_type_options",
+        message=AwsPrincipalTagsOptions,
+    )
     audience: str = proto.Field(
         proto.STRING,
         number=1,
