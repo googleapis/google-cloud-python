@@ -18,6 +18,8 @@ import functools
 import itertools
 from typing import Generator
 
+import bigframes.core.guid
+
 
 def standard_id_strings(prefix: str = "col_") -> Generator[str, None, None]:
     i = 0
@@ -46,6 +48,10 @@ class ColumnId:
 
     def __lt__(self, other: ColumnId) -> bool:
         return self.sql < other.sql
+
+    @classmethod
+    def unique(cls) -> ColumnId:
+        return ColumnId(name=bigframes.core.guid.generate_guid())
 
 
 @dataclasses.dataclass(frozen=True)

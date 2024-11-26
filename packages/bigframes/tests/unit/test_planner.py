@@ -103,13 +103,10 @@ def test_session_aware_caching_fork_after_window_op():
 
     Windowing is expensive, so caching should always compute the window function, in order to avoid later recomputation.
     """
-    other = LEAF.promote_offsets()[0].create_constant(5, pd.Int64Dtype())[0]
-    target = (
-        LEAF.promote_offsets()[0]
-        .create_constant(4, pd.Int64Dtype())[0]
-        .filter(
-            ops.eq_op.as_expr("col_a", ops.add_op.as_expr(ex.const(4), ex.const(3)))
-        )
+    leaf_with_offsets = LEAF.promote_offsets()[0]
+    other = leaf_with_offsets.create_constant(5, pd.Int64Dtype())[0]
+    target = leaf_with_offsets.create_constant(4, pd.Int64Dtype())[0].filter(
+        ops.eq_op.as_expr("col_a", ops.add_op.as_expr(ex.const(4), ex.const(3)))
     )
     result, cluster_cols = planner.session_aware_cache_plan(
         target.node,
@@ -117,5 +114,5 @@ def test_session_aware_caching_fork_after_window_op():
             other.node,
         ],
     )
-    assert result == LEAF.promote_offsets()[0].node
+    assert result == leaf_with_offsets.node
     assert cluster_cols == [ids.ColumnId("col_a")]

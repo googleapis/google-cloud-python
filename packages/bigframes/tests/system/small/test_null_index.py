@@ -364,7 +364,9 @@ def test_null_index_align_error(scalars_df_null_index):
     with pytest.raises(bigframes.exceptions.NullIndexError):
         _ = (
             scalars_df_null_index["int64_col"]
-            + scalars_df_null_index["int64_col"].cumsum()
+            + scalars_df_null_index["int64_col"].cumsum()[
+                scalars_df_null_index["int64_col"] > 3
+            ]
         )
 
 

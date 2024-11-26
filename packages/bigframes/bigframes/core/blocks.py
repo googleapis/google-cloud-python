@@ -2341,7 +2341,9 @@ class Block:
         # Handle null index, which only supports row join
         # This is the canonical way of aligning on null index, so always allow (ignore block_identity_join)
         if self.index.nlevels == other.index.nlevels == 0:
-            result = try_row_join(self, other, how=how)
+            result = try_legacy_row_join(self, other, how=how) or try_new_row_join(
+                self, other
+            )
             if result is not None:
                 return result
             raise bigframes.exceptions.NullIndexError(
@@ -2354,7 +2356,9 @@ class Block:
             and (self.index.nlevels == other.index.nlevels)
             and (self.index.dtypes == other.index.dtypes)
         ):
-            result = try_row_join(self, other, how=how)
+            result = try_legacy_row_join(self, other, how=how) or try_new_row_join(
+                self, other
+            )
             if result is not None:
                 return result
 
@@ -2693,7 +2697,35 @@ class BlockIndexProperties:
         return len(set(self.names)) == len(self.names)
 
 
-def try_row_join(
+def try_new_row_join(
+    left: Block, right: Block
+) -> Optional[Tuple[Block, Tuple[Mapping[str, str], Mapping[str, str]],]]:
+    join_keys = tuple(
+        (left_id, right_id)
+        for left_id, right_id in zip(left.index_columns, right.index_columns)
+    )
+    join_result = left.expr.try_row_join(right.expr, join_keys)
+    if join_result is None:  # did not succeed
+        return None
+    combined_expr, (get_column_left, get_column_right) = join_result
+    # Keep the left index column, and drop the matching right column
+    index_cols_post_join = [get_column_left[id] for id in left.index_columns]
+    combined_expr = combined_expr.drop_columns(
+        [get_column_right[id] for id in right.index_columns]
+    )
+    block = Block(
+        combined_expr,
+        index_columns=index_cols_post_join,
+        column_labels=left.column_labels.append(right.column_labels),
+        index_labels=left.index.names,
+    )
+    return (
+        block,
+        (get_column_left, get_column_right),
+    )
+
+
+def try_legacy_row_join(
     left: Block,
     right: Block,
     *,
@@ -2727,7 +2759,7 @@ def try_row_join(
         )
         for id in right.value_columns
     ]
-    combined_expr = left_expr.try_align_as_projection(
+    combined_expr = left_expr.try_legacy_row_join(
         right_expr,
         join_type=how,
         join_keys=join_keys,

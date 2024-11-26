@@ -26,7 +26,6 @@ import pandas
 import pyarrow as pa
 import pyarrow.feather as pa_feather
 
-import bigframes.core.compile
 import bigframes.core.expression as ex
 import bigframes.core.guid
 import bigframes.core.identifiers as ids
@@ -35,7 +34,6 @@ import bigframes.core.local_data as local_data
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import OrderingExpression
 import bigframes.core.ordering as orderings
-import bigframes.core.rewrite
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties
 import bigframes.core.utils
@@ -43,7 +41,6 @@ from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.session._io.bigquery
 
 if typing.TYPE_CHECKING:
     from bigframes.session import Session
@@ -199,6 +196,8 @@ class ArrayValue:
 
     def _try_evaluate_local(self):
         """Use only for unit testing paths - not fully featured. Will throw exception if fails."""
+        import bigframes.core.compile
+
         return bigframes.core.compile.test_only_try_evaluate(self.node)
 
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
@@ -422,22 +421,7 @@ class ArrayValue:
         l_mapping = {  # Identity mapping, only rename right side
             lcol.name: lcol.name for lcol in self.node.ids
         }
-        r_mapping = {  # Rename conflicting names
-            rcol.name: rcol.name
-            if (rcol.name not in l_mapping)
-            else bigframes.core.guid.generate_guid()
-            for rcol in other.node.ids
-        }
-        other_node = other.node
-        if set(other_node.ids) & set(self.node.ids):
-            other_node = nodes.SelectionNode(
-                other_node,
-                tuple(
-                    (ex.deref(old_id), ids.ColumnId(new_id))
-                    for old_id, new_id in r_mapping.items()
-                ),
-            )
-
+        other_node, r_mapping = self.prepare_join_names(other)
         join_node = nodes.JoinNode(
             left_child=self.node,
             right_child=other_node,
@@ -449,14 +433,63 @@ class ArrayValue:
         )
         return ArrayValue(join_node), (l_mapping, r_mapping)
 
-    def try_align_as_projection(
+    def try_row_join(
+        self,
+        other: ArrayValue,
+        conditions: typing.Tuple[typing.Tuple[str, str], ...] = (),
+    ) -> Optional[
+        typing.Tuple[ArrayValue, typing.Tuple[dict[str, str], dict[str, str]]]
+    ]:
+        l_mapping = {  # Identity mapping, only rename right side
+            lcol.name: lcol.name for lcol in self.node.ids
+        }
+        other_node, r_mapping = self.prepare_join_names(other)
+        import bigframes.core.rewrite
+
+        result_node = bigframes.core.rewrite.try_join_as_projection(
+            self.node, other_node, conditions
+        )
+        if result_node is None:
+            return None
+
+        return (
+            ArrayValue(result_node),
+            (l_mapping, r_mapping),
+        )
+
+    def prepare_join_names(
+        self, other: ArrayValue
+    ) -> Tuple[bigframes.core.nodes.BigFrameNode, dict[str, str]]:
+        if set(other.node.ids) & set(self.node.ids):
+            r_mapping = {  # Rename conflicting names
+                rcol.name: rcol.name
+                if (rcol.name not in self.column_ids)
+                else bigframes.core.guid.generate_guid()
+                for rcol in other.node.ids
+            }
+            return (
+                nodes.SelectionNode(
+                    other.node,
+                    tuple(
+                        (ex.deref(old_id), ids.ColumnId(new_id))
+                        for old_id, new_id in r_mapping.items()
+                    ),
+                ),
+                r_mapping,
+            )
+        else:
+            return other.node, {id: id for id in other.column_ids}
+
+    def try_legacy_row_join(
         self,
         other: ArrayValue,
         join_type: join_def.JoinType,
         join_keys: typing.Tuple[join_def.CoalescedColumnMapping, ...],
         mappings: typing.Tuple[join_def.JoinColumnMapping, ...],
     ) -> typing.Optional[ArrayValue]:
-        result = bigframes.core.rewrite.join_as_projection(
+        import bigframes.core.rewrite
+
+        result = bigframes.core.rewrite.legacy_join_as_projection(
             self.node, other.node, join_keys, mappings, join_type
         )
         if result is not None:
@@ -488,11 +521,4 @@ class ArrayValue:
         return self._gen_namespaced_uids(1)[0]
 
     def _gen_namespaced_uids(self, n: int) -> List[str]:
-        i = len(self.node.defined_variables)
-        genned_ids: List[str] = []
-        while len(genned_ids) < n:
-            attempted_id = f"col_{i}"
-            if attempted_id not in self.node.defined_variables:
-                genned_ids.append(attempted_id)
-            i = i + 1
-        return genned_ids
+        return [ids.ColumnId.unique().name for _ in range(n)]

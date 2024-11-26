@@ -17,7 +17,7 @@ import google.cloud.bigquery
 
 import bigframes.core as core
 import bigframes.core.nodes as nodes
-import bigframes.core.rewrite as rewrites
+import bigframes.core.rewrite.slices
 import bigframes.core.schema
 
 TABLE_REF = google.cloud.bigquery.TableReference.from_string("project.dataset.table")
@@ -40,18 +40,18 @@ LEAF = core.ArrayValue.from_table(
 
 def test_rewrite_noop_slice():
     slice = nodes.SliceNode(LEAF, None, None)
-    result = rewrites.rewrite_slice(slice)
+    result = bigframes.core.rewrite.slices.rewrite_slice(slice)
     assert result == LEAF
 
 
 def test_rewrite_reverse_slice():
     slice = nodes.SliceNode(LEAF, None, None, -1)
-    result = rewrites.rewrite_slice(slice)
+    result = bigframes.core.rewrite.slices.rewrite_slice(slice)
     assert result == nodes.ReversedNode(LEAF)
 
 
 def test_rewrite_filter_slice():
     slice = nodes.SliceNode(LEAF, None, 2)
-    result = rewrites.rewrite_slice(slice)
+    result = bigframes.core.rewrite.slices.rewrite_slice(slice)
     assert list(result.fields) == list(LEAF.fields)
     assert isinstance(result.child, nodes.FilterNode)
