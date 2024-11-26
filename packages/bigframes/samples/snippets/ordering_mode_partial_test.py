@@ -16,30 +16,35 @@
 def test_quickstart() -> None:
     import bigframes.pandas
 
-    # We need a fresh session since we're modifying connection options.
-    bigframes.pandas.close_session()
+    try:
+        # We need a fresh session since we're modifying connection options.
+        bigframes.pandas.close_session()
 
-    # [START bigquery_bigframes_ordering_mode_partial]
-    import bigframes.pandas as bpd
+        # [START bigquery_bigframes_ordering_mode_partial]
+        import bigframes.pandas as bpd
 
-    bpd.options.bigquery.ordering_mode = "partial"
-    # [END bigquery_bigframes_ordering_mode_partial]
+        bpd.options.bigquery.ordering_mode = "partial"
+        # [END bigquery_bigframes_ordering_mode_partial]
 
-    # [START bigquery_bigframes_ordering_mode_partial_ambiguous_window_warning]
-    import warnings
+        # [START bigquery_bigframes_ordering_mode_partial_ambiguous_window_warning]
+        import warnings
 
-    import bigframes.exceptions
+        import bigframes.exceptions
 
-    warnings.simplefilter(
-        "ignore", category=bigframes.exceptions.AmbiguousWindowWarning
-    )
-    # [END bigquery_bigframes_ordering_mode_partial_ambiguous_window_warning]
+        warnings.simplefilter(
+            "ignore", category=bigframes.exceptions.AmbiguousWindowWarning
+        )
+        # [END bigquery_bigframes_ordering_mode_partial_ambiguous_window_warning]
 
-    df = bpd.DataFrame({"column": [1, 2, 1, 3, 1, 2, 3]})
+        df = bpd.DataFrame({"column": [1, 2, 1, 3, 1, 2, 3]})
 
-    # [START bigquery_bigframes_ordering_mode_partial_drop_duplicates]
-    # Avoid order dependency by using groupby instead of drop_duplicates.
-    unique_col = df.groupby(["column"], as_index=False).size().drop(columns="size")
-    # [END bigquery_bigframes_ordering_mode_partial_drop_duplicates]
+        # [START bigquery_bigframes_ordering_mode_partial_drop_duplicates]
+        # Avoid order dependency by using groupby instead of drop_duplicates.
+        unique_col = df.groupby(["column"], as_index=False).size().drop(columns="size")
+        # [END bigquery_bigframes_ordering_mode_partial_drop_duplicates]
 
-    assert len(unique_col) == 3
+        assert len(unique_col) == 3
+    finally:
+        # Don't leak partial ordering mode to other code samples.
+        bigframes.pandas.close_session()
+        bpd.options.bigquery.ordering_mode = "strict"
