@@ -141,9 +141,9 @@ deprecated==1.2.14 \
     # via
     #   opentelemetry-api
     #   opentelemetry-semantic-conventions
-google-api-core[grpc]==2.22.0 \
-    --hash=sha256:26f8d76b96477db42b55fd02a33aae4a42ec8b86b98b94969b7333a2c828bf35 \
-    --hash=sha256:a6652b6bd51303902494998626653671703c420f6f4c88cfd3f50ed723e9d021
+google-api-core[grpc]==2.23.0 \
+    --hash=sha256:2ceb087315e6af43f256704b871d99326b1f12a9d6ce99beaedec99ba26a0ace \
+    --hash=sha256:c20100d4c4c41070cf365f1d8ddf5365915291b5eb11b83829fbd1c999b5122f
     # via
     #   google-cloud-core
     #   google-cloud-spanner
