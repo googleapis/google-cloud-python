@@ -110,15 +110,16 @@ class Route(proto.Message):
         localized_values (google.maps.routing_v2.types.Route.RouteLocalizedValues):
             Text representations of properties of the ``Route``.
         route_token (str):
-            A web-safe, base64-encoded route token that can be passed to
-            the Navigation SDK, that allows the Navigation SDK to
-            reconstruct the route during navigation, and, in the event
-            of rerouting, honor the original intention when you created
-            the route by calling ComputeRoutes. Customers should treat
-            this token as an opaque blob. It is not meant for reading or
-            mutating. NOTE: ``Route.route_token`` is only available for
-            requests that have set
-            ``ComputeRoutesRequest.routing_preference`` to
+            An opaque token that can be passed to `Navigation
+            SDK <https://developers.google.com/maps/documentation/navigation>`__
+            to reconstruct the route during navigation, and, in the
+            event of rerouting, honor the original intention when the
+            route was created. Treat this token as an opaque blob. Don't
+            compare its value across requests as its value may change
+            even if the service returns the exact same route.
+
+            NOTE: ``Route.route_token`` is only available for requests
+            that have set ``ComputeRoutesRequest.routing_preference`` to
             ``TRAFFIC_AWARE`` or ``TRAFFIC_AWARE_OPTIMAL``.
             ``Route.route_token`` is not supported for requests that
             have Via waypoints.
@@ -131,9 +132,10 @@ class Route(proto.Message):
             distance (google.type.localized_text_pb2.LocalizedText):
                 Travel distance represented in text form.
             duration (google.type.localized_text_pb2.LocalizedText):
-                Duration taking traffic conditions into consideration,
-                represented in text form. Note: If you did not request
-                traffic information, this value will be the same value as
+                Duration, represented in text form and localized to the
+                region of the query. Takes traffic conditions into
+                consideration. Note: If you did not request traffic
+                information, this value is the same value as
                 ``static_duration``.
             static_duration (google.type.localized_text_pb2.LocalizedText):
                 Duration without taking traffic conditions
@@ -408,9 +410,10 @@ class RouteLeg(proto.Message):
             distance (google.type.localized_text_pb2.LocalizedText):
                 Travel distance represented in text form.
             duration (google.type.localized_text_pb2.LocalizedText):
-                Duration taking traffic conditions into consideration
-                represented in text form. Note: If you did not request
-                traffic information, this value will be the same value as
+                Duration, represented in text form and localized to the
+                region of the query. Takes traffic conditions into
+                consideration. Note: If you did not request traffic
+                information, this value is the same value as
                 static_duration.
             static_duration (google.type.localized_text_pb2.LocalizedText):
                 Duration without taking traffic conditions
@@ -695,7 +698,7 @@ class RouteLegStepTransitDetails(proto.Message):
             This count includes the arrival stop, but excludes the
             departure stop. For example, if your route leaves from Stop
             A, passes through stops B and C, and arrives at stop D,
-            stop_count will return 3.
+            stop_count returns 3.
         trip_short_text (str):
             The text that appears in schedules and sign boards to
             identify a transit trip to passengers. The text should

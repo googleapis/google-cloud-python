@@ -47,11 +47,15 @@ class RouteLabel(proto.Enum):
             Fuel efficient route. Routes labeled with
             this value are determined to be optimized for
             Eco parameters such as fuel consumption.
+        SHORTER_DISTANCE (4):
+            Shorter travel distance route. This is an
+            experimental feature.
     """
     ROUTE_LABEL_UNSPECIFIED = 0
     DEFAULT_ROUTE = 1
     DEFAULT_ROUTE_ALTERNATE = 2
     FUEL_EFFICIENT = 3
+    SHORTER_DISTANCE = 4
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
