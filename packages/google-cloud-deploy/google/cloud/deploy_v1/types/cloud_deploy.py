@@ -3442,10 +3442,10 @@ class Release(proto.Message):
             update and delete requests to ensure the client
             has an up-to-date value before proceeding.
         skaffold_version (str):
-            Optional. The Skaffold version to use when
-            operating on this release, such as "1.20.0". Not
-            all versions are valid; Cloud Deploy supports a
-            specific set of versions.
+            The Skaffold version to use when operating on
+            this release, such as "1.20.0". Not all versions
+            are valid; Cloud Deploy supports a specific set
+            of versions.
 
             If unset, the most recent supported Skaffold
             version will be used.
@@ -5405,11 +5405,9 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have
-            [google.longrunning.Operation.error][google.longrunning.Operation.error]
-            value with a
-            [google.rpc.Status.code][google.rpc.Status.code] of 1,
-            corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have [Operation.error][] value
+            with a [google.rpc.Status.code][google.rpc.Status.code] of
+            1, corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.
