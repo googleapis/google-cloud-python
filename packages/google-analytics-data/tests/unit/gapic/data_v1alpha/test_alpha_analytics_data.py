@@ -11568,6 +11568,7 @@ def test_create_report_task_rest_call_success(request_type):
                         },
                     },
                     "between_filter": {"from_value": {}, "to_value": {}},
+                    "empty_filter": {},
                 },
             },
             "metric_filter": {},
