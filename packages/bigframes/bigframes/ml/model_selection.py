@@ -162,7 +162,7 @@ class KFold(vendored_model_selection_split.KFold):
         if isinstance(type_instance, pd.Series) or isinstance(
             type_instance, bpd.Series
         ):
-            return next(utils.convert_to_series(input))
+            return next(utils.batch_convert_to_series(input))
 
         if isinstance(type_instance, pd.DataFrame) or isinstance(
             type_instance, bpd.DataFrame

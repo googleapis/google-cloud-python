@@ -17,6 +17,7 @@ from typing import Optional
 
 import pandas as pd
 
+from bigframes.core import global_session
 import bigframes.core.indexes as index
 import bigframes.series as series
 
@@ -36,7 +37,9 @@ def is_series_convertible(obj) -> bool:
         return False
 
 
-def to_bf_series(obj, default_index: Optional[index.Index], session) -> series.Series:
+def to_bf_series(
+    obj, default_index: Optional[index.Index], session=None
+) -> series.Series:
     """
     Convert a an object to a bigframes series
 
@@ -51,6 +54,10 @@ def to_bf_series(obj, default_index: Optional[index.Index], session) -> series.S
     """
     if isinstance(obj, series.Series):
         return obj
+
+    if session is None:
+        session = global_session.get_global_session()
+
     if isinstance(obj, pd.Series):
         return series.Series(obj, session=session)
     if isinstance(obj, index.Index):

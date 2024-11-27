@@ -37,7 +37,7 @@ def r2_score(
     *,
     force_finite=True,
 ) -> float:
-    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
 
     # total sum of squares
     # (dataframe, scalar) binops
@@ -66,7 +66,7 @@ def accuracy_score(
     normalize=True,
 ) -> float:
     # TODO(ashleyxu): support sample_weight as the parameter
-    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
 
     # Compute accuracy for each possible representation
     # TODO(ashleyxu): add multilabel classification support where y_type
@@ -97,7 +97,7 @@ def roc_curve(
             f"drop_intermediate is not yet implemented. {constants.FEEDBACK_LINK}"
         )
 
-    y_true_series, y_score_series = utils.convert_to_series(y_true, y_score)
+    y_true_series, y_score_series = utils.batch_convert_to_series(y_true, y_score)
 
     session = y_true_series._block.expr.session
 
@@ -157,7 +157,7 @@ def roc_auc_score(
 ) -> float:
     # TODO(bmil): Add multi-class support
     # TODO(bmil): Add multi-label support
-    y_true_series, y_score_series = utils.convert_to_series(y_true, y_score)
+    y_true_series, y_score_series = utils.batch_convert_to_series(y_true, y_score)
 
     fpr, tpr, _ = roc_curve(y_true_series, y_score_series, drop_intermediate=False)
 
@@ -174,7 +174,7 @@ def auc(
     x: Union[bpd.DataFrame, bpd.Series],
     y: Union[bpd.DataFrame, bpd.Series],
 ) -> float:
-    x_series, y_series = utils.convert_to_series(x, y)
+    x_series, y_series = utils.batch_convert_to_series(x, y)
 
     # TODO(b/286410053) Support ML exceptions and error handling.
     auc = sklearn_metrics.auc(x_series.to_pandas(), y_series.to_pandas())
@@ -189,7 +189,7 @@ def confusion_matrix(
     y_pred: Union[bpd.DataFrame, bpd.Series],
 ) -> pd.DataFrame:
     # TODO(ashleyxu): support labels and sample_weight parameters
-    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
 
     y_true_series = y_true_series.rename("y_true")
     confusion_df = y_true_series.to_frame().assign(y_pred=y_pred_series)
@@ -235,7 +235,7 @@ def recall_score(
             f"Only average=None is supported. {constants.FEEDBACK_LINK}"
         )
 
-    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
 
     is_accurate = y_true_series == y_pred_series
     unique_labels = (
@@ -272,7 +272,7 @@ def precision_score(
             f"Only average=None is supported. {constants.FEEDBACK_LINK}"
         )
 
-    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
 
     is_accurate = y_true_series == y_pred_series
     unique_labels = (
@@ -306,7 +306,7 @@ def f1_score(
     average: typing.Optional[str] = "binary",
 ) -> pd.Series:
     # TODO(ashleyxu): support more average type, default to "binary"
-    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
 
     if average is not None:
         raise NotImplementedError(
@@ -337,7 +337,7 @@ def mean_squared_error(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
 ) -> float:
-    y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
 
     return (y_pred_series - y_true_series).pow(2).sum() / len(y_true_series)
 

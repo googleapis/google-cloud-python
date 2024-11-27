@@ -25,7 +25,7 @@ import bigframes.pandas as bpd
 def paired_cosine_distances(
     X: Union[bpd.DataFrame, bpd.Series], Y: Union[bpd.DataFrame, bpd.Series]
 ) -> bpd.DataFrame:
-    X, Y = utils.convert_to_series(X, Y)
+    X, Y = utils.batch_convert_to_series(X, Y)
     joined_block, _ = X._block.join(Y._block, how="outer")
 
     result_block, _ = joined_block.project_expr(
@@ -45,7 +45,7 @@ paired_cosine_distances.__doc__ = inspect.getdoc(
 def paired_manhattan_distance(
     X: Union[bpd.DataFrame, bpd.Series], Y: Union[bpd.DataFrame, bpd.Series]
 ) -> bpd.DataFrame:
-    X, Y = utils.convert_to_series(X, Y)
+    X, Y = utils.batch_convert_to_series(X, Y)
     joined_block, _ = X._block.join(Y._block, how="outer")
 
     result_block, _ = joined_block.project_expr(
@@ -65,7 +65,7 @@ paired_manhattan_distance.__doc__ = inspect.getdoc(
 def paired_euclidean_distances(
     X: Union[bpd.DataFrame, bpd.Series], Y: Union[bpd.DataFrame, bpd.Series]
 ) -> bpd.DataFrame:
-    X, Y = utils.convert_to_series(X, Y)
+    X, Y = utils.batch_convert_to_series(X, Y)
     joined_block, _ = X._block.join(Y._block, how="outer")
 
     result_block, _ = joined_block.project_expr(
