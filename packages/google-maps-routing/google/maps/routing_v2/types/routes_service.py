@@ -161,7 +161,9 @@ class ComputeRoutesRequest(proto.Message):
             calculation objective than the default route. For example a
             ``FUEL_EFFICIENT`` reference route calculation takes into
             account various parameters that would generate an optimal
-            fuel efficient route.
+            fuel efficient route. When using this feature, look for
+            [``route_labels``][google.maps.routing.v2.Route.route_labels]
+            on the resulting routes.
         extra_computations (MutableSequence[google.maps.routing_v2.types.ComputeRoutesRequest.ExtraComputation]):
             Optional. A list of extra computations which
             may be used to complete the request. Note: These
@@ -199,12 +201,29 @@ class ComputeRoutesRequest(proto.Message):
                 Not used. Requests containing this value
                 fail.
             FUEL_EFFICIENT (1):
-                Fuel efficient route. Routes labeled with
-                this value are determined to be optimized for
-                parameters such as fuel consumption.
+                Fuel efficient route.
+            SHORTER_DISTANCE (2):
+                Route with shorter travel distance. This is an experimental
+                feature.
+
+                For ``DRIVE`` requests, this feature prioritizes shorter
+                distance over driving comfort. For example, it may prefer
+                local roads instead of highways, take dirt roads, cut
+                through parking lots, etc. This feature does not return any
+                maneuvers that Google Maps knows to be illegal.
+
+                For ``BICYCLE`` and ``TWO_WHEELER`` requests, this feature
+                returns routes similar to those returned when you don't
+                specify ``requested_reference_routes``.
+
+                This feature is not compatible with any other travel modes,
+                via intermediate waypoints, or ``optimize_waypoint_order``;
+                such requests will fail. However, you can use it with any
+                ``routing_preference``.
         """
         REFERENCE_ROUTE_UNSPECIFIED = 0
         FUEL_EFFICIENT = 1
+        SHORTER_DISTANCE = 2
 
     class ExtraComputation(proto.Enum):
         r"""Extra computations to perform while completing the request.
