@@ -628,11 +628,17 @@ class Product(proto.Message):
         product_name (str):
             Google Cloud product impacted by the event. Example:
             ``"Google Cloud SQL"``
+        id (str):
+            Unique identifier for the product.
     """
 
     product_name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
