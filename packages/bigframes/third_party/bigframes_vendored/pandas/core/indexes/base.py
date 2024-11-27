@@ -25,6 +25,37 @@ class Index:
     """
 
     @property
+    def name(self):
+        """Returns Index name.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> idx = bpd.Index([1, 2, 3], name='x')
+            >>> idx
+            Index([1, 2, 3], dtype='Int64', name='x')
+            >>> idx.name
+            'x'
+
+        Returns:
+            blocks.Label:
+                Index or MultiIndex name
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def names(self):
+        """Returns the names of the Index.
+
+        Returns:
+            Sequence[blocks.Label]:
+                A Sequence of Index or MultiIndex name
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
     def values(self):
         """Return an array representing the data in the Index.
 
@@ -43,6 +74,166 @@ class Index:
         Returns:
             array:
                 Numpy.ndarray or ExtensionArray
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def ndim(self):
+        """
+        Number of dimensions of the underlying data, by definition 1.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series(['Ant', 'Bear', 'Cow'])
+            >>> s
+            0     Ant
+            1    Bear
+            2     Cow
+            dtype: string
+
+            >>> s.ndim
+            1
+
+        For Index:
+
+            >>> idx = bpd.Index([1, 2, 3])
+            >>> idx
+            Index([1, 2, 3], dtype='Int64')
+
+            >>> idx.ndim
+            1
+
+        Returns:
+            int:
+                Number or dimensions.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def size(self) -> int:
+        """
+        Return the number of elements in the underlying data.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        For Series:
+
+            >>> s = bpd.Series(['Ant', 'Bear', 'Cow'])
+            >>> s
+            0     Ant
+            1    Bear
+            2     Cow
+            dtype: string
+
+        For Index:
+
+            >>> idx = bpd.Index([1, 2, 3])
+            >>> idx
+            Index([1, 2, 3], dtype='Int64')
+
+        Returns:
+            int:
+                Number of elements
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def empty(self) -> bool:
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def is_monotonic_increasing(self) -> bool:
+        """
+        Return a boolean if the values are equal or increasing.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> bool(bpd.Index([1, 2, 3]).is_monotonic_increasing)
+            True
+
+            >>> bool(bpd.Index([1, 2, 2]).is_monotonic_increasing)
+            True
+
+            >>> bool(bpd.Index([1, 3, 2]).is_monotonic_increasing)
+            False
+
+        Returns:
+            bool:
+              True, if the values monotonically increasing, otherwise False.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def is_monotonic_decreasing(self) -> bool:
+        """
+        Return a boolean if the values are equal or decreasing.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> bool(bpd.Index([3, 2, 1]).is_monotonic_decreasing)
+            True
+
+            >>> bool(bpd.Index([3, 2, 2]).is_monotonic_decreasing)
+            True
+
+            >>> bool(bpd.Index([3, 1, 2]).is_monotonic_decreasing)
+            False
+
+        Returns:
+            bool:
+              True, if the values monotonically decreasing, otherwise False.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @classmethod
+    def from_frame(cls, frame) -> Index:
+        """
+        Make a MultiIndex from a DataFrame.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame([['HI', 'Temp'], ['HI', 'Precip'],
+            ...                     ['NJ', 'Temp'], ['NJ', 'Precip']],
+            ...                    columns=['a', 'b'])
+            >>> df
+                a       b
+            0  HI    Temp
+            1  HI  Precip
+            2  NJ    Temp
+            3  NJ  Precip
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            >>> bpd.MultiIndex.from_frame(df)
+            Index([0, 1, 2, 3], dtype='Int64')
+
+        Args:
+          frame (Union[bigframes.pandas.Series, bigframes.pandas.DataFrame]):
+              bigframes.pandas.Series or bigframes.pandas.DataFrame to convert
+              to bigframes.pandas.Index.
+
+        Returns:
+            bigframes.pandas.Index:
+                The Index representation of the given Series or DataFrame.
+
+        Raises:
+            bigframes.exceptions.NullIndexError:
+                If Index is Null.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
