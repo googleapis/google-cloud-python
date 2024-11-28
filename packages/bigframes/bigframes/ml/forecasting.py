@@ -206,7 +206,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         if y.columns.size != 1:
             raise ValueError("Time series data input y must only contain 1 column.")
 
-        X, y = utils.convert_to_dataframe(X, y)
+        X, y = utils.batch_convert_to_dataframe(X, y)
 
         self._bqml_model = self._bqml_model_factory.create_time_series_model(
             X,
@@ -298,7 +298,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before detect_anomalies")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.detect_anomalies(
             X, options={"anomaly_prob_threshold": anomaly_prob_threshold}
@@ -331,7 +331,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         """
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
-        X, y = utils.convert_to_dataframe(X, y, session=self._bqml_model.session)
+        X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)
 
         input_data = X.join(y, how="outer")
         return self._bqml_model.evaluate(input_data)

@@ -83,7 +83,7 @@ class StandardScaler(
         X: utils.ArrayType,
         y=None,  # ignored
     ) -> StandardScaler:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
@@ -99,7 +99,7 @@ class StandardScaler(
         if not self._bqml_model:
             raise RuntimeError("Must be fitted before transform")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.transform(X)
         return typing.cast(
@@ -161,7 +161,7 @@ class MaxAbsScaler(
         X: utils.ArrayType,
         y=None,  # ignored
     ) -> MaxAbsScaler:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
@@ -177,7 +177,7 @@ class MaxAbsScaler(
         if not self._bqml_model:
             raise RuntimeError("Must be fitted before transform")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.transform(X)
         return typing.cast(
@@ -239,7 +239,7 @@ class MinMaxScaler(
         X: utils.ArrayType,
         y=None,  # ignored
     ) -> MinMaxScaler:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
@@ -255,7 +255,7 @@ class MinMaxScaler(
         if not self._bqml_model:
             raise RuntimeError("Must be fitted before transform")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.transform(X)
         return typing.cast(
@@ -362,7 +362,7 @@ class KBinsDiscretizer(
         X: utils.ArrayType,
         y=None,  # ignored
     ) -> KBinsDiscretizer:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
@@ -378,7 +378,7 @@ class KBinsDiscretizer(
         if not self._bqml_model:
             raise RuntimeError("Must be fitted before transform")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.transform(X)
         return typing.cast(
@@ -478,7 +478,7 @@ class OneHotEncoder(
         X: utils.ArrayType,
         y=None,  # ignored
     ) -> OneHotEncoder:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
@@ -494,7 +494,7 @@ class OneHotEncoder(
         if not self._bqml_model:
             raise RuntimeError("Must be fitted before transform")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.transform(X)
         return typing.cast(
@@ -586,7 +586,7 @@ class LabelEncoder(
         self,
         y: utils.ArrayType,
     ) -> LabelEncoder:
-        (y,) = utils.convert_to_dataframe(y)
+        (y,) = utils.batch_convert_to_dataframe(y)
 
         transform_sqls = self._compile_to_sql(y)
         self._bqml_model = self._bqml_model_factory.create_model(
@@ -602,7 +602,7 @@ class LabelEncoder(
         if not self._bqml_model:
             raise RuntimeError("Must be fitted before transform")
 
-        (y,) = utils.convert_to_dataframe(y, session=self._bqml_model.session)
+        (y,) = utils.batch_convert_to_dataframe(y, session=self._bqml_model.session)
 
         df = self._bqml_model.transform(y)
         return typing.cast(
@@ -670,7 +670,7 @@ class PolynomialFeatures(
         X: utils.ArrayType,
         y=None,  # ignored
     ) -> PolynomialFeatures:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         transform_sqls = self._compile_to_sql(X)
         self._bqml_model = self._bqml_model_factory.create_model(
@@ -687,7 +687,7 @@ class PolynomialFeatures(
         if not self._bqml_model:
             raise RuntimeError("Must be fitted before transform")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.transform(X)
         return typing.cast(

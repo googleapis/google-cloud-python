@@ -223,7 +223,7 @@ def vector_search(
         options = {} if options is None else options
         options["use_brute_force"] = use_brute_force
 
-    (query,) = utils.convert_to_dataframe(query)
+    (query,) = utils.batch_convert_to_dataframe(query)
     sql_string, index_col_ids, index_labels = query._to_sql_query(include_index=True)
 
     sql = bigframes.core.sql.create_vector_search_sql(

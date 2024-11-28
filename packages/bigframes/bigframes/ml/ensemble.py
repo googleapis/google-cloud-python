@@ -148,12 +148,12 @@ class XGBRegressor(
         X_eval: Optional[utils.ArrayType] = None,
         y_eval: Optional[utils.ArrayType] = None,
     ) -> XGBRegressor:
-        X, y = utils.convert_to_dataframe(X, y)
+        X, y = utils.batch_convert_to_dataframe(X, y)
 
         bqml_options = self._bqml_options
 
         if X_eval is not None and y_eval is not None:
-            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X_eval, y_eval = utils.batch_convert_to_dataframe(X_eval, y_eval)
             X, y, bqml_options = utils.combine_training_and_evaluation_data(
                 X, y, X_eval, y_eval, bqml_options
             )
@@ -172,7 +172,7 @@ class XGBRegressor(
     ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
@@ -184,7 +184,7 @@ class XGBRegressor(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        X, y = utils.convert_to_dataframe(X, y, session=self._bqml_model.session)
+        X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)
 
         input_data = (
             X.join(y, how="outer") if (X is not None) and (y is not None) else None
@@ -307,12 +307,12 @@ class XGBClassifier(
         X_eval: Optional[utils.ArrayType] = None,
         y_eval: Optional[utils.ArrayType] = None,
     ) -> XGBClassifier:
-        X, y = utils.convert_to_dataframe(X, y)
+        X, y = utils.batch_convert_to_dataframe(X, y)
 
         bqml_options = self._bqml_options
 
         if X_eval is not None and y_eval is not None:
-            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X_eval, y_eval = utils.batch_convert_to_dataframe(X_eval, y_eval)
             X, y, bqml_options = utils.combine_training_and_evaluation_data(
                 X, y, X_eval, y_eval, bqml_options
             )
@@ -328,7 +328,7 @@ class XGBClassifier(
     def predict(self, X: utils.ArrayType) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
@@ -340,7 +340,7 @@ class XGBClassifier(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        X, y = utils.convert_to_dataframe(X, y, session=self._bqml_model.session)
+        X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)
 
         input_data = (
             X.join(y, how="outer") if (X is not None) and (y is not None) else None
@@ -453,12 +453,12 @@ class RandomForestRegressor(
         X_eval: Optional[utils.ArrayType] = None,
         y_eval: Optional[utils.ArrayType] = None,
     ) -> RandomForestRegressor:
-        X, y = utils.convert_to_dataframe(X, y)
+        X, y = utils.batch_convert_to_dataframe(X, y)
 
         bqml_options = self._bqml_options
 
         if X_eval is not None and y_eval is not None:
-            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X_eval, y_eval = utils.batch_convert_to_dataframe(X_eval, y_eval)
             X, y, bqml_options = utils.combine_training_and_evaluation_data(
                 X, y, X_eval, y_eval, bqml_options
             )
@@ -477,7 +477,7 @@ class RandomForestRegressor(
     ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
@@ -506,7 +506,7 @@ class RandomForestRegressor(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        X, y = utils.convert_to_dataframe(X, y, session=self._bqml_model.session)
+        X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)
 
         input_data = (
             X.join(y, how="outer") if (X is not None) and (y is not None) else None
@@ -619,12 +619,12 @@ class RandomForestClassifier(
         X_eval: Optional[utils.ArrayType] = None,
         y_eval: Optional[utils.ArrayType] = None,
     ) -> RandomForestClassifier:
-        X, y = utils.convert_to_dataframe(X, y)
+        X, y = utils.batch_convert_to_dataframe(X, y)
 
         bqml_options = self._bqml_options
 
         if X_eval is not None and y_eval is not None:
-            X_eval, y_eval = utils.convert_to_dataframe(X_eval, y_eval)
+            X_eval, y_eval = utils.batch_convert_to_dataframe(X_eval, y_eval)
             X, y, bqml_options = utils.combine_training_and_evaluation_data(
                 X, y, X_eval, y_eval, bqml_options
             )
@@ -643,7 +643,7 @@ class RandomForestClassifier(
     ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
@@ -672,7 +672,7 @@ class RandomForestClassifier(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        X, y = utils.convert_to_dataframe(X, y, session=self._bqml_model.session)
+        X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)
 
         input_data = (
             X.join(y, how="outer") if (X is not None) and (y is not None) else None

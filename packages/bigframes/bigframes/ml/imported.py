@@ -80,7 +80,7 @@ class TensorFlowModel(base.Predictor):
             self._bqml_model = self._create_bqml_model()
         self._bqml_model = cast(core.BqmlModel, self._bqml_model)
 
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         return self._bqml_model.predict(X)
 
@@ -159,7 +159,7 @@ class ONNXModel(base.Predictor):
             self._bqml_model = self._create_bqml_model()
         self._bqml_model = cast(core.BqmlModel, self._bqml_model)
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
@@ -275,7 +275,7 @@ class XGBoostModel(base.Predictor):
             self._bqml_model = self._create_bqml_model()
         self._bqml_model = cast(core.BqmlModel, self._bqml_model)
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 

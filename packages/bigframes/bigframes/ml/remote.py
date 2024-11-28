@@ -133,7 +133,7 @@ class VertexAIModel(base.BaseEstimator):
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         df = self._bqml_model.predict(X)
 

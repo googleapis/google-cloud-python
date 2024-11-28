@@ -106,7 +106,7 @@ class KMeans(
         y=None,  # ignored
         transforms: Optional[List[str]] = None,
     ) -> KMeans:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         self._bqml_model = self._bqml_model_factory.create_model(
             X_train=X,
@@ -131,7 +131,7 @@ class KMeans(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
@@ -160,7 +160,7 @@ class KMeans(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before detect_anomalies")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.detect_anomalies(
             X, options={"contamination": contamination}
@@ -191,6 +191,6 @@ class KMeans(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.evaluate(X)

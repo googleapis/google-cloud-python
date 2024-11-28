@@ -173,7 +173,7 @@ class SeriesMethods:
         reverse: bool = False,
     ) -> series.Series:
         """Applies a binary operator to the series and other."""
-        if bigframes.core.convert.is_series_convertible(other):
+        if bigframes.core.convert.can_convert_to_series(other):
             self_index = indexes.Index(self._block)
             other_series = bigframes.core.convert.to_bf_series(
                 other, self_index, self._block.session

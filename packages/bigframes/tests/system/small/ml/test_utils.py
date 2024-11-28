@@ -29,7 +29,7 @@ _SERIES = pd.Series([1, 2, 3], name="column")
 def test_convert_to_dataframe(session, data):
     bf_data = session.read_pandas(data)
 
-    (actual_result,) = utils.convert_to_dataframe(bf_data)
+    (actual_result,) = utils.batch_convert_to_dataframe(bf_data)
 
     pandas.testing.assert_frame_equal(
         actual_result.to_pandas(),
@@ -44,7 +44,7 @@ def test_convert_to_dataframe(session, data):
     [pytest.param(_DATA_FRAME, id="dataframe"), pytest.param(_SERIES, id="series")],
 )
 def test_convert_pandas_to_dataframe(data, session):
-    (actual_result,) = utils.convert_to_dataframe(data, session=session)
+    (actual_result,) = utils.batch_convert_to_dataframe(data, session=session)
 
     pandas.testing.assert_frame_equal(
         actual_result.to_pandas(),

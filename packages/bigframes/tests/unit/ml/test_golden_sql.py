@@ -61,8 +61,9 @@ def bqml_model_factory(mocker: pytest_mock.MockerFixture):
 
 
 @pytest.fixture
-def mock_y():
+def mock_y(mock_session):
     mock_y = mock.create_autospec(spec=bpd.DataFrame)
+    mock_y._session = mock_session
     mock_y.columns = pd.Index(["input_column_label"])
     mock_y.cache.return_value = mock_y
 

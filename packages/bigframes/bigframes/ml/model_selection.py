@@ -61,7 +61,7 @@ def train_test_split(
             f"The sum of train_size and test_size exceeds 1.0. train_size: {train_size}. test_size: {test_size}"
         )
 
-    dfs = list(utils.convert_to_dataframe(*arrays))
+    dfs = list(utils.batch_convert_to_dataframe(*arrays))
 
     def _stratify_split(df: bpd.DataFrame, stratify: bpd.Series) -> List[bpd.DataFrame]:
         """Split a single DF accoding to the stratify Series."""
@@ -129,8 +129,8 @@ class KFold(vendored_model_selection_split.KFold):
         X: utils.ArrayType,
         y: Union[utils.ArrayType, None] = None,
     ) -> Generator[tuple[Union[bpd.DataFrame, bpd.Series, None], ...], None, None]:
-        X_df = next(utils.convert_to_dataframe(X))
-        y_df_or = next(utils.convert_to_dataframe(y)) if y is not None else None
+        X_df = next(utils.batch_convert_to_dataframe(X))
+        y_df_or = next(utils.batch_convert_to_dataframe(y)) if y is not None else None
         joined_df = X_df.join(y_df_or, how="outer") if y_df_or is not None else X_df
 
         fracs = (1 / self._n_splits,) * self._n_splits
@@ -167,7 +167,7 @@ class KFold(vendored_model_selection_split.KFold):
         if isinstance(type_instance, pd.DataFrame) or isinstance(
             type_instance, bpd.DataFrame
         ):
-            return next(utils.convert_to_dataframe(input))
+            return next(utils.batch_convert_to_dataframe(input))
 
         return None
 

@@ -88,7 +88,7 @@ class PCA(
         y=None,
         transforms: Optional[List[str]] = None,
     ) -> PCA:
-        (X,) = utils.convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X)
 
         # To mimic sklearn's behavior
         if self.n_components is None:
@@ -133,7 +133,7 @@ class PCA(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
@@ -162,7 +162,7 @@ class PCA(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before detect_anomalies")
 
-        (X,) = utils.convert_to_dataframe(X, session=self._bqml_model.session)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.detect_anomalies(
             X, options={"contamination": contamination}
