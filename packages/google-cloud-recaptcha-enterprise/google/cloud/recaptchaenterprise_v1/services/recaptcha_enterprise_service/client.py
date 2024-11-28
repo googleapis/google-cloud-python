@@ -1904,7 +1904,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.RemoveIpOverrideRequest, dict]):
-                The request object. The removeIpOverride request message.
+                The request object. The RemoveIpOverride request message.
             name (str):
                 Required. The name of the key from which the IP override
                 is removed, in the format

@@ -1317,7 +1317,7 @@ class RiskAnalysis(proto.Message):
             possible reasons is subject to change.
         challenge (google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.Challenge):
             Output only. Challenge information for SCORE_AND_CHALLENGE
-            keys
+            and INVISIBLE keys
     """
 
     class ClassificationReason(proto.Enum):
@@ -1359,7 +1359,7 @@ class RiskAnalysis(proto.Message):
         SUSPECTED_CHARGEBACK = 7
 
     class Challenge(proto.Enum):
-        r"""Challenge information for SCORE_AND_CHALLENGE keys
+        r"""Challenge information for SCORE_AND_CHALLENGE and INVISIBLE keys
 
         Values:
             CHALLENGE_UNSPECIFIED (0):
@@ -3117,7 +3117,7 @@ class AddIpOverrideResponse(proto.Message):
 
 
 class RemoveIpOverrideRequest(proto.Message):
-    r"""The removeIpOverride request message.
+    r"""The RemoveIpOverride request message.
 
     Attributes:
         name (str):
