@@ -611,6 +611,10 @@ class SpannerDialect(DefaultDialect):
     supports_native_decimal = True
     supports_statement_cache = True
 
+    insert_returning = True
+    update_returning = True
+    delete_returning = True
+
     ddl_compiler = SpannerDDLCompiler
     preparer = SpannerIdentifierPreparer
     statement_compiler = SpannerSQLCompiler

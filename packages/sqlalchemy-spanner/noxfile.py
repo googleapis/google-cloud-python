@@ -327,7 +327,7 @@ def mockserver(session):
         "9999",
     )
     session.run(
-        "py.test", "--quiet", os.path.join("test/mockserver_tests"), *session.posargs
+        "py.test", "--quiet", os.path.join("test", "mockserver_tests"), *session.posargs
     )
 
 

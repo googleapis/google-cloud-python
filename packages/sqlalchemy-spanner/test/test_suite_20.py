@@ -2171,6 +2171,32 @@ class InsertBehaviorTest(_InsertBehaviorTest):
         assert r.is_insert
         assert not r.returns_rows
 
+    def test_autoclose_on_insert_implicit_returning(self, connection):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner doesn't support tables with an auto increment primary key,
+        following insertions will fail with `400 id must not be NULL in table
+        autoinc_pk`.
+
+        Overriding the tests and adding a manual primary key value to avoid the same
+        failures.
+        """
+        r = connection.execute(
+            # return_defaults() ensures RETURNING will be used,
+            # new in 2.0 as sqlite/mariadb offer both RETURNING and
+            # cursor.lastrowid
+            self.tables.autoinc_pk.insert().return_defaults(),
+            dict(id=2, data="some data"),
+        )
+        assert r._soft_closed
+        assert not r.closed
+        assert r.is_insert
+
+        # Spanner does not return any rows in this case, because the primary key
+        # is not auto-generated.
+        assert not r.returns_rows
+
 
 class BytesTest(_LiteralRoundTripFixture, fixtures.TestBase):
     __backend__ = True
