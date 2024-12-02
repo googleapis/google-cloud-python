@@ -17,10 +17,10 @@ import hashlib
 import inspect
 from typing import cast, List, NamedTuple, Optional, Sequence, Set
 
+import bigframes_vendored.ibis.expr.datatypes.core as ibis_dtypes
 import cloudpickle
 import google.api_core.exceptions
 from google.cloud import bigquery, functions_v2
-import ibis.expr.datatypes.core
 import numpy
 import pandas
 import pyarrow
@@ -192,8 +192,8 @@ def get_remote_function_name(function_hash, session_id, uniq_suffix=None):
 
 class IbisSignature(NamedTuple):
     parameter_names: List[str]
-    input_types: List[Optional[ibis.expr.datatypes.core.DataType]]
-    output_type: ibis.expr.datatypes.core.DataType
+    input_types: List[Optional[ibis_dtypes.DataType]]
+    output_type: ibis_dtypes.DataType
 
 
 def ibis_signature_from_python_signature(

@@ -15,15 +15,15 @@
 
 from __future__ import annotations
 
-import ibis
-import ibis.expr.schema
+import bigframes_vendored.ibis.expr.api as ibis_api
+import bigframes_vendored.ibis.expr.schema as ibis_sch
 
 import bigframes.core.compile.ibis_types
 import bigframes.core.schema as bf_schema
 import bigframes.dtypes
 
 
-def convert_bf_schema(schema: bf_schema.ArraySchema) -> ibis.expr.schema.Schema:
+def convert_bf_schema(schema: bf_schema.ArraySchema) -> ibis_sch.Schema:
     """
     Convert bigframes schema to ibis schema. This is unambigous as every bigframes type is backed by a specific SQL/ibis dtype.
     """
@@ -32,4 +32,4 @@ def convert_bf_schema(schema: bf_schema.ArraySchema) -> ibis.expr.schema.Schema:
         bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(bf_type)
         for bf_type in schema.dtypes
     ]
-    return ibis.schema(names=names, types=types)
+    return ibis_api.schema(names=names, types=types)

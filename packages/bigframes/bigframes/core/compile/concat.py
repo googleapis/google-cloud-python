@@ -16,7 +16,7 @@ from __future__ import annotations
 import math
 import typing
 
-import ibis
+import bigframes_vendored.ibis.expr.api as ibis_api
 
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.expression as ex
@@ -44,7 +44,7 @@ def concat_unordered(
             [table[col].name(id) for id, col in zip(output_ids, table.columns)]
         )
         tables.append(table)
-    combined_table = ibis.union(*tables)
+    combined_table = ibis_api.union(*tables)
     return compiled.UnorderedIR(
         combined_table,
         columns=[combined_table[col] for col in combined_table.columns],
@@ -87,7 +87,7 @@ def concat_ordered(
             ]
         )
         tables.append(table)
-    combined_table = ibis.union(*tables)
+    combined_table = ibis_api.union(*tables)
     ordering = TotalOrdering(
         ordering_value_columns=tuple([ascending_over(ORDER_ID_COLUMN)]),
         total_ordering_columns=frozenset([ex.deref(ORDER_ID_COLUMN)]),

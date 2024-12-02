@@ -22,6 +22,7 @@ import traceback
 import typing
 from typing import Dict, Generator, Optional
 
+import bigframes_vendored.ibis.backends as ibis_backends
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
@@ -29,7 +30,6 @@ import google.cloud.exceptions
 import google.cloud.functions_v2 as functions_v2
 import google.cloud.resourcemanager_v3 as resourcemanager_v3
 import google.cloud.storage as storage  # type: ignore
-import ibis.backends
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -107,7 +107,7 @@ def bigquery_client_tokyo(session_tokyo: bigframes.Session) -> bigquery.Client:
 
 
 @pytest.fixture(scope="session")
-def ibis_client(session: bigframes.Session) -> ibis.backends.BaseBackend:
+def ibis_client(session: bigframes.Session) -> ibis_backends.BaseBackend:
     return session.ibis_client
 
 

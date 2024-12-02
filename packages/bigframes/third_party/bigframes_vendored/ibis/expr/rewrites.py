@@ -1,4 +1,4 @@
-# Contains code from https://github.com/ibis-project/ibis/blob/main/ibis/expr/rewrites.py
+# Contains code from https://github.com/ibis-project/ibis/blob/9.2.0/ibis/expr/rewrites.py
 
 """Some common rewrite functions to be shared between backends."""
 
@@ -6,16 +6,16 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from ibis.common.collections import FrozenDict  # noqa: TCH001
-from ibis.common.deferred import _, deferred, Item, var
-from ibis.common.exceptions import ExpressionError, IbisInputError
-from ibis.common.graph import Node as Traversable
-from ibis.common.graph import traverse
-from ibis.common.grounds import Concrete
-from ibis.common.patterns import Check, pattern, replace
-from ibis.common.typing import VarTuple  # noqa: TCH001
-import ibis.expr.operations as ops
-from ibis.util import Namespace, promote_list
+from bigframes_vendored.ibis.common.collections import FrozenDict  # noqa: TCH001
+from bigframes_vendored.ibis.common.deferred import _, deferred, Item, var
+from bigframes_vendored.ibis.common.exceptions import ExpressionError, IbisInputError
+from bigframes_vendored.ibis.common.graph import Node as Traversable
+from bigframes_vendored.ibis.common.graph import traverse
+from bigframes_vendored.ibis.common.grounds import Concrete
+from bigframes_vendored.ibis.common.patterns import Check, pattern, replace
+from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
+import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis.util import Namespace, promote_list
 import toolz
 
 p = Namespace(pattern, module=ops)

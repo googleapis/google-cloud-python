@@ -9,17 +9,17 @@ from functools import reduce
 import operator
 from typing import Any, TYPE_CHECKING
 
-from ibis.common.annotations import attribute
-from ibis.common.collections import FrozenDict  # noqa: TCH001
-from ibis.common.deferred import var
-import ibis.common.exceptions as com
-from ibis.common.graph import Graph
-from ibis.common.patterns import InstanceOf, Object, Pattern, replace
-from ibis.common.typing import VarTuple  # noqa: TCH001
-import ibis.expr.datatypes as dt
-import ibis.expr.operations as ops
-from ibis.expr.rewrites import d, p, replace_parameter
-from ibis.expr.schema import Schema
+from bigframes_vendored.ibis.common.annotations import attribute
+from bigframes_vendored.ibis.common.collections import FrozenDict  # noqa: TCH001
+from bigframes_vendored.ibis.common.deferred import var
+import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
+from bigframes_vendored.ibis.common.graph import Graph
+from bigframes_vendored.ibis.common.patterns import InstanceOf, Object, Pattern, replace
+from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis.expr.rewrites import d, p, replace_parameter
+from bigframes_vendored.ibis.expr.schema import Schema
 from public import public
 import toolz
 
@@ -198,7 +198,7 @@ if hasattr(p, "DropNull"):
 def first_to_firstvalue(_, **kwargs):
     """Convert a First or Last node to a FirstValue or LastValue node."""
     if _.func.where is not None:
-        raise com.UnsupportedOperationError(
+        raise ibis_exceptions.UnsupportedOperationError(
             f"`{type(_.func).__name__.lower()}` with `where` is unsupported "
             "in a window function"
         )
@@ -510,7 +510,7 @@ def lower_sample(_, **kwargs):
     Errors as unsupported if a `seed` is specified.
     """
     if _.seed is not None:
-        raise com.UnsupportedOperationError(
+        raise ibis_exceptions.UnsupportedOperationError(
             "`Table.sample` with a random seed is unsupported"
         )
     return ops.Filter(_.parent, (ops.LessEqual(ops.RandomScalar(), _.fraction),))

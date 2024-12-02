@@ -28,14 +28,13 @@ import google.cloud.bigquery_connection_v1
 import google.cloud.bigquery_storage_v1
 import google.cloud.functions_v2
 import google.cloud.resourcemanager_v3
-import ibis
 import pydata_google_auth
 
 import bigframes.constants
 import bigframes.version
 
 _ENV_DEFAULT_PROJECT = "GOOGLE_CLOUD_PROJECT"
-_APPLICATION_NAME = f"bigframes/{bigframes.version.__version__} ibis/{ibis.__version__}"
+_APPLICATION_NAME = f"bigframes/{bigframes.version.__version__} ibis/9.2.0"
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
 

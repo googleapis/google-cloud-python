@@ -19,7 +19,7 @@ from typing import Tuple, Union
 import warnings
 
 import bigframes_vendored.constants as constants
-import ibis
+import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
 import pandas as pd
 
 import bigframes.core.blocks
@@ -216,7 +216,7 @@ class LocDataFrameIndexer:
                 return
             try:
                 self._dataframe[key[1]] = new_column.fillna(original_column)
-            except ibis.common.exceptions.IbisTypeError:
+            except ibis_exceptions.IbisTypeError:
                 raise TypeError(
                     f"Cannot assign scalar of type {type(value)} to column of type {original_column.dtype}, or index type of series argument does not match dataframe."
                 )

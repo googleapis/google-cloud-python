@@ -15,7 +15,7 @@
 import re
 
 import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
-from ibis.expr import datatypes as ibis_types
+from bigframes_vendored.ibis.expr import datatypes as ibis_types
 import pandas
 import pytest
 

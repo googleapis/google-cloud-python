@@ -1,4 +1,5 @@
-# Contains code from https://github.com/ibis-project/ibis/blob/main/ibis/backends/bigquery/__init__.py
+# Contains code from https://github.com/ibis-project/ibis/blob/9.2.0/ibis/backends/bigquery/__init__.py
+
 
 """BigQuery public API."""
 
@@ -10,27 +11,29 @@ import glob
 import os
 from typing import Any, Optional, TYPE_CHECKING
 
-from bigframes_vendored.ibis.backends.bigquery.datatypes import BigQueryType
-import bigframes_vendored.ibis.backends.sql.compilers as sc
-import google.api_core.exceptions
-import google.auth.credentials
-import google.cloud.bigquery as bq
-import google.cloud.bigquery_storage_v1 as bqstorage
-import ibis
-from ibis import util
-from ibis.backends import CanCreateDatabase, CanCreateSchema
-from ibis.backends.bigquery.client import (
+import bigframes_vendored.ibis
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.backends import CanCreateDatabase, CanCreateSchema
+from bigframes_vendored.ibis.backends.bigquery.client import (
     bigquery_param,
     parse_project_and_dataset,
     rename_partitioned_column,
     schema_from_bigquery_table,
 )
-from ibis.backends.bigquery.datatypes import BigQuerySchema
-from ibis.backends.sql import SQLBackend
-import ibis.common.exceptions as com
-import ibis.expr.operations as ops
-import ibis.expr.schema as sch
-import ibis.expr.types as ir
+from bigframes_vendored.ibis.backends.bigquery.datatypes import (
+    BigQuerySchema,
+    BigQueryType,
+)
+from bigframes_vendored.ibis.backends.sql import SQLBackend
+import bigframes_vendored.ibis.backends.sql.compilers as sc
+import bigframes_vendored.ibis.common.exceptions as com
+import bigframes_vendored.ibis.expr.operations as ops
+import bigframes_vendored.ibis.expr.schema as sch
+import bigframes_vendored.ibis.expr.types as ir
+import google.api_core.exceptions
+import google.auth.credentials
+import google.cloud.bigquery as bq
+import google.cloud.bigquery_storage_v1 as bqstorage
 import pydata_google_auth
 from pydata_google_auth import cache
 import sqlglot as sg
@@ -62,7 +65,7 @@ def _create_user_agent(application_name: str) -> str:
     if application_name:
         user_agent.append(application_name)
 
-    user_agent_default_template = f"ibis/{ibis.__version__}"
+    user_agent_default_template = f"ibis/{bigframes_vendored.ibis.__version__}"
     user_agent.append(user_agent_default_template)
 
     return " ".join(user_agent)
@@ -428,7 +431,7 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
         dataset_id
             A dataset id that lives inside of the project attached to `client`.
         """
-        return ibis.bigquery.connect(
+        return bigframes_vendored.ibis.bigquery.connect(
             client=client,
             partition_column=partition_column,
             storage_client=storage_client,
@@ -635,10 +638,8 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
 
     def execute(self, expr, params=None, limit="default", **kwargs):
         """Compile and execute the given Ibis expression.
-
         Compile and execute Ibis expression using this backend client
         interface, returning results in-memory in the appropriate object type
-
         Parameters
         ----------
         expr
@@ -650,18 +651,20 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
             Query parameters
         kwargs
             Extra arguments specific to the backend
-
         Returns
         -------
         pd.DataFrame | pd.Series | scalar
             Output from execution
-
         """
-        from ibis.backends.bigquery.converter import BigQueryPandasData
+        from bigframes_vendored.ibis.backends.bigquery.converter import (
+            BigQueryPandasData,
+        )
 
         self._run_pre_execute_hooks(expr)
 
-        schema = expr.as_table().schema() - ibis.schema({"_TABLE_SUFFIX": "string"})
+        schema = expr.as_table().schema() - bigframes_vendored.ibis.schema(
+            {"_TABLE_SUFFIX": "string"}
+        )
 
         sql = self.compile(expr, limit=limit, params=params, **kwargs)
         self._log(sql)
@@ -898,7 +901,7 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
         if obj is None and schema is None:
             raise com.IbisError("One of the `schema` or `obj` parameter is required")
         if schema is not None:
-            schema = ibis.schema(schema)
+            schema = bigframes_vendored.ibis.schema(schema)
 
         if isinstance(obj, ir.Table) and schema is not None:
             if not schema.equals(obj.schema()):
@@ -936,7 +939,7 @@ class Backend(SQLBackend, CanCreateDatabase, CanCreateSchema):
         )
 
         if obj is not None and not isinstance(obj, ir.Table):
-            obj = ibis.memtable(obj, schema=schema)
+            obj = bigframes_vendored.ibis.memtable(obj, schema=schema)
 
         if temp:
             dataset = self._session_dataset.dataset_id

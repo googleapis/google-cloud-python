@@ -47,7 +47,6 @@ dependencies = [
     "google-cloud-iam >=2.12.1",
     "google-cloud-resource-manager >=1.10.3",
     "google-cloud-storage >=2.0.0",
-    "ibis-framework[bigquery] >=9.0.0,<=9.2.0",
     "jellyfish >=0.8.9",
     "numpy >=1.24.0",
     "pandas >=1.5.3",
@@ -64,6 +63,14 @@ dependencies = [
     "ipywidgets >=7.7.1",
     "humanize >= 4.6.0",
     "matplotlib >= 3.7.1",
+    # For vendored ibis-framework.
+    "atpublic>=2.3,<6",
+    "parsy>=2,<3",
+    "python-dateutil>=2.8.2,<3",
+    "pytz>=2022.7",
+    "toolz>=0.11,<2",
+    "typing-extensions>=4.3.0,<5",
+    "rich>=12.4.4,<14",
 ]
 extras = {
     # Optional test dependencies packages. If they're missed, may skip some tests.

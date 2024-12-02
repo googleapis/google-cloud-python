@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
+import bigframes_vendored.ibis.expr.types as ibis_types
 import geopandas as gpd  # type: ignore
-import ibis
-import ibis.expr.datatypes as ibis_dtypes
 import numpy as np
 import pandas as pd
 import pyarrow as pa  # type: ignore
@@ -229,9 +229,9 @@ def test_unsupported_dtype_str_raises_unexpected_datatype():
 @pytest.mark.parametrize(
     ["literal", "ibis_scalar"],
     [
-        (True, ibis.literal(True, ibis_dtypes.boolean)),
-        (5, ibis.literal(5, ibis_dtypes.int64)),
-        (-33.2, ibis.literal(-33.2, ibis_dtypes.float64)),
+        (True, ibis_types.literal(True, ibis_dtypes.boolean)),
+        (5, ibis_types.literal(5, ibis_dtypes.int64)),
+        (-33.2, ibis_types.literal(-33.2, ibis_dtypes.float64)),
     ],
 )
 def test_literal_to_ibis_scalar_converts(literal, ibis_scalar):
@@ -248,7 +248,9 @@ def test_literal_to_ibis_scalar_throws_on_incompatible_literal():
 
 
 def test_remote_function_io_types_are_supported_bigframes_types():
-    from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
+    from bigframes_vendored.ibis.expr.datatypes.core import (
+        dtype as python_type_to_bigquery_type,
+    )
 
     from bigframes.dtypes import RF_SUPPORTED_IO_PYTHON_TYPES as rf_supported_io_types
 

@@ -1,7 +1,9 @@
-# Contains code from https://github.com/ibis-project/ibis/blob/main/ibis/backends/sql/compilers/__init__.py
+# Contains code from https://github.com/ibis-project/ibis/blob/9.2.0/ibis/backends/sql/compilers/__init__.py
 
-import bigframes_vendored.ibis.backends.sql.compilers.bigquery as bigquery
+from __future__ import annotations
 
 __all__ = [
-    "bigquery",
+    "BigQueryCompiler",
 ]
+
+from bigframes_vendored.ibis.backends.sql.compilers.bigquery import BigQueryCompiler

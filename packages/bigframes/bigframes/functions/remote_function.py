@@ -19,7 +19,7 @@ import logging
 from typing import cast, Optional, TYPE_CHECKING
 import warnings
 
-import ibis
+import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
 
 if TYPE_CHECKING:
     from bigframes.session import Session
@@ -167,13 +167,13 @@ def read_gbq_function(
 
     func.__name__ = routine_ref.routine_id
 
-    node = ibis.udf.scalar.builtin(
+    node = ibis_udf.scalar.builtin(
         func,
         name=routine_ref.routine_id,
         catalog=routine_ref.project,
         database=routine_ref.dataset_id,
         signature=(ibis_signature.input_types, ibis_signature.output_type),
-    )
+    )  # type: ignore
     func.bigframes_remote_function = str(routine_ref)  # type: ignore
 
     # set input bigframes data types

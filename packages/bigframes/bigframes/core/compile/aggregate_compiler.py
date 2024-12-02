@@ -19,11 +19,11 @@ import typing
 from typing import cast, List, Optional
 
 import bigframes_vendored.constants as constants
-import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
-import ibis
-import ibis.expr.datatypes as ibis_dtypes
-import ibis.expr.operations as ibis_ops
-import ibis.expr.types as ibis_types
+import bigframes_vendored.ibis.expr.api as ibis_api
+import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
+import bigframes_vendored.ibis.expr.operations as ibis_ops
+import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
+import bigframes_vendored.ibis.expr.types as ibis_types
 import pandas as pd
 
 import bigframes.core.compile.ibis_types as compile_ibis_types
@@ -37,7 +37,7 @@ scalar_compiler = scalar_compilers.scalar_op_compiler
 
 # TODO(swast): We can remove this if ibis adds general approx_quantile
 # See: https://github.com/ibis-project/ibis/issues/9541
-@ibis.udf.agg.builtin
+@ibis_udf.agg.builtin
 def approx_quantiles(expression: float, number) -> List[float]:
     """APPROX_QUANTILES
 
@@ -56,13 +56,13 @@ def compile_aggregate(
     if isinstance(aggregate, ex.UnaryAggregation):
         input = scalar_compiler.compile_expression(aggregate.arg, bindings=bindings)
         if aggregate.op.can_order_by:
-            return compile_ordered_unary_agg(aggregate.op, input, order_by=order_by)
+            return compile_ordered_unary_agg(aggregate.op, input, order_by=order_by)  # type: ignore
         else:
-            return compile_unary_agg(aggregate.op, input)
+            return compile_unary_agg(aggregate.op, input)  # type: ignore
     elif isinstance(aggregate, ex.BinaryAggregation):
         left = scalar_compiler.compile_expression(aggregate.left, bindings=bindings)
         right = scalar_compiler.compile_expression(aggregate.right, bindings=bindings)
-        return compile_binary_agg(aggregate.op, left, right)
+        return compile_binary_agg(aggregate.op, left, right)  # type: ignore
     else:
         raise ValueError(f"Unexpected aggregation: {aggregate}")
 
@@ -76,7 +76,7 @@ def compile_analytic(
         return compile_nullary_agg(aggregate.op, window)
     elif isinstance(aggregate, ex.UnaryAggregation):
         input = scalar_compiler.compile_expression(aggregate.arg, bindings=bindings)
-        return compile_unary_agg(aggregate.op, input, window)
+        return compile_unary_agg(aggregate.op, input, window)  # type: ignore
     elif isinstance(aggregate, ex.BinaryAggregation):
         raise NotImplementedError("binary analytic operations not yet supported")
     else:
@@ -147,7 +147,7 @@ def numeric_op(operation):
 
 @compile_nullary_agg.register
 def _(op: agg_ops.SizeOp, window=None) -> ibis_types.NumericValue:
-    return _apply_window_if_present(vendored_ibis_ops.count(1), window)
+    return _apply_window_if_present(ibis_ops.count(1), window)
 
 
 @compile_unary_agg.register
@@ -160,7 +160,7 @@ def _(
     # Will be null if all inputs are null. Pandas defaults to zero sum though.
     bq_sum = _apply_window_if_present(column.sum(), window)
     return (
-        ibis.case().when(bq_sum.isnull(), ibis_types.literal(0)).else_(bq_sum).end()  # type: ignore
+        ibis_api.case().when(bq_sum.isnull(), ibis_types.literal(0)).else_(bq_sum).end()  # type: ignore
     )
 
 
@@ -217,15 +217,15 @@ def _(
     def approx_top_count(expression, number: ibis_dtypes.int64):  # type: ignore
         ...
 
-    return_type = ibis_dtypes.Array(
-        ibis_dtypes.Struct.from_tuples(
+    ibis_return_type = ibis_dtypes.Array(
+        value_type=ibis_dtypes.Struct.from_tuples(
             [("value", column.type()), ("count", ibis_dtypes.int64)]
         )
-    )
-    approx_top_count.__annotations__["return"] = return_type
+    )  # type: ignore
+    approx_top_count.__annotations__["return"] = ibis_return_type
     udf_op = ibis_ops.udf.agg.builtin(approx_top_count)
 
-    return udf_op(expression=column, number=op.number)
+    return udf_op(expression=column, number=op.number)  # type: ignore
 
 
 @compile_unary_agg.register
@@ -263,7 +263,7 @@ def _(
     # apply power after. Note, log and power base must be equal! This impl uses base 2.
     logs = cast(
         ibis_types.NumericColumn,
-        ibis.case().when(is_zero, 0).else_(column.abs().log2()).end(),
+        ibis_api.case().when(is_zero, 0).else_(column.abs().log2()).end(),
     )
     logs_sum = _apply_window_if_present(logs.sum(), window)
     magnitude = cast(ibis_types.NumericValue, ibis_types.literal(2)).pow(logs_sum)
@@ -271,21 +271,21 @@ def _(
     # Can't determine sign from logs, so have to determine parity of count of negative inputs
     is_negative = cast(
         ibis_types.NumericColumn,
-        ibis.case().when(column.sign() == -1, 1).else_(0).end(),
+        ibis_api.case().when(column.sign() == -1, 1).else_(0).end(),
     )
     negative_count = _apply_window_if_present(is_negative.sum(), window)
     negative_count_parity = negative_count % cast(
-        ibis_types.NumericValue, ibis.literal(2)
+        ibis_types.NumericValue, ibis_types.literal(2)
     )  # 1 if result should be negative, otherwise 0
 
     any_zeroes = _apply_window_if_present(is_zero.any(), window)
     float_result = (
-        ibis.case()
+        ibis_api.case()
         .when(any_zeroes, ibis_types.literal(0))
         .else_(magnitude * pow(-1, negative_count_parity))
         .end()
     )
-    return float_result
+    return cast(ibis_types.NumericValue, float_result)
 
 
 @compile_unary_agg.register
@@ -353,7 +353,7 @@ def _(
     x: ibis_types.Column,
     window=None,
 ):
-    out = ibis.case()
+    out = ibis_api.case()
     if isinstance(op.bins, int):
         col_min = _apply_window_if_present(x.min(), window)
         col_max = _apply_window_if_present(x.max(), window)
@@ -376,7 +376,7 @@ def _(
                     col_min + this_bin * bin_width - (0 if this_bin > 0 else adj)
                 )
                 right_edge = col_min + (this_bin + 1) * bin_width
-                interval_struct = ibis.struct(
+                interval_struct = ibis_types.struct(
                     {
                         "left_exclusive": left_edge,
                         "right_inclusive": right_edge,
@@ -395,7 +395,7 @@ def _(
             left = compile_ibis_types.literal_to_ibis_scalar(interval[0])
             right = compile_ibis_types.literal_to_ibis_scalar(interval[1])
             condition = (x > left) & (x <= right)
-            interval_struct = ibis.struct(
+            interval_struct = ibis_types.struct(
                 {"left_exclusive": left, "right_inclusive": right}
             )
             out = out.when(condition, interval_struct)
@@ -422,7 +422,7 @@ def _(
             ibis_types.FloatingColumn,
             _apply_window_if_present(column.percent_rank(), window),
         )
-        out = ibis.case()
+        out = ibis_api.case()
         first_ibis_quantile = compile_ibis_types.literal_to_ibis_scalar(
             self.quantiles[0]
         )
@@ -466,7 +466,7 @@ def _(
     window=None,
 ) -> ibis_types.IntegerValue:
     # Ibis produces 0-based ranks, while pandas creates 1-based ranks
-    return _apply_window_if_present(ibis.rank(), window) + 1
+    return _apply_window_if_present(ibis_api.rank(), window) + 1
 
 
 @compile_unary_agg.register
@@ -491,7 +491,7 @@ def _(
     window=None,
 ) -> ibis_types.Value:
     return _apply_window_if_present(
-        vendored_ibis_ops.FirstNonNullValue(column).to_expr(), window  # type: ignore
+        ibis_ops.FirstNonNullValue(column).to_expr(), window  # type: ignore
     )
 
 
@@ -511,7 +511,7 @@ def _(
     window=None,
 ) -> ibis_types.Value:
     return _apply_window_if_present(
-        vendored_ibis_ops.LastNonNullValue(column).to_expr(), window  # type: ignore
+        ibis_ops.LastNonNullValue(column).to_expr(), window  # type: ignore
     )
 
 
@@ -602,9 +602,9 @@ def _(
             f"ArrayAgg with windowing is not supported. {constants.FEEDBACK_LINK}"
         )
 
-    return vendored_ibis_ops.ArrayAggregate(
-        column,
-        order_by=order_by,
+    return ibis_ops.ArrayAggregate(
+        column,  # type: ignore
+        order_by=order_by,  # type: ignore
     ).to_expr()
 
 
@@ -641,8 +641,9 @@ def _apply_window_if_present(value: ibis_types.Value, window):
 def _map_to_literal(
     original: ibis_types.Value, literal: ibis_types.Scalar
 ) -> ibis_types.Column:
-    # Hack required to perform aggregations on literals in ibis, even though bigquery will let you directly aggregate literals (eg. 'SELECT COUNT(1) from table1')
-    return ibis.ifelse(original.isnull(), literal, literal)  # type: ignore
+    # Hack required to perform aggregations on literals in ibis, even though bigquery
+    # will let you directly aggregate literals (eg. 'SELECT COUNT(1) from table1')
+    return ibis_api.ifelse(original.isnull(), literal, literal)  # type: ignore
 
 
 def _ibis_num(number: float):

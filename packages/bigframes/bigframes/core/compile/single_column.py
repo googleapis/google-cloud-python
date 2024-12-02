@@ -18,9 +18,9 @@ from __future__ import annotations
 
 from typing import Literal, Tuple
 
-import ibis
-import ibis.expr.datatypes as ibis_dtypes
-import ibis.expr.types as ibis_types
+import bigframes_vendored.ibis.expr.api as ibis_api
+import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
+import bigframes_vendored.ibis.expr.types as ibis_types
 
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.guid as guids
@@ -84,7 +84,7 @@ def join_by_column_ordered(
         for left_index, right_index in conditions
     ]
 
-    combined_table = ibis.join(
+    combined_table = ibis_api.join(
         left_table,
         right_table,
         predicates=join_conditions,
@@ -155,7 +155,7 @@ def join_by_column_unordered(
         for left_index, right_index in conditions
     ]
 
-    combined_table = ibis.join(
+    combined_table = ibis_api.join(
         left_table,
         right_table,
         predicates=join_conditions,
