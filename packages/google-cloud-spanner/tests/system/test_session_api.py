@@ -2018,17 +2018,20 @@ def test_execute_sql_w_manual_consume(sessions_database):
     row_count = 3000
     committed = _set_up_table(sessions_database, row_count)
 
-    with sessions_database.snapshot(read_timestamp=committed) as snapshot:
-        streamed = snapshot.execute_sql(sd.SQL)
+    for lazy_decode in [False, True]:
+        with sessions_database.snapshot(read_timestamp=committed) as snapshot:
+            streamed = snapshot.execute_sql(sd.SQL, lazy_decode=lazy_decode)
 
-    keyset = spanner_v1.KeySet(all_=True)
+        keyset = spanner_v1.KeySet(all_=True)
 
-    with sessions_database.snapshot(read_timestamp=committed) as snapshot:
-        rows = list(snapshot.read(sd.TABLE, sd.COLUMNS, keyset))
+        with sessions_database.snapshot(read_timestamp=committed) as snapshot:
+            rows = list(
+                snapshot.read(sd.TABLE, sd.COLUMNS, keyset, lazy_decode=lazy_decode)
+            )
 
-    assert list(streamed) == rows
-    assert streamed._current_row == []
-    assert streamed._pending_chunk is None
+        assert list(streamed) == rows
+        assert streamed._current_row == []
+        assert streamed._pending_chunk is None
 
 
 def test_execute_sql_w_to_dict_list(sessions_database):
@@ -2057,16 +2060,23 @@ def _check_sql_results(
     if order and "ORDER" not in sql:
         sql += " ORDER BY pkey"
 
-    with database.snapshot() as snapshot:
-        rows = list(
-            snapshot.execute_sql(
-                sql, params=params, param_types=param_types, column_info=column_info
+    for lazy_decode in [False, True]:
+        with database.snapshot() as snapshot:
+            iterator = snapshot.execute_sql(
+                sql,
+                params=params,
+                param_types=param_types,
+                column_info=column_info,
+                lazy_decode=lazy_decode,
             )
-        )
+            rows = list(iterator)
+            if lazy_decode:
+                for index, row in enumerate(rows):
+                    rows[index] = iterator.decode_row(row)
 
-    _sample_data._check_rows_data(
-        rows, expected=expected, recurse_into_lists=recurse_into_lists
-    )
+        _sample_data._check_rows_data(
+            rows, expected=expected, recurse_into_lists=recurse_into_lists
+        )
 
 
 def test_multiuse_snapshot_execute_sql_isolation_strong(sessions_database):

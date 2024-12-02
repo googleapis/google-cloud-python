@@ -192,6 +192,7 @@ class _SnapshotBase(_SessionWrapper):
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
         column_info=None,
+        lazy_decode=False,
     ):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
@@ -254,6 +255,18 @@ class _SnapshotBase(_SessionWrapper):
             the custom object enables deserialization of backend-received column data.
             If not provided, data remains serialized as bytes for Proto Messages and
             integer for Proto Enums.
+
+        :type lazy_decode: bool
+        :param lazy_decode:
+            (Optional) If this argument is set to ``true``, the iterator
+            returns the underlying protobuf values instead of decoded Python
+            objects. This reduces the time that is needed to iterate through
+            large result sets. The application is responsible for decoding
+            the data that is needed. The returned row iterator contains two
+            functions that can be used for this. ``iterator.decode_row(row)``
+            decodes all the columns in the given row to an array of Python
+            objects. ``iterator.decode_column(row, column_index)`` decodes one
+            specific column in the given row.
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -330,10 +343,15 @@ class _SnapshotBase(_SessionWrapper):
                 self._read_request_count += 1
                 if self._multi_use:
                     return StreamedResultSet(
-                        iterator, source=self, column_info=column_info
+                        iterator,
+                        source=self,
+                        column_info=column_info,
+                        lazy_decode=lazy_decode,
                     )
                 else:
-                    return StreamedResultSet(iterator, column_info=column_info)
+                    return StreamedResultSet(
+                        iterator, column_info=column_info, lazy_decode=lazy_decode
+                    )
         else:
             iterator = _restart_on_unavailable(
                 restart,
@@ -348,9 +366,13 @@ class _SnapshotBase(_SessionWrapper):
         self._read_request_count += 1
 
         if self._multi_use:
-            return StreamedResultSet(iterator, source=self, column_info=column_info)
+            return StreamedResultSet(
+                iterator, source=self, column_info=column_info, lazy_decode=lazy_decode
+            )
         else:
-            return StreamedResultSet(iterator, column_info=column_info)
+            return StreamedResultSet(
+                iterator, column_info=column_info, lazy_decode=lazy_decode
+            )
 
     def execute_sql(
         self,
@@ -366,6 +388,7 @@ class _SnapshotBase(_SessionWrapper):
         data_boost_enabled=False,
         directed_read_options=None,
         column_info=None,
+        lazy_decode=False,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -437,6 +460,18 @@ class _SnapshotBase(_SessionWrapper):
             the custom object enables deserialization of backend-received column data.
             If not provided, data remains serialized as bytes for Proto Messages and
             integer for Proto Enums.
+
+        :type lazy_decode: bool
+        :param lazy_decode:
+            (Optional) If this argument is set to ``true``, the iterator
+            returns the underlying protobuf values instead of decoded Python
+            objects. This reduces the time that is needed to iterate through
+            large result sets. The application is responsible for decoding
+            the data that is needed. The returned row iterator contains two
+            functions that can be used for this. ``iterator.decode_row(row)``
+            decodes all the columns in the given row to an array of Python
+            objects. ``iterator.decode_column(row, column_index)`` decodes one
+            specific column in the given row.
 
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
@@ -517,6 +552,7 @@ class _SnapshotBase(_SessionWrapper):
                     trace_attributes,
                     column_info,
                     observability_options,
+                    lazy_decode=lazy_decode,
                 )
         else:
             return self._get_streamed_result_set(
@@ -525,6 +561,7 @@ class _SnapshotBase(_SessionWrapper):
                 trace_attributes,
                 column_info,
                 observability_options,
+                lazy_decode=lazy_decode,
             )
 
     def _get_streamed_result_set(
@@ -534,6 +571,7 @@ class _SnapshotBase(_SessionWrapper):
         trace_attributes,
         column_info,
         observability_options=None,
+        lazy_decode=False,
     ):
         iterator = _restart_on_unavailable(
             restart,
@@ -548,9 +586,13 @@ class _SnapshotBase(_SessionWrapper):
         self._execute_sql_count += 1
 
         if self._multi_use:
-            return StreamedResultSet(iterator, source=self, column_info=column_info)
+            return StreamedResultSet(
+                iterator, source=self, column_info=column_info, lazy_decode=lazy_decode
+            )
         else:
-            return StreamedResultSet(iterator, column_info=column_info)
+            return StreamedResultSet(
+                iterator, column_info=column_info, lazy_decode=lazy_decode
+            )
 
     def partition_read(
         self,

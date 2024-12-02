@@ -21,7 +21,7 @@ from google.protobuf.struct_pb2 import Value
 from google.cloud.spanner_v1 import PartialResultSet
 from google.cloud.spanner_v1 import ResultSetMetadata
 from google.cloud.spanner_v1 import TypeCode
-from google.cloud.spanner_v1._helpers import _parse_value_pb
+from google.cloud.spanner_v1._helpers import _get_type_decoder, _parse_nullable
 
 
 class StreamedResultSet(object):
@@ -37,7 +37,13 @@ class StreamedResultSet(object):
     :param source: Snapshot from which the result set was fetched.
     """
 
-    def __init__(self, response_iterator, source=None, column_info=None):
+    def __init__(
+        self,
+        response_iterator,
+        source=None,
+        column_info=None,
+        lazy_decode: bool = False,
+    ):
         self._response_iterator = response_iterator
         self._rows = []  # Fully-processed rows
         self._metadata = None  # Until set from first PRS
@@ -46,6 +52,8 @@ class StreamedResultSet(object):
         self._pending_chunk = None  # Incomplete value
         self._source = source  # Source snapshot
         self._column_info = column_info  # Column information
+        self._field_decoders = None
+        self._lazy_decode = lazy_decode  # Return protobuf values
 
     @property
     def fields(self):
@@ -77,6 +85,17 @@ class StreamedResultSet(object):
         """
         return self._stats
 
+    @property
+    def _decoders(self):
+        if self._field_decoders is None:
+            if self._metadata is None:
+                raise ValueError("iterator not started")
+            self._field_decoders = [
+                _get_type_decoder(field.type_, field.name, self._column_info)
+                for field in self.fields
+            ]
+        return self._field_decoders
+
     def _merge_chunk(self, value):
         """Merge pending chunk with next value.
 
@@ -99,16 +118,14 @@ class StreamedResultSet(object):
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set.
         """
-        field_types = [field.type_ for field in self.fields]
-        field_names = [field.name for field in self.fields]
-        width = len(field_types)
+        decoders = self._decoders
+        width = len(self.fields)
         index = len(self._current_row)
         for value in values:
-            self._current_row.append(
-                _parse_value_pb(
-                    value, field_types[index], field_names[index], self._column_info
-                )
-            )
+            if self._lazy_decode:
+                self._current_row.append(value)
+            else:
+                self._current_row.append(_parse_nullable(value, decoders[index]))
             index += 1
             if index == width:
                 self._rows.append(self._current_row)
@@ -151,6 +168,34 @@ class StreamedResultSet(object):
                 self._consume_next()
             except StopIteration:
                 return
+
+    def decode_row(self, row: []) -> []:
+        """Decodes a row from protobuf values to Python objects. This function
+           should only be called for result sets that use ``lazy_decoding=True``.
+           The array that is returned by this function is the same as the array
+           that would have been returned by the rows iterator if ``lazy_decoding=False``.
+
+        :returns: an array containing the decoded values of all the columns in the given row
+        """
+        if not hasattr(row, "__len__"):
+            raise TypeError("row", "row must be an array of protobuf values")
+        decoders = self._decoders
+        return [
+            _parse_nullable(row[index], decoders[index]) for index in range(len(row))
+        ]
+
+    def decode_column(self, row: [], column_index: int):
+        """Decodes a column from a protobuf value to a Python object. This function
+           should only be called for result sets that use ``lazy_decoding=True``.
+           The object that is returned by this function is the same as the object
+           that would have been returned by the rows iterator if ``lazy_decoding=False``.
+
+        :returns: the decoded column value
+        """
+        if not hasattr(row, "__len__"):
+            raise TypeError("row", "row must be an array of protobuf values")
+        decoders = self._decoders
+        return _parse_nullable(row[column_index], decoders[column_index])
 
     def one(self):
         """Return exactly one result, or raise an exception.
