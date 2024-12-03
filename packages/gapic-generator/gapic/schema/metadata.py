@@ -173,6 +173,11 @@ class Address(BaseAddress):
         """Return the proto package for this type."""
         return '.'.join(self.package)
 
+    @property
+    def proto_package_versioned(self) -> str:
+        """Return the versioned proto package for this type."""
+        return ".".join(self.convert_to_versioned_package())
+
     def convert_to_versioned_package(self) -> Tuple[str, ...]:
         # We need to change the import statement to use an
         # underscore between the module and the version. For example,

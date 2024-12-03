@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
@@ -35,6 +36,14 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -530,6 +539,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+            # Setup logging.
+            client_logging.initialize_logging()
+
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError("client_options.api_key and credentials are mutually exclusive")
@@ -603,6 +616,18 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
             )
+
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Created client `google.cloud.redis_v1.CloudRedisClient`.",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
+                        "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                    },
+                )
 
     def list_instances(self,
             request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,

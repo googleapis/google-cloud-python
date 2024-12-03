@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
@@ -45,6 +46,13 @@ from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .client import CloudRedisClient
 
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 class CloudRedisAsyncClient:
     """Configures and manages Cloud Memorystore for Redis instances
@@ -254,6 +262,17 @@ class CloudRedisAsyncClient:
             client_info=client_info,
 
         )
+
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.redis_v1.CloudRedisAsyncClient`.",
+                extra = {
+                    "serviceName": "google.cloud.redis.v1.CloudRedis",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                },
+            )
 
     async def list_instances(self,
             request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,

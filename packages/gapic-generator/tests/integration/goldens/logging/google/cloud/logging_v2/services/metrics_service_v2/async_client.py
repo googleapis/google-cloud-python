@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
@@ -42,6 +43,13 @@ from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
 from .client import MetricsServiceV2Client
 
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 class MetricsServiceV2AsyncClient:
     """Service for configuring logs-based metrics."""
@@ -227,6 +235,17 @@ class MetricsServiceV2AsyncClient:
             client_info=client_info,
 
         )
+
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.logging_v2.MetricsServiceV2AsyncClient`.",
+                extra = {
+                    "serviceName": "google.logging.v2.MetricsServiceV2",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                },
+            )
 
     async def list_log_metrics(self,
             request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
@@ -46,6 +47,13 @@ from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .client import AssetServiceClient
 
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 class AssetServiceAsyncClient:
     """Asset service definition."""
@@ -246,6 +254,17 @@ class AssetServiceAsyncClient:
             client_info=client_info,
 
         )
+
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.asset_v1.AssetServiceAsyncClient`.",
+                extra = {
+                    "serviceName": "google.cloud.asset.v1.AssetService",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                },
+            )
 
     async def export_assets(self,
             request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,
