@@ -428,6 +428,33 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         return self._stubs["list_hub_spokes"]
 
     @property
+    def query_hub_status(
+        self,
+    ) -> Callable[[hub.QueryHubStatusRequest], Awaitable[hub.QueryHubStatusResponse]]:
+        r"""Return a callable for the query hub status method over gRPC.
+
+        Query the Private Service Connect propagation status
+        of a Network Connectivity Center hub.
+
+        Returns:
+            Callable[[~.QueryHubStatusRequest],
+                    Awaitable[~.QueryHubStatusResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_hub_status" not in self._stubs:
+            self._stubs["query_hub_status"] = self.grpc_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/QueryHubStatus",
+                request_serializer=hub.QueryHubStatusRequest.serialize,
+                response_deserializer=hub.QueryHubStatusResponse.deserialize,
+            )
+        return self._stubs["query_hub_status"]
+
+    @property
     def list_spokes(
         self,
     ) -> Callable[[hub.ListSpokesRequest], Awaitable[hub.ListSpokesResponse]]:
@@ -671,7 +698,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
     ) -> Callable[[hub.ListRoutesRequest], Awaitable[hub.ListRoutesResponse]]:
         r"""Return a callable for the list routes method over gRPC.
 
-        Lists routes in a given project.
+        Lists routes in a given route table.
 
         Returns:
             Callable[[~.ListRoutesRequest],
@@ -697,7 +724,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
     ) -> Callable[[hub.ListRouteTablesRequest], Awaitable[hub.ListRouteTablesResponse]]:
         r"""Return a callable for the list route tables method over gRPC.
 
-        Lists route tables in a given project.
+        Lists route tables in a given hub.
 
         Returns:
             Callable[[~.ListRouteTablesRequest],
@@ -768,6 +795,33 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             )
         return self._stubs["list_groups"]
 
+    @property
+    def update_group(
+        self,
+    ) -> Callable[[hub.UpdateGroupRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the update group method over gRPC.
+
+        Updates the parameters of a Network Connectivity
+        Center group.
+
+        Returns:
+            Callable[[~.UpdateGroupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_group" not in self._stubs:
+            self._stubs["update_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/UpdateGroup",
+                request_serializer=hub.UpdateGroupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_group"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -798,6 +852,11 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             ),
             self.list_hub_spokes: self._wrap_method(
                 self.list_hub_spokes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_hub_status: self._wrap_method(
+                self.query_hub_status,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -863,6 +922,11 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             ),
             self.list_groups: self._wrap_method(
                 self.list_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_group: self._wrap_method(
+                self.update_group,
                 default_timeout=None,
                 client_info=client_info,
             ),

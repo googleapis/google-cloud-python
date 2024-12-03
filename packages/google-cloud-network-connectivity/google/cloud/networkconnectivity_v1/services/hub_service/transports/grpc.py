@@ -414,6 +414,33 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["list_hub_spokes"]
 
     @property
+    def query_hub_status(
+        self,
+    ) -> Callable[[hub.QueryHubStatusRequest], hub.QueryHubStatusResponse]:
+        r"""Return a callable for the query hub status method over gRPC.
+
+        Query the Private Service Connect propagation status
+        of a Network Connectivity Center hub.
+
+        Returns:
+            Callable[[~.QueryHubStatusRequest],
+                    ~.QueryHubStatusResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_hub_status" not in self._stubs:
+            self._stubs["query_hub_status"] = self.grpc_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/QueryHubStatus",
+                request_serializer=hub.QueryHubStatusRequest.serialize,
+                response_deserializer=hub.QueryHubStatusResponse.deserialize,
+            )
+        return self._stubs["query_hub_status"]
+
+    @property
     def list_spokes(self) -> Callable[[hub.ListSpokesRequest], hub.ListSpokesResponse]:
         r"""Return a callable for the list spokes method over gRPC.
 
@@ -651,7 +678,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def list_routes(self) -> Callable[[hub.ListRoutesRequest], hub.ListRoutesResponse]:
         r"""Return a callable for the list routes method over gRPC.
 
-        Lists routes in a given project.
+        Lists routes in a given route table.
 
         Returns:
             Callable[[~.ListRoutesRequest],
@@ -677,7 +704,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     ) -> Callable[[hub.ListRouteTablesRequest], hub.ListRouteTablesResponse]:
         r"""Return a callable for the list route tables method over gRPC.
 
-        Lists route tables in a given project.
+        Lists route tables in a given hub.
 
         Returns:
             Callable[[~.ListRouteTablesRequest],
@@ -745,6 +772,33 @@ class HubServiceGrpcTransport(HubServiceTransport):
                 response_deserializer=hub.ListGroupsResponse.deserialize,
             )
         return self._stubs["list_groups"]
+
+    @property
+    def update_group(
+        self,
+    ) -> Callable[[hub.UpdateGroupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update group method over gRPC.
+
+        Updates the parameters of a Network Connectivity
+        Center group.
+
+        Returns:
+            Callable[[~.UpdateGroupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_group" not in self._stubs:
+            self._stubs["update_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/UpdateGroup",
+                request_serializer=hub.UpdateGroupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_group"]
 
     def close(self):
         self.grpc_channel.close()
