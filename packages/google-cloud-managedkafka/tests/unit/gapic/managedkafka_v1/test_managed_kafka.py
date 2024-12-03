@@ -1601,6 +1601,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
         call.return_value = resources.Cluster(
             name="name_value",
             state=resources.Cluster.State.CREATING,
+            satisfies_pzi=True,
+            satisfies_pzs=True,
         )
         response = client.get_cluster(request)
 
@@ -1614,6 +1616,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Cluster)
     assert response.name == "name_value"
     assert response.state == resources.Cluster.State.CREATING
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 def test_get_cluster_non_empty_request_with_auto_populated_field():
@@ -1741,6 +1745,8 @@ async def test_get_cluster_async(
             resources.Cluster(
                 name="name_value",
                 state=resources.Cluster.State.CREATING,
+                satisfies_pzi=True,
+                satisfies_pzs=True,
             )
         )
         response = await client.get_cluster(request)
@@ -1755,6 +1761,8 @@ async def test_get_cluster_async(
     assert isinstance(response, resources.Cluster)
     assert response.name == "name_value"
     assert response.state == resources.Cluster.State.CREATING
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -9703,6 +9711,8 @@ async def test_get_cluster_empty_call_grpc_asyncio():
             resources.Cluster(
                 name="name_value",
                 state=resources.Cluster.State.CREATING,
+                satisfies_pzi=True,
+                satisfies_pzs=True,
             )
         )
         await client.get_cluster(request=None)
@@ -10211,6 +10221,8 @@ def test_get_cluster_rest_call_success(request_type):
         return_value = resources.Cluster(
             name="name_value",
             state=resources.Cluster.State.CREATING,
+            satisfies_pzi=True,
+            satisfies_pzs=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -10228,6 +10240,8 @@ def test_get_cluster_rest_call_success(request_type):
     assert isinstance(response, resources.Cluster)
     assert response.name == "name_value"
     assert response.state == resources.Cluster.State.CREATING
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10336,6 +10350,8 @@ def test_create_cluster_rest_call_success(request_type):
         "capacity_config": {"vcpu_count": 1094, "memory_bytes": 1311},
         "rebalance_config": {"mode": 1},
         "state": 1,
+        "satisfies_pzi": True,
+        "satisfies_pzs": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10535,6 +10551,8 @@ def test_update_cluster_rest_call_success(request_type):
         "capacity_config": {"vcpu_count": 1094, "memory_bytes": 1311},
         "rebalance_config": {"mode": 1},
         "state": 1,
+        "satisfies_pzi": True,
+        "satisfies_pzs": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

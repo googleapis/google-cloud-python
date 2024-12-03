@@ -69,6 +69,14 @@ class Cluster(proto.Message):
         state (google.cloud.managedkafka_v1.types.Cluster.State):
             Output only. The current state of the
             cluster.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
     """
 
     class State(proto.Enum):
@@ -128,6 +136,16 @@ class Cluster(proto.Message):
         proto.ENUM,
         number=10,
         enum=State,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+        optional=True,
     )
 
 
