@@ -252,7 +252,7 @@ class AccountLabelsServiceGrpcAsyncIOTransport(AccountLabelsServiceTransport):
     ]:
         r"""Return a callable for the list account labels method over gRPC.
 
-        Lists the labels assigned to an account.
+        Lists the labels owned by an account.
 
         Returns:
             Callable[[~.ListAccountLabelsRequest],

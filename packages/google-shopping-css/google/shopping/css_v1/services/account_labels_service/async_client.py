@@ -269,7 +269,7 @@ class AccountLabelsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAccountLabelsAsyncPager:
-        r"""Lists the labels assigned to an account.
+        r"""Lists the labels owned by an account.
 
         .. code-block:: python
 
