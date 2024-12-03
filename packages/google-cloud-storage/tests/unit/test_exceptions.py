@@ -14,6 +14,7 @@
 
 from importlib import reload
 from unittest.mock import Mock
+from unittest.mock import sentinel
 import sys
 
 
@@ -69,3 +70,13 @@ def test_exceptions_imports_correctly_in_resumable_media_installed_case():
     finally:
         del sys.modules["google.resumable_media"]
         reload(exceptions)
+
+
+def test_InvalidResponse():
+    from google.cloud.storage import exceptions
+
+    response = sentinel.response
+    error = exceptions.InvalidResponse(response, 1, "a", [b"m"], True)
+
+    assert error.response is response
+    assert error.args == (1, "a", [b"m"], True)

@@ -19,8 +19,8 @@ from unittest import mock
 import pytest  # type: ignore
 
 from google.cloud.storage._media import _download
-from google.cloud.storage._media import common
 from google.cloud.storage.exceptions import InvalidResponse
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 EXAMPLE_URL = (
@@ -748,8 +748,4 @@ def _fix_up_virtual(download):
 
 
 def _check_retry_strategy(download):
-    retry_strategy = download._retry_strategy
-    assert isinstance(retry_strategy, common.RetryStrategy)
-    assert retry_strategy.max_sleep == common.MAX_SLEEP
-    assert retry_strategy.max_cumulative_retry == common.MAX_CUMULATIVE_RETRY
-    assert retry_strategy.max_retries is None
+    assert download._retry_strategy == DEFAULT_RETRY

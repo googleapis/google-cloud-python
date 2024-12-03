@@ -716,19 +716,6 @@ class Test__bucket_bound_hostname_url(unittest.TestCase):
         self.assertEqual(self._call_fut(host=HOST, scheme=SCHEME), EXPECTED_URL)
 
 
-class Test__api_core_retry_to_resumable_media_retry(unittest.TestCase):
-    def test_retry(self):
-        from google.cloud.storage._helpers import (
-            _api_core_retry_to_resumable_media_retry,
-        )
-
-        retry_strategy = _api_core_retry_to_resumable_media_retry(retry=DEFAULT_RETRY)
-        self.assertEqual(retry_strategy.max_sleep, DEFAULT_RETRY._maximum)
-        self.assertEqual(retry_strategy.max_cumulative_retry, DEFAULT_RETRY._deadline)
-        self.assertEqual(retry_strategy.initial_delay, DEFAULT_RETRY._initial)
-        self.assertEqual(retry_strategy.multiplier, DEFAULT_RETRY._multiplier)
-
-
 class _MD5Hash(object):
     def __init__(self, digest_val):
         self.digest_val = digest_val

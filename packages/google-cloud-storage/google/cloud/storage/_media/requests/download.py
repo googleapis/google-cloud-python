@@ -72,6 +72,14 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             values are "md5", "crc32c", "auto" and None. The default is "auto",
             which will try to detect if the C extension for crc32c is installed
             and fall back to md5 otherwise.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -235,9 +243,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
@@ -268,6 +274,15 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             values are "md5", "crc32c", "auto" and None. The default is "auto",
             which will try to detect if the C extension for crc32c is installed
             and fall back to md5 otherwise.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
+
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
         start (Optional[int]): The first byte in a range to be downloaded.
@@ -425,9 +440,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload):
@@ -447,6 +460,14 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with each request, e.g. headers for data encryption
             key headers.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -500,9 +521,7 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
             self._process_response(result)
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDownload):
@@ -522,6 +541,14 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with each request, e.g. headers for data encryption
             key headers.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -576,9 +603,7 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
             self._process_response(result)
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 def _add_decoder(response_raw, checksum):

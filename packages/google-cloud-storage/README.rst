@@ -45,7 +45,9 @@ Preview Release
 
 Python Storage 3.0 is currently in a preview state. If you experience that
 backwards compatibility for your application is broken with this release for any
-reason, please let us know through the Github issues system. Thank you.
+reason, please let us know through the Github issues system. While some breaks
+of backwards compatibility may be unavoidable due to new features in the major
+version release, we will do our best to minimize them. Thank you.
 
 Exception Handling
 ~~~~~~~~~~~~~~~~~~
@@ -88,6 +90,9 @@ Miscellaneous
 
 - The BlobWriter class now attempts to terminate an ongoing resumable upload if
   the writer exits with an exception.
+- Retry behavior is now identical between media operations (uploads and
+  downloads) and other operations, and custom predicates are now supported for
+  media operations as well.
 
 Quick Start
 -----------

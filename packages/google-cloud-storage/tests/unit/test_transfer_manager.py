@@ -17,6 +17,7 @@ import pytest
 from google.cloud.storage import Blob
 from google.cloud.storage import Client
 from google.cloud.storage import transfer_manager
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 from google.api_core import exceptions
 
@@ -782,10 +783,6 @@ def test_upload_chunks_concurrently():
         container_mock.register_part.assert_any_call(2, ETAG)
         container_mock.finalize.assert_called_once_with(bucket.client._http)
 
-        assert container_mock._retry_strategy.max_sleep == 60.0
-        assert container_mock._retry_strategy.max_cumulative_retry == 120.0
-        assert container_mock._retry_strategy.max_retries is None
-
         part_mock.upload.assert_called_with(transport)
 
 
@@ -879,7 +876,6 @@ def test_upload_chunks_concurrently_passes_concurrency_options():
             # Conveniently, that gives us a chance to test the auto-delete
             # exception handling feature.
         container_mock.cancel.assert_called_once_with(transport)
-        assert container_mock._retry_strategy.max_retries == 0
 
         pool_patch.assert_called_with(max_workers=MAX_WORKERS)
         wait_patch.assert_called_with(mock.ANY, timeout=DEADLINE, return_when=mock.ANY)
@@ -974,7 +970,7 @@ def test_upload_chunks_concurrently_with_metadata_and_encryption():
             **custom_headers,
         }
         container_cls_mock.assert_called_once_with(
-            URL, FILENAME, headers=expected_headers
+            URL, FILENAME, headers=expected_headers, retry=DEFAULT_RETRY
         )
         container_mock.initiate.assert_called_once_with(
             transport=transport, content_type=blob.content_type
@@ -1121,9 +1117,6 @@ def test__upload_part():
             retry=DEFAULT_RETRY,
         )
         part.upload.assert_called_once()
-        assert part._retry_strategy.max_sleep == 60.0
-        assert part._retry_strategy.max_cumulative_retry == 120.0
-        assert part._retry_strategy.max_retries is None
 
         assert result == (1, ETAG)
 

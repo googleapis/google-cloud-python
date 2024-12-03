@@ -21,7 +21,7 @@ from unittest import mock
 import pytest  # type: ignore
 
 from google.cloud.storage._media import _helpers
-from google.cloud.storage._media import common
+from google.cloud.storage.retry import _RETRYABLE_STATUS_CODES
 from google.cloud.storage.exceptions import InvalidResponse
 
 import google_crc32c
@@ -130,7 +130,7 @@ class Test_require_status_code(object):
     def test_retryable_failure_without_callback(self):
         status_codes = (http.client.OK,)
         retryable_responses = [
-            _make_response(status_code) for status_code in common.RETRYABLE
+            _make_response(status_code) for status_code in _RETRYABLE_STATUS_CODES
         ]
         callback = mock.Mock(spec=[])
         for retryable_response in retryable_responses:
@@ -148,40 +148,6 @@ class Test_require_status_code(object):
             assert error.args[1] == retryable_response.status_code
             assert error.args[3:] == status_codes
             callback.assert_not_called()
-
-
-class Test_calculate_retry_wait(object):
-    @mock.patch("random.randint", return_value=125)
-    def test_past_limit(self, randint_mock):
-        base_wait, wait_time = _helpers.calculate_retry_wait(70.0, 64.0)
-
-        assert base_wait == 64.0
-        assert wait_time == 64.125
-        randint_mock.assert_called_once_with(0, 1000)
-
-    @mock.patch("random.randint", return_value=250)
-    def test_at_limit(self, randint_mock):
-        base_wait, wait_time = _helpers.calculate_retry_wait(50.0, 50.0)
-
-        assert base_wait == 50.0
-        assert wait_time == 50.25
-        randint_mock.assert_called_once_with(0, 1000)
-
-    @mock.patch("random.randint", return_value=875)
-    def test_under_limit(self, randint_mock):
-        base_wait, wait_time = _helpers.calculate_retry_wait(16.0, 33.0)
-
-        assert base_wait == 32.0
-        assert wait_time == 32.875
-        randint_mock.assert_called_once_with(0, 1000)
-
-    @mock.patch("random.randint", return_value=875)
-    def test_custom_multiplier(self, randint_mock):
-        base_wait, wait_time = _helpers.calculate_retry_wait(16.0, 64.0, 3)
-
-        assert base_wait == 48.0
-        assert wait_time == 48.875
-        randint_mock.assert_called_once_with(0, 1000)
 
 
 def _make_response(status_code):

@@ -1196,11 +1196,6 @@ class Client(ClientWithProject):
                 See the retry.py source code and docstrings in this package
                 (google.cloud.storage.retry) for information on retry types and how
                 to configure them.
-
-                Media operations (downloads and uploads) do not support non-default
-                predicates in a Retry object. The default will always be used. Other
-                configuration changes for Retry objects such as delays and deadlines
-                are respected.
         """
 
         if not isinstance(blob_or_uri, Blob):

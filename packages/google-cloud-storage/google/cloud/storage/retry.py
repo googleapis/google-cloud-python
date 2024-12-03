@@ -17,12 +17,16 @@
 See [Retry Strategy for Google Cloud Storage](https://cloud.google.com/storage/docs/retry-strategy#client-libraries)
 """
 
+import http
+
 import requests
 import requests.exceptions as requests_exceptions
+import urllib3
 
 from google.api_core import exceptions as api_exceptions
 from google.api_core import retry
 from google.auth import exceptions as auth_exceptions
+from google.cloud.storage.exceptions import InvalidResponse
 
 
 _RETRYABLE_TYPES = (
@@ -35,11 +39,24 @@ _RETRYABLE_TYPES = (
     requests.ConnectionError,
     requests_exceptions.ChunkedEncodingError,
     requests_exceptions.Timeout,
+    http.client.BadStatusLine,
+    http.client.IncompleteRead,
+    http.client.ResponseNotReady,
+    urllib3.exceptions.PoolError,
+    urllib3.exceptions.ProtocolError,
+    urllib3.exceptions.SSLError,
+    urllib3.exceptions.TimeoutError,
 )
 
 
-# Some retriable errors don't have their own custom exception in api_core.
-_ADDITIONAL_RETRYABLE_STATUS_CODES = (408,)
+_RETRYABLE_STATUS_CODES = (
+    http.client.TOO_MANY_REQUESTS,  # 429
+    http.client.REQUEST_TIMEOUT,  # 408
+    http.client.INTERNAL_SERVER_ERROR,  # 500
+    http.client.BAD_GATEWAY,  # 502
+    http.client.SERVICE_UNAVAILABLE,  # 503
+    http.client.GATEWAY_TIMEOUT,  # 504
+)
 
 
 def _should_retry(exc):
@@ -47,7 +64,9 @@ def _should_retry(exc):
     if isinstance(exc, _RETRYABLE_TYPES):
         return True
     elif isinstance(exc, api_exceptions.GoogleAPICallError):
-        return exc.code in _ADDITIONAL_RETRYABLE_STATUS_CODES
+        return exc.code in _RETRYABLE_STATUS_CODES
+    elif isinstance(exc, InvalidResponse):
+        return exc.response.status_code in _RETRYABLE_STATUS_CODES
     elif isinstance(exc, auth_exceptions.TransportError):
         return _should_retry(exc.args[0])
     else:

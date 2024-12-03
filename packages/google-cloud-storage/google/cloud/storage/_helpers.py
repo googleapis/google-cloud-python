@@ -26,7 +26,6 @@ from urllib.parse import urlunsplit
 from uuid import uuid4
 
 from google.auth import environment_vars
-from google.cloud.storage import _media
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
@@ -626,29 +625,6 @@ def _bucket_bound_hostname_url(host, scheme=None):
         return host
 
     return f"{scheme}://{host}"
-
-
-def _api_core_retry_to_resumable_media_retry(retry):
-    """Convert google.api.core.Retry to google.cloud.storage._media.RetryStrategy.
-
-    Custom predicates are not translated.
-
-    :type retry: google.api_core.Retry
-    :param retry: (Optional) The google.api_core.Retry object to translate.
-
-    :rtype: google.cloud.storage._media.RetryStrategy
-    :returns: A RetryStrategy with all applicable attributes copied from input.
-    """
-
-    if retry is not None:
-        return _media.RetryStrategy(
-            max_sleep=retry._maximum,
-            max_cumulative_retry=retry._deadline,
-            initial_delay=retry._initial,
-            multiplier=retry._multiplier,
-        )
-    else:
-        return _media.RetryStrategy(max_retries=0)
 
 
 def _get_invocation_id():

@@ -19,14 +19,13 @@ from __future__ import absolute_import
 import base64
 import hashlib
 import logging
-import random
 
 from urllib.parse import parse_qs
 from urllib.parse import urlencode
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
-from google.cloud.storage._media import common
+from google.cloud.storage import retry
 from google.cloud.storage.exceptions import InvalidResponse
 
 
@@ -101,7 +100,7 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
     """
     status_code = get_status_code(response)
     if status_code not in status_codes:
-        if status_code not in common.RETRYABLE:
+        if status_code not in retry._RETRYABLE_STATUS_CODES:
             callback()
         raise InvalidResponse(
             response,
@@ -111,34 +110,6 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
             *status_codes
         )
     return status_code
-
-
-def calculate_retry_wait(base_wait, max_sleep, multiplier=2.0):
-    """Calculate the amount of time to wait before a retry attempt.
-
-    Wait time grows exponentially with the number of attempts, until
-    ``max_sleep``.
-
-    A random amount of jitter (between 0 and 1 seconds) is added to spread out
-    retry attempts from different clients.
-
-    Args:
-        base_wait (float): The "base" wait time (i.e. without any jitter)
-            that will be multiplied until it reaches the maximum sleep.
-        max_sleep (float): Maximum value that a sleep time is allowed to be.
-        multiplier (float): Multiplier to apply to the base wait.
-
-    Returns:
-        Tuple[float, float]: The new base wait time as well as the wait time
-        to be applied (with a random amount of jitter between 0 and 1 seconds
-        added).
-    """
-    new_base_wait = multiplier * base_wait
-    if new_base_wait > max_sleep:
-        new_base_wait = max_sleep
-
-    jitter_ms = random.randint(0, 1000)
-    return new_base_wait, new_base_wait + 0.001 * jitter_ms
 
 
 def _get_metadata_key(checksum_type):

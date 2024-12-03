@@ -26,11 +26,9 @@ Each subpackage is tailored to a specific transport library:
 .. _requests: http://docs.python-requests.org/
 """
 
-from google.cloud.storage._media.common import RetryStrategy
 from google.cloud.storage._media.common import UPLOAD_CHUNK_SIZE
 
 
 __all__ = [
-    "RetryStrategy",
     "UPLOAD_CHUNK_SIZE",
 ]

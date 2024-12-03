@@ -15,6 +15,7 @@
 import unittest
 
 from google.cloud.storage import _helpers
+from google.cloud.storage.exceptions import InvalidResponse
 
 import mock
 
@@ -38,7 +39,12 @@ class Test_should_retry(unittest.TestCase):
         from google.cloud.storage import retry
 
         for exc_type in retry._RETRYABLE_TYPES:
-            exc = exc_type("testing")
+            # Some of the types need one positional argument, some two.
+            # The easiest way to accommodate both is just to use a try/except.
+            try:
+                exc = exc_type("testing")
+            except TypeError:
+                exc = exc_type("testing", "testing")
             self.assertTrue(self._call_fut(exc))
 
     def test_w_google_api_call_error_hit(self):
@@ -53,6 +59,18 @@ class Test_should_retry(unittest.TestCase):
 
         exc = exceptions.GoogleAPICallError("testing")
         exc.code = 999
+        self.assertFalse(self._call_fut(exc))
+
+    def test_w_InvalidResponse_hit(self):
+        response = mock.Mock()
+        response.status_code = 408
+        exc = InvalidResponse(response, "testing")
+        self.assertTrue(self._call_fut(exc))
+
+    def test_w_InvalidResponse_miss(self):
+        response = mock.Mock()
+        response.status_code = 999
+        exc = InvalidResponse(response, "testing")
         self.assertFalse(self._call_fut(exc))
 
     def test_w_stdlib_error_miss(self):

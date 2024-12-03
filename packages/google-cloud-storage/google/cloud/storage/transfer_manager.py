@@ -32,7 +32,6 @@ from google.cloud.storage import Blob
 from google.cloud.storage.blob import _get_host_name
 from google.cloud.storage.blob import _quote
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
-from google.cloud.storage._helpers import _api_core_retry_to_resumable_media_retry
 from google.cloud.storage.retry import DEFAULT_RETRY
 
 import google_crc32c
@@ -1107,8 +1106,7 @@ def upload_chunks_concurrently(
     if blob.kms_key_name is not None and "cryptoKeyVersions" not in blob.kms_key_name:
         headers["x-goog-encryption-kms-key-name"] = blob.kms_key_name
 
-    container = XMLMPUContainer(url, filename, headers=headers)
-    container._retry_strategy = _api_core_retry_to_resumable_media_retry(retry)
+    container = XMLMPUContainer(url, filename, headers=headers, retry=retry)
 
     container.initiate(transport=transport, content_type=content_type)
     upload_id = container.upload_id
@@ -1190,8 +1188,8 @@ def _upload_part(
         part_number=part_number,
         checksum=checksum,
         headers=headers,
+        retry=retry,
     )
-    part._retry_strategy = _api_core_retry_to_resumable_media_retry(retry)
     part.upload(client._http)
     return (part_number, part.etag)
 

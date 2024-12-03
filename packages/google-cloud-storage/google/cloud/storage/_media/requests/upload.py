@@ -79,9 +79,7 @@ class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
@@ -101,6 +99,14 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
             "crc32c", "auto", and None. The default is "auto", which will try
             to detect if the C extension for crc32c is installed and fall back
             to md5 otherwise.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         upload_url (str): The URL where the content will be uploaded.
@@ -152,9 +158,7 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
@@ -339,6 +343,14 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
             host automatically. Supported values are "md5", "crc32c", "auto",
             and None. The default is "auto", which will try to detect if the C
             extension for crc32c is installed and fall back to md5 otherwise.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         upload_url (str): The URL where the content will be uploaded.
@@ -420,9 +432,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
     def transmit_next_chunk(
         self,
@@ -515,9 +525,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
     def recover(self, transport):
         """Recover from a failure and check the status of the current upload.
@@ -555,9 +563,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
@@ -587,6 +593,14 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
             be sent with the :meth:`initiate` request, e.g. headers for
             encrypted data. These headers will be propagated to individual
             XMLMPUPart objects spawned from this container as well.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         upload_url (str): The URL where the content will be uploaded.
@@ -636,9 +650,7 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
     def finalize(
         self,
@@ -676,9 +688,7 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
     def cancel(
         self,
@@ -718,9 +728,7 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
 class XMLMPUPart(_request_helpers.RequestsMixin, _upload.XMLMPUPart):
@@ -760,6 +768,4 @@ class XMLMPUPart(_request_helpers.RequestsMixin, _upload.XMLMPUPart):
 
             return result
 
-        return _request_helpers.wait_and_retry(
-            retriable_request, self._get_status_code, self._retry_strategy
-        )
+        return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)

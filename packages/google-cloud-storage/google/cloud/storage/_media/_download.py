@@ -19,8 +19,8 @@ import http.client
 import re
 
 from google.cloud.storage._media import _helpers
-from google.cloud.storage._media import common
 from google.cloud.storage.exceptions import InvalidResponse
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 _CONTENT_RANGE_RE = re.compile(
@@ -45,6 +45,14 @@ class DownloadBase(object):
         end (int): The last byte in a range to be downloaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
+            A None value will disable retries. A google.api_core.retry.Retry
+            value will enable retries, and the object will configure backoff and
+            timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -52,7 +60,15 @@ class DownloadBase(object):
         end (Optional[int]): The last byte in a range to be downloaded.
     """
 
-    def __init__(self, media_url, stream=None, start=None, end=None, headers=None):
+    def __init__(
+        self,
+        media_url,
+        stream=None,
+        start=None,
+        end=None,
+        headers=None,
+        retry=DEFAULT_RETRY,
+    ):
         self.media_url = media_url
         self._stream = stream
         self.start = start
@@ -61,7 +77,7 @@ class DownloadBase(object):
             headers = {}
         self._headers = headers
         self._finished = False
-        self._retry_strategy = common.RetryStrategy()
+        self._retry_strategy = retry
 
     @property
     def finished(self):
@@ -133,6 +149,15 @@ class Download(DownloadBase):
             values are "md5", "crc32c", "auto" and None. The default is "auto",
             which will try to detect if the C extension for crc32c is installed
             and fall back to md5 otherwise.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
+
     """
 
     def __init__(
@@ -143,9 +168,10 @@ class Download(DownloadBase):
         end=None,
         headers=None,
         checksum="auto",
+        retry=DEFAULT_RETRY,
     ):
         super(Download, self).__init__(
-            media_url, stream=stream, start=start, end=end, headers=headers
+            media_url, stream=stream, start=start, end=end, headers=headers, retry=retry
         )
         self.checksum = checksum
         if self.checksum == "auto":
@@ -242,6 +268,14 @@ class ChunkedDownload(DownloadBase):
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with each request, e.g. headers for data encryption
             key headers.
+        retry (Optional[google.api_core.retry.Retry]): How to retry the
+            RPC. A None value will disable retries. A
+            google.api_core.retry.Retry value will enable retries, and the
+            object will configure backoff and timeout options.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
 
     Attributes:
         media_url (str): The URL containing the media to be downloaded.
@@ -253,13 +287,27 @@ class ChunkedDownload(DownloadBase):
         ValueError: If ``start`` is negative.
     """
 
-    def __init__(self, media_url, chunk_size, stream, start=0, end=None, headers=None):
+    def __init__(
+        self,
+        media_url,
+        chunk_size,
+        stream,
+        start=0,
+        end=None,
+        headers=None,
+        retry=DEFAULT_RETRY,
+    ):
         if start < 0:
             raise ValueError(
                 "On a chunked download the starting " "value cannot be negative."
             )
         super(ChunkedDownload, self).__init__(
-            media_url, stream=stream, start=start, end=end, headers=headers
+            media_url,
+            stream=stream,
+            start=start,
+            end=end,
+            headers=headers,
+            retry=retry,
         )
         self.chunk_size = chunk_size
         self._bytes_downloaded = 0

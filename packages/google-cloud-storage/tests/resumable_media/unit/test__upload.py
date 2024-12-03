@@ -22,9 +22,9 @@ import pytest  # type: ignore
 
 from google.cloud.storage._media import _helpers
 from google.cloud.storage._media import _upload
-from google.cloud.storage._media import common
 from google.cloud.storage.exceptions import InvalidResponse
 from google.cloud.storage.exceptions import DataCorruption
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 URL_PREFIX = "https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o"
@@ -1573,8 +1573,4 @@ def _fix_up_virtual(upload):
 
 
 def _check_retry_strategy(upload):
-    retry_strategy = upload._retry_strategy
-    assert isinstance(retry_strategy, common.RetryStrategy)
-    assert retry_strategy.max_sleep == common.MAX_SLEEP
-    assert retry_strategy.max_cumulative_retry == common.MAX_CUMULATIVE_RETRY
-    assert retry_strategy.max_retries is None
+    assert upload._retry_strategy == DEFAULT_RETRY
