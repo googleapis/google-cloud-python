@@ -29,12 +29,19 @@ from .parsed_statement import ParsedStatement, StatementType, Statement
 from .types import DateStr, TimestampStr
 from .utils import sanitize_literals_for_upload
 
+# Note: This mapping deliberately does not contain a value for float.
+# The reason for that is that it is better to just let Spanner determine
+# the parameter type instead of specifying one explicitly. The reason for
+# this is that if the client specifies FLOAT64, and the actual column that
+# the parameter is used for is of type FLOAT32, then Spanner will return an
+# error. If however the client does not specify a type, then Spanner will
+# automatically choose the appropriate type based on the column where the
+# value will be inserted/updated or that it will be compared with.
 TYPES_MAP = {
     bool: spanner.param_types.BOOL,
     bytes: spanner.param_types.BYTES,
     str: spanner.param_types.STRING,
     int: spanner.param_types.INT64,
-    float: spanner.param_types.FLOAT64,
     datetime.datetime: spanner.param_types.TIMESTAMP,
     datetime.date: spanner.param_types.DATE,
     DateStr: spanner.param_types.DATE,

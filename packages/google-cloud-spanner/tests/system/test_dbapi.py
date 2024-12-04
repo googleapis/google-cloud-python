@@ -11,11 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import base64
 import datetime
 from collections import defaultdict
+
 import pytest
 import time
+import decimal
 
 from google.cloud import spanner_v1
 from google.cloud._helpers import UTC
@@ -50,7 +52,22 @@ DDL = """CREATE TABLE contacts (
     SQL SECURITY INVOKER
     AS
     SELECT c.email
-    FROM contacts AS c;"""
+    FROM contacts AS c;
+
+    CREATE TABLE all_types (
+        id int64,
+        col_bool bool,
+        col_bytes bytes(max),
+        col_date date,
+        col_float32 float32,
+        col_float64 float64,
+        col_int64 int64,
+        col_json json,
+        col_numeric numeric,
+        col_string string(max),
+        coL_timestamp timestamp,
+    ) primary key (col_int64);
+    """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]
 
@@ -1602,3 +1619,29 @@ class TestDbApi:
     def test_invalid_statement_error(self):
         with pytest.raises(ProgrammingError):
             self._cursor.execute("-- comment only")
+
+    def test_insert_all_types(self):
+        """Test inserting all supported data types"""
+
+        self._conn.autocommit = True
+        self._cursor.execute(
+            """
+    INSERT INTO all_types (id, col_bool, col_bytes, col_date, col_float32, col_float64,
+                           col_int64, col_json, col_numeric, col_string, col_timestamp)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+            (
+                1,
+                True,
+                base64.b64encode(b"test-bytes"),
+                datetime.date(2024, 12, 3),
+                3.14,
+                3.14,
+                123,
+                JsonObject({"key": "value"}),
+                decimal.Decimal("3.14"),
+                "test-string",
+                datetime.datetime(2024, 12, 3, 17, 30, 14),
+            ),
+        )
+        assert self._cursor.rowcount == 1

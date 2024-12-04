@@ -218,6 +218,8 @@ class TestParseUtils(unittest.TestCase):
         params = {
             "a1": 10,
             "b1": "string",
+            # Note: We only want a value and not a type for this.
+            # Instead, we let Spanner infer the correct type (FLOAT64 or FLOAT32)
             "c1": 10.39,
             "d1": TimestampStr("2005-08-30T01:01:01.000001Z"),
             "e1": DateStr("2019-12-05"),
@@ -232,7 +234,6 @@ class TestParseUtils(unittest.TestCase):
         want_types = {
             "a1": param_types.INT64,
             "b1": param_types.STRING,
-            "c1": param_types.FLOAT64,
             "d1": param_types.TIMESTAMP,
             "e1": param_types.DATE,
             "f1": param_types.BOOL,
