@@ -1050,6 +1050,16 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.mview_refresh_interval = None
         self.assertIsNone(table.mview_refresh_interval)
 
+    def test_mview_allow_non_incremental_definition(self):
+        table = self._make_one()
+        self.assertIsNone(table.mview_allow_non_incremental_definition)
+        table.mview_allow_non_incremental_definition = True
+        self.assertTrue(table.mview_allow_non_incremental_definition)
+        table.mview_allow_non_incremental_definition = False
+        self.assertFalse(table.mview_allow_non_incremental_definition)
+        table.mview_allow_non_incremental_definition = None
+        self.assertIsNone(table.mview_allow_non_incremental_definition)
+
     def test_from_string(self):
         cls = self._get_target_class()
         got = cls.from_string("string-project.string_dataset.string_table")

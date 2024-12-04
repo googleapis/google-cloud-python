@@ -390,6 +390,7 @@ class Table(_TableBase):
         "mview_last_refresh_time": ["materializedView", "lastRefreshTime"],
         "mview_query": "materializedView",
         "mview_refresh_interval": "materializedView",
+        "mview_allow_non_incremental_definition": "materializedView",
         "num_bytes": "numBytes",
         "num_rows": "numRows",
         "partition_expiration": "timePartitioning",
@@ -926,6 +927,28 @@ class Table(_TableBase):
             self._properties,
             [api_field, "refreshIntervalMs"],
             refresh_interval_ms,
+        )
+
+    @property
+    def mview_allow_non_incremental_definition(self):
+        """Optional[bool]: This option declares the intention to construct a
+        materialized view that isn't refreshed incrementally.
+        The default value is :data:`False`.
+        """
+        api_field = self._PROPERTY_TO_API_FIELD[
+            "mview_allow_non_incremental_definition"
+        ]
+        return _helpers._get_sub_prop(
+            self._properties, [api_field, "allowNonIncrementalDefinition"]
+        )
+
+    @mview_allow_non_incremental_definition.setter
+    def mview_allow_non_incremental_definition(self, value):
+        api_field = self._PROPERTY_TO_API_FIELD[
+            "mview_allow_non_incremental_definition"
+        ]
+        _helpers._set_sub_prop(
+            self._properties, [api_field, "allowNonIncrementalDefinition"], value
         )
 
     @property
