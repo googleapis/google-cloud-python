@@ -380,9 +380,7 @@ class SessionsAsyncClient:
 
         Returns:
             google.cloud.dialogflow_v2.types.DetectIntentResponse:
-                The message returned from the
-                DetectIntent method.
-
+                The message returned from the [DetectIntent][] method.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -503,8 +501,7 @@ class SessionsAsyncClient:
         Args:
             requests (AsyncIterator[`google.cloud.dialogflow_v2.types.StreamingDetectIntentRequest`]):
                 The request object AsyncIterator. The top-level message sent by the client to the
-                [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]
-                method.
+                [StreamingDetectIntent][] method.
 
                 Multiple request messages should be sent in order:
 
@@ -551,16 +548,18 @@ class SessionsAsyncClient:
         Returns:
             AsyncIterable[google.cloud.dialogflow_v2.types.StreamingDetectIntentResponse]:
                 The top-level message returned from the
-                   StreamingDetectIntent method.
+                   [StreamingDetectIntent][] method.
 
                    Multiple response messages can be returned in order:
 
-                   1. If the StreamingDetectIntentRequest.input_audio
-                      field was set, the recognition_result field is
-                      populated for one or more messages. See the
-                      [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
-                      message for details about the result message
-                      sequence.
+                   1. If the
+                   [StreamingDetectIntentRequest.input_audio][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio]
+                   field was set, the recognition_result field is
+                   populated for one or more messages. See the
+                   [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
+                   message for details about the result message
+                   sequence.
+
                    2. The next message contains response_id,
                       query_result and optionally webhook_status if a
                       WebHook was called.

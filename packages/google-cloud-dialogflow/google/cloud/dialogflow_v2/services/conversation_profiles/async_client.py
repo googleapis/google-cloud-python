@@ -554,9 +554,10 @@ class ConversationProfilesAsyncClient:
     ) -> gcd_conversation_profile.ConversationProfile:
         r"""Creates a conversation profile in the specified project.
 
-        [ConversationProfile.CreateTime][] and
-        [ConversationProfile.UpdateTime][] aren't populated in the
-        response. You can retrieve them via
+        [ConversationProfile.create_time][google.cloud.dialogflow.v2.ConversationProfile.create_time]
+        and
+        [ConversationProfile.update_time][google.cloud.dialogflow.v2.ConversationProfile.update_time]
+        aren't populated in the response. You can retrieve them via
         [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile]
         API.
 
@@ -687,9 +688,10 @@ class ConversationProfilesAsyncClient:
     ) -> gcd_conversation_profile.ConversationProfile:
         r"""Updates the specified conversation profile.
 
-        [ConversationProfile.CreateTime][] and
-        [ConversationProfile.UpdateTime][] aren't populated in the
-        response. You can retrieve them via
+        [ConversationProfile.create_time][google.cloud.dialogflow.v2.ConversationProfile.create_time]
+        and
+        [ConversationProfile.update_time][google.cloud.dialogflow.v2.ConversationProfile.update_time]
+        aren't populated in the response. You can retrieve them via
         [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile]
         API.
 
@@ -976,7 +978,7 @@ class ConversationProfilesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflow_v2.types.SetSuggestionFeatureConfigRequest, dict]]):
                 The request object. The request message for
-                [ConversationProfiles.SetSuggestionFeature][].
+                [ConversationProfiles.SetSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.SetSuggestionFeatureConfig].
             conversation_profile (:class:`str`):
                 Required. The Conversation Profile to add or update the
                 suggestion feature config. Format:
@@ -1145,7 +1147,7 @@ class ConversationProfilesAsyncClient:
         Args:
             request (Optional[Union[google.cloud.dialogflow_v2.types.ClearSuggestionFeatureConfigRequest, dict]]):
                 The request object. The request message for
-                [ConversationProfiles.ClearFeature][].
+                [ConversationProfiles.ClearSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.ClearSuggestionFeatureConfig].
             conversation_profile (:class:`str`):
                 Required. The Conversation Profile to add or update the
                 suggestion feature config. Format:

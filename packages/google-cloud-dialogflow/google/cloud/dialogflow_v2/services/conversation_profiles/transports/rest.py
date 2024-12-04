@@ -598,7 +598,7 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
                 Args:
                     request (~.gcd_conversation_profile.ClearSuggestionFeatureConfigRequest):
                         The request object. The request message for
-                    [ConversationProfiles.ClearFeature][].
+                    [ConversationProfiles.ClearSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.ClearSuggestionFeatureConfig].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1074,7 +1074,7 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
                 Args:
                     request (~.gcd_conversation_profile.SetSuggestionFeatureConfigRequest):
                         The request object. The request message for
-                    [ConversationProfiles.SetSuggestionFeature][].
+                    [ConversationProfiles.SetSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.SetSuggestionFeatureConfig].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.

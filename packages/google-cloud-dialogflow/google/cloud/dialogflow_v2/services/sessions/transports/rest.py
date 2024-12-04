@@ -351,9 +351,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             Returns:
                 ~.gcd_session.DetectIntentResponse:
-                    The message returned from the
-                DetectIntent method.
-
+                    The message returned from the [DetectIntent][] method.
             """
 
             http_options = (

@@ -64,8 +64,10 @@ class AnswerRecord(proto.Message):
        are returned to the customers.
     2. The customer uses the
        [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name]
-       to call the [UpdateAnswerRecord][] method to send feedback about
-       a specific answer that they believe is wrong.
+       to call the
+       [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord]
+       method to send feedback about a specific answer that they believe
+       is wrong.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
