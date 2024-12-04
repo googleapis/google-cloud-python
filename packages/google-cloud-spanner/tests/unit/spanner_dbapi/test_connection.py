@@ -138,6 +138,10 @@ class TestConnection(unittest.TestCase):
         ):
             connection.read_only = False
 
+        # Verify that we can set the value to the same value as it already has.
+        connection.read_only = True
+        self.assertTrue(connection.read_only)
+
         connection._spanner_transaction_started = False
         connection.read_only = False
         self.assertFalse(connection.read_only)

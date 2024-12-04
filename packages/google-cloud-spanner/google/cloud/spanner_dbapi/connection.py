@@ -239,7 +239,7 @@ class Connection:
         Args:
             value (bool): True for ReadOnly mode, False for ReadWrite.
         """
-        if self._spanner_transaction_started:
+        if self._read_only != value and self._spanner_transaction_started:
             raise ValueError(
                 "Connection read/write mode can't be changed while a transaction is in progress. "
                 "Commit or rollback the current transaction and try again."
