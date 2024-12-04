@@ -167,6 +167,15 @@ class Space(proto.Message):
             permission settings.
 
             This field is a member of `oneof`_ ``space_permission_settings``.
+        import_mode_expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the space will be automatically
+            deleted by the system if it remains in import mode.
+
+            Each space created in import mode must exit this mode before
+            this expire time using ``spaces.completeImport``.
+
+            This field is only populated for spaces that were created
+            with import mode.
     """
 
     class Type(proto.Enum):
@@ -572,6 +581,11 @@ class Space(proto.Message):
         number=27,
         oneof="space_permission_settings",
         message=PermissionSettings,
+    )
+    import_mode_expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=timestamp_pb2.Timestamp,
     )
 
 

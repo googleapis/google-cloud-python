@@ -18675,6 +18675,7 @@ def test_create_message_rest_call_success(request_type):
                 "post_messages": {},
                 "reply_messages": {},
             },
+            "import_mode_expire_time": {},
         },
         "fallback_text": "fallback_text_value",
         "action_response": {
@@ -19741,6 +19742,7 @@ def test_update_message_rest_call_success(request_type):
                 "post_messages": {},
                 "reply_messages": {},
             },
+            "import_mode_expire_time": {},
         },
         "fallback_text": "fallback_text_value",
         "action_response": {
@@ -20744,6 +20746,7 @@ def test_create_space_rest_call_success(request_type):
             "post_messages": {},
             "reply_messages": {},
         },
+        "import_mode_expire_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -21132,6 +21135,7 @@ def test_update_space_rest_call_success(request_type):
             "post_messages": {},
             "reply_messages": {},
         },
+        "import_mode_expire_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
