@@ -47,7 +47,8 @@ dependencies = [
     "google-cloud-iam >=2.12.1",
     "google-cloud-resource-manager >=1.10.3",
     "google-cloud-storage >=2.0.0",
-    "jellyfish >=0.8.9",
+    # Upper bound due to no windows build for 1.1.2
+    "jellyfish >=0.8.9,<1.1.2",
     "numpy >=1.24.0",
     "pandas >=1.5.3",
     "pyarrow >=10.0.1",
