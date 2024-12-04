@@ -89,9 +89,11 @@ class Connection:
         committed by other transactions since the start of the read-only transaction. Commit or rolling back
         the read-only transaction is semantically the same, and only indicates that the read-only transaction
         should end a that a new one should be started when the next statement is executed.
+
+    **kwargs: Initial value for connection variables.
     """
 
-    def __init__(self, instance, database=None, read_only=False):
+    def __init__(self, instance, database=None, read_only=False, **kwargs):
         self._instance = instance
         self._database = database
         self._ddl_statements = []
@@ -117,6 +119,7 @@ class Connection:
         self._batch_dml_executor: BatchDmlExecutor = None
         self._transaction_helper = TransactionRetryHelper(self)
         self._autocommit_dml_mode: AutocommitDmlMode = AutocommitDmlMode.TRANSACTIONAL
+        self._connection_variables = kwargs
 
     @property
     def spanner_client(self):
@@ -205,6 +208,10 @@ class Connection:
             bool: True if transaction started, False otherwise.
         """
         return (not self._autocommit) or self._transaction_begin_marked
+
+    @property
+    def _ignore_transaction_warnings(self):
+        return self._connection_variables.get("ignore_transaction_warnings", False)
 
     @property
     def instance(self):
@@ -398,9 +405,10 @@ class Connection:
         if self.database is None:
             raise ValueError("Database needs to be passed for this operation")
         if not self._client_transaction_started:
-            warnings.warn(
-                CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
-            )
+            if not self._ignore_transaction_warnings:
+                warnings.warn(
+                    CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
+                )
             return
 
         self.run_prior_DDL_statements()
@@ -418,9 +426,10 @@ class Connection:
         This is a no-op if there is no active client transaction.
         """
         if not self._client_transaction_started:
-            warnings.warn(
-                CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
-            )
+            if not self._ignore_transaction_warnings:
+                warnings.warn(
+                    CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
+                )
             return
         try:
             if self._spanner_transaction_started and not self._read_only:
@@ -654,6 +663,7 @@ def connect(
     user_agent=None,
     client=None,
     route_to_leader_enabled=True,
+    **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
 
@@ -695,6 +705,8 @@ def connect(
         (Optional) Default True. Set route_to_leader_enabled as False to
         disable leader aware routing. Disabling leader aware routing would
         route all requests in RW/PDML transactions to the closest region.
+
+    **kwargs: Initial value for connection variables.
 
 
     :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`

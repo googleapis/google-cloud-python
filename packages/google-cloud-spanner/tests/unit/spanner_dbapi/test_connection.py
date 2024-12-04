@@ -300,6 +300,19 @@ class TestConnection(unittest.TestCase):
             CLIENT_TRANSACTION_NOT_STARTED_WARNING, UserWarning, stacklevel=2
         )
 
+    @mock.patch.object(warnings, "warn")
+    def test_commit_in_autocommit_mode_with_ignore_warnings(self, mock_warn):
+        conn = self._make_connection(
+            DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
+            ignore_transaction_warnings=True,
+        )
+        assert conn._ignore_transaction_warnings
+        conn._autocommit = True
+
+        conn.commit()
+
+        assert not mock_warn.warn.called
+
     def test_commit_database_error(self):
         from google.cloud.spanner_dbapi import Connection
 
