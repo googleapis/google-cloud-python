@@ -110,27 +110,28 @@ class ListAlertPoliciesRequest(proto.Message):
             [GetAlertPolicy][google.monitoring.v3.AlertPolicyService.GetAlertPolicy]
             operation, instead.
         filter (str):
-            If provided, this field specifies the criteria that must be
-            met by alert policies to be included in the response.
+            Optional. If provided, this field specifies the criteria
+            that must be met by alert policies to be included in the
+            response.
 
             For more details, see `sorting and
             filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
         order_by (str):
-            A comma-separated list of fields by which to sort the
-            result. Supports the same set of field references as the
+            Optional. A comma-separated list of fields by which to sort
+            the result. Supports the same set of field references as the
             ``filter`` field. Entries can be prefixed with a minus sign
             to sort by the field in descending order.
 
             For more details, see `sorting and
             filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
         page_size (int):
-            The maximum number of results to return in a
-            single response.
+            Optional. The maximum number of results to
+            return in a single response.
         page_token (str):
-            If this field is not empty then it must contain the
-            ``nextPageToken`` value returned by a previous call to this
-            method. Using this field causes the method to return more
-            results from the previous method call.
+            Optional. If this field is not empty then it must contain
+            the ``nextPageToken`` value returned by a previous call to
+            this method. Using this field causes the method to return
+            more results from the previous method call.
     """
 
     name: str = proto.Field(

@@ -37,7 +37,8 @@ class Snooze(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ``Snooze``. The format is:
+            Required. Identifier. The name of the ``Snooze``. The format
+            is:
 
             ::
 
