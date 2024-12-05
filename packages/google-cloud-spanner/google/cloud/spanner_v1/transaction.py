@@ -308,7 +308,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :raises ValueError:
             If ``params`` is None but ``param_types`` is not None.
         """
-        if params is not None:
+        if params:
             return Struct(
                 fields={key: _make_value_pb(value) for key, value in params.items()}
             )
