@@ -10667,7 +10667,7 @@ def test_create_service_config_rest_call_success(request_type):
                         ],
                     },
                     "ruby_settings": {"common": {}},
-                    "go_settings": {"common": {}},
+                    "go_settings": {"common": {}, "renamed_services": {}},
                 }
             ],
             "proto_reference_documentation_uri": "proto_reference_documentation_uri_value",
