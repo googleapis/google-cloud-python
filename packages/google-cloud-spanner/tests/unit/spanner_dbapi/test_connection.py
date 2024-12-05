@@ -669,6 +669,20 @@ class TestConnection(unittest.TestCase):
         with self.assertRaises(ValueError):
             connection.staleness = {"read_timestamp": datetime.datetime(2021, 9, 21)}
 
+    def test_staleness_inside_transaction_same_value(self):
+        """
+        Verify that setting `staleness` to the same value in a transaction is allowed.
+        """
+        connection = self._make_connection()
+        connection.staleness = {"read_timestamp": datetime.datetime(2021, 9, 21)}
+        connection._spanner_transaction_started = True
+        connection._transaction = mock.Mock()
+
+        connection.staleness = {"read_timestamp": datetime.datetime(2021, 9, 21)}
+        self.assertEqual(
+            connection.staleness, {"read_timestamp": datetime.datetime(2021, 9, 21)}
+        )
+
     def test_staleness_multi_use(self):
         """
         Check that `staleness` option is correctly

@@ -277,7 +277,7 @@ class Connection:
         Args:
             value (dict): Staleness type and value.
         """
-        if self._spanner_transaction_started:
+        if self._spanner_transaction_started and value != self._staleness:
             raise ValueError(
                 "`staleness` option can't be changed while a transaction is in progress. "
                 "Commit or rollback the current transaction and try again."
