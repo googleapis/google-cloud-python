@@ -33,8 +33,8 @@ ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
-DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 
+DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.7",
     "3.8",

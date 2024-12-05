@@ -307,4 +307,49 @@ def prerelease_deps\(session, protobuf_implementation\):""",
 def prerelease_deps(session, protobuf_implementation, database_dialect):""",
 )
 
+
+mockserver_test = """
+@nox.session(python=DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION)
+def mockserver(session):
+    # Install all test dependencies, then install this package in-place.
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    # install_unittest_dependencies(session, "-c", constraints_path)
+    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
+    session.install(*standard_deps, "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
+
+    # Run py.test against the mockserver tests.
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "mockserver_tests"),
+        *session.posargs,
+    )
+
+"""
+
+place_before(
+    "noxfile.py",
+    "def install_systemtest_dependencies(session, *constraints):",
+    mockserver_test,
+    escape="()_*:",
+)
+
+place_before(
+    "noxfile.py",
+    "UNIT_TEST_PYTHON_VERSIONS: List[str] = [",
+    'DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"',
+    escape="[]",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
