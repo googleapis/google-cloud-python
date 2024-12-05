@@ -33,6 +33,7 @@ ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
+DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.7",
@@ -231,6 +232,34 @@ def unit(session, protobuf_implementation):
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
+    )
+
+
+@nox.session(python=DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION)
+def mockserver(session):
+    # Install all test dependencies, then install this package in-place.
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    # install_unittest_dependencies(session, "-c", constraints_path)
+    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
+    session.install(*standard_deps, "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
+
+    # Run py.test against the mockserver tests.
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "mockserver_tests"),
+        *session.posargs,
     )
 
 

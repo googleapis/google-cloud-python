@@ -142,7 +142,7 @@ class Database(object):
                               statements in 'ddl_statements' above.
     """
 
-    _spanner_api = None
+    _spanner_api: SpannerClient = None
 
     def __init__(
         self,
