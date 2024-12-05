@@ -136,7 +136,7 @@ Alternatively, you can choose either of the following approaches:
     credentials_info = {
         "type": "service_account", 
         "project_id": "your-service-account-project-id"
-    },
+    }
     engine = create_engine('bigquery://', credentials_info=credentials_info)
 
 Location
