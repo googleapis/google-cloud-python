@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.maps.routing.v2',
+    package="google.maps.routing.v2",
     manifest={
-        'PolylineDetails',
+        "PolylineDetails",
     },
 )
 
@@ -40,6 +39,7 @@ class PolylineDetails(proto.Message):
         narrow_road_info (MutableSequence[google.maps.routing_v2.types.PolylineDetails.NarrowRoadInfo]):
             Narrow road details along the polyline.
     """
+
     class RoadFeatureState(proto.Enum):
         r"""Encapsulates the states of road features along a stretch of
         polyline.
@@ -100,15 +100,15 @@ class PolylineDetails(proto.Message):
                 along the polyline.
         """
 
-        flyover_presence: 'PolylineDetails.RoadFeatureState' = proto.Field(
+        flyover_presence: "PolylineDetails.RoadFeatureState" = proto.Field(
             proto.ENUM,
             number=1,
-            enum='PolylineDetails.RoadFeatureState',
+            enum="PolylineDetails.RoadFeatureState",
         )
-        polyline_point_index: 'PolylineDetails.PolylinePointIndex' = proto.Field(
+        polyline_point_index: "PolylineDetails.PolylinePointIndex" = proto.Field(
             proto.MESSAGE,
             number=2,
-            message='PolylineDetails.PolylinePointIndex',
+            message="PolylineDetails.PolylinePointIndex",
         )
 
     class NarrowRoadInfo(proto.Message):
@@ -124,15 +124,15 @@ class PolylineDetails(proto.Message):
                 information along the polyline.
         """
 
-        narrow_road_presence: 'PolylineDetails.RoadFeatureState' = proto.Field(
+        narrow_road_presence: "PolylineDetails.RoadFeatureState" = proto.Field(
             proto.ENUM,
             number=1,
-            enum='PolylineDetails.RoadFeatureState',
+            enum="PolylineDetails.RoadFeatureState",
         )
-        polyline_point_index: 'PolylineDetails.PolylinePointIndex' = proto.Field(
+        polyline_point_index: "PolylineDetails.PolylinePointIndex" = proto.Field(
             proto.MESSAGE,
             number=2,
-            message='PolylineDetails.PolylinePointIndex',
+            message="PolylineDetails.PolylinePointIndex",
         )
 
     flyover_info: MutableSequence[FlyoverInfo] = proto.RepeatedField(
