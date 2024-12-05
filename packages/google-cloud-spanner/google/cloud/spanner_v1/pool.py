@@ -145,7 +145,8 @@ class FixedSizePool(AbstractSessionPool):
     - Pre-allocates / creates a fixed number of sessions.
 
     - "Pings" existing sessions via :meth:`session.exists` before returning
-      them, and replaces expired sessions.
+      sessions that have not been used for more than 55 minutes and replaces
+      expired sessions.
 
     - Blocks, with a timeout, when :meth:`get` is called on an empty pool.
       Raises after timing out.
@@ -171,6 +172,7 @@ class FixedSizePool(AbstractSessionPool):
 
     DEFAULT_SIZE = 10
     DEFAULT_TIMEOUT = 10
+    DEFAULT_MAX_AGE_MINUTES = 55
 
     def __init__(
         self,
@@ -178,11 +180,13 @@ class FixedSizePool(AbstractSessionPool):
         default_timeout=DEFAULT_TIMEOUT,
         labels=None,
         database_role=None,
+        max_age_minutes=DEFAULT_MAX_AGE_MINUTES,
     ):
         super(FixedSizePool, self).__init__(labels=labels, database_role=database_role)
         self.size = size
         self.default_timeout = default_timeout
         self._sessions = queue.LifoQueue(size)
+        self._max_age = datetime.timedelta(minutes=max_age_minutes)
 
     def bind(self, database):
         """Associate the pool with a database.
@@ -230,8 +234,9 @@ class FixedSizePool(AbstractSessionPool):
             timeout = self.default_timeout
 
         session = self._sessions.get(block=True, timeout=timeout)
+        age = _NOW() - session.last_use_time
 
-        if not session.exists():
+        if age >= self._max_age and not session.exists():
             session = self._database.session()
             session.create()
 

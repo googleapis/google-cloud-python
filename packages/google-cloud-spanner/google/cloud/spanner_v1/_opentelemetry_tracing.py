@@ -15,6 +15,7 @@
 """Manages OpenTelemetry trace creation and handling"""
 
 from contextlib import contextmanager
+from datetime import datetime
 import os
 
 from google.cloud.spanner_v1 import SpannerClient
@@ -56,6 +57,9 @@ def get_tracer(tracer_provider=None):
 
 @contextmanager
 def trace_call(name, session, extra_attributes=None, observability_options=None):
+    if session:
+        session._last_use_time = datetime.now()
+
     if not HAS_OPENTELEMETRY_INSTALLED or not session:
         # Empty context manager. Users will have to check if the generated value is None or a span
         yield None

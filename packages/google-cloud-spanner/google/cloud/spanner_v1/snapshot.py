@@ -14,6 +14,7 @@
 
 """Model a set of read-only queries to a database as a snapshot."""
 
+from datetime import datetime
 import functools
 import threading
 from google.protobuf.struct_pb2 import Struct
@@ -364,6 +365,7 @@ class _SnapshotBase(_SessionWrapper):
             )
 
         self._read_request_count += 1
+        self._session._last_use_time = datetime.now()
 
         if self._multi_use:
             return StreamedResultSet(
