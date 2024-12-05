@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.19.0](https://github.com/googleapis/python-storage/compare/v2.18.2...v2.19.0) (2024-11-21)
+
+
+### Features
+
+* Add integration test for universe domain ([#1346](https://github.com/googleapis/python-storage/issues/1346)) ([02a972d](https://github.com/googleapis/python-storage/commit/02a972d35fae6d05edfb26381f6a71e3b8f59d6d))
+* Add restore_bucket and handling for soft-deleted buckets ([#1365](https://github.com/googleapis/python-storage/issues/1365)) ([ab94efd](https://github.com/googleapis/python-storage/commit/ab94efda83f68c974ec91d6b869b09047501031a))
+* Add support for restore token ([#1369](https://github.com/googleapis/python-storage/issues/1369)) ([06ed15b](https://github.com/googleapis/python-storage/commit/06ed15b33dc884da6dffbef5119e47f0fc4e1285))
+* IAM signBlob retry and universe domain support ([#1380](https://github.com/googleapis/python-storage/issues/1380)) ([abc8061](https://github.com/googleapis/python-storage/commit/abc80615ee00a14bc0e6b095252f6d1eb09c4b45))
+
+
+### Bug Fixes
+
+* Allow signed post policy v4 with service account and token ([#1356](https://github.com/googleapis/python-storage/issues/1356)) ([8ec02c0](https://github.com/googleapis/python-storage/commit/8ec02c0e656a4e6786f256798f4b93b95b50acec))
+* Do not spam the log with checksum related INFO messages when downloading using transfer_manager ([#1357](https://github.com/googleapis/python-storage/issues/1357)) ([42392ef](https://github.com/googleapis/python-storage/commit/42392ef8e38527ce4e50454cdd357425b3f57c87))
+
 ## [2.18.2](https://github.com/googleapis/python-storage/compare/v2.18.1...v2.18.2) (2024-08-08)
 
 
