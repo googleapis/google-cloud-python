@@ -158,3 +158,40 @@ if HAS_OPENTELEMETRY_INSTALLED:
             self.assertEqual(len(span_list), 1)
             span = span_list[0]
             self.assertEqual(span.status.status_code, StatusCode.ERROR)
+
+        def test_trace_call_terminal_span_status(self):
+            # Verify that we don't unconditionally set the terminal span status to
+            # SpanStatus.OK per https://github.com/googleapis/python-spanner/issues/1246
+            from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+            from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+                InMemorySpanExporter,
+            )
+            from opentelemetry.trace.status import Status, StatusCode
+            from opentelemetry.sdk.trace import TracerProvider
+            from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+
+            tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+            trace_exporter = InMemorySpanExporter()
+            tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+            observability_options = dict(tracer_provider=tracer_provider)
+
+            session = _make_session()
+            with _opentelemetry_tracing.trace_call(
+                "VerifyTerminalSpanStatus",
+                session,
+                observability_options=observability_options,
+            ) as span:
+                span.set_status(Status(StatusCode.ERROR, "Our error exhibit"))
+
+            span_list = trace_exporter.get_finished_spans()
+            got_statuses = []
+
+            for span in span_list:
+                got_statuses.append(
+                    (span.name, span.status.status_code, span.status.description)
+                )
+
+            want_statuses = [
+                ("VerifyTerminalSpanStatus", StatusCode.ERROR, "Our error exhibit"),
+            ]
+            assert got_statuses == want_statuses

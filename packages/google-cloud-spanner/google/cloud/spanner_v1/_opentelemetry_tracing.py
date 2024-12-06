@@ -109,4 +109,10 @@ def trace_call(name, session, extra_attributes=None, observability_options=None)
             span.record_exception(error)
             raise
         else:
-            span.set_status(Status(StatusCode.OK))
+            if (not span._status) or span._status.status_code == StatusCode.UNSET:
+                # OpenTelemetry-Python only allows a status change
+                # if the current code is UNSET or ERROR. At the end
+                # of the generator's consumption, only set it to OK
+                # it wasn't previously set otherwise.
+                # https://github.com/googleapis/python-spanner/issues/1246
+                span.set_status(Status(StatusCode.OK))
