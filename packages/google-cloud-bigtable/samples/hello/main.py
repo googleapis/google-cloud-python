@@ -36,6 +36,10 @@ from google.cloud.bigtable import row_filters
 
 # [END bigtable_hw_imports]
 
+# use to avoid warnings
+row_filters
+column_family
+
 
 def main(project_id, instance_id, table_id):
     # [START bigtable_hw_connect]
@@ -52,7 +56,7 @@ def main(project_id, instance_id, table_id):
     print("Creating column family cf1 with Max Version GC rule...")
     # Create a column family with GC policy : most recent N versions
     # Define the GC policy to retain only the most recent 2 versions
-    max_versions_rule = column_family.MaxVersionsGCRule(2)
+    max_versions_rule = bigtable.column_family.MaxVersionsGCRule(2)
     column_family_id = "cf1"
     column_families = {column_family_id: max_versions_rule}
     if not table.exists():
@@ -93,7 +97,7 @@ def main(project_id, instance_id, table_id):
         # [START bigtable_hw_create_filter]
         # Create a filter to only retrieve the most recent version of the cell
         # for each column across entire row.
-        row_filter = row_filters.CellsColumnLimitFilter(1)
+        row_filter = bigtable.row_filters.CellsColumnLimitFilter(1)
         # [END bigtable_hw_create_filter]
 
         # [START bigtable_hw_get_with_filter]

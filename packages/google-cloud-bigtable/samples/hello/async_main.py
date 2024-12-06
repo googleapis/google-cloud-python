@@ -31,10 +31,10 @@ from ..utils import wait_for_table
 # [START bigtable_async_hw_imports]
 from google.cloud import bigtable
 from google.cloud.bigtable.data import row_filters
-from google.cloud.bigtable.data import RowMutationEntry
-from google.cloud.bigtable.data import SetCell
-from google.cloud.bigtable.data import ReadRowsQuery
 # [END bigtable_async_hw_imports]
+
+# use to ignore warnings
+row_filters
 
 
 async def main(project_id, instance_id, table_id):
@@ -85,8 +85,8 @@ async def main(project_id, instance_id, table_id):
             #
             #     https://cloud.google.com/bigtable/docs/schema-design
             row_key = "greeting{}".format(i).encode()
-            row_mutation = RowMutationEntry(
-                row_key, SetCell(column_family_id, column, value)
+            row_mutation = bigtable.data.RowMutationEntry(
+                row_key, bigtable.data.SetCell(column_family_id, column, value)
             )
             mutations.append(row_mutation)
         await table.bulk_mutate_rows(mutations)
@@ -95,7 +95,7 @@ async def main(project_id, instance_id, table_id):
         # [START bigtable_async_hw_create_filter]
         # Create a filter to only retrieve the most recent version of the cell
         # for each column across entire row.
-        row_filter = row_filters.CellsColumnLimitFilter(1)
+        row_filter = bigtable.data.row_filters.CellsColumnLimitFilter(1)
         # [END bigtable_async_hw_create_filter]
 
         # [START bigtable_async_hw_get_with_filter]
@@ -112,7 +112,7 @@ async def main(project_id, instance_id, table_id):
         # [START bigtable_async_hw_scan_with_filter]
         # [START bigtable_async_hw_scan_all]
         print("Scanning for all greetings:")
-        query = ReadRowsQuery(row_filter=row_filter)
+        query = bigtable.data.ReadRowsQuery(row_filter=row_filter)
         async for row in await table.read_rows_stream(query):
             cell = row.cells[0]
             print(cell.value.decode("utf-8"))

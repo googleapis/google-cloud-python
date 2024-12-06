@@ -34,6 +34,14 @@ BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
 TABLE_ID = f"mobile-time-series-filters-async-{str(uuid.uuid4())[:16]}"
 
 
+@pytest.fixture(scope="module")
+def event_loop():
+    import asyncio
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+
+
 @pytest_asyncio.fixture(scope="module", autouse=True)
 async def table_id() -> AsyncGenerator[str, None]:
     with create_table_cm(PROJECT, BIGTABLE_INSTANCE, TABLE_ID, {"stats_summary": None, "cell_plan": None}):
