@@ -21,7 +21,6 @@ from google.cloud.spanner_v1 import (
     BatchCreateSessionsRequest,
     ExecuteSqlRequest,
     CommitRequest,
-    GetSessionRequest,
     BeginTransactionRequest,
 )
 from test.mockserver_tests.mock_server_test_base import (
@@ -128,10 +127,8 @@ LIMIT 1
             session.commit()
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(5, len(requests))
+        eq_(4, len(requests))
         is_instance_of(requests[0], BatchCreateSessionsRequest)
-        # We should get rid of this extra round-trip for GetSession....
-        is_instance_of(requests[1], GetSessionRequest)
-        is_instance_of(requests[2], BeginTransactionRequest)
-        is_instance_of(requests[3], ExecuteSqlRequest)
-        is_instance_of(requests[4], CommitRequest)
+        is_instance_of(requests[1], BeginTransactionRequest)
+        is_instance_of(requests[2], ExecuteSqlRequest)
+        is_instance_of(requests[3], CommitRequest)

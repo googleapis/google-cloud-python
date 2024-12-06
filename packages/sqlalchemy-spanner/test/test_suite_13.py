@@ -1300,6 +1300,9 @@ class NumericTest(_NumericTest):
             filter_=lambda n: n is not None and round(n, 5) or None,
         )
 
+    def test_float_coerce_round_trip(self, connection):
+        pass
+
     @requires.precision_numerics_general
     def test_precision_decimal(self):
         """

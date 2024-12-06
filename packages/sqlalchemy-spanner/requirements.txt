@@ -157,9 +157,9 @@ google-cloud-core==2.4.1 \
     --hash=sha256:9b7749272a812bde58fff28868d0c5e2f585b82f37e09a1f6ed2d4d10f134073 \
     --hash=sha256:a9e6a4422b9ac5c29f79a0ede9485473338e2ce78d91f2370c01e730eab22e61
     # via google-cloud-spanner
-google-cloud-spanner==3.50.1 \
-    --hash=sha256:82937ea03b55de86bddf622f555aeae65ae86bb4f28ab35bd920ac505917c9bf \
-    --hash=sha256:9d399aa53fae58816023a4eb31fa267333c3a879a9221229e7f06fdda543884a
+google-cloud-spanner==3.51.0 \
+    --hash=sha256:2d01f33582526ebe7fab62034e92e722e512c21f6bc4abe27e03d86ef7ea576a \
+    --hash=sha256:346c2c20f64847883464fb0de5a6f9b48ecc6f79b032a2fb3a0aa088d9a9863f
     # via -r requirements.in
 googleapis-common-protos[grpc]==1.66.0 \
     --hash=sha256:c3e7b33d15fdca5374cc0a7346dd92ffa847425cc4ea941d970f13680052ec8c \
