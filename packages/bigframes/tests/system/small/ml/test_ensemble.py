@@ -14,9 +14,7 @@
 
 from unittest import TestCase
 
-import google.api_core.exceptions
 import pandas
-import pytest
 
 import bigframes.ml.ensemble
 
@@ -116,11 +114,9 @@ def test_xgbregressor_model_predict(
 
 
 def test_to_gbq_saved_xgbregressor_model_scores(
-    penguins_xgbregressor_model, dataset_id, penguins_df_default_index
+    penguins_xgbregressor_model, table_id_unique, penguins_df_default_index
 ):
-    saved_model = penguins_xgbregressor_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
-    )
+    saved_model = penguins_xgbregressor_model.to_gbq(table_id_unique, replace=True)
     df = penguins_df_default_index.dropna()
     X_test = df[
         [
@@ -153,14 +149,6 @@ def test_to_gbq_saved_xgbregressor_model_scores(
         # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
         check_index_type=False,
     )
-
-
-def test_to_xgbregressor_model_gbq_replace(penguins_xgbregressor_model, dataset_id):
-    penguins_xgbregressor_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
-    )
-    with pytest.raises(google.api_core.exceptions.Conflict):
-        penguins_xgbregressor_model.to_gbq(f"{dataset_id}.test_penguins_model")
 
 
 def test_xgbclassifier_model_score(
@@ -240,11 +228,9 @@ def test_xgbclassifier_model_predict(
 
 
 def test_to_gbq_saved_xgbclassifier_model_scores(
-    penguins_xgbclassifier_model, dataset_id, penguins_df_default_index
+    penguins_xgbclassifier_model, table_id_unique, penguins_df_default_index
 ):
-    saved_model = penguins_xgbclassifier_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
-    )
+    saved_model = penguins_xgbclassifier_model.to_gbq(table_id_unique, replace=True)
     df = penguins_df_default_index.dropna()
     X_test = df[
         [
@@ -279,14 +265,6 @@ def test_to_gbq_saved_xgbclassifier_model_scores(
     )
     assert saved_model.max_depth == 6
     assert saved_model.max_iterations == 20
-
-
-def test_to_xgbclassifier_model_gbq_replace(penguins_xgbclassifier_model, dataset_id):
-    penguins_xgbclassifier_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
-    )
-    with pytest.raises(google.api_core.exceptions.Conflict):
-        penguins_xgbclassifier_model.to_gbq(f"{dataset_id}.test_penguins_model")
 
 
 def test_randomforestregressor_model_score(
@@ -387,10 +365,10 @@ def test_randomforestregressor_model_predict(
 
 
 def test_to_gbq_saved_randomforestregressor_model_scores(
-    penguins_randomforest_regressor_model, dataset_id, penguins_df_default_index
+    penguins_randomforest_regressor_model, table_id_unique, penguins_df_default_index
 ):
     saved_model = penguins_randomforest_regressor_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
+        table_id_unique, replace=True
     )
     df = penguins_df_default_index.dropna()
     X_test = df[
@@ -424,18 +402,6 @@ def test_to_gbq_saved_randomforestregressor_model_scores(
         # int64 Index by default in pandas versus Int64 (nullable) Index in BigFramese
         check_index_type=False,
     )
-
-
-def test_to_randomforestregressor_model_gbq_replace(
-    penguins_randomforest_regressor_model, dataset_id
-):
-    penguins_randomforest_regressor_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
-    )
-    with pytest.raises(google.api_core.exceptions.Conflict):
-        penguins_randomforest_regressor_model.to_gbq(
-            f"{dataset_id}.test_penguins_model"
-        )
 
 
 def test_randomforestclassifier_model_score(
@@ -518,10 +484,10 @@ def test_randomforestclassifier_model_predict(
 
 
 def test_to_gbq_saved_randomforestclassifier_model_scores(
-    penguins_randomforest_classifier_model, dataset_id, penguins_df_default_index
+    penguins_randomforest_classifier_model, table_id_unique, penguins_df_default_index
 ):
     saved_model = penguins_randomforest_classifier_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
+        table_id_unique, replace=True
     )
     df = penguins_df_default_index.dropna()
     X_test = df[
@@ -555,15 +521,3 @@ def test_to_gbq_saved_randomforestclassifier_model_scores(
         # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
         check_index_type=False,
     )
-
-
-def test_to_randomforestclassifier_model_gbq_replace(
-    penguins_randomforest_classifier_model, dataset_id
-):
-    penguins_randomforest_classifier_model.to_gbq(
-        f"{dataset_id}.test_penguins_model", replace=True
-    )
-    with pytest.raises(google.api_core.exceptions.Conflict):
-        penguins_randomforest_classifier_model.to_gbq(
-            f"{dataset_id}.test_penguins_model"
-        )

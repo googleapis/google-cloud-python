@@ -26,6 +26,7 @@ from bigframes.ml import core
 from tests.system import utils
 
 
+@pytest.mark.skip("b/382550253: BQML model hang in there.")
 def test_model_eval(
     penguins_bqml_linear_model,
 ):
