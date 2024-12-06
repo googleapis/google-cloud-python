@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.51.0](https://github.com/googleapis/python-spanner/compare/v3.50.1...v3.51.0) (2024-12-05)
+
+
+### Features
+
+* Add connection variable for ignoring transaction warnings ([#1249](https://github.com/googleapis/python-spanner/issues/1249)) ([eeb7836](https://github.com/googleapis/python-spanner/commit/eeb7836b6350aa9626dfb733208e6827d38bb9c9))
+* **spanner:** Implement custom tracer_provider injection for opentelemetry traces ([#1229](https://github.com/googleapis/python-spanner/issues/1229)) ([6869ed6](https://github.com/googleapis/python-spanner/commit/6869ed651e41d7a8af046884bc6c792a4177f766))
+* Support float32 parameters in dbapi ([#1245](https://github.com/googleapis/python-spanner/issues/1245)) ([829b799](https://github.com/googleapis/python-spanner/commit/829b799e0c9c6da274bf95c272cda564cfdba928))
+
+
+### Bug Fixes
+
+* Allow setting connection.read_only to same value ([#1247](https://github.com/googleapis/python-spanner/issues/1247)) ([5e8ca94](https://github.com/googleapis/python-spanner/commit/5e8ca949b583fbcf0b92b42696545973aad8c78f))
+* Allow setting staleness to same value in tx ([#1253](https://github.com/googleapis/python-spanner/issues/1253)) ([a214885](https://github.com/googleapis/python-spanner/commit/a214885ed474f3d69875ef580d5f8cbbabe9199a))
+* Dbapi raised AttributeError with [] as arguments ([#1257](https://github.com/googleapis/python-spanner/issues/1257)) ([758bf48](https://github.com/googleapis/python-spanner/commit/758bf4889a7f3346bc8282a3eed47aee43be650c))
+
+
+### Performance Improvements
+
+* Optimize ResultSet decoding ([#1244](https://github.com/googleapis/python-spanner/issues/1244)) ([ccae6e0](https://github.com/googleapis/python-spanner/commit/ccae6e0287ba6cf3c14f15a907b2106b11ef1fdc))
+* Remove repeated GetSession calls for FixedSizePool ([#1252](https://github.com/googleapis/python-spanner/issues/1252)) ([c064815](https://github.com/googleapis/python-spanner/commit/c064815abaaa4b564edd6f0e365a37e7e839080c))
+
+
+### Documentation
+
+* **samples:** Add samples for Cloud Spanner Default Backup Schedules ([#1238](https://github.com/googleapis/python-spanner/issues/1238)) ([054a186](https://github.com/googleapis/python-spanner/commit/054a18658eedc5d4dbecb7508baa3f3d67f5b815))
+
 ## [3.50.1](https://github.com/googleapis/python-spanner/compare/v3.50.0...v3.50.1) (2024-11-14)
 
 
