@@ -1475,6 +1475,49 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table1 = self._make_one(TableReference(dataset, "table1"))
         self.assertEqual(str(table1), "project1.dataset1.table1")
 
+    def test_max_staleness_getter(self):
+        """Test getting max_staleness property."""
+        dataset = DatasetReference("test-project", "test_dataset")
+        table_ref = dataset.table("test_table")
+        table = self._make_one(table_ref)
+        # Initially None
+        self.assertIsNone(table.max_staleness)
+        # Set max_staleness using setter
+        table.max_staleness = "1h"
+        self.assertEqual(table.max_staleness, "1h")
+
+    def test_max_staleness_setter(self):
+        """Test setting max_staleness property."""
+        dataset = DatasetReference("test-project", "test_dataset")
+        table_ref = dataset.table("test_table")
+        table = self._make_one(table_ref)
+        # Set valid max_staleness
+        table.max_staleness = "30m"
+        self.assertEqual(table.max_staleness, "30m")
+        # Set to None
+        table.max_staleness = None
+        self.assertIsNone(table.max_staleness)
+
+    def test_max_staleness_setter_invalid_type(self):
+        """Test setting max_staleness with an invalid type raises ValueError."""
+        dataset = DatasetReference("test-project", "test_dataset")
+        table_ref = dataset.table("test_table")
+        table = self._make_one(table_ref)
+        # Try setting invalid type
+        with self.assertRaises(ValueError):
+            table.max_staleness = 123  # Not a string
+
+    def test_max_staleness_to_api_repr(self):
+        """Test max_staleness is correctly represented in API representation."""
+        dataset = DatasetReference("test-project", "test_dataset")
+        table_ref = dataset.table("test_table")
+        table = self._make_one(table_ref)
+        # Set max_staleness
+        table.max_staleness = "1h"
+        # Convert to API representation
+        resource = table.to_api_repr()
+        self.assertEqual(resource.get("maxStaleness"), "1h")
+
 
 class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
     PROJECT = "prahj-ekt"
