@@ -196,7 +196,7 @@ def test_text_generator_predict_with_params_success(
 
 @pytest.mark.parametrize(
     "model_name",
-    ("text-embedding-004", "text-multilingual-embedding-002"),
+    ("text-embedding-005", "text-embedding-004", "text-multilingual-embedding-002"),
 )
 def test_create_load_text_embedding_generator_model(
     dataset_id, model_name, session, bq_connection
@@ -218,7 +218,7 @@ def test_create_load_text_embedding_generator_model(
 
 @pytest.mark.parametrize(
     "model_name",
-    ("text-embedding-004", "text-multilingual-embedding-002"),
+    ("text-embedding-005", "text-embedding-004", "text-multilingual-embedding-002"),
 )
 @pytest.mark.flaky(retries=2)
 def test_text_embedding_generator_predict_default_params_success(
@@ -236,7 +236,7 @@ def test_text_embedding_generator_predict_default_params_success(
 
 @pytest.mark.parametrize(
     "model_name",
-    ("text-embedding-004", "text-multilingual-embedding-002"),
+    ("text-embedding-005", "text-embedding-004", "text-multilingual-embedding-002"),
 )
 @pytest.mark.flaky(retries=2)
 def test_text_embedding_generator_multi_cols_predict_success(

@@ -47,9 +47,11 @@ _PALM2_EMBEDDING_GENERATOR_ENDPOINTS = (
     _EMBEDDING_GENERATOR_GECKO_MULTILINGUAL_ENDPOINT,
 )
 
+_TEXT_EMBEDDING_005_ENDPOINT = "text-embedding-005"
 _TEXT_EMBEDDING_004_ENDPOINT = "text-embedding-004"
 _TEXT_MULTILINGUAL_EMBEDDING_002_ENDPOINT = "text-multilingual-embedding-002"
 _TEXT_EMBEDDING_ENDPOINTS = (
+    _TEXT_EMBEDDING_005_ENDPOINT,
     _TEXT_EMBEDDING_004_ENDPOINT,
     _TEXT_MULTILINGUAL_EMBEDDING_002_ENDPOINT,
 )
@@ -606,8 +608,8 @@ class TextEmbeddingGenerator(base.BaseEstimator):
 
     Args:
         model_name (str, Default to "text-embedding-004"):
-            The model for text embedding. Possible values are "text-embedding-004" or "text-multilingual-embedding-002".
-            text-embedding models returns model embeddings for text inputs.
+            The model for text embedding. Possible values are "text-embedding-005", "text-embedding-004"
+            or "text-multilingual-embedding-002". text-embedding models returns model embeddings for text inputs.
             text-multilingual-embedding models returns model embeddings for text inputs which support over 100 languages.
             Default to "text-embedding-004".
         session (bigframes.Session or None):
@@ -621,7 +623,9 @@ class TextEmbeddingGenerator(base.BaseEstimator):
         self,
         *,
         model_name: Literal[
-            "text-embedding-004", "text-multilingual-embedding-002"
+            "text-embedding-005",
+            "text-embedding-004",
+            "text-multilingual-embedding-002",
         ] = "text-embedding-004",
         session: Optional[bigframes.Session] = None,
         connection_name: Optional[str] = None,
