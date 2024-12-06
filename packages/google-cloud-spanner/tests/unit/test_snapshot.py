@@ -1822,6 +1822,10 @@ class _Session(object):
         self._database = database
         self.name = name
 
+    @property
+    def session_id(self):
+        return self.name
+
 
 class _MockIterator(object):
     def __init__(self, *values, **kw):

@@ -15,6 +15,7 @@
 
 import google.api_core.gapic_v1.method
 from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 import mock
 from tests._helpers import (
     OpenTelemetryBase,
@@ -173,6 +174,43 @@ class TestSession(OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner.CreateSession", attributes=TestSession.BASE_ATTRIBUTES
         )
+
+    def test_create_session_span_annotations(self):
+        from google.cloud.spanner_v1 import CreateSessionRequest
+        from google.cloud.spanner_v1 import Session as SessionRequestProto
+
+        session_pb = self._make_session_pb(
+            self.SESSION_NAME, database_role=self.DATABASE_ROLE
+        )
+
+        gax_api = self._make_spanner_api()
+        gax_api.create_session.return_value = session_pb
+        database = self._make_database(database_role=self.DATABASE_ROLE)
+        database.spanner_api = gax_api
+        session = self._make_one(database, database_role=self.DATABASE_ROLE)
+
+        with trace_call("TestSessionSpan", session) as span:
+            session.create()
+
+            self.assertEqual(session.session_id, self.SESSION_ID)
+            self.assertEqual(session.database_role, self.DATABASE_ROLE)
+            session_template = SessionRequestProto(creator_role=self.DATABASE_ROLE)
+
+            request = CreateSessionRequest(
+                database=database.name,
+                session=session_template,
+            )
+
+            gax_api.create_session.assert_called_once_with(
+                request=request,
+                metadata=[
+                    ("google-cloud-resource-prefix", database.name),
+                    ("x-goog-spanner-route-to-leader", "true"),
+                ],
+            )
+
+            wantEventNames = ["Creating Session"]
+            self.assertSpanEvents("TestSessionSpan", wantEventNames, span)
 
     def test_create_wo_database_role(self):
         from google.cloud.spanner_v1 import CreateSessionRequest

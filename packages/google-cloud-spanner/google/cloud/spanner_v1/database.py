@@ -67,6 +67,10 @@ from google.cloud.spanner_v1.services.spanner.transports.grpc import (
     SpannerGrpcTransport,
 )
 from google.cloud.spanner_v1.table import Table
+from google.cloud.spanner_v1._opentelemetry_tracing import (
+    add_span_event,
+    get_current_span,
+)
 
 
 SPANNER_DATA_SCOPE = "https://www.googleapis.com/auth/spanner.data"
@@ -1164,7 +1168,9 @@ class BatchCheckout(object):
 
     def __enter__(self):
         """Begin ``with`` block."""
+        current_span = get_current_span()
         session = self._session = self._database._pool.get()
+        add_span_event(current_span, "Using session", {"id": session.session_id})
         batch = self._batch = Batch(session)
         if self._request_options.transaction_tag:
             batch.transaction_tag = self._request_options.transaction_tag
@@ -1187,6 +1193,12 @@ class BatchCheckout(object):
                     extra={"commit_stats": self._batch.commit_stats},
                 )
             self._database._pool.put(self._session)
+            current_span = get_current_span()
+            add_span_event(
+                current_span,
+                "Returned session to pool",
+                {"id": self._session.session_id},
+            )
 
 
 class MutationGroupsCheckout(object):

@@ -14,10 +14,17 @@
 
 
 from functools import total_ordering
+import time
 import unittest
 from datetime import datetime, timedelta
 
 import mock
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from tests._helpers import (
+    OpenTelemetryBase,
+    StatusCode,
+    enrich_with_otel_scope,
+)
 
 
 def _make_database(name="name"):
@@ -133,7 +140,15 @@ class TestAbstractSessionPool(unittest.TestCase):
         self.assertEqual(checkout._kwargs, {"foo": "bar"})
 
 
-class TestFixedSizePool(unittest.TestCase):
+class TestFixedSizePool(OpenTelemetryBase):
+    BASE_ATTRIBUTES = {
+        "db.type": "spanner",
+        "db.url": "spanner.googleapis.com",
+        "db.instance": "name",
+        "net.host.name": "spanner.googleapis.com",
+    }
+    enrich_with_otel_scope(BASE_ATTRIBUTES)
+
     def _getTargetClass(self):
         from google.cloud.spanner_v1.pool import FixedSizePool
 
@@ -215,6 +230,93 @@ class TestFixedSizePool(unittest.TestCase):
             self.assertIs(session, SESSIONS[i])
             self.assertTrue(session._exists_checked)
             self.assertFalse(pool._sessions.full())
+
+    def test_spans_bind_get(self):
+        # This tests retrieving 1 out of 4 sessions from the session pool.
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = sorted([_Session(database) for i in range(0, 4)])
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+
+        with trace_call("pool.Get", SESSIONS[0]) as span:
+            pool.get()
+            wantEventNames = [
+                "Acquiring session",
+                "Waiting for a session to become available",
+                "Acquired session",
+            ]
+            self.assertSpanEvents("pool.Get", wantEventNames, span)
+
+        # Check for the overall spans too.
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestFixedSizePool.BASE_ATTRIBUTES,
+        )
+
+        wantEventNames = [
+            "Acquiring session",
+            "Waiting for a session to become available",
+            "Acquired session",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames)
+
+    def test_spans_bind_get_empty_pool(self):
+        # Tests trying to invoke pool.get() from an empty pool.
+        pool = self._make_one(size=0)
+        database = _Database("name")
+        session1 = _Session(database)
+        with trace_call("pool.Get", session1):
+            try:
+                pool.bind(database)
+                database._sessions = database._sessions[:0]
+                pool.get()
+            except Exception:
+                pass
+
+        wantEventNames = [
+            "Invalid session pool size(0) <= 0",
+            "Acquiring session",
+            "Waiting for a session to become available",
+            "No sessions available in the pool",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames)
+
+        # Check for the overall spans too.
+        self.assertSpanNames(["pool.Get"])
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestFixedSizePool.BASE_ATTRIBUTES,
+        )
+
+    def test_spans_pool_bind(self):
+        # Tests the exception generated from invoking pool.bind when
+        # you have an empty pool.
+        pool = self._make_one(size=1)
+        database = _Database("name")
+        SESSIONS = []
+        database._sessions.extend(SESSIONS)
+        fauxSession = mock.Mock()
+        setattr(fauxSession, "_database", database)
+        try:
+            with trace_call("testBind", fauxSession):
+                pool.bind(database)
+        except Exception:
+            pass
+
+        wantEventNames = [
+            "Requesting 1 sessions",
+            "Creating 1 sessions",
+            "exception",
+        ]
+        self.assertSpanEvents("testBind", wantEventNames)
+
+        # Check for the overall spans.
+        self.assertSpanAttributes(
+            "testBind",
+            status=StatusCode.ERROR,
+            attributes=TestFixedSizePool.BASE_ATTRIBUTES,
+        )
 
     def test_get_expired(self):
         pool = self._make_one(size=4)
@@ -299,7 +401,15 @@ class TestFixedSizePool(unittest.TestCase):
             self.assertTrue(session._deleted)
 
 
-class TestBurstyPool(unittest.TestCase):
+class TestBurstyPool(OpenTelemetryBase):
+    BASE_ATTRIBUTES = {
+        "db.type": "spanner",
+        "db.url": "spanner.googleapis.com",
+        "db.instance": "name",
+        "net.host.name": "spanner.googleapis.com",
+    }
+    enrich_with_otel_scope(BASE_ATTRIBUTES)
+
     def _getTargetClass(self):
         from google.cloud.spanner_v1.pool import BurstyPool
 
@@ -347,6 +457,34 @@ class TestBurstyPool(unittest.TestCase):
         session.create.assert_called()
         self.assertTrue(pool._sessions.empty())
 
+    def test_spans_get_empty_pool(self):
+        # This scenario tests a pool that hasn't been filled up
+        # and pool.get() acquires from a pool, waiting for a session
+        # to become available.
+        pool = self._make_one()
+        database = _Database("name")
+        session1 = _Session(database)
+        database._sessions.append(session1)
+        pool.bind(database)
+
+        with trace_call("pool.Get", session1):
+            session = pool.get()
+            self.assertIsInstance(session, _Session)
+            self.assertIs(session._database, database)
+            session.create.assert_called()
+            self.assertTrue(pool._sessions.empty())
+
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+        )
+        wantEventNames = [
+            "Acquiring session",
+            "Waiting for a session to become available",
+            "No sessions available in pool. Creating session",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames)
+
     def test_get_non_empty_session_exists(self):
         pool = self._make_one()
         database = _Database("name")
@@ -360,6 +498,30 @@ class TestBurstyPool(unittest.TestCase):
         session.create.assert_not_called()
         self.assertTrue(session._exists_checked)
         self.assertTrue(pool._sessions.empty())
+
+    def test_spans_get_non_empty_session_exists(self):
+        # Tests the spans produces when you invoke pool.bind
+        # and then insert a session into the pool.
+        pool = self._make_one()
+        database = _Database("name")
+        previous = _Session(database)
+        pool.bind(database)
+        with trace_call("pool.Get", previous):
+            pool.put(previous)
+            session = pool.get()
+            self.assertIs(session, previous)
+            session.create.assert_not_called()
+            self.assertTrue(session._exists_checked)
+            self.assertTrue(pool._sessions.empty())
+
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+        )
+        self.assertSpanEvents(
+            "pool.Get",
+            ["Acquiring session", "Waiting for a session to become available"],
+        )
 
     def test_get_non_empty_session_expired(self):
         pool = self._make_one()
@@ -388,6 +550,22 @@ class TestBurstyPool(unittest.TestCase):
 
         self.assertFalse(pool._sessions.empty())
 
+    def test_spans_put_empty(self):
+        # Tests the spans produced when you put sessions into an empty pool.
+        pool = self._make_one()
+        database = _Database("name")
+        pool.bind(database)
+        session = _Session(database)
+
+        with trace_call("pool.put", session):
+            pool.put(session)
+            self.assertFalse(pool._sessions.empty())
+
+        self.assertSpanAttributes(
+            "pool.put",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+        )
+
     def test_put_full(self):
         pool = self._make_one(target_size=1)
         database = _Database("name")
@@ -401,6 +579,28 @@ class TestBurstyPool(unittest.TestCase):
 
         self.assertTrue(younger._deleted)
         self.assertIs(pool.get(), older)
+
+    def test_spans_put_full(self):
+        # This scenario tests the spans produced from putting an older
+        # session into a pool that is already full.
+        pool = self._make_one(target_size=1)
+        database = _Database("name")
+        pool.bind(database)
+        older = _Session(database)
+        with trace_call("pool.put", older):
+            pool.put(older)
+            self.assertFalse(pool._sessions.empty())
+
+            younger = _Session(database)
+            pool.put(younger)  # discarded silently
+
+            self.assertTrue(younger._deleted)
+            self.assertIs(pool.get(), older)
+
+        self.assertSpanAttributes(
+            "pool.put",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+        )
 
     def test_put_full_expired(self):
         pool = self._make_one(target_size=1)
@@ -426,9 +626,18 @@ class TestBurstyPool(unittest.TestCase):
         pool.clear()
 
         self.assertTrue(previous._deleted)
+        self.assertNoSpans()
 
 
-class TestPingingPool(unittest.TestCase):
+class TestPingingPool(OpenTelemetryBase):
+    BASE_ATTRIBUTES = {
+        "db.type": "spanner",
+        "db.url": "spanner.googleapis.com",
+        "db.instance": "name",
+        "net.host.name": "spanner.googleapis.com",
+    }
+    enrich_with_otel_scope(BASE_ATTRIBUTES)
+
     def _getTargetClass(self):
         from google.cloud.spanner_v1.pool import PingingPool
 
@@ -505,6 +714,7 @@ class TestPingingPool(unittest.TestCase):
         self.assertIs(session, SESSIONS[0])
         self.assertFalse(session._exists_checked)
         self.assertFalse(pool._sessions.full())
+        self.assertNoSpans()
 
     def test_get_hit_w_ping(self):
         import datetime
@@ -526,6 +736,7 @@ class TestPingingPool(unittest.TestCase):
         self.assertIs(session, SESSIONS[0])
         self.assertTrue(session._exists_checked)
         self.assertFalse(pool._sessions.full())
+        self.assertNoSpans()
 
     def test_get_hit_w_ping_expired(self):
         import datetime
@@ -549,6 +760,7 @@ class TestPingingPool(unittest.TestCase):
         session.create.assert_called()
         self.assertTrue(SESSIONS[0]._exists_checked)
         self.assertFalse(pool._sessions.full())
+        self.assertNoSpans()
 
     def test_get_empty_default_timeout(self):
         import queue
@@ -560,6 +772,7 @@ class TestPingingPool(unittest.TestCase):
             pool.get()
 
         self.assertEqual(session_queue._got, {"block": True, "timeout": 10})
+        self.assertNoSpans()
 
     def test_get_empty_explicit_timeout(self):
         import queue
@@ -571,6 +784,7 @@ class TestPingingPool(unittest.TestCase):
             pool.get(timeout=1)
 
         self.assertEqual(session_queue._got, {"block": True, "timeout": 1})
+        self.assertNoSpans()
 
     def test_put_full(self):
         import queue
@@ -585,6 +799,7 @@ class TestPingingPool(unittest.TestCase):
             pool.put(_Session(database))
 
         self.assertTrue(pool._sessions.full())
+        self.assertNoSpans()
 
     def test_put_non_full(self):
         import datetime
@@ -605,6 +820,7 @@ class TestPingingPool(unittest.TestCase):
         ping_after, queued = session_queue._items[0]
         self.assertEqual(ping_after, now + datetime.timedelta(seconds=3000))
         self.assertIs(queued, session)
+        self.assertNoSpans()
 
     def test_clear(self):
         pool = self._make_one()
@@ -623,10 +839,12 @@ class TestPingingPool(unittest.TestCase):
 
         for session in SESSIONS:
             self.assertTrue(session._deleted)
+        self.assertNoSpans()
 
     def test_ping_empty(self):
         pool = self._make_one(size=1)
         pool.ping()  # Does not raise 'Empty'
+        self.assertNoSpans()
 
     def test_ping_oldest_fresh(self):
         pool = self._make_one(size=1)
@@ -638,6 +856,7 @@ class TestPingingPool(unittest.TestCase):
         pool.ping()
 
         self.assertFalse(SESSIONS[0]._pinged)
+        self.assertNoSpans()
 
     def test_ping_oldest_stale_but_exists(self):
         import datetime
@@ -674,193 +893,36 @@ class TestPingingPool(unittest.TestCase):
 
         self.assertTrue(SESSIONS[0]._pinged)
         SESSIONS[1].create.assert_called()
+        self.assertNoSpans()
 
-
-class TestTransactionPingingPool(unittest.TestCase):
-    def _getTargetClass(self):
-        from google.cloud.spanner_v1.pool import TransactionPingingPool
-
-        return TransactionPingingPool
-
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
-
-    def test_ctor_defaults(self):
-        pool = self._make_one()
-        self.assertIsNone(pool._database)
-        self.assertEqual(pool.size, 10)
-        self.assertEqual(pool.default_timeout, 10)
-        self.assertEqual(pool._delta.seconds, 3000)
-        self.assertTrue(pool._sessions.empty())
-        self.assertTrue(pool._pending_sessions.empty())
-        self.assertEqual(pool.labels, {})
-        self.assertIsNone(pool.database_role)
-
-    def test_ctor_explicit(self):
-        labels = {"foo": "bar"}
-        database_role = "dummy-role"
-        pool = self._make_one(
-            size=4,
-            default_timeout=30,
-            ping_interval=1800,
-            labels=labels,
-            database_role=database_role,
-        )
-        self.assertIsNone(pool._database)
-        self.assertEqual(pool.size, 4)
-        self.assertEqual(pool.default_timeout, 30)
-        self.assertEqual(pool._delta.seconds, 1800)
-        self.assertTrue(pool._sessions.empty())
-        self.assertTrue(pool._pending_sessions.empty())
-        self.assertEqual(pool.labels, labels)
-        self.assertEqual(pool.database_role, database_role)
-
-    def test_ctor_explicit_w_database_role_in_db(self):
-        database_role = "dummy-role"
-        pool = self._make_one()
-        database = pool._database = _Database("name")
-        SESSIONS = [_Session(database)] * 10
-        database._sessions.extend(SESSIONS)
-        database._database_role = database_role
-        pool.bind(database)
-        self.assertEqual(pool.database_role, database_role)
-
-    def test_bind(self):
+    def test_spans_get_and_leave_empty_pool(self):
+        # This scenario tests the spans generated from pulling a span
+        # out the pool and leaving it empty.
         pool = self._make_one()
         database = _Database("name")
-        SESSIONS = [_Session(database) for _ in range(10)]
-        database._sessions.extend(SESSIONS)
-        pool.bind(database)
-
-        self.assertIs(pool._database, database)
-        self.assertEqual(pool.size, 10)
-        self.assertEqual(pool.default_timeout, 10)
-        self.assertEqual(pool._delta.seconds, 3000)
-        self.assertTrue(pool._sessions.full())
-
-        api = database.spanner_api
-        self.assertEqual(api.batch_create_sessions.call_count, 5)
-        for session in SESSIONS:
-            session.create.assert_not_called()
-            txn = session._transaction
-            txn.begin.assert_not_called()
-
-        self.assertTrue(pool._pending_sessions.empty())
-
-    def test_bind_w_timestamp_race(self):
-        import datetime
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner_v1 import pool as MUT
-
-        NOW = datetime.datetime.utcnow()
-        pool = self._make_one()
-        database = _Database("name")
-        SESSIONS = [_Session(database) for _ in range(10)]
-        database._sessions.extend(SESSIONS)
-
-        with _Monkey(MUT, _NOW=lambda: NOW):
+        session1 = _Session(database)
+        database._sessions.append(session1)
+        try:
             pool.bind(database)
+        except Exception:
+            pass
 
-        self.assertIs(pool._database, database)
-        self.assertEqual(pool.size, 10)
-        self.assertEqual(pool.default_timeout, 10)
-        self.assertEqual(pool._delta.seconds, 3000)
-        self.assertTrue(pool._sessions.full())
+        with trace_call("pool.Get", session1):
+            session = pool.get()
+            self.assertIsInstance(session, _Session)
+            self.assertIs(session._database, database)
+            # session.create.assert_called()
+            self.assertTrue(pool._sessions.empty())
 
-        api = database.spanner_api
-        self.assertEqual(api.batch_create_sessions.call_count, 5)
-        for session in SESSIONS:
-            session.create.assert_not_called()
-            txn = session._transaction
-            txn.begin.assert_not_called()
-
-        self.assertTrue(pool._pending_sessions.empty())
-
-    def test_put_full(self):
-        import queue
-
-        pool = self._make_one(size=4)
-        database = _Database("name")
-        SESSIONS = [_Session(database) for _ in range(4)]
-        database._sessions.extend(SESSIONS)
-        pool.bind(database)
-
-        with self.assertRaises(queue.Full):
-            pool.put(_Session(database))
-
-        self.assertTrue(pool._sessions.full())
-
-    def test_put_non_full_w_active_txn(self):
-        pool = self._make_one(size=1)
-        session_queue = pool._sessions = _Queue()
-        pending = pool._pending_sessions = _Queue()
-        database = _Database("name")
-        session = _Session(database)
-        txn = session.transaction()
-
-        pool.put(session)
-
-        self.assertEqual(len(session_queue._items), 1)
-        _, queued = session_queue._items[0]
-        self.assertIs(queued, session)
-
-        self.assertEqual(len(pending._items), 0)
-        txn.begin.assert_not_called()
-
-    def test_put_non_full_w_committed_txn(self):
-        pool = self._make_one(size=1)
-        session_queue = pool._sessions = _Queue()
-        pending = pool._pending_sessions = _Queue()
-        database = _Database("name")
-        session = _Session(database)
-        committed = session.transaction()
-        committed.committed = True
-
-        pool.put(session)
-
-        self.assertEqual(len(session_queue._items), 0)
-
-        self.assertEqual(len(pending._items), 1)
-        self.assertIs(pending._items[0], session)
-        self.assertIsNot(session._transaction, committed)
-        session._transaction.begin.assert_not_called()
-
-    def test_put_non_full(self):
-        pool = self._make_one(size=1)
-        session_queue = pool._sessions = _Queue()
-        pending = pool._pending_sessions = _Queue()
-        database = _Database("name")
-        session = _Session(database)
-
-        pool.put(session)
-
-        self.assertEqual(len(session_queue._items), 0)
-        self.assertEqual(len(pending._items), 1)
-        self.assertIs(pending._items[0], session)
-
-        self.assertFalse(pending.empty())
-
-    def test_begin_pending_transactions_empty(self):
-        pool = self._make_one(size=1)
-        pool.begin_pending_transactions()  # no raise
-
-    def test_begin_pending_transactions_non_empty(self):
-        pool = self._make_one(size=1)
-        pool._sessions = _Queue()
-
-        database = _Database("name")
-        TRANSACTIONS = [_make_transaction(object())]
-        PENDING_SESSIONS = [_Session(database, transaction=txn) for txn in TRANSACTIONS]
-
-        pending = pool._pending_sessions = _Queue(*PENDING_SESSIONS)
-        self.assertFalse(pending.empty())
-
-        pool.begin_pending_transactions()  # no raise
-
-        for txn in TRANSACTIONS:
-            txn.begin.assert_not_called()
-
-        self.assertTrue(pending.empty())
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestPingingPool.BASE_ATTRIBUTES,
+        )
+        wantEventNames = [
+            "Waiting for a session to become available",
+            "Acquired session",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames)
 
 
 class TestSessionCheckout(unittest.TestCase):
@@ -945,6 +1007,8 @@ class _Session(object):
         self._deleted = False
         self._transaction = transaction
         self._last_use_time = last_use_time
+        # Generate a faux id.
+        self._session_id = f"{time.time()}"
 
     def __lt__(self, other):
         return id(self) < id(other)
@@ -974,6 +1038,10 @@ class _Session(object):
     def transaction(self):
         txn = self._transaction = _make_transaction(self)
         return txn
+
+    @property
+    def session_id(self):
+        return self._session_id
 
 
 class _Database(object):

@@ -463,6 +463,7 @@ def _retry(
     retry_count=5,
     delay=2,
     allowed_exceptions=None,
+    beforeNextRetry=None,
 ):
     """
     Retry a function with a specified number of retries, delay between retries, and list of allowed exceptions.
@@ -479,6 +480,9 @@ def _retry(
     """
     retries = 0
     while retries <= retry_count:
+        if retries > 0 and beforeNextRetry:
+            beforeNextRetry(retries, delay)
+
         try:
             return func()
         except Exception as exc:

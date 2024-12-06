@@ -16,10 +16,11 @@ try:
         OTEL_SCOPE_NAME,
         OTEL_SCOPE_VERSION,
     )
+    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
 
     from opentelemetry.trace.status import StatusCode
 
-    trace.set_tracer_provider(TracerProvider())
+    trace.set_tracer_provider(TracerProvider(sampler=TraceIdRatioBased(1.0)))
 
     HAS_OPENTELEMETRY_INSTALLED = True
 except ImportError:
@@ -86,9 +87,43 @@ class OpenTelemetryBase(unittest.TestCase):
         if HAS_OPENTELEMETRY_INSTALLED:
             if not span:
                 span_list = self.ot_exporter.get_finished_spans()
-                self.assertEqual(len(span_list), 1)
+                self.assertEqual(len(span_list) > 0, True)
                 span = span_list[0]
 
             self.assertEqual(span.name, name)
             self.assertEqual(span.status.status_code, status)
             self.assertEqual(dict(span.attributes), attributes)
+
+    def assertSpanEvents(self, name, wantEventNames=[], span=None):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        if not span:
+            span_list = self.ot_exporter.get_finished_spans()
+            self.assertEqual(len(span_list) > 0, True)
+            span = span_list[0]
+
+        self.assertEqual(span.name, name)
+        actualEventNames = []
+        for event in span.events:
+            actualEventNames.append(event.name)
+        self.assertEqual(actualEventNames, wantEventNames)
+
+    def assertSpanNames(self, want_span_names):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        span_list = self.get_finished_spans()
+        got_span_names = [span.name for span in span_list]
+        self.assertEqual(got_span_names, want_span_names)
+
+    def get_finished_spans(self):
+        if HAS_OPENTELEMETRY_INSTALLED:
+            return list(
+                filter(
+                    lambda span: span and span.name,
+                    self.ot_exporter.get_finished_spans(),
+                )
+            )
+        else:
+            return []

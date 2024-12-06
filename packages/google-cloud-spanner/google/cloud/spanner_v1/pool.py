@@ -16,6 +16,7 @@
 
 import datetime
 import queue
+import time
 
 from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1 import BatchCreateSessionsRequest
@@ -23,6 +24,10 @@ from google.cloud.spanner_v1 import Session
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
+)
+from google.cloud.spanner_v1._opentelemetry_tracing import (
+    add_span_event,
+    get_current_span,
 )
 from warnings import warn
 
@@ -196,6 +201,18 @@ class FixedSizePool(AbstractSessionPool):
                          when needed.
         """
         self._database = database
+        requested_session_count = self.size - self._sessions.qsize()
+        span = get_current_span()
+        span_event_attributes = {"kind": type(self).__name__}
+
+        if requested_session_count <= 0:
+            add_span_event(
+                span,
+                f"Invalid session pool size({requested_session_count}) <= 0",
+                span_event_attributes,
+            )
+            return
+
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
         if database._route_to_leader_enabled:
@@ -203,13 +220,31 @@ class FixedSizePool(AbstractSessionPool):
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
         self._database_role = self._database_role or self._database.database_role
+        if requested_session_count > 0:
+            add_span_event(
+                span,
+                f"Requesting {requested_session_count} sessions",
+                span_event_attributes,
+            )
+
+        if self._sessions.full():
+            add_span_event(span, "Session pool is already full", span_event_attributes)
+            return
+
         request = BatchCreateSessionsRequest(
             database=database.name,
-            session_count=self.size - self._sessions.qsize(),
+            session_count=requested_session_count,
             session_template=Session(creator_role=self.database_role),
         )
 
+        returned_session_count = 0
         while not self._sessions.full():
+            request.session_count = requested_session_count - self._sessions.qsize()
+            add_span_event(
+                span,
+                f"Creating {request.session_count} sessions",
+                span_event_attributes,
+            )
             resp = api.batch_create_sessions(
                 request=request,
                 metadata=metadata,
@@ -218,6 +253,13 @@ class FixedSizePool(AbstractSessionPool):
                 session = self._new_session()
                 session._session_id = session_pb.name.split("/")[-1]
                 self._sessions.put(session)
+                returned_session_count += 1
+
+        add_span_event(
+            span,
+            f"Requested for {requested_session_count} sessions, returned {returned_session_count}",
+            span_event_attributes,
+        )
 
     def get(self, timeout=None):
         """Check a session out from the pool.
@@ -233,12 +275,43 @@ class FixedSizePool(AbstractSessionPool):
         if timeout is None:
             timeout = self.default_timeout
 
-        session = self._sessions.get(block=True, timeout=timeout)
-        age = _NOW() - session.last_use_time
+        start_time = time.time()
+        current_span = get_current_span()
+        span_event_attributes = {"kind": type(self).__name__}
+        add_span_event(current_span, "Acquiring session", span_event_attributes)
 
-        if age >= self._max_age and not session.exists():
-            session = self._database.session()
-            session.create()
+        session = None
+        try:
+            add_span_event(
+                current_span,
+                "Waiting for a session to become available",
+                span_event_attributes,
+            )
+
+            session = self._sessions.get(block=True, timeout=timeout)
+            age = _NOW() - session.last_use_time
+
+            if age >= self._max_age and not session.exists():
+                if not session.exists():
+                    add_span_event(
+                        current_span,
+                        "Session is not valid, recreating it",
+                        span_event_attributes,
+                    )
+                session = self._database.session()
+                session.create()
+                # Replacing with the updated session.id.
+                span_event_attributes["session.id"] = session._session_id
+
+            span_event_attributes["session.id"] = session._session_id
+            span_event_attributes["time.elapsed"] = time.time() - start_time
+            add_span_event(current_span, "Acquired session", span_event_attributes)
+
+        except queue.Empty as e:
+            add_span_event(
+                current_span, "No sessions available in the pool", span_event_attributes
+            )
+            raise e
 
         return session
 
@@ -312,13 +385,32 @@ class BurstyPool(AbstractSessionPool):
         :returns: an existing session from the pool, or a newly-created
                   session.
         """
+        current_span = get_current_span()
+        span_event_attributes = {"kind": type(self).__name__}
+        add_span_event(current_span, "Acquiring session", span_event_attributes)
+
         try:
+            add_span_event(
+                current_span,
+                "Waiting for a session to become available",
+                span_event_attributes,
+            )
             session = self._sessions.get_nowait()
         except queue.Empty:
+            add_span_event(
+                current_span,
+                "No sessions available in pool. Creating session",
+                span_event_attributes,
+            )
             session = self._new_session()
             session.create()
         else:
             if not session.exists():
+                add_span_event(
+                    current_span,
+                    "Session is not valid, recreating it",
+                    span_event_attributes,
+                )
                 session = self._new_session()
                 session.create()
         return session
@@ -427,6 +519,38 @@ class PingingPool(AbstractSessionPool):
             session_template=Session(creator_role=self.database_role),
         )
 
+        span_event_attributes = {"kind": type(self).__name__}
+        current_span = get_current_span()
+        requested_session_count = request.session_count
+        if requested_session_count <= 0:
+            add_span_event(
+                current_span,
+                f"Invalid session pool size({requested_session_count}) <= 0",
+                span_event_attributes,
+            )
+            return
+
+        add_span_event(
+            current_span,
+            f"Requesting {requested_session_count} sessions",
+            span_event_attributes,
+        )
+
+        if created_session_count >= self.size:
+            add_span_event(
+                current_span,
+                "Created no new sessions as sessionPool is full",
+                span_event_attributes,
+            )
+            return
+
+        add_span_event(
+            current_span,
+            f"Creating {request.session_count} sessions",
+            span_event_attributes,
+        )
+
+        returned_session_count = 0
         while created_session_count < self.size:
             resp = api.batch_create_sessions(
                 request=request,
@@ -436,7 +560,15 @@ class PingingPool(AbstractSessionPool):
                 session = self._new_session()
                 session._session_id = session_pb.name.split("/")[-1]
                 self.put(session)
+                returned_session_count += 1
+
             created_session_count += len(resp.session)
+
+        add_span_event(
+            current_span,
+            f"Requested for {requested_session_count} sessions, return {returned_session_count}",
+            span_event_attributes,
+        )
 
     def get(self, timeout=None):
         """Check a session out from the pool.
@@ -452,7 +584,26 @@ class PingingPool(AbstractSessionPool):
         if timeout is None:
             timeout = self.default_timeout
 
-        ping_after, session = self._sessions.get(block=True, timeout=timeout)
+        start_time = time.time()
+        span_event_attributes = {"kind": type(self).__name__}
+        current_span = get_current_span()
+        add_span_event(
+            current_span,
+            "Waiting for a session to become available",
+            span_event_attributes,
+        )
+
+        ping_after = None
+        session = None
+        try:
+            ping_after, session = self._sessions.get(block=True, timeout=timeout)
+        except queue.Empty as e:
+            add_span_event(
+                current_span,
+                "No sessions available in the pool within the specified timeout",
+                span_event_attributes,
+            )
+            raise e
 
         if _NOW() > ping_after:
             # Using session.exists() guarantees the returned session exists.
@@ -462,6 +613,14 @@ class PingingPool(AbstractSessionPool):
                 session = self._new_session()
                 session.create()
 
+        span_event_attributes.update(
+            {
+                "time.elapsed": time.time() - start_time,
+                "session.id": session._session_id,
+                "kind": "pinging_pool",
+            }
+        )
+        add_span_event(current_span, "Acquired session", span_event_attributes)
         return session
 
     def put(self, session):
