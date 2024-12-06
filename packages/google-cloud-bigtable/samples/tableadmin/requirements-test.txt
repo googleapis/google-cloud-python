@@ -1,2 +1,2 @@
-pytest==8.3.2
+pytest
 google-cloud-testutils==1.4.0
