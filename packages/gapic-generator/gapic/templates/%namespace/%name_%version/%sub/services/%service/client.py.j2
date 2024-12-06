@@ -617,8 +617,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                     extra = {
                         "serviceName": "{{ service.meta.address.proto }}",
                         "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
-                        "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     },
                 )
 

@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -45,6 +46,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -818,11 +826,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_http_options()
+
             request, metadata = self._interceptor.pre_analyze_iam_policy(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicy",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicy",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -837,7 +864,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.AnalyzeIamPolicyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.AnalyzeIamPolicyResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeIamPolicyLongrunning(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning, AssetServiceRestStub):
@@ -897,6 +940,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_http_options()
+
             request, metadata = self._interceptor.pre_analyze_iam_policy_longrunning(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_transcoded_request(http_options, request)
 
@@ -904,6 +948,24 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicyLongrunning",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicyLongrunning",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeIamPolicyLongrunning._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -916,7 +978,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy_longrunning",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicyLongrunning",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeMove(_BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub):
@@ -973,11 +1051,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_http_options()
+
             request, metadata = self._interceptor.pre_analyze_move(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeMove",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeMove",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeMove._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -992,7 +1089,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.AnalyzeMoveResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_move(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.AnalyzeMoveResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_move",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeMove",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeOrgPolicies(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub):
@@ -1049,11 +1162,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_http_options()
+
             request, metadata = self._interceptor.pre_analyze_org_policies(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicies",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeOrgPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1068,7 +1200,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.AnalyzeOrgPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_org_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.AnalyzeOrgPoliciesResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeOrgPolicyGovernedAssets(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets, AssetServiceRestStub):
@@ -1126,11 +1274,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_http_options()
+
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_assets(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedAssets",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1145,7 +1312,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeOrgPolicyGovernedContainers(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers, AssetServiceRestStub):
@@ -1203,11 +1386,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_http_options()
+
             request, metadata = self._interceptor.pre_analyze_org_policy_governed_containers(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedContainers",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedContainers",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedContainers._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1222,7 +1424,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_containers",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedContainers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchGetAssetsHistory(_BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub):
@@ -1276,11 +1494,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_http_options()
+
             request, metadata = self._interceptor.pre_batch_get_assets_history(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.BatchGetAssetsHistory",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetAssetsHistory",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._BatchGetAssetsHistory._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1295,7 +1532,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.BatchGetAssetsHistoryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_get_assets_history(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.BatchGetAssetsHistoryResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_assets_history",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetAssetsHistory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchGetEffectiveIamPolicies(_BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies, AssetServiceRestStub):
@@ -1353,11 +1606,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_http_options()
+
             request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.BatchGetEffectiveIamPolicies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetEffectiveIamPolicies",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._BatchGetEffectiveIamPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1372,7 +1644,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_effective_iam_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetEffectiveIamPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateFeed(_BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub):
@@ -1435,6 +1723,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseCreateFeed._get_http_options()
+
             request, metadata = self._interceptor.pre_create_feed(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseCreateFeed._get_transcoded_request(http_options, request)
 
@@ -1442,6 +1731,24 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseCreateFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.CreateFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateFeed",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._CreateFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1456,7 +1763,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.Feed.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_feed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.Feed.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.create_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSavedQuery(_BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub):
@@ -1513,6 +1836,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_http_options()
+
             request, metadata = self._interceptor.pre_create_saved_query(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_transcoded_request(http_options, request)
 
@@ -1520,6 +1844,24 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.CreateSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateSavedQuery",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._CreateSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1534,7 +1876,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.SavedQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_saved_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.SavedQuery.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.create_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateSavedQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteFeed(_BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub):
@@ -1584,11 +1942,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_feed(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.DeleteFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "DeleteFeed",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._DeleteFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1645,11 +2022,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_saved_query(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.DeleteSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "DeleteSavedQuery",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._DeleteSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1714,6 +2110,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseExportAssets._get_http_options()
+
             request, metadata = self._interceptor.pre_export_assets(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseExportAssets._get_transcoded_request(http_options, request)
 
@@ -1721,6 +2118,24 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseExportAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ExportAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ExportAssets",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._ExportAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1733,7 +2148,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.export_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ExportAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetFeed(_BaseAssetServiceRestTransport._BaseGetFeed, AssetServiceRestStub):
@@ -1795,11 +2226,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseGetFeed._get_http_options()
+
             request, metadata = self._interceptor.pre_get_feed(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseGetFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseGetFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.GetFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetFeed",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._GetFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1814,7 +2264,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.Feed.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_feed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.Feed.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.get_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSavedQuery(_BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub):
@@ -1870,11 +2336,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_http_options()
+
             request, metadata = self._interceptor.pre_get_saved_query(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.GetSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetSavedQuery",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._GetSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1889,7 +2374,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.SavedQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_saved_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.SavedQuery.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.get_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetSavedQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAssets(_BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub):
@@ -1943,11 +2444,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseListAssets._get_http_options()
+
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ListAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListAssets",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._ListAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1962,7 +2482,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.ListAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.ListAssetsResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFeeds(_BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub):
@@ -2016,11 +2552,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseListFeeds._get_http_options()
+
             request, metadata = self._interceptor.pre_list_feeds(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseListFeeds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseListFeeds._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ListFeeds",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListFeeds",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._ListFeeds._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2035,7 +2590,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.ListFeedsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_feeds(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.ListFeedsResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_feeds",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListFeeds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSavedQueries(_BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub):
@@ -2089,11 +2660,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_http_options()
+
             request, metadata = self._interceptor.pre_list_saved_queries(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ListSavedQueries",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListSavedQueries",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._ListSavedQueries._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2108,7 +2698,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.ListSavedQueriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_saved_queries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.ListSavedQueriesResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_saved_queries",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListSavedQueries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _QueryAssets(_BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub):
@@ -2163,6 +2769,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseQueryAssets._get_http_options()
+
             request, metadata = self._interceptor.pre_query_assets(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseQueryAssets._get_transcoded_request(http_options, request)
 
@@ -2170,6 +2777,24 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseQueryAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.QueryAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "QueryAssets",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._QueryAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2184,7 +2809,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.QueryAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_query_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.QueryAssetsResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.query_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "QueryAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
@@ -2238,11 +2879,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
+
             request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.SearchAllIamPolicies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllIamPolicies",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._SearchAllIamPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2257,7 +2917,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.SearchAllIamPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_all_iam_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.SearchAllIamPoliciesResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_iam_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllIamPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
@@ -2311,11 +2987,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
+
             request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.SearchAllResources",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllResources",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._SearchAllResources._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2330,7 +3025,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.SearchAllResourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_all_resources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.SearchAllResourcesResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_resources",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllResources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateFeed(_BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub):
@@ -2393,6 +3104,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_http_options()
+
             request, metadata = self._interceptor.pre_update_feed(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_transcoded_request(http_options, request)
 
@@ -2400,6 +3112,24 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.UpdateFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateFeed",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._UpdateFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2414,7 +3144,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.Feed.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_feed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.Feed.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.update_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSavedQuery(_BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub):
@@ -2471,6 +3217,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_http_options()
+
             request, metadata = self._interceptor.pre_update_saved_query(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_transcoded_request(http_options, request)
 
@@ -2478,6 +3225,24 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.UpdateSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateSavedQuery",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._UpdateSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2492,7 +3257,23 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             pb_resp = asset_service.SavedQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_saved_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": asset_service.SavedQuery.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.update_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateSavedQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2734,11 +3515,30 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseGetOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseAssetServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = AssetServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2752,6 +3552,21 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceAsyncClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

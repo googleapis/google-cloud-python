@@ -51,6 +51,17 @@ from .rest_base import _BaseCloudRedisRestTransport
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
+
+import logging
+
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
+
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
@@ -745,6 +756,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseCreateInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
@@ -752,6 +764,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.CreateInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "CreateInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._CreateInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -771,6 +801,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_create_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.create_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "CreateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, AsyncCloudRedisRestStub):
@@ -828,11 +874,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.DeleteInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "DeleteInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._DeleteInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -852,6 +917,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_delete_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.delete_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "DeleteInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, AsyncCloudRedisRestStub):
@@ -910,6 +991,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseExportInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_export_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseExportInstance._get_transcoded_request(http_options, request)
 
@@ -917,6 +999,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseExportInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ExportInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ExportInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._ExportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -936,6 +1036,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_export_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.export_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ExportInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub):
@@ -994,6 +1110,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_failover_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_transcoded_request(http_options, request)
 
@@ -1001,6 +1118,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.FailoverInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "FailoverInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._FailoverInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1020,6 +1155,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_failover_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.failover_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "FailoverInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, AsyncCloudRedisRestStub):
@@ -1074,11 +1225,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1098,6 +1268,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": cloud_redis.Instance.to_json(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.get_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
@@ -1152,11 +1338,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_http_options()
+
             request, metadata = await self._interceptor.pre_get_instance_auth_string(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetInstanceAuthString",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstanceAuthString",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetInstanceAuthString._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1176,6 +1381,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance_auth_string(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": cloud_redis.InstanceAuthString.to_json(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.get_instance_auth_string",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstanceAuthString",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
@@ -1234,6 +1455,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseImportInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_import_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseImportInstance._get_transcoded_request(http_options, request)
 
@@ -1241,6 +1463,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseImportInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ImportInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ImportInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._ImportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1260,6 +1500,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_import_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.import_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ImportInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, AsyncCloudRedisRestStub):
@@ -1316,11 +1572,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
+
             request, metadata = await self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ListInstances",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListInstances",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._ListInstances._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1340,6 +1615,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": cloud_redis.ListInstancesResponse.to_json(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.list_instances",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
@@ -1398,6 +1689,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_http_options()
+
             request, metadata = await self._interceptor.pre_reschedule_maintenance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_transcoded_request(http_options, request)
 
@@ -1405,6 +1697,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.RescheduleMaintenance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "RescheduleMaintenance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._RescheduleMaintenance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1424,6 +1734,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_reschedule_maintenance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.reschedule_maintenance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "RescheduleMaintenance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, AsyncCloudRedisRestStub):
@@ -1482,6 +1808,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
@@ -1489,6 +1816,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.UpdateInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpdateInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._UpdateInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1508,6 +1853,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_update_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.update_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpdateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub):
@@ -1566,6 +1927,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_http_options()
+
             request, metadata = await self._interceptor.pre_upgrade_instance(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_transcoded_request(http_options, request)
 
@@ -1573,6 +1935,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.UpgradeInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpgradeInstance",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._UpgradeInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1592,6 +1972,22 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_upgrade_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  str(dict(response.headers)),
+                    "status": "OK", # need to obtain this properly
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.upgrade_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpgradeInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+
             return resp
 
     @property
@@ -1771,11 +2167,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = await self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetLocation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetLocation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1793,6 +2208,21 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetLocation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetLocation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1850,11 +2280,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseListLocations._get_http_options()
+
             request, metadata = await self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ListLocations",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListLocations",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1872,6 +2321,21 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListLocations",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListLocations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1926,11 +2390,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseCancelOperation._get_http_options()
+
             request, metadata = await self._interceptor.pre_cancel_operation(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.CancelOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "CancelOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1998,11 +2481,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_http_options()
+
             request, metadata = await self._interceptor.pre_delete_operation(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.DeleteOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "DeleteOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2073,11 +2575,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetOperation._get_http_options()
+
             request, metadata = await self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2095,6 +2616,21 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2152,11 +2688,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseListOperations._get_http_options()
+
             request, metadata = await self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ListOperations",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListOperations",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2174,6 +2729,21 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListOperations",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2232,6 +2802,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseWaitOperation._get_http_options()
+
             request, metadata = await self._interceptor.pre_wait_operation(request, metadata)
             transcoded_request = _BaseCloudRedisRestTransport._BaseWaitOperation._get_transcoded_request(http_options, request)
 
@@ -2239,6 +2810,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.WaitOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "WaitOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = await AsyncCloudRedisRestTransport._WaitOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2256,6 +2845,21 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_wait_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.WaitOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "WaitOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

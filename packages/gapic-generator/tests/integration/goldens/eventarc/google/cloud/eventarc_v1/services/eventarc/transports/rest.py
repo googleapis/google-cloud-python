@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -53,6 +54,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -918,6 +926,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_create_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCreateChannel._get_transcoded_request(http_options, request)
 
@@ -925,6 +934,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCreateChannel._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CreateChannel",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "CreateChannel",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._CreateChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -937,7 +964,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.create_channel_",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "CreateChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateChannelConnection(_BaseEventarcRestTransport._BaseCreateChannelConnection, EventarcRestStub):
@@ -996,6 +1039,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
+
             request, metadata = self._interceptor.pre_create_channel_connection(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_transcoded_request(http_options, request)
 
@@ -1003,6 +1047,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CreateChannelConnection",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "CreateChannelConnection",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._CreateChannelConnection._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1015,7 +1077,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_channel_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.create_channel_connection",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "CreateChannelConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTrigger(_BaseEventarcRestTransport._BaseCreateTrigger, EventarcRestStub):
@@ -1074,6 +1152,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_create_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCreateTrigger._get_transcoded_request(http_options, request)
 
@@ -1081,6 +1160,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCreateTrigger._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CreateTrigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "CreateTrigger",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._CreateTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -1093,7 +1190,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.create_trigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "CreateTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteChannel(_BaseEventarcRestTransport._BaseDeleteChannel, EventarcRestStub):
@@ -1151,11 +1264,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteChannel._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteChannel",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "DeleteChannel",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._DeleteChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1168,7 +1300,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.delete_channel",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "DeleteChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteChannelConnection(_BaseEventarcRestTransport._BaseDeleteChannelConnection, EventarcRestStub):
@@ -1226,11 +1374,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_channel_connection(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteChannelConnection",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "DeleteChannelConnection",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._DeleteChannelConnection._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1243,7 +1410,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_channel_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.delete_channel_connection",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "DeleteChannelConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTrigger(_BaseEventarcRestTransport._BaseDeleteTrigger, EventarcRestStub):
@@ -1301,11 +1484,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteTrigger._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteTrigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "DeleteTrigger",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._DeleteTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1318,7 +1520,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.delete_trigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "DeleteTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetChannel(_BaseEventarcRestTransport._BaseGetChannel, EventarcRestStub):
@@ -1381,11 +1599,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_get_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetChannel._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetChannel",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetChannel",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1400,7 +1637,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = channel.Channel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": channel.Channel.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.get_channel",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetChannelConnection(_BaseEventarcRestTransport._BaseGetChannelConnection, EventarcRestStub):
@@ -1462,11 +1715,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetChannelConnection._get_http_options()
+
             request, metadata = self._interceptor.pre_get_channel_connection(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetChannelConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetChannelConnection._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetChannelConnection",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetChannelConnection",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetChannelConnection._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1481,7 +1753,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = channel_connection.ChannelConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_channel_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": channel_connection.ChannelConnection.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.get_channel_connection",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetChannelConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGoogleChannelConfig(_BaseEventarcRestTransport._BaseGetGoogleChannelConfig, EventarcRestStub):
@@ -1544,11 +1832,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
+
             request, metadata = self._interceptor.pre_get_google_channel_config(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetGoogleChannelConfig",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetGoogleChannelConfig",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetGoogleChannelConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1563,7 +1870,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = google_channel_config.GoogleChannelConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_google_channel_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": google_channel_config.GoogleChannelConfig.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.get_google_channel_config",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetGoogleChannelConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProvider(_BaseEventarcRestTransport._BaseGetProvider, EventarcRestStub):
@@ -1620,11 +1943,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetProvider._get_http_options()
+
             request, metadata = self._interceptor.pre_get_provider(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetProvider._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetProvider._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetProvider",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetProvider",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetProvider._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1639,7 +1981,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = discovery.Provider.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_provider(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": discovery.Provider.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.get_provider",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetProvider",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTrigger(_BaseEventarcRestTransport._BaseGetTrigger, EventarcRestStub):
@@ -1696,11 +2054,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_get_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetTrigger._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetTrigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetTrigger",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1715,7 +2092,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = trigger.Trigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": trigger.Trigger.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.get_trigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListChannelConnections(_BaseEventarcRestTransport._BaseListChannelConnections, EventarcRestStub):
@@ -1772,11 +2165,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
+
             request, metadata = self._interceptor.pre_list_channel_connections(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListChannelConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListChannelConnections._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListChannelConnections",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListChannelConnections",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._ListChannelConnections._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1791,7 +2203,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListChannelConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_channel_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": eventarc.ListChannelConnectionsResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.list_channel_connections",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListChannelConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListChannels(_BaseEventarcRestTransport._BaseListChannels, EventarcRestStub):
@@ -1846,11 +2274,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListChannels._get_http_options()
+
             request, metadata = self._interceptor.pre_list_channels(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListChannels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListChannels._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListChannels",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListChannels",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._ListChannels._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1865,7 +2312,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListChannelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_channels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": eventarc.ListChannelsResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.list_channels",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListChannels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProviders(_BaseEventarcRestTransport._BaseListProviders, EventarcRestStub):
@@ -1920,11 +2383,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListProviders._get_http_options()
+
             request, metadata = self._interceptor.pre_list_providers(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListProviders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListProviders._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListProviders",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListProviders",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._ListProviders._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -1939,7 +2421,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListProvidersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_providers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": eventarc.ListProvidersResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.list_providers",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListProviders",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTriggers(_BaseEventarcRestTransport._BaseListTriggers, EventarcRestStub):
@@ -1994,11 +2492,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListTriggers._get_http_options()
+
             request, metadata = self._interceptor.pre_list_triggers(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListTriggers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListTriggers._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListTriggers",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListTriggers",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._ListTriggers._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2013,7 +2530,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListTriggersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_triggers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": eventarc.ListTriggersResponse.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.list_triggers",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListTriggers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateChannel(_BaseEventarcRestTransport._BaseUpdateChannel, EventarcRestStub):
@@ -2072,6 +2605,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_update_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseUpdateChannel._get_transcoded_request(http_options, request)
 
@@ -2079,6 +2613,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseUpdateChannel._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.UpdateChannel",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "UpdateChannel",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._UpdateChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2091,7 +2643,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.update_channel",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "UpdateChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGoogleChannelConfig(_BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig, EventarcRestStub):
@@ -2156,6 +2724,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
+
             request, metadata = self._interceptor.pre_update_google_channel_config(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_transcoded_request(http_options, request)
 
@@ -2163,6 +2732,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.UpdateGoogleChannelConfig",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "UpdateGoogleChannelConfig",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._UpdateGoogleChannelConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2177,7 +2764,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = gce_google_channel_config.GoogleChannelConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_google_channel_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": gce_google_channel_config.GoogleChannelConfig.to_json(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.update_google_channel_config",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "UpdateGoogleChannelConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTrigger(_BaseEventarcRestTransport._BaseUpdateTrigger, EventarcRestStub):
@@ -2236,6 +2839,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_update_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseUpdateTrigger._get_transcoded_request(http_options, request)
 
@@ -2243,6 +2847,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseUpdateTrigger._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.UpdateTrigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "UpdateTrigger",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._UpdateTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2255,7 +2877,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": json_format.MessageToJson(resp),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcClient.update_trigger",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "UpdateTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2457,11 +3095,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetLocation",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetLocation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2475,6 +3132,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetLocation",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetLocation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2532,11 +3204,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListLocations._get_http_options()
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListLocations",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListLocations",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2550,6 +3241,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.ListLocations",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListLocations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2607,11 +3313,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetIamPolicy._get_http_options()
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetIamPolicy",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2625,6 +3350,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetIamPolicy",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2683,6 +3423,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseSetIamPolicy._get_http_options()
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
@@ -2690,6 +3431,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.SetIamPolicy",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._SetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2703,6 +3462,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.SetIamPolicy",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2761,6 +3535,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseTestIamPermissions._get_http_options()
+
             request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
@@ -2768,6 +3543,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.TestIamPermissions",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._TestIamPermissions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2781,6 +3574,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.TestIamPermissions",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2836,6 +3644,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCancelOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
@@ -2843,6 +3652,24 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CancelOperation",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "CancelOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -2906,11 +3733,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteOperation",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "DeleteOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2977,11 +3823,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetOperation",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -2995,6 +3860,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "GetOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3052,11 +3932,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListOperations._get_http_options()
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                }
+                _LOGGER.debug(
+                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListOperations",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListOperations",
+                        "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
+                    },
+                )
 
             # Send the request
             response = EventarcRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
@@ -3070,6 +3969,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.ListOperations",
+                    extra = {
+                        "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                        "rpcName": "ListOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
