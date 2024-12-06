@@ -15,12 +15,13 @@ _recognized_logging_fields = [
     "rpcName",
     "serviceName",
     "credentialsType",
-    "credentialInfo",
+    "credentialsInfo",
     "universeDomain",
     "request",
     "response",
     "metadata",
     "retryAttempt",
+    "httpResponse",
 ]  # Additional fields to be Logged.
 
 
