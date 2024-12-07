@@ -863,6 +863,13 @@ class UserWorkloadsSecret(proto.Message):
             token, or a key. The values for all keys have to
             be base64-encoded strings. For details see:
             https://kubernetes.io/docs/concepts/configuration/secret/
+
+            Example:
+
+            {
+              "example": "ZXhhbXBsZV92YWx1ZQ==",
+              "another-example":
+            "YW5vdGhlcl9leGFtcGxlX3ZhbHVl" }
     """
 
     name: str = proto.Field(
@@ -915,11 +922,14 @@ class UserWorkloadsConfigMap(proto.Message):
             ConfigMap, in the form:
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}".
         data (MutableMapping[str, str]):
-            Optional. The "data" field of Kubernetes
-            ConfigMap, organized in key-value pairs. For
-            details see:
-
+            Optional. The "data" field of Kubernetes ConfigMap,
+            organized in key-value pairs. For details see:
             https://kubernetes.io/docs/concepts/configuration/configmap/
+
+            Example:
+
+            { "example_key": "example_value", "another_key":
+            "another_value" }
     """
 
     name: str = proto.Field(
@@ -1352,14 +1362,14 @@ class EnvironmentConfig(proto.Message):
             This field is supported for Cloud Composer environments in
             versions composer-1.\ *.*-airflow-*.*.*.
         software_config (google.cloud.orchestration.airflow.service_v1.types.SoftwareConfig):
-            The configuration settings for software
-            inside the environment.
+            Optional. The configuration settings for
+            software inside the environment.
         node_config (google.cloud.orchestration.airflow.service_v1.types.NodeConfig):
-            The configuration used for the Kubernetes
-            Engine cluster.
+            Optional. The configuration used for the
+            Kubernetes Engine cluster.
         private_environment_config (google.cloud.orchestration.airflow.service_v1.types.PrivateEnvironmentConfig):
-            The configuration used for the Private IP
-            Cloud Composer environment.
+            Optional. The configuration used for the
+            Private IP Cloud Composer environment.
         web_server_network_access_control (google.cloud.orchestration.airflow.service_v1.types.WebServerNetworkAccessControl):
             Optional. The network-level access control
             policy for the Airflow web server. If
@@ -1741,10 +1751,10 @@ class SoftwareConfig(proto.Message):
 
     Attributes:
         image_version (str):
-            The version of the software running in the environment. This
-            encapsulates both the version of Cloud Composer
-            functionality and the version of Apache Airflow. It must
-            match the regular expression
+            Optional. The version of the software running in the
+            environment. This encapsulates both the version of Cloud
+            Composer functionality and the version of Apache Airflow. It
+            must match the regular expression
             ``composer-([0-9]+(\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?)?|latest)-airflow-([0-9]+(\.[0-9]+(\.[0-9]+)?)?)``.
             When used as input, the server also checks if the provided
             version is supported and denies the request for an
@@ -2748,15 +2758,15 @@ class Environment(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the environment, in the
-            form:
+            Identifier. The resource name of the
+            environment, in the form:
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
 
             EnvironmentId must start with a lowercase letter
             followed by up to 63 lowercase letters, numbers,
             or hyphens, and cannot end with a hyphen.
         config (google.cloud.orchestration.airflow.service_v1.types.EnvironmentConfig):
-            Configuration parameters for this
+            Optional. Configuration parameters for this
             environment.
         uuid (str):
             Output only. The UUID (Universally Unique
