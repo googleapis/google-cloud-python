@@ -30,7 +30,6 @@ class TestQuickStart(MockServerTestBase):
     def test_create_tables(self):
         from test.mockserver_tests.quickstart_model import Base
 
-        # TODO: Fix the double quotes inside these SQL fragments.
         add_result(
             """SELECT true
 FROM INFORMATION_SCHEMA.TABLES

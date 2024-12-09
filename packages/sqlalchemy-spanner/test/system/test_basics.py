@@ -22,7 +22,10 @@ from sqlalchemy import (
     Index,
     MetaData,
     Boolean,
+    BIGINT,
 )
+from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.types import REAL
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 
@@ -37,6 +40,7 @@ class TestBasics(fixtures.TablesTest):
             Column("name", String(20)),
             Column("alternative_name", String(20)),
             Column("prime", Boolean),
+            Column("ln", REAL),
             PrimaryKeyConstraint("number"),
         )
         Index(
@@ -53,8 +57,8 @@ class TestBasics(fixtures.TablesTest):
     def test_insert_number(self, connection):
         connection.execute(
             text(
-                """insert or update into numbers (number, name, prime)
-                   values (1, 'One', false)"""
+                """insert or update into numbers (number, name, prime, ln)
+                   values (1, 'One', false, cast(ln(1) as float32))"""
             )
         )
         name = connection.execute(text("select name from numbers where number=1"))
@@ -66,6 +70,17 @@ class TestBasics(fixtures.TablesTest):
         meta.reflect(bind=engine)
         eq_(1, len(meta.tables))
         table = meta.tables["numbers"]
+        eq_(5, len(table.columns))
+        eq_("number", table.columns[0].name)
+        eq_(BIGINT, type(table.columns[0].type))
+        eq_("name", table.columns[1].name)
+        eq_(String, type(table.columns[1].type))
+        eq_("alternative_name", table.columns[2].name)
+        eq_(String, type(table.columns[2].type))
+        eq_("prime", table.columns[3].name)
+        eq_(Boolean, type(table.columns[3].type))
+        eq_("ln", table.columns[4].name)
+        eq_(REAL, type(table.columns[4].type))
         eq_(1, len(table.indexes))
         index = next(iter(table.indexes))
         eq_(2, len(index.columns))
@@ -74,3 +89,23 @@ class TestBasics(fixtures.TablesTest):
         dialect_options = index.dialect_options["spanner"]
         eq_(1, len(dialect_options["storing"]))
         eq_("alternative_name", dialect_options["storing"][0])
+
+    def test_orm(self, connection):
+        class Base(DeclarativeBase):
+            pass
+
+        class Number(Base):
+            __tablename__ = "numbers"
+            number: Mapped[int] = mapped_column(primary_key=True)
+            name: Mapped[str] = mapped_column(String(20))
+            alternative_name: Mapped[str] = mapped_column(String(20))
+            prime: Mapped[bool] = mapped_column(Boolean)
+            ln: Mapped[float] = mapped_column(REAL)
+
+        engine = connection.engine
+        with Session(engine) as session:
+            number = Number(
+                number=1, name="One", alternative_name="Uno", prime=False, ln=0.0
+            )
+            session.add(number)
+            session.commit()

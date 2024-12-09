@@ -84,6 +84,7 @@ _type_map = {
     "BYTES": types.LargeBinary,
     "DATE": types.DATE,
     "DATETIME": types.DATETIME,
+    "FLOAT32": types.REAL,
     "FLOAT64": types.Float,
     "INT64": types.BIGINT,
     "NUMERIC": types.NUMERIC(precision=38, scale=9),
@@ -101,6 +102,7 @@ _type_map_inv = {
     types.LargeBinary: "BYTES(MAX)",
     types.DATE: "DATE",
     types.DATETIME: "DATETIME",
+    types.REAL: "FLOAT32",
     types.Float: "FLOAT64",
     types.BIGINT: "INT64",
     types.DECIMAL: "NUMERIC",
@@ -540,8 +542,17 @@ class SpannerTypeCompiler(GenericTypeCompiler):
     def visit_INTEGER(self, type_, **kw):
         return "INT64"
 
-    def visit_FLOAT(self, type_, **kw):
+    def visit_DOUBLE(self, type_, **kw):
         return "FLOAT64"
+
+    def visit_FLOAT(self, type_, **kw):
+        # Note: This was added before Spanner supported FLOAT32.
+        # Changing this now to generate a FLOAT32 would be a breaking change.
+        # Users therefore have to use REAL to generate a FLOAT32 column.
+        return "FLOAT64"
+
+    def visit_REAL(self, type_, **kw):
+        return "FLOAT32"
 
     def visit_TEXT(self, type_, **kw):
         return "STRING({})".format(type_.length or "MAX")
