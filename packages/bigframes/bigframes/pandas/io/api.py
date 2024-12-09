@@ -45,7 +45,6 @@ import bigframes._config as config
 import bigframes.core.blocks
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
-import bigframes.core.joins
 import bigframes.core.reshape
 import bigframes.core.tools
 import bigframes.dataframe
@@ -54,7 +53,6 @@ import bigframes.series
 import bigframes.session
 import bigframes.session._io.bigquery
 import bigframes.session.clients
-import bigframes.version
 
 # Note: the following methods are duplicated from Session. This duplication
 # enables the following:

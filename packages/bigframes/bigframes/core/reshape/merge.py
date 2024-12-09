@@ -21,6 +21,8 @@ from __future__ import annotations
 import typing
 from typing import Literal, Optional
 
+import bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
+
 # Avoid cirular imports.
 if typing.TYPE_CHECKING:
     import bigframes.dataframe
@@ -56,6 +58,9 @@ def merge(
         sort=sort,
         suffixes=suffixes,
     )
+
+
+merge.__doc__ = vendored_pandas_merge.merge.__doc__
 
 
 def _validate_operand(

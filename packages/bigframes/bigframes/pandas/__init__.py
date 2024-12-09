@@ -21,13 +21,10 @@ from datetime import datetime
 import inspect
 import sys
 import typing
-from typing import Any, Iterable, List, Literal, Optional, Sequence, Tuple, Union
+from typing import Any, List, Literal, Optional, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
-import bigframes_vendored.pandas.core.reshape.concat as vendored_pandas_concat
 import bigframes_vendored.pandas.core.reshape.encoding as vendored_pandas_encoding
-import bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
-import bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
 import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
 import pandas
 
@@ -36,8 +33,7 @@ import bigframes.core.blocks
 import bigframes.core.expression as ex
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
-import bigframes.core.joins
-import bigframes.core.reshape
+from bigframes.core.reshape.api import concat, cut, merge, qcut
 import bigframes.core.tools
 import bigframes.dataframe
 import bigframes.enums
@@ -71,81 +67,6 @@ except ImportError:
 
 # Include method definition so that the method appears in our docs for
 # bigframes.pandas general functions.
-@typing.overload
-def concat(
-    objs: Iterable[bigframes.series.Series],
-    *,
-    axis: typing.Literal["index", 0] = ...,
-    join=...,
-    ignore_index=...,
-) -> bigframes.series.Series:
-    ...
-
-
-@typing.overload
-def concat(
-    objs: Iterable[bigframes.dataframe.DataFrame],
-    *,
-    axis: typing.Literal["index", 0] = ...,
-    join=...,
-    ignore_index=...,
-) -> bigframes.dataframe.DataFrame:
-    ...
-
-
-@typing.overload
-def concat(
-    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
-    *,
-    axis: typing.Literal["columns", 1],
-    join=...,
-    ignore_index=...,
-) -> bigframes.dataframe.DataFrame:
-    ...
-
-
-@typing.overload
-def concat(
-    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
-    *,
-    axis=...,
-    join=...,
-    ignore_index=...,
-) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]:
-    ...
-
-
-def concat(
-    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
-    *,
-    axis: typing.Union[str, int] = 0,
-    join: Literal["inner", "outer"] = "outer",
-    ignore_index: bool = False,
-) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]:
-    return bigframes.core.reshape.concat(
-        objs=objs, axis=axis, join=join, ignore_index=ignore_index
-    )
-
-
-concat.__doc__ = vendored_pandas_concat.concat.__doc__
-
-
-def cut(
-    x: bigframes.series.Series,
-    bins: int,
-    *,
-    labels: Union[Iterable[str], bool, None] = None,
-) -> bigframes.series.Series:
-    return bigframes.core.reshape.cut(
-        x,
-        bins,
-        labels=labels,
-    )
-
-
-cut.__doc__ = vendored_pandas_tile.cut.__doc__
-
-
 def get_dummies(
     data: Union[DataFrame, Series],
     prefix: Union[List, dict, str, None] = None,
@@ -316,51 +237,6 @@ def _perform_get_dummies_block_operations(
             column_id, ops.isnull_op, result_label=new_column_label
         )
     return block, intermediate_col_ids
-
-
-def qcut(
-    x: bigframes.series.Series,
-    q: int,
-    *,
-    labels: Optional[bool] = None,
-    duplicates: typing.Literal["drop", "error"] = "error",
-) -> bigframes.series.Series:
-    return bigframes.core.reshape.qcut(x, q, labels=labels, duplicates=duplicates)
-
-
-qcut.__doc__ = vendored_pandas_tile.qcut.__doc__
-
-
-def merge(
-    left: DataFrame,
-    right: DataFrame,
-    how: Literal[
-        "inner",
-        "left",
-        "outer",
-        "right",
-        "cross",
-    ] = "inner",
-    on: Optional[str] = None,
-    *,
-    left_on: Optional[str] = None,
-    right_on: Optional[str] = None,
-    sort: bool = False,
-    suffixes: tuple[str, str] = ("_x", "_y"),
-) -> DataFrame:
-    return bigframes.core.joins.merge(
-        left,
-        right,
-        how=how,
-        on=on,
-        left_on=left_on,
-        right_on=right_on,
-        sort=sort,
-        suffixes=suffixes,
-    )
-
-
-merge.__doc__ = vendored_pandas_merge.merge.__doc__
 
 
 def remote_function(

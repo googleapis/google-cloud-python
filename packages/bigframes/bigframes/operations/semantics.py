@@ -481,7 +481,7 @@ class Semantics:
             )["ml_generate_text_llm_result"],
         )
 
-        from bigframes.core.reshape import concat
+        from bigframes.core.reshape.api import concat
 
         return concat([self._df, results.rename(output_column)], axis=1)
 
