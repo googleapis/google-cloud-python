@@ -55,7 +55,7 @@ class Space(proto.Message):
 
     Attributes:
         name (str):
-            Resource name of the space.
+            Identifier. Resource name of the space.
 
             Format: ``spaces/{space}``
 
@@ -70,9 +70,9 @@ class Space(proto.Message):
             Output only. Deprecated: Use ``space_type`` instead. The
             type of a space.
         space_type (google.apps.chat_v1.types.Space.SpaceType):
-            The type of space. Required when creating a
-            space or updating the space type of a space.
-            Output only for other usage.
+            Optional. The type of space. Required when
+            creating a space or updating the space type of a
+            space. Output only for other usage.
         single_user_bot_dm (bool):
             Optional. Whether the space is a DM between a
             Chat app and a single human.
@@ -80,7 +80,8 @@ class Space(proto.Message):
             Output only. Deprecated: Use ``spaceThreadingState``
             instead. Whether messages are threaded in this space.
         display_name (str):
-            The space's display name. Required when `creating a
+            Optional. The space's display name. Required when `creating
+            a
             space <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/create>`__
             with a ``spaceType`` of ``SPACE``. If you receive the error
             message ``ALREADY_EXISTS`` when creating a space or updating
@@ -92,10 +93,10 @@ class Space(proto.Message):
 
             Supports up to 128 characters.
         external_user_allowed (bool):
-            Immutable. Whether this space permits any Google Chat user
-            as a member. Input when creating a space in a Google
-            Workspace organization. Omit this field when creating spaces
-            in the following conditions:
+            Optional. Immutable. Whether this space permits any Google
+            Chat user as a member. Input when creating a space in a
+            Google Workspace organization. Omit this field when creating
+            spaces in the following conditions:
 
             -  The authenticated user uses a consumer account (unmanaged
                user account). By default, a space created by a consumer
@@ -106,16 +107,19 @@ class Space(proto.Message):
             Output only. The threading state in the Chat
             space.
         space_details (google.apps.chat_v1.types.Space.SpaceDetails):
-            Details about the space including description
-            and rules.
+            Optional. Details about the space including
+            description and rules.
         space_history_state (google.apps.chat_v1.types.HistoryState):
-            The message history state for messages and
-            threads in this space.
+            Optional. The message history state for
+            messages and threads in this space.
         import_mode (bool):
             Optional. Whether this space is created in ``Import Mode``
             as part of a data migration into Google Workspace. While
             spaces are being imported, they aren't visible to users
             until the import is complete.
+
+            Creating a space in ``Import Mode``\ requires `user
+            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Immutable. For spaces created in Chat, the time
             the space was created. This field is output only, except
@@ -294,12 +298,12 @@ class Space(proto.Message):
 
         Attributes:
             joined_direct_human_user_count (int):
-                Count of human users that have directly
-                joined the space, not counting users joined by
-                having membership in a joined group.
+                Output only. Count of human users that have
+                directly joined the space, not counting users
+                joined by having membership in a joined group.
             joined_group_count (int):
-                Count of all groups that have directly joined
-                the space.
+                Output only. Count of all groups that have
+                directly joined the space.
         """
 
         joined_direct_human_user_count: int = proto.Field(
@@ -335,9 +339,24 @@ class Space(proto.Message):
                 To use the default target audience for the Google Workspace
                 organization, set to ``audiences/default``.
 
+                Reading the target audience supports:
+
+                -  `User
+                   authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+
+                -  `App
+                   authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+                   with `administrator
+                   approval <https://support.google.com/a?p=chat-app-auth>`__
+                   with the ``chat.app.spaces`` scope in `Developer
+                   Preview <https://developers.google.com/workspace/preview>`__.
+
                 This field is not populated when using the ``chat.bot``
                 scope with `app
                 authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
+
+                Setting the target audience requires `user
+                authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
         """
 
         class AccessState(proto.Enum):
@@ -359,6 +378,9 @@ class Space(proto.Message):
                     the space. To learn more, see `Make a space discoverable to
                     specific
                     users <https://developers.google.com/workspace/chat/space-target-audience>`__.
+
+                    Creating discoverable spaces requires `user
+                    authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
             """
             ACCESS_STATE_UNSPECIFIED = 0
             PRIVATE = 1
@@ -387,30 +409,32 @@ class Space(proto.Message):
 
         Attributes:
             manage_members_and_groups (google.apps.chat_v1.types.Space.PermissionSetting):
-                Setting for managing members and groups in a
-                space.
+                Optional. Setting for managing members and
+                groups in a space.
 
                 This field is a member of `oneof`_ ``_manage_members_and_groups``.
             modify_space_details (google.apps.chat_v1.types.Space.PermissionSetting):
-                Setting for updating space name, avatar,
-                description and guidelines.
+                Optional. Setting for updating space name,
+                avatar, description and guidelines.
 
                 This field is a member of `oneof`_ ``_modify_space_details``.
             toggle_history (google.apps.chat_v1.types.Space.PermissionSetting):
-                Setting for toggling space history on and
-                off.
+                Optional. Setting for toggling space history
+                on and off.
 
                 This field is a member of `oneof`_ ``_toggle_history``.
             use_at_mention_all (google.apps.chat_v1.types.Space.PermissionSetting):
-                Setting for using @all in a space.
+                Optional. Setting for using @all in a space.
 
                 This field is a member of `oneof`_ ``_use_at_mention_all``.
             manage_apps (google.apps.chat_v1.types.Space.PermissionSetting):
-                Setting for managing apps in a space.
+                Optional. Setting for managing apps in a
+                space.
 
                 This field is a member of `oneof`_ ``_manage_apps``.
             manage_webhooks (google.apps.chat_v1.types.Space.PermissionSetting):
-                Setting for managing webhooks in a space.
+                Optional. Setting for managing webhooks in a
+                space.
 
                 This field is a member of `oneof`_ ``_manage_webhooks``.
             post_messages (google.apps.chat_v1.types.Space.PermissionSetting):
@@ -419,7 +443,8 @@ class Space(proto.Message):
 
                 This field is a member of `oneof`_ ``_post_messages``.
             reply_messages (google.apps.chat_v1.types.Space.PermissionSetting):
-                Setting for replying to messages in a space.
+                Optional. Setting for replying to messages in
+                a space.
 
                 This field is a member of `oneof`_ ``_reply_messages``.
         """
@@ -478,10 +503,11 @@ class Space(proto.Message):
 
         Attributes:
             managers_allowed (bool):
-                Whether spaces managers have this permission.
-            members_allowed (bool):
-                Whether non-manager members have this
+                Optional. Whether spaces managers have this
                 permission.
+            members_allowed (bool):
+                Optional. Whether non-manager members have
+                this permission.
         """
 
         managers_allowed: bool = proto.Field(
@@ -595,17 +621,15 @@ class CreateSpaceRequest(proto.Message):
     Attributes:
         space (google.apps.chat_v1.types.Space):
             Required. The ``displayName`` and ``spaceType`` fields must
-            be populated. Only ``SpaceType.SPACE`` is supported.
+            be populated. Only ``SpaceType.SPACE`` and
+            ``SpaceType.GROUP_CHAT`` are supported.
+            ``SpaceType.GROUP_CHAT`` can only be used if ``importMode``
+            is set to true.
 
             If you receive the error message ``ALREADY_EXISTS``, try a
             different ``displayName``. An existing space within the
             Google Workspace organization might already use this display
             name.
-
-            If you're a member of the `Developer Preview
-            program <https://developers.google.com/workspace/preview>`__,
-            ``SpaceType.GROUP_CHAT`` can be used if ``importMode`` is
-            set to true.
 
             The space ``name`` is assigned on the server so anything
             specified in this field will be ignored.
@@ -727,8 +751,8 @@ class GetSpaceRequest(proto.Message):
 
             Format: ``spaces/{space}``
         use_admin_access (bool):
-            When ``true``, the method runs using the user's Google
-            Workspace administrator privileges.
+            Optional. When ``true``, the method runs using the user's
+            Google Workspace administrator privileges.
 
             The calling user must be a Google Workspace administrator
             with the `manage chat and spaces conversations
@@ -855,8 +879,8 @@ class UpdateSpaceRequest(proto.Message):
             -  ``permission_settings.manageWebhooks``
             -  ``permission_settings.replyMessages``
         use_admin_access (bool):
-            When ``true``, the method runs using the user's Google
-            Workspace administrator privileges.
+            Optional. When ``true``, the method runs using the user's
+            Google Workspace administrator privileges.
 
             The calling user must be a Google Workspace administrator
             with the `manage chat and spaces conversations
@@ -1093,8 +1117,8 @@ class DeleteSpaceRequest(proto.Message):
 
             Format: ``spaces/{space}``
         use_admin_access (bool):
-            When ``true``, the method runs using the user's Google
-            Workspace administrator privileges.
+            Optional. When ``true``, the method runs using the user's
+            Google Workspace administrator privileges.
 
             The calling user must be a Google Workspace administrator
             with the `manage chat and spaces conversations

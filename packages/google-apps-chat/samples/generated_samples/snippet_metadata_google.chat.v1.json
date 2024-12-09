@@ -563,12 +563,12 @@
       "regionTag": "chat_v1_generated_ChatService_CreateReaction_async",
       "segments": [
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -578,18 +578,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 45,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 46,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -647,12 +647,12 @@
       "regionTag": "chat_v1_generated_ChatService_CreateReaction_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -662,18 +662,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 45,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 46,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],

@@ -12587,7 +12587,12 @@ def test_update_message_rest_unset_required_fields():
                 "updateMask",
             )
         )
-        & set(("message",))
+        & set(
+            (
+                "message",
+                "updateMask",
+            )
+        )
     )
 
 
@@ -14010,7 +14015,12 @@ def test_update_space_rest_unset_required_fields():
                 "useAdminAccess",
             )
         )
-        & set(("space",))
+        & set(
+            (
+                "space",
+                "updateMask",
+            )
+        )
     )
 
 
