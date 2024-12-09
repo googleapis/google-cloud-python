@@ -33,6 +33,7 @@ extras = {
     "requests": "requests >= 2.20.0, < 3.0.0.dev0",
     "reauth": "pyu2f>=0.1.5",
     "enterprise_cert": ["cryptography", "pyopenssl"],
+    "pyjwt": ["pyjwt>=2.0", "cryptography>=38.0.3"],
 }
 
 with io.open("README.rst", "r") as fh:

@@ -11,3 +11,4 @@ setuptools==40.3.0
 rsa==3.1.4
 aiohttp==3.6.2
 requests==2.20.0
+pyjwt==2.0

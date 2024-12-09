@@ -8,6 +8,7 @@ pytest
 pytest-cov
 pytest-localserver
 pyu2f
+pyjwt
 requests
 urllib3
 cryptography < 39.0.0
