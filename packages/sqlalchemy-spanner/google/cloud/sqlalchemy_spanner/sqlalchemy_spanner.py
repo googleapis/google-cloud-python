@@ -235,6 +235,9 @@ class SpannerSQLCompiler(SQLCompiler):
         """
         return text
 
+    def visit_now_func(self, func, **kwargs):
+        return "current_timestamp"
+
     def visit_empty_set_expr(self, type_, **kw):
         """Return an empty set expression of the given type.
 

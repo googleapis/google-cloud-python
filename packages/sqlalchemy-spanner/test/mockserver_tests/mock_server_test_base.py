@@ -22,6 +22,7 @@ from google.cloud.spanner_v1 import (
     Client,
     ResultSet,
     PingingPool,
+    TypeCode,
 )
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
@@ -48,6 +49,12 @@ def add_update_count(
 
 
 def add_select1_result():
+    add_single_result("select 1", "c", TypeCode.INT64, [("1",)])
+
+
+def add_single_result(
+    sql: str, column_name: str, type_code: spanner_type.TypeCode, row
+):
     result = result_set.ResultSet(
         dict(
             metadata=result_set.ResultSetMetadata(
@@ -57,10 +64,8 @@ def add_select1_result():
                             fields=[
                                 spanner_type.StructType.Field(
                                     dict(
-                                        name="c",
-                                        type=spanner_type.Type(
-                                            dict(code=spanner_type.TypeCode.INT64)
-                                        ),
+                                        name=column_name,
+                                        type=spanner_type.Type(dict(code=type_code)),
                                     )
                                 )
                             ]
@@ -70,8 +75,8 @@ def add_select1_result():
             ),
         )
     )
-    result.rows.extend(["1"])
-    MockServerTestBase.spanner_service.mock_spanner.add_result("select 1", result)
+    result.rows.extend(row)
+    MockServerTestBase.spanner_service.mock_spanner.add_result(sql, result)
 
 
 class MockServerTestBase(fixtures.TestBase):
