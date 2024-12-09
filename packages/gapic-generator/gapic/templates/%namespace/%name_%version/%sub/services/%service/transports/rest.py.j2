@@ -256,6 +256,8 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}{# method.lro #}
             {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #} 
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
+            {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2279): Add logging support for rest streaming. #}
+            {% if not method.server_streaming %}
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(resp){% else %}json_format.MessageToJson(resp){% endif %},
@@ -272,6 +274,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                         "httpResponse": http_response,
                     },
                 )
+            {% endif %}{# if not method.server_streaming #}
             return resp
 
             {% endif %}{# method.void #}
