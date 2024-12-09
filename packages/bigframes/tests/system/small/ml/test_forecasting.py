@@ -65,6 +65,42 @@ def test_arima_plus_predict_default(
     )
 
 
+def test_arima_plus_predict_explain_default(
+    time_series_arima_plus_model: forecasting.ARIMAPlus,
+):
+    utc = pytz.utc
+    predictions = time_series_arima_plus_model.predict_explain().to_pandas()
+    assert predictions.shape[0] == 369
+    predictions = predictions[
+        predictions["time_series_type"] == "forecast"
+    ].reset_index(drop=True)
+    assert predictions.shape[0] == 3
+    result = predictions[["time_series_timestamp", "time_series_data"]]
+    expected = pd.DataFrame(
+        {
+            "time_series_timestamp": [
+                datetime(2017, 8, 2, tzinfo=utc),
+                datetime(2017, 8, 3, tzinfo=utc),
+                datetime(2017, 8, 4, tzinfo=utc),
+            ],
+            "time_series_data": [2727.693349, 2595.290749, 2370.86767],
+        }
+    )
+    expected["time_series_data"] = expected["time_series_data"].astype(
+        pd.Float64Dtype()
+    )
+    expected["time_series_timestamp"] = expected["time_series_timestamp"].astype(
+        pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+    )
+
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        rtol=0.1,
+        check_index_type=False,
+    )
+
+
 def test_arima_plus_predict_params(time_series_arima_plus_model: forecasting.ARIMAPlus):
     utc = pytz.utc
     predictions = time_series_arima_plus_model.predict(
@@ -94,6 +130,33 @@ def test_arima_plus_predict_params(time_series_arima_plus_model: forecasting.ARI
         rtol=0.1,
         check_index_type=False,
     )
+
+
+def test_arima_plus_predict_explain_params(
+    time_series_arima_plus_model: forecasting.ARIMAPlus,
+):
+    predictions = time_series_arima_plus_model.predict_explain(
+        horizon=4, confidence_level=0.9
+    ).to_pandas()
+    assert predictions.shape[0] >= 1
+    prediction_columns = set(predictions.columns)
+    expected_columns = {
+        "time_series_timestamp",
+        "time_series_type",
+        "time_series_data",
+        "time_series_adjusted_data",
+        "standard_error",
+        "confidence_level",
+        "prediction_interval_lower_bound",
+        "trend",
+        "seasonal_period_yearly",
+        "seasonal_period_quarterly",
+        "seasonal_period_monthly",
+        "seasonal_period_weekly",
+        "seasonal_period_daily",
+        "holiday_effect",
+    }
+    assert expected_columns <= prediction_columns
 
 
 def test_arima_plus_detect_anomalies(

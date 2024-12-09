@@ -172,6 +172,14 @@ class BqmlModel(BaseBqml):
         sql = self._model_manipulation_sql_generator.ml_forecast(struct_options=options)
         return self._session.read_gbq(sql, index_col="forecast_timestamp").reset_index()
 
+    def explain_forecast(self, options: Mapping[str, int | float]) -> bpd.DataFrame:
+        sql = self._model_manipulation_sql_generator.ml_explain_forecast(
+            struct_options=options
+        )
+        return self._session.read_gbq(
+            sql, index_col="time_series_timestamp"
+        ).reset_index()
+
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
         sql = self._model_manipulation_sql_generator.ml_evaluate(
             input_data.sql if (input_data is not None) else None
