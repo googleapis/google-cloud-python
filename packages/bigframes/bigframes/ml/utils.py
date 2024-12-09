@@ -92,7 +92,7 @@ def _get_only_column(input: ArrayType) -> Union[pd.Series, bpd.Series]:
     label = typing.cast(Hashable, input.columns.tolist()[0])
     if isinstance(input, pd.DataFrame):
         return typing.cast(pd.Series, input[label])
-    return typing.cast(bpd.Series, input[label])
+    return typing.cast(bpd.Series, input[label])  # type: ignore
 
 
 def parse_model_endpoint(model_endpoint: str) -> tuple[str, Optional[str]]:

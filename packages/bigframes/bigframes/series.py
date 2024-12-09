@@ -718,12 +718,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def isin(self, values) -> "Series" | None:
+        if isinstance(values, (Series,)):
+            self._block.isin(values._block)
         if not _is_list_like(values):
             raise TypeError(
                 "only list-like objects are allowed to be passed to "
                 f"isin(), you passed a [{type(values).__name__}]"
             )
-
         return self._apply_unary_op(
             ops.IsInOp(values=tuple(values), match_nulls=True)
         ).fillna(value=False)

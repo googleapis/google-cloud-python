@@ -2019,6 +2019,43 @@ class Block:
             result_block = result_block.reset_index()
         return result_block
 
+    def isin(self, other: Block):
+        # TODO: Support multiple other columns and match on label
+        # TODO: Model as explicit "IN" subquery/join to better allow db to optimize
+        assert len(other.value_columns) == 1
+        unique_other_values = other.expr.select_columns(
+            [other.value_columns[0]]
+        ).aggregate((), by_column_ids=(other.value_columns[0],))
+        block = self
+        # for each original column, join with other
+        for i in range(len(self.value_columns)):
+            block = block._isin_inner(block.value_columns[i], unique_other_values)
+        return block
+
+    def _isin_inner(self: Block, col: str, unique_values: core.ArrayValue) -> Block:
+        unique_values, const = unique_values.create_constant(
+            True, dtype=bigframes.dtypes.BOOL_DTYPE
+        )
+        expr, (l_map, r_map) = self._expr.relational_join(
+            unique_values, ((col, unique_values.column_ids[0]),), type="left"
+        )
+        expr, matches = expr.project_to_id(
+            ops.eq_op.as_expr(ex.const(True), r_map[const])
+        )
+
+        new_index_cols = tuple(l_map[idx_col] for idx_col in self.index_columns)
+        new_value_cols = tuple(
+            l_map[val_col] if val_col != col else matches
+            for val_col in self.value_columns
+        )
+        expr = expr.select_columns((*new_index_cols, *new_value_cols))
+        return Block(
+            expr,
+            index_columns=new_index_cols,
+            column_labels=self.column_labels,
+            index_labels=self._index_labels,
+        )
+
     def merge(
         self,
         other: Block,
