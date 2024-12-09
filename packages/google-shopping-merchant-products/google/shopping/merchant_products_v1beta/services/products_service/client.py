@@ -691,7 +691,11 @@ class ProductsServiceClient(metaclass=ProductsServiceClientMeta):
                 method.
             name (str):
                 Required. The name of the product to retrieve. Format:
-                ``accounts/{account}/products/{product}``
+                ``accounts/{account}/products/{product}`` where the last
+                section ``product`` consists of 4 parts:
+                channel~content_language~feed_label~offer_id example for
+                product name is
+                "accounts/123/products/online~en~US~sku123"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -705,7 +709,7 @@ class ProductsServiceClient(metaclass=ProductsServiceClientMeta):
         Returns:
             google.shopping.merchant_products_v1beta.types.Product:
                 The processed product, built from multiple [product
-                   inputs][[google.shopping.content.bundles.Products.ProductInput]
+                   inputs][google.shopping.merchant.products.v1main.ProductInput]
                    after applying rules and supplemental data sources.
                    This processed product matches what is shown in your
                    Merchant Center account and in Shopping ads and other

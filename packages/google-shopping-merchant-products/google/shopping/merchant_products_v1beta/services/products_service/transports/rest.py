@@ -261,7 +261,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             Returns:
                 ~.products.Product:
                     The processed product, built from multiple [product
-                inputs][[google.shopping.content.bundles.Products.ProductInput]
+                inputs][google.shopping.merchant.products.v1main.ProductInput]
                 after applying rules and supplemental data sources. This
                 processed product matches what is shown in your Merchant
                 Center account and in Shopping ads and other surfaces

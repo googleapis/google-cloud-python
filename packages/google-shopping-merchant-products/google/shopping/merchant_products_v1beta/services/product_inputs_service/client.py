@@ -736,7 +736,7 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    Shopping ads, or across Google surfaces. Product
                    inputs, rules and supplemental data source data are
                    combined to create the processed
-                   [product][google.shopping.content.bundles.Products.Product].
+                   [Product][google.shopping.merchant.products.v1beta.Product].
 
                    Required product input attributes to pass data
                    validation checks are primarily defined in the
@@ -744,10 +744,10 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    Specification](\ https://support.google.com/merchants/answer/188494).
 
                    The following attributes are required:
-                   [feedLabel][google.shopping.content.bundles.Products.feed_label],
-                   [contentLanguage][google.shopping.content.bundles.Products.content_language]
+                   [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
+                   [contentLanguage][google.shopping.merchant.products.v1beta.Product.content_language]
                    and
-                   [offerId][google.shopping.content.bundles.Products.offer_id].
+                   [offerId][google.shopping.merchant.products.v1beta.Product.offer_id].
 
                    After inserting, updating, or deleting a product
                    input, it may take several minutes before the
@@ -833,9 +833,13 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                 The request object. Request message for the
                 DeleteProductInput method.
             name (str):
-                Required. The name of the product
-                input resource to delete. Format:
-                accounts/{account}/productInputs/{product}
+                Required. The name of the product input resource to
+                delete. Format:
+                accounts/{account}/productInputs/{product} where the
+                last section ``product`` consists of 4 parts:
+                channel~content_language~feed_label~offer_id example for
+                product name is
+                "accounts/123/productInputs/online~en~US~sku123"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

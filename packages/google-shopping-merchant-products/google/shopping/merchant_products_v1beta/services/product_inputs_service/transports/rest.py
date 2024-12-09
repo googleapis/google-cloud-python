@@ -341,7 +341,7 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 Merchant Center, in Shopping ads, or across Google
                 surfaces. Product inputs, rules and supplemental data
                 source data are combined to create the processed
-                [product][google.shopping.content.bundles.Products.Product].
+                [Product][google.shopping.merchant.products.v1beta.Product].
 
                 Required product input attributes to pass data
                 validation checks are primarily defined in the `Products
@@ -349,10 +349,10 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 Specification <https://support.google.com/merchants/answer/188494>`__.
 
                 The following attributes are required:
-                [feedLabel][google.shopping.content.bundles.Products.feed_label],
-                [contentLanguage][google.shopping.content.bundles.Products.content_language]
+                [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
+                [contentLanguage][google.shopping.merchant.products.v1beta.Product.content_language]
                 and
-                [offerId][google.shopping.content.bundles.Products.offer_id].
+                [offerId][google.shopping.merchant.products.v1beta.Product.offer_id].
 
                 After inserting, updating, or deleting a product input,
                 it may take several minutes before the processed product
