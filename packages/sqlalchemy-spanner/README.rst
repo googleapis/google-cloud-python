@@ -344,8 +344,9 @@ ReadOnly transactions
 ~~~~~~~~~~~~~~~~~~~~~
 
 By default, transactions produced by a Spanner connection are in
-ReadWrite mode. However, some applications require an ability to grant
-ReadOnly access to users/methods; for these cases Spanner dialect
+ReadWrite mode. However, workloads that only read data perform better
+if they use read-only transactions, as Spanner does not need to take
+locks for the data that is read; for these cases, the Spanner dialect
 supports the ``read_only`` execution option, which switches a connection
 into ReadOnly mode:
 
@@ -354,11 +355,13 @@ into ReadOnly mode:
    with engine.connect().execution_options(read_only=True) as connection:
        connection.execute(select(["*"], from_obj=table)).fetchall()
 
-Note that execution options are applied lazily - on the ``execute()``
-method call, right before it.
+See the `Read-only transaction sample
+<https://github.com/googleapis/python-spanner-sqlalchemy/blob/-/samples/read_only_transaction_sample.py>`__
+for a concrete example.
 
 ReadOnly/ReadWrite mode of a connection can't be changed while a
-transaction is in progress - first you must commit or rollback it.
+transaction is in progress - you must commit or rollback the current
+transaction before changing the mode.
 
 Stale reads
 ~~~~~~~~~~~
