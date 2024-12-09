@@ -910,7 +910,9 @@ def test_column_multi_index_unstack(scalars_df_index, scalars_pandas_df_index):
 
 def test_corr_w_multi_index(scalars_df_index, scalars_pandas_df_index):
     columns = ["int64_too", "float64_col", "int64_col"]
-    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "b"], [1, 2, 2]))
+    multi_columns = pandas.MultiIndex.from_tuples(
+        zip(["a", "b", "b"], [1, 2, 2]), names=[None, "level_2"]
+    )
 
     bf = scalars_df_index[columns].copy()
     bf.columns = multi_columns
@@ -931,7 +933,9 @@ def test_corr_w_multi_index(scalars_df_index, scalars_pandas_df_index):
 
 def test_cov_w_multi_index(scalars_df_index, scalars_pandas_df_index):
     columns = ["int64_too", "float64_col", "int64_col"]
-    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "b"], [1, 2, 2]))
+    multi_columns = pandas.MultiIndex.from_tuples(
+        zip(["a", "b", "b"], [1, 2, 2]), names=["level_1", None]
+    )
 
     bf = scalars_df_index[columns].copy()
     bf.columns = multi_columns

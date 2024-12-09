@@ -912,6 +912,8 @@ class Block:
             input_varname = input_varnames[0]
 
         block = self
+
+        result_ids = []
         for col_id in columns:
             label = self.col_id_to_label[col_id]
             block, result_id = block.project_expr(
@@ -919,7 +921,8 @@ class Block:
                 label=label,
             )
             block = block.copy_values(result_id, col_id)
-            block = block.drop_columns([result_id])
+            result_ids.append(result_id)
+        block = block.drop_columns(result_ids)
         # Special case, we can preserve transpose cache for full-frame unary ops
         if (self._transpose_cache is not None) and set(self.value_columns) == set(
             columns
@@ -1315,50 +1318,6 @@ class Block:
             expr,
             column_labels=self._get_labels_for_columns(column_ids),
             index_columns=index_cols,
-        )
-
-    def calculate_pairwise_metric(self, op=agg_ops.CorrOp()):
-        """
-        Returns a block object to compute pairwise metrics among all value columns in this block.
-
-        The metric to be computed is specified by the `op` parameter, which can be either a
-        correlation operation (default) or a covariance operation.
-        """
-        if len(self.value_columns) > 30:
-            raise NotImplementedError(
-                "This function supports dataframes with 30 columns or fewer. "
-                f"Provided dataframe has {len(self.value_columns)} columns. {constants.FEEDBACK_LINK}"
-            )
-
-        aggregations = [
-            (
-                ex.BinaryAggregation(op, ex.deref(left_col), ex.deref(right_col)),
-                f"{left_col}-{right_col}",
-            )
-            for left_col in self.value_columns
-            for right_col in self.value_columns
-        ]
-        expr = self.expr.aggregate(aggregations)
-
-        input_count = len(self.value_columns)
-        unpivot_columns = tuple(
-            tuple(expr.column_ids[input_count * i : input_count * (i + 1)])
-            for i in range(input_count)
-        )
-        labels = self._get_labels_for_columns(self.value_columns)
-
-        # TODO(b/340896143): fix type error
-        expr, (index_col_ids, _, _) = unpivot(
-            expr,
-            row_labels=labels,
-            unpivot_columns=unpivot_columns,
-        )
-
-        return Block(
-            expr,
-            column_labels=self.column_labels,
-            index_columns=index_col_ids,
-            index_labels=self.column_labels.names,
         )
 
     def explode(
