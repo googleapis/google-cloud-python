@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.24.0](https://github.com/googleapis/python-api-core/compare/v2.23.0...v2.24.0) (2024-12-06)
+
+
+### Features
+
+* Add automatic logging config to support debug logging ([#754](https://github.com/googleapis/python-api-core/issues/754)) ([d18d9b5](https://github.com/googleapis/python-api-core/commit/d18d9b5131162b44eebcc0859a7aca1198a2ac06))
+* Update recognized logging fields ([#766](https://github.com/googleapis/python-api-core/issues/766)) ([5f80f77](https://github.com/googleapis/python-api-core/commit/5f80f778bc25d878b3187c6138077ad8c6bcd35f))
+
 ## [2.23.0](https://github.com/googleapis/python-api-core/compare/v2.22.0...v2.23.0) (2024-11-11)
 
 
