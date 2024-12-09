@@ -80,7 +80,7 @@ on this step in a dialect prefix part:
    # for SQLAlchemy 1.3:
    spanner:///projects/project-id/instances/instance-id/databases/database-id
 
-   # for SQLAlchemy 1.4:
+   # for SQLAlchemy 1.4 and 2.0:
    spanner+spanner:///projects/project-id/instances/instance-id/databases/database-id
 
 To pass your custom client object directly to be be used, create engine as following:
@@ -237,7 +237,7 @@ Unique constraints
 ~~~~~~~~~~~~~~~~~~
 
 Cloud Spanner doesn't support direct UNIQUE constraints creation. In
-order to achieve column values uniqueness UNIQUE indexes should be used.
+order to achieve column values uniqueness, UNIQUE indexes should be used.
 
 Instead of direct UNIQUE constraint creation:
 
@@ -265,10 +265,16 @@ Autocommit mode
 ~~~~~~~~~~~~~~~
 
 Spanner dialect supports both ``SERIALIZABLE`` and ``AUTOCOMMIT``
-isolation levels. ``SERIALIZABLE`` is the default one, where
-transactions need to be committed manually. ``AUTOCOMMIT`` mode
-corresponds to automatically committing of a query right in its
-execution time.
+isolation levels. ``SERIALIZABLE`` is the default isolation level.
+
+``AUTOCOMMIT`` mode corresponds to automatically committing each
+insert/update/delete statement right after is has been executed.
+Queries that are executed in ``AUTOCOMMIT`` mode use a single-use
+read-only transaction. These do not take any locks and do not need
+to be committed.
+
+Workloads that only read data, should use either ``AUTOCOMMIT`` or
+a read-only transaction.
 
 Isolation level change example:
 
@@ -279,7 +285,7 @@ Isolation level change example:
    eng = create_engine("spanner:///projects/project-id/instances/instance-id/databases/database-id")
    autocommit_engine = eng.execution_options(isolation_level="AUTOCOMMIT")
 
-Automatic transactions retry
+Automatic transaction retry
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In the default ``SERIALIZABLE`` mode transactions may fail with ``Aborted`` exception. This is a transient kind of errors, which mostly happen to prevent data corruption by concurrent modifications. Though the original transaction becomes non operational, a simple retry of the queries solves the issue.
 
@@ -287,8 +293,8 @@ This, however, may require to manually repeat a long list of operations, execute
 
 In ``AUTOCOMMIT`` mode automatic transactions retry mechanism is disabled, as every operation is committed just in time, and there is no way an ``Aborted`` exception can happen.
 
-Autoincremented IDs
-~~~~~~~~~~~~~~~~~~~
+Auto-incremented IDs
+~~~~~~~~~~~~~~~~~~~~
 
 Cloud Spanner doesn't support autoincremented IDs mechanism due to
 performance reasons (`see for more
