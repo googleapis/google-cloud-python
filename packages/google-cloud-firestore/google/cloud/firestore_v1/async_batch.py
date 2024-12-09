@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """Helpers for batch requests to the Google Cloud Firestore API."""
-
+from __future__ import annotations
 
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
@@ -38,8 +38,8 @@ class AsyncWriteBatch(BaseWriteBatch):
 
     async def commit(
         self,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> list:
         """Commit the changes accumulated in this batch.
 

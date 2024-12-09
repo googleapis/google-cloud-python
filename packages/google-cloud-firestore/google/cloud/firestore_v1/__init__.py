@@ -21,7 +21,7 @@
 
 from google.cloud.firestore_v1 import gapic_version as package_version
 
-__version__ = package_version.__version__
+__version__: str = package_version.__version__
 
 from typing import List
 

@@ -136,6 +136,15 @@ class _BaseBulkWriterTests:
         options = BulkWriterOptions(retry=BulkRetry.immediate)
         self._basebulkwriter_ctor_helper(options=options)
 
+    def test_bulkwriteroperation_ctor(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOperation
+
+        op = BulkWriterOperation()
+        assert op.attempts == 0
+        attempts = 9
+        op2 = BulkWriterOperation(attempts)
+        assert op2.attempts == attempts
+
     def _doc_iter(self, client, num: int, ids: Optional[List[str]] = None):
         for _ in range(num):
             id: Optional[str] = ids[_] if ids else None

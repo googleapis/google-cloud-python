@@ -100,9 +100,9 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
     async def add(
         self,
         document_data: dict,
-        document_id: str = None,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        document_id: str | None = None,
+        retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
 
@@ -141,7 +141,7 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
         return write_result.update_time, document_ref
 
     def document(
-        self, document_id: str = None
+        self, document_id: str | None = None
     ) -> async_document.AsyncDocumentReference:
         """Create a sub-document underneath the current collection.
 
@@ -159,9 +159,9 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
 
     async def list_documents(
         self,
-        page_size: int = None,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        page_size: int | None = None,
+        retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> AsyncGenerator[DocumentReference, None]:
         """List all subdocuments of the current collection.
 
@@ -193,7 +193,7 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
     async def get(
         self,
         transaction: Optional[transaction.Transaction] = None,
-        retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
@@ -233,7 +233,7 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
     def stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
-        retry: Optional[retries.AsyncRetry] = gapic_v1.method.DEFAULT,
+        retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,

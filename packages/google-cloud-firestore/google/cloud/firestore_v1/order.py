@@ -17,6 +17,7 @@ from enum import Enum
 from typing import Any
 
 from google.cloud.firestore_v1._helpers import decode_value
+from google.cloud.firestore_v1._helpers import GeoPoint
 
 
 class TypeOrder(Enum):
@@ -150,6 +151,10 @@ class Order(object):
     def compare_geo_points(left, right) -> Any:
         left_value = decode_value(left, None)
         right_value = decode_value(right, None)
+        if not isinstance(left_value, GeoPoint) or not isinstance(
+            right_value, GeoPoint
+        ):
+            raise AttributeError("invalid geopoint encountered")
         cmp = (left_value.latitude > right_value.latitude) - (
             left_value.latitude < right_value.latitude
         )

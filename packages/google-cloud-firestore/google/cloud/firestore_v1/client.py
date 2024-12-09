@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Generator, Iterable, List, Optional, Union
 
@@ -108,16 +109,6 @@ class Client(BaseClient):
             firestore_client.FirestoreClient,
             firestore_client,
         )
-
-    @property
-    def _target(self):
-        """Return the target (where the API is).
-        Eg. "firestore.googleapis.com"
-
-        Returns:
-            str: The location of the API.
-        """
-        return self._target_helper(firestore_client.FirestoreClient)
 
     def collection(self, *collection_path: str) -> CollectionReference:
         """Get a reference to a collection.
@@ -210,10 +201,10 @@ class Client(BaseClient):
     def get_all(
         self,
         references: list,
-        field_paths: Iterable[str] = None,
-        transaction: Transaction = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        field_paths: Iterable[str] | None = None,
+        transaction: Transaction | None = None,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> Generator[DocumentSnapshot, Any, None]:
         """Retrieve a batch of documents.
 
@@ -268,8 +259,8 @@ class Client(BaseClient):
 
     def collections(
         self,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> Generator[Any, Any, None]:
         """List top-level collections of the client's database.
 
@@ -299,7 +290,7 @@ class Client(BaseClient):
         reference: Union[CollectionReference, DocumentReference],
         *,
         bulk_writer: Optional["BulkWriter"] = None,
-        chunk_size: Optional[int] = 5000,
+        chunk_size: int = 5000,
     ) -> int:
         """Deletes documents and their subcollections, regardless of collection
         name.
@@ -336,8 +327,8 @@ class Client(BaseClient):
         reference: Union[CollectionReference, DocumentReference],
         bulk_writer: "BulkWriter",
         *,
-        chunk_size: Optional[int] = 5000,
-        depth: Optional[int] = 0,
+        chunk_size: int = 5000,
+        depth: int = 0,
     ) -> int:
         """Recursion helper for `recursive_delete."""
 

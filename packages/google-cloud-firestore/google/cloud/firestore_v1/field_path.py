@@ -13,10 +13,10 @@
 # limitations under the License.
 
 """Utilities for managing / converting field paths to / from strings."""
-
+from __future__ import annotations
 import re
 from collections import abc
-from typing import Iterable
+from typing import Iterable, cast
 
 _FIELD_PATH_MISSING_TOP = "{!r} is not contained in the data"
 _FIELD_PATH_MISSING_KEY = "{!r} is not contained in the data for the key {!r}"
@@ -53,7 +53,7 @@ def _tokenize_field_path(path: str):
     get_token = TOKENS_REGEX.match
     match = get_token(path)
     while match is not None:
-        type_ = match.lastgroup
+        type_ = cast(str, match.lastgroup)
         value = match.group(type_)
         yield value
         pos = match.end()
@@ -62,7 +62,7 @@ def _tokenize_field_path(path: str):
         raise ValueError("Path {} not consumed, residue: {}".format(path, path[pos:]))
 
 
-def split_field_path(path: str):
+def split_field_path(path: str | None):
     """Split a field path into valid elements (without dots).
 
     Args:

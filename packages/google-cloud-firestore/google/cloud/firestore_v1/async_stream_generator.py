@@ -17,7 +17,7 @@ Firestore API.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, AsyncGenerator, Awaitable, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, AsyncGenerator, Coroutine, Optional, TypeVar
 
 from google.cloud.firestore_v1.query_profile import (
     ExplainMetrics,
@@ -66,10 +66,10 @@ class AsyncStreamGenerator(AsyncGenerator[T, Any]):
         except StopAsyncIteration:
             raise
 
-    def asend(self, value: Any = None) -> Awaitable[T]:
+    def asend(self, value: Any = None) -> Coroutine[Any, Any, T]:
         return self._generator.asend(value)
 
-    def athrow(self, *args, **kwargs) -> Awaitable[T]:
+    def athrow(self, *args, **kwargs) -> Coroutine[Any, Any, T]:
         return self._generator.athrow(*args, **kwargs)
 
     def aclose(self):

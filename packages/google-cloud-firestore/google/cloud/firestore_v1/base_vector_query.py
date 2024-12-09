@@ -99,7 +99,7 @@ class BaseVectorQuery(ABC):
     def _prep_stream(
         self,
         transaction=None,
-        retry: Union[retries.Retry, None, gapic_v1.method._MethodDefault] = None,
+        retry: Union[retries.Retry, retries.AsyncRetry, object, None] = None,
         timeout: Optional[float] = None,
         explain_options: Optional[ExplainOptions] = None,
     ) -> Tuple[dict, str, dict]:
@@ -120,7 +120,10 @@ class BaseVectorQuery(ABC):
     def get(
         self,
         transaction=None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry
+        | retries.AsyncRetry
+        | object
+        | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
@@ -153,7 +156,10 @@ class BaseVectorQuery(ABC):
     def stream(
         self,
         transaction=None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry
+        | retries.AsyncRetry
+        | object
+        | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,

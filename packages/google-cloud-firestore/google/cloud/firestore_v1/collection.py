@@ -93,7 +93,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
         self,
         document_data: dict,
         document_id: Union[str, None] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Union[float, None] = None,
     ) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
@@ -135,7 +135,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
     def list_documents(
         self,
         page_size: Union[int, None] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Union[float, None] = None,
     ) -> Generator[Any, Any, None]:
         """List all subdocuments of the current collection.
@@ -170,7 +170,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
     def get(
         self,
         transaction: Union[transaction.Transaction, None] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Union[float, None] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
@@ -210,7 +210,7 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
     def stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
-        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,

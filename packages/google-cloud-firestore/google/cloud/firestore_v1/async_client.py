@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.async_document.AsyncDocumentReference`
 """
+from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, AsyncGenerator, Iterable, List, Optional, Union
 
@@ -222,10 +223,10 @@ class AsyncClient(BaseClient):
     async def get_all(
         self,
         references: List[AsyncDocumentReference],
-        field_paths: Iterable[str] = None,
-        transaction=None,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        field_paths: Iterable[str] | None = None,
+        transaction: AsyncTransaction | None = None,
+        retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieve a batch of documents.
 
@@ -280,8 +281,8 @@ class AsyncClient(BaseClient):
 
     async def collections(
         self,
-        retry: retries.AsyncRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> AsyncGenerator[AsyncCollectionReference, Any]:
         """List top-level collections of the client's database.
 
@@ -310,8 +311,8 @@ class AsyncClient(BaseClient):
         reference: Union[AsyncCollectionReference, AsyncDocumentReference],
         *,
         bulk_writer: Optional["BulkWriter"] = None,
-        chunk_size: Optional[int] = 5000,
-    ):
+        chunk_size: int = 5000,
+    ) -> int:
         """Deletes documents and their subcollections, regardless of collection
         name.
 
@@ -346,8 +347,8 @@ class AsyncClient(BaseClient):
         reference: Union[AsyncCollectionReference, AsyncDocumentReference],
         bulk_writer: "BulkWriter",
         *,
-        chunk_size: Optional[int] = 5000,
-        depth: Optional[int] = 0,
+        chunk_size: int = 5000,
+        depth: int = 0,
     ) -> int:
         """Recursion helper for `recursive_delete."""
 

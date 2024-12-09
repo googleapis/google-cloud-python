@@ -14,7 +14,7 @@
 # limitations under the License.
 
 import collections
-from typing import Sequence, Tuple
+from typing import Sequence
 
 
 class Vector(collections.abc.Sequence):
@@ -23,18 +23,20 @@ class Vector(collections.abc.Sequence):
     Underlying object will be converted to a map representation in Firestore API.
     """
 
-    _value: Tuple[float] = ()
+    _value: Sequence[float] = ()
 
     def __init__(self, value: Sequence[float]):
         self._value = tuple([float(v) for v in value])
 
-    def __getitem__(self, arg: int):
+    def __getitem__(self, arg):
         return self._value[arg]
 
     def __len__(self):
         return len(self._value)
 
     def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Vector):
+            return False
         return self._value == other._value
 
     def __repr__(self):

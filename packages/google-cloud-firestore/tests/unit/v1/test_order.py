@@ -178,6 +178,20 @@ def test_order_compare_w_failure_to_find_type():
     assert message.startswith("Unknown TypeOrder")
 
 
+@pytest.mark.parametrize("invalid_point_is_left", [True, False])
+def test_order_compare_invalid_geo_points(invalid_point_is_left):
+    """
+    comparing invalid geopoints should raise exception
+    """
+    target = _make_order()
+    points = [_array_value(), _geoPoint_value(10, 10)]
+    if not invalid_point_is_left:
+        # reverse points
+        points = points[::-1]
+    with pytest.raises(AttributeError):
+        target.compare_geo_points(*points)
+
+
 def test_order_all_value_present():
     from google.cloud.firestore_v1.order import _TYPE_ORDER_MAP, TypeOrder
 

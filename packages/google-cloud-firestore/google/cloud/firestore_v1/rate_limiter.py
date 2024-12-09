@@ -14,7 +14,7 @@
 
 import datetime
 import warnings
-from typing import NoReturn, Optional
+from typing import Optional
 
 
 def utcnow():
@@ -110,7 +110,7 @@ class RateLimiter:
         self._start = self._start or utcnow
         self._last_refill = self._last_refill or utcnow
 
-    def take_tokens(self, num: Optional[int] = 1, allow_less: bool = False) -> int:
+    def take_tokens(self, num: int = 1, allow_less: bool = False) -> int:
         """Returns the number of available tokens, up to the amount requested."""
         self._start_clock()
         self._check_phase()
@@ -125,7 +125,7 @@ class RateLimiter:
             return _num_to_take
         return 0
 
-    def _check_phase(self):
+    def _check_phase(self) -> None:
         """Increments or decrements [_phase] depending on traffic.
 
         Every [_phase_length] seconds, if > 50% of available traffic was used
@@ -134,6 +134,8 @@ class RateLimiter:
         This is a no-op unless a new [_phase_length] number of seconds since the
         start was crossed since it was last called.
         """
+        if self._start is None:
+            raise TypeError("RateLimiter error: unset _start value")
         age: datetime.timedelta = (
             datetime.datetime.now(datetime.timezone.utc) - self._start
         )
@@ -157,14 +159,16 @@ class RateLimiter:
         if operations_last_phase and self._phase > previous_phase:
             self._increase_maximum_tokens()
 
-    def _increase_maximum_tokens(self) -> NoReturn:
+    def _increase_maximum_tokens(self) -> None:
         self._maximum_tokens = round(self._maximum_tokens * 1.5)
         if self._global_max_tokens is not None:
             self._maximum_tokens = min(self._maximum_tokens, self._global_max_tokens)
 
-    def _refill(self) -> NoReturn:
+    def _refill(self) -> None:
         """Replenishes any tokens that should have regenerated since the last
         operation."""
+        if self._last_refill is None:
+            raise TypeError("RateLimiter error: unset _last_refill value")
         now: datetime.datetime = datetime.datetime.now(datetime.timezone.utc)
         time_since_last_refill: datetime.timedelta = now - self._last_refill
 

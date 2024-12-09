@@ -137,7 +137,7 @@ class Query(BaseQuery):
     def get(
         self,
         transaction=None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
@@ -350,8 +350,8 @@ class Query(BaseQuery):
     def _make_stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
-        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
         explain_options: Optional[ExplainOptions] = None,
     ) -> Generator[DocumentSnapshot, Any, Optional[ExplainMetrics]]:
         """Internal method for stream(). Read the documents in the collection
@@ -443,9 +443,9 @@ class Query(BaseQuery):
 
     def stream(
         self,
-        transaction: Optional[transaction.Transaction] = None,
-        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
-        timeout: Optional[float] = None,
+        transaction: transaction.Transaction | None = None,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
     ) -> StreamGenerator[DocumentSnapshot]:
@@ -578,8 +578,8 @@ class CollectionGroup(Query, BaseCollectionGroup):
     def get_partitions(
         self,
         partition_count,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> Generator[QueryPartition, None, None]:
         """Partition a query for parallelization.
 

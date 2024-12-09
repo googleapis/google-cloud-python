@@ -99,7 +99,7 @@ def test_baseclient__firestore_api_helper_w_already():
 def test_baseclient__firestore_api_helper_wo_emulator():
     client = _make_default_base_client()
     client_options = client._client_options = mock.Mock()
-    target = client._target = mock.Mock()
+    target = client._target
     assert client._firestore_api_internal is None
 
     transport_class = mock.Mock()
@@ -130,7 +130,6 @@ def test_baseclient__firestore_api_helper_w_emulator():
         client = _make_default_base_client()
 
     client_options = client._client_options = mock.Mock()
-    target = client._target = mock.Mock()
     emulator_channel = client._emulator_channel = mock.Mock()
     assert client._firestore_api_internal is None
 
@@ -145,7 +144,7 @@ def test_baseclient__firestore_api_helper_w_emulator():
 
     emulator_channel.assert_called_once_with(transport_class)
     transport_class.assert_called_once_with(
-        host=target,
+        host=emulator_host,
         channel=emulator_channel.return_value,
     )
     client_class.assert_called_once_with(

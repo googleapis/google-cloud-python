@@ -52,9 +52,7 @@ class AggregationQuery(BaseAggregationQuery):
     def get(
         self,
         transaction=None,
-        retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
-        ] = gapic_v1.method.DEFAULT,
+        retry: Union[retries.Retry, None, object] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
@@ -131,9 +129,7 @@ class AggregationQuery(BaseAggregationQuery):
     def _make_stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
-        retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
-        ] = gapic_v1.method.DEFAULT,
+        retry: Union[retries.Retry, None, object] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         explain_options: Optional[ExplainOptions] = None,
     ) -> Generator[List[AggregationResult], Any, Optional[ExplainMetrics]]:
@@ -206,9 +202,7 @@ class AggregationQuery(BaseAggregationQuery):
     def stream(
         self,
         transaction: Optional["transaction.Transaction"] = None,
-        retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
-        ] = gapic_v1.method.DEFAULT,
+        retry: Union[retries.Retry, None, object] = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,

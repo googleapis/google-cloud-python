@@ -57,7 +57,7 @@ class VectorQuery(BaseVectorQuery):
     def get(
         self,
         transaction=None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
@@ -122,7 +122,7 @@ class VectorQuery(BaseVectorQuery):
     def _make_stream(
         self,
         transaction: Optional["transaction.Transaction"] = None,
-        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         explain_options: Optional[ExplainOptions] = None,
     ) -> Generator[DocumentSnapshot, Any, Optional[ExplainMetrics]]:
@@ -192,7 +192,7 @@ class VectorQuery(BaseVectorQuery):
     def stream(
         self,
         transaction: Optional["transaction.Transaction"] = None,
-        retry: Optional[retries.Retry] = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,

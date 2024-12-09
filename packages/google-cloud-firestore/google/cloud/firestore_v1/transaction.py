@@ -74,7 +74,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
 
         super(Transaction, self)._add_write_pbs(write_pbs)
 
-    def _begin(self, retry_id: bytes = None) -> None:
+    def _begin(self, retry_id: bytes | None = None) -> None:
         """Begin the transaction.
 
         Args:
@@ -152,8 +152,8 @@ class Transaction(batch.WriteBatch, BaseTransaction):
     def get_all(
         self,
         references: list,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
+        timeout: float | None = None,
     ) -> Generator[DocumentSnapshot, Any, None]:
         """Retrieves multiple documents from Firestore.
 
@@ -175,7 +175,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
     def get(
         self,
         ref_or_query: DocumentReference | Query,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,

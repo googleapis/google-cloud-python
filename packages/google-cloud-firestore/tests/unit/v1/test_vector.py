@@ -56,6 +56,13 @@ def test_compare_vector():
     assert vector1 == vector2
 
 
+def test_compare_different_type():
+    vector1 = Vector([1.0, 2.0, 3.0])
+    vector2 = [1.0, 2.0, 3.0]
+
+    assert vector1 != vector2
+
+
 def test_vector_get_items():
     vector = Vector([1.0, 2.0, 3.0])
 

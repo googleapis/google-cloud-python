@@ -18,8 +18,6 @@ A :class:`~google.cloud.firestore_v1.aggregation.AggregationQuery` can be create
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create an aggregation query than direct usage of the constructor.
 """
-
-
 from __future__ import annotations
 
 import abc
@@ -32,7 +30,6 @@ from google.api_core import retry as retries
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.field_path import FieldPath
 from google.cloud.firestore_v1.types import (
-    RunAggregationQueryResponse,
     StructuredAggregationQuery,
 )
 
@@ -123,7 +120,7 @@ class AvgAggregation(BaseAggregation):
 
 
 def _query_response_to_result(
-    response_pb: RunAggregationQueryResponse,
+    response_pb,
 ) -> List[AggregationResult]:
     results = [
         AggregationResult(
@@ -205,7 +202,7 @@ class BaseAggregationQuery(ABC):
     def _prep_stream(
         self,
         transaction=None,
-        retry: Union[retries.Retry, None, gapic_v1.method._MethodDefault] = None,
+        retry: Union[retries.Retry, retries.AsyncRetry, None, object] = None,
         timeout: float | None = None,
         explain_options: Optional[ExplainOptions] = None,
     ) -> Tuple[dict, dict]:
@@ -226,7 +223,7 @@ class BaseAggregationQuery(ABC):
         self,
         transaction=None,
         retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
+            retries.Retry, retries.AsyncRetry, None, object
         ] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
         *,
@@ -266,9 +263,10 @@ class BaseAggregationQuery(ABC):
     def stream(
         self,
         transaction: Optional[transaction.Transaction] = None,
-        retry: Union[
-            retries.Retry, None, gapic_v1.method._MethodDefault
-        ] = gapic_v1.method.DEFAULT,
+        retry: retries.Retry
+        | retries.AsyncRetry
+        | object
+        | None = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,

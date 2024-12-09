@@ -24,7 +24,7 @@ import functools
 import logging
 import time
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Callable, Deque, Dict, List, Optional, Union
 
 from google.rpc import status_pb2  # type: ignore
 
@@ -82,7 +82,7 @@ class AsyncBulkWriterMixin:
     wrapped in a decorator which ensures that the `SendMode` is honored.
     """
 
-    def _with_send_mode(fn):
+    def _with_send_mode(fn: Callable):  # type: ignore
         """Decorates a method to ensure it is only called via the executor
         (IFF the SendMode value is SendMode.parallel!).
 
@@ -117,8 +117,10 @@ class AsyncBulkWriterMixin:
         return wrapper
 
     @_with_send_mode
-    def _send_batch(
-        self, batch: BulkWriteBatch, operations: List["BulkWriterOperation"]
+    def _send_batch(  # type: ignore
+        self: "BulkWriter",
+        batch: BulkWriteBatch,
+        operations: List["BulkWriterOperation"],
     ):
         """Sends a batch without regard to rate limits, meaning limits must have
         already been checked. To that end, do not call this directly; instead,
@@ -138,12 +140,12 @@ class AsyncBulkWriterMixin:
 
         self._process_response(batch, response, operations)
 
-    def _process_response(
-        self,
+    def _process_response(  # type: ignore
+        self: "BulkWriter",
         batch: BulkWriteBatch,
         response: BatchWriteResponse,
         operations: List["BulkWriterOperation"],
-    ) -> None:
+    ):
         """Invokes submitted callbacks for each batch and each operation within
         each batch. As this is called from `_send_batch()`, this is parallelized
         if we are in that mode.
@@ -180,10 +182,10 @@ class AsyncBulkWriterMixin:
                     operation.attempts += 1
                     self._retry_operation(operation)
 
-    def _retry_operation(
-        self,
+    def _retry_operation(  # type: ignore
+        self: "BulkWriter",
         operation: "BulkWriterOperation",
-    ) -> concurrent.futures.Future:
+    ):
         delay: int = 0
         if self._options.retry == BulkRetry.exponential:
             delay = operation.attempts**2  # pragma: NO COVER
@@ -257,7 +259,7 @@ class BulkWriter(AsyncBulkWriterMixin):
 
     def __init__(
         self,
-        client: "BaseClient" = None,
+        client: Optional["BaseClient"] = None,
         options: Optional["BulkWriterOptions"] = None,
     ):
         # Because `BulkWriter` instances are all synchronous/blocking on the
@@ -266,9 +268,10 @@ class BulkWriter(AsyncBulkWriterMixin):
         # `BulkWriter` parallelizes all of its network I/O without the developer
         # having to worry about awaiting async methods, so we must convert an
         # AsyncClient instance into a plain Client instance.
-        self._client = (
-            client._to_sync_copy() if type(client).__name__ == "AsyncClient" else client
-        )
+        if type(client).__name__ == "AsyncClient":
+            self._client = client._to_sync_copy()  # type: ignore
+        else:
+            self._client = client
         self._options = options or BulkWriterOptions()
         self._send_mode = self._options.mode
 
@@ -284,9 +287,9 @@ class BulkWriter(AsyncBulkWriterMixin):
         # the raw operation with the `datetime` of its next scheduled attempt.
         # `self._retries` must always remain sorted for efficient reads, so it is
         # required to only ever add elements via `bisect.insort`.
-        self._retries: collections.deque["OperationRetry"] = collections.deque([])
+        self._retries: Deque["OperationRetry"] = collections.deque([])
 
-        self._queued_batches = collections.deque([])
+        self._queued_batches: Deque[List[BulkWriterOperation]] = collections.deque([])
         self._is_open: bool = True
 
         # This list will go on to store the future returned from each submission
@@ -441,7 +444,7 @@ class BulkWriter(AsyncBulkWriterMixin):
         # here we make sure that is running.
         self._ensure_sending()
 
-    def _send_until_queue_is_empty(self):
+    def _send_until_queue_is_empty(self) -> None:
         """First domino in the sending codepath. This does not need to be
         parallelized for two reasons:
 
@@ -488,8 +491,9 @@ class BulkWriter(AsyncBulkWriterMixin):
             self._pending_batch_futures.append(future)
 
             self._schedule_ready_retries()
+        return None
 
-    def _schedule_ready_retries(self):
+    def _schedule_ready_retries(self) -> None:
         """Grabs all ready retries and re-queues them."""
 
         # Because `self._retries` always exists in a sorted state (thanks to only
@@ -503,6 +507,7 @@ class BulkWriter(AsyncBulkWriterMixin):
         for _ in range(take_until_index):
             retry: OperationRetry = self._retries.popleft()
             retry.retry(self)
+        return None
 
     def _request_send(self, batch_size: int) -> bool:
         # Set up this boolean to avoid repeatedly taking tokens if we're only
@@ -519,8 +524,8 @@ class BulkWriter(AsyncBulkWriterMixin):
             )
             # Ask for tokens each pass through this loop until they are granted,
             # and then stop.
-            have_received_tokens = (
-                have_received_tokens or self._rate_limiter.take_tokens(batch_size)
+            have_received_tokens = have_received_tokens or bool(
+                self._rate_limiter.take_tokens(batch_size)
             )
             if not under_threshold or not have_received_tokens:
                 # Try again until both checks are true.
@@ -705,20 +710,24 @@ class BulkWriter(AsyncBulkWriterMixin):
 
     def on_write_result(
         self,
-        callback: Callable[[BaseDocumentReference, WriteResult, "BulkWriter"], None],
+        callback: Optional[
+            Callable[[BaseDocumentReference, WriteResult, "BulkWriter"], None]
+        ],
     ) -> None:
         """Sets a callback that will be invoked once for every successful operation."""
         self._success_callback = callback or BulkWriter._default_on_success
 
     def on_batch_result(
         self,
-        callback: Callable[[BulkWriteBatch, BatchWriteResponse, "BulkWriter"], None],
+        callback: Optional[
+            Callable[[BulkWriteBatch, BatchWriteResponse, "BulkWriter"], None]
+        ],
     ) -> None:
         """Sets a callback that will be invoked once for every successful batch."""
         self._batch_callback = callback or BulkWriter._default_on_batch
 
     def on_write_error(
-        self, callback: Callable[["BulkWriteFailure", "BulkWriter"], bool]
+        self, callback: Optional[Callable[["BulkWriteFailure", "BulkWriter"], bool]]
     ) -> None:
         """Sets a callback that will be invoked once for every batch that contains
         an error."""
@@ -738,6 +747,9 @@ class BulkWriterOperation:
     that ferries it into its next retry without getting confused with other
     similar writes to the same document.
     """
+
+    def __init__(self, attempts: int = 0):
+        self.attempts = attempts
 
     def add_to_batch(self, batch: BulkWriteBatch):
         """Adds `self` to the supplied batch."""
@@ -781,7 +793,7 @@ class BaseOperationRetry:
     Python 3.6 is dropped and `dataclasses` becomes universal.
     """
 
-    def __lt__(self, other: "OperationRetry"):
+    def __lt__(self: "OperationRetry", other: "OperationRetry"):  # type: ignore
         """Allows use of `bisect` to maintain a sorted list of `OperationRetry`
         instances, which in turn allows us to cheaply grab all that are ready to
         run."""
@@ -791,7 +803,7 @@ class BaseOperationRetry:
             return self.run_at < other
         return NotImplemented  # pragma: NO COVER
 
-    def retry(self, bulk_writer: BulkWriter) -> None:
+    def retry(self: "OperationRetry", bulk_writer: BulkWriter) -> None:  # type: ignore
         """Call this after waiting any necessary time to re-add the enclosed
         operation to the supplied BulkWriter's internal queue."""
         if isinstance(self.operation, BulkWriterCreateOperation):
