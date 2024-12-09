@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.spanner_v1 import TransactionOptions, ResultSetMetadata
+from google.cloud.spanner_v1 import (
+    TransactionOptions,
+    ResultSetMetadata,
+    ExecuteSqlRequest,
+)
 from google.protobuf import empty_pb2
 import test.mockserver_tests.spanner_pb2_grpc as spanner_grpc
 import test.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
@@ -40,23 +44,25 @@ class MockSpanner:
         return result
 
     def get_result_as_partial_result_sets(
-        self, sql: str
+        self, sql: str, started_transaction: transaction.Transaction
     ) -> [result_set.PartialResultSet]:
         result: result_set.ResultSet = self.get_result(sql)
         partials = []
         first = True
         if len(result.rows) == 0:
             partial = result_set.PartialResultSet()
-            partial.metadata = result.metadata
+            partial.metadata = ResultSetMetadata(result.metadata)
             partials.append(partial)
         else:
             for row in result.rows:
                 partial = result_set.PartialResultSet()
                 if first:
-                    partial.metadata = result.metadata
+                    partial.metadata = ResultSetMetadata(result.metadata)
                 partial.values.extend(row)
                 partials.append(partial)
         partials[len(partials) - 1].stats = result.stats
+        if started_transaction:
+            partials[0].metadata.transaction = started_transaction
         return partials
 
 
@@ -120,9 +126,16 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         self._requests.append(request)
         return result_set.ResultSet()
 
-    def ExecuteStreamingSql(self, request, context):
+    def ExecuteStreamingSql(self, request: ExecuteSqlRequest, context):
         self._requests.append(request)
-        partials = self.mock_spanner.get_result_as_partial_result_sets(request.sql)
+        started_transaction = None
+        if not request.transaction.begin == TransactionOptions():
+            started_transaction = self.__create_transaction(
+                request.session, request.transaction.begin
+            )
+        partials = self.mock_spanner.get_result_as_partial_result_sets(
+            request.sql, started_transaction
+        )
         for result in partials:
             yield result
 

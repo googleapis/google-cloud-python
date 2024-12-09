@@ -13,7 +13,17 @@
 # limitations under the License.
 
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
-from sqlalchemy import create_engine, select, MetaData, Table, Column, Integer, String
+from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
+from sqlalchemy import (
+    create_engine,
+    select,
+    MetaData,
+    Table,
+    Column,
+    Integer,
+    String,
+    text,
+)
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
     FixedSizePool,
@@ -26,6 +36,7 @@ from test.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_select1_result,
     add_result,
+    add_update_count,
 )
 
 
@@ -127,3 +138,21 @@ LIMIT 1
                 "\n) PRIMARY KEY (id)",
                 requests[0].statements[i],
             )
+
+    def test_partitioned_dml(self):
+        sql = "UPDATE singers SET checked=true WHERE active = true"
+        add_update_count(sql, 100, AutocommitDmlMode.PARTITIONED_NON_ATOMIC)
+        engine = create_engine(
+            "spanner:///projects/p/instances/i/databases/d",
+            connect_args={"client": self.client, "pool": PingingPool(size=10)},
+        )
+        # TODO: Support autocommit_dml_mode as a connection variable in execution
+        #       options.
+        with engine.connect().execution_options(
+            isolation_level="AUTOCOMMIT"
+        ) as connection:
+            connection.connection.set_autocommit_dml_mode(
+                AutocommitDmlMode.PARTITIONED_NON_ATOMIC
+            )
+            results = connection.execute(text(sql)).rowcount
+            eq_(100, results)
