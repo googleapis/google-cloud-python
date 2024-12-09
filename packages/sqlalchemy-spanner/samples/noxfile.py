@@ -58,6 +58,11 @@ def transaction(session):
 
 
 @nox.session()
+def stale_read(session):
+    _sample(session)
+
+
+@nox.session()
 def read_only_transaction(session):
     _sample(session)
 
