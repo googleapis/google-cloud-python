@@ -341,17 +341,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.GenerateAccessToken",
+                    f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.GenerateAccessToken",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateAccessToken",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -452,17 +453,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.GenerateIdToken",
+                    f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.GenerateIdToken",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateIdToken",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -563,17 +565,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.SignBlob",
+                    f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.SignBlob",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignBlob",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -674,17 +677,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.SignJwt",
+                    f"Sending request for google.iam.credentials_v1.IAMCredentialsClient.SignJwt",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignJwt",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 

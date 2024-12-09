@@ -738,17 +738,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.CreateInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.CreateInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "CreateInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -848,17 +849,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.DeleteInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.DeleteInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "DeleteInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -961,17 +963,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ExportInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.ExportInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ExportInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1074,17 +1077,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.FailoverInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.FailoverInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "FailoverInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1181,17 +1185,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1290,17 +1295,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetInstanceAuthString",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetInstanceAuthString",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstanceAuthString",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1405,17 +1411,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ImportInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.ImportInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ImportInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1514,17 +1521,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ListInstances",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.ListInstances",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListInstances",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1629,17 +1637,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.RescheduleMaintenance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.RescheduleMaintenance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "RescheduleMaintenance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1742,17 +1751,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.UpdateInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.UpdateInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpdateInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1855,17 +1865,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.UpgradeInstance",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.UpgradeInstance",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpgradeInstance",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2053,17 +2064,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetLocation",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetLocation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetLocation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2090,8 +2102,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetLocation",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -2162,17 +2174,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ListLocations",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.ListLocations",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListLocations",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2199,8 +2212,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListLocations",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -2268,17 +2281,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.CancelOperation",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.CancelOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "CancelOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2355,17 +2369,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.DeleteOperation",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.DeleteOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "DeleteOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2445,17 +2460,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.GetOperation",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2482,8 +2498,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetOperation",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -2554,17 +2570,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.ListOperations",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.ListOperations",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListOperations",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2591,8 +2608,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListOperations",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -2666,17 +2683,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.redis_v1.CloudRedisClient.WaitOperation",
+                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.WaitOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "WaitOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2703,8 +2721,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "WaitOperation",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp

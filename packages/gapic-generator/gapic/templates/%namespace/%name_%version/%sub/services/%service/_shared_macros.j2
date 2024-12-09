@@ -218,17 +218,19 @@ def _get_http_options():
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
         http_request = {
-          "payload":   type(request).to_json(request),
+          "payload": type(request).to_json(request),
           "requestMethod": method,
           "requestUrl": request_url,
+          "headers": dict(metadata),
         }
         _LOGGER.debug(
-            f"Sending request for  {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method_name }}",
+            f"Sending request for {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method_name }}",
             extra = {
                 "serviceName": "{{ service.meta.address.proto }}",
                 "rpcName": "{{ method_name }}",
-                "metadata": str(dict(metadata)),
                 "httpRequest": http_request,
+                {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up #}
+                "metadata": http_request["headers"],
             },
         )
 
@@ -478,9 +480,9 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
                 extra = {
                     "serviceName": "{{ service.meta.address.proto }}",
                     "rpcName": "{{ name }}",
+                    "httpResponse": http_response,
                     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up #}
                     "metadata": http_response["headers"],
-                    "httpResponse": http_response,
                 },
             )
         return resp

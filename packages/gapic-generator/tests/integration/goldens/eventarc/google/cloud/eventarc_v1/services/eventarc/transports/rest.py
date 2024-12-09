@@ -939,17 +939,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CreateChannel",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.CreateChannel",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannel",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1052,17 +1053,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CreateChannelConnection",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.CreateChannelConnection",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannelConnection",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1165,17 +1167,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CreateTrigger",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.CreateTrigger",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateTrigger",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1275,17 +1278,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteChannel",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteChannel",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannel",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1385,17 +1389,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteChannelConnection",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteChannelConnection",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannelConnection",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1495,17 +1500,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteTrigger",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteTrigger",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteTrigger",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1610,17 +1616,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetChannel",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetChannel",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannel",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1726,17 +1733,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetChannelConnection",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetChannelConnection",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannelConnection",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1843,17 +1851,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetGoogleChannelConfig",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetGoogleChannelConfig",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetGoogleChannelConfig",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1954,17 +1963,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetProvider",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetProvider",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetProvider",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2065,17 +2075,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetTrigger",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetTrigger",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetTrigger",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2176,17 +2187,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListChannelConnections",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListChannelConnections",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannelConnections",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2285,17 +2297,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListChannels",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListChannels",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannels",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2394,17 +2407,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListProviders",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListProviders",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListProviders",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2503,17 +2517,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListTriggers",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListTriggers",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListTriggers",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2618,17 +2633,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.UpdateChannel",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.UpdateChannel",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateChannel",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2737,17 +2753,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.UpdateGoogleChannelConfig",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.UpdateGoogleChannelConfig",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateGoogleChannelConfig",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2852,17 +2869,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.UpdateTrigger",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.UpdateTrigger",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateTrigger",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3106,17 +3124,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetLocation",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetLocation",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetLocation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3143,8 +3162,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetLocation",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -3215,17 +3234,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListLocations",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListLocations",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListLocations",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3252,8 +3272,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListLocations",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -3324,17 +3344,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetIamPolicy",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetIamPolicy",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetIamPolicy",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3361,8 +3382,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetIamPolicy",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -3436,17 +3457,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.SetIamPolicy",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.SetIamPolicy",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "SetIamPolicy",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3473,8 +3495,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "SetIamPolicy",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -3548,17 +3570,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.TestIamPermissions",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.TestIamPermissions",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "TestIamPermissions",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3585,8 +3608,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "TestIamPermissions",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -3657,17 +3680,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.CancelOperation",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.CancelOperation",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CancelOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3744,17 +3768,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.DeleteOperation",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteOperation",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3834,17 +3859,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.GetOperation",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetOperation",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3871,8 +3897,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetOperation",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
@@ -3943,17 +3969,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.eventarc_v1.EventarcClient.ListOperations",
+                    f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListOperations",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListOperations",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3980,8 +4007,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListOperations",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp

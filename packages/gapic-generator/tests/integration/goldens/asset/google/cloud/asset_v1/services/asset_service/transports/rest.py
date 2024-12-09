@@ -837,17 +837,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicy",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicy",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeIamPolicy",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -953,17 +954,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicyLongrunning",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicyLongrunning",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeIamPolicyLongrunning",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1062,17 +1064,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeMove",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeMove",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeMove",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1173,17 +1176,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicies",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicies",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeOrgPolicies",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1285,17 +1289,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedAssets",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedAssets",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeOrgPolicyGovernedAssets",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1397,17 +1402,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedContainers",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedContainers",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeOrgPolicyGovernedContainers",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1505,17 +1511,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.BatchGetAssetsHistory",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.BatchGetAssetsHistory",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "BatchGetAssetsHistory",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1617,17 +1624,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.BatchGetEffectiveIamPolicies",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.BatchGetEffectiveIamPolicies",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "BatchGetEffectiveIamPolicies",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1736,17 +1744,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.CreateFeed",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.CreateFeed",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "CreateFeed",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1849,17 +1858,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.CreateSavedQuery",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.CreateSavedQuery",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "CreateSavedQuery",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -1953,17 +1963,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.DeleteFeed",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.DeleteFeed",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "DeleteFeed",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2033,17 +2044,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.DeleteSavedQuery",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.DeleteSavedQuery",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "DeleteSavedQuery",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2123,17 +2135,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ExportAssets",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ExportAssets",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ExportAssets",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2237,17 +2250,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.GetFeed",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.GetFeed",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "GetFeed",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2347,17 +2361,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.GetSavedQuery",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.GetSavedQuery",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "GetSavedQuery",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2455,17 +2470,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ListAssets",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ListAssets",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ListAssets",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2563,17 +2579,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ListFeeds",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ListFeeds",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ListFeeds",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2671,17 +2688,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.ListSavedQueries",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ListSavedQueries",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ListSavedQueries",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2782,17 +2800,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.QueryAssets",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.QueryAssets",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "QueryAssets",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2890,17 +2909,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.SearchAllIamPolicies",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.SearchAllIamPolicies",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "SearchAllIamPolicies",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -2998,17 +3018,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.SearchAllResources",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.SearchAllResources",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "SearchAllResources",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3117,17 +3138,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.UpdateFeed",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.UpdateFeed",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "UpdateFeed",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3230,17 +3252,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.UpdateSavedQuery",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.UpdateSavedQuery",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "UpdateSavedQuery",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3526,17 +3549,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 http_request = {
-                  "payload":   type(request).to_json(request),
+                  "payload": type(request).to_json(request),
                   "requestMethod": method,
                   "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for  google.cloud.asset_v1.AssetServiceClient.GetOperation",
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.GetOperation",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "GetOperation",
-                        "metadata": str(dict(metadata)),
                         "httpRequest": http_request,
+                        "metadata": http_request["headers"],
                     },
                 )
 
@@ -3563,8 +3587,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "GetOperation",
-                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
+                        "metadata": http_response["headers"],
                     },
                 )
             return resp
