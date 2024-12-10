@@ -813,7 +813,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -938,7 +938,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1066,7 +1066,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1194,7 +1194,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1316,7 +1316,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1438,7 +1438,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1566,7 +1566,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1690,7 +1690,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1818,7 +1818,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1946,7 +1946,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2074,7 +2074,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  str(dict(response.headers)),
+                    "headers":  dict(response.headers),
                     "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
