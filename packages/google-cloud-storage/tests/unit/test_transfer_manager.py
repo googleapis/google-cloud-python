@@ -826,12 +826,8 @@ def test_upload_chunks_concurrently_quotes_urls():
         container_mock.register_part.assert_any_call(2, ETAG)
         container_mock.finalize.assert_called_once_with(bucket.client._http)
 
-        assert container_mock._retry_strategy.max_sleep == 60.0
-        assert container_mock._retry_strategy.max_cumulative_retry == 120.0
-        assert container_mock._retry_strategy.max_retries is None
-
         container_cls_mock.assert_called_once_with(
-            quoted_url, FILENAME, headers=mock.ANY
+            quoted_url, FILENAME, headers=mock.ANY, retry=DEFAULT_RETRY
         )
 
         part_mock.upload.assert_called_with(transport)
