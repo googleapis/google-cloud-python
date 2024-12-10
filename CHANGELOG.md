@@ -108,6 +108,7 @@ Changelogs
 - [google-cloud-managedkafka==0.1.5](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-managedkafka/CHANGELOG.md)
 - [google-cloud-media-translation==0.11.13](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-media-translation/CHANGELOG.md)
 - [google-cloud-memcache==1.10.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-memcache/CHANGELOG.md)
+- [google-cloud-memorystore==0.0.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-memorystore/CHANGELOG.md)
 - [google-cloud-migrationcenter==0.1.11](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-migrationcenter/CHANGELOG.md)
 - [google-cloud-monitoring-dashboards==2.16.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring-dashboards/CHANGELOG.md)
 - [google-cloud-monitoring-metrics-scopes==1.7.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring-metrics-scopes/CHANGELOG.md)
