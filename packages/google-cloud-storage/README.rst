@@ -85,10 +85,16 @@ downloads and None for most uploads. Note that ranged downloads ("start" or
 "end" set) still do not support any checksumming, and some features in
 `transfer_manager.py` still support crc32c only.
 
+Note: The method `Blob.upload_from_file()` requires a file in bytes mode, but
+when checksum is set to None, as was the previous default, would not throw an
+error if passed a file in string mode under some circumstances. With the new
+defaults, it will now raise a TypeError. Please use a file opened in bytes
+reading mode as required.
+
 Miscellaneous
 ~~~~~~~~~~~~~
 
-- The BlobWriter class now attempts to terminate an ongoing resumable upload if
+- The `BlobWriter` class now attempts to terminate an ongoing resumable upload if
   the writer exits with an exception.
 - Retry behavior is now identical between media operations (uploads and
   downloads) and other operations, and custom predicates are now supported for
