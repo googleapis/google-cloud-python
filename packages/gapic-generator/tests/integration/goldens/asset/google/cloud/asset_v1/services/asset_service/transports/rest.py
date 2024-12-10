@@ -46,10 +46,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
-    CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
@@ -836,8 +836,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -868,8 +872,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_iam_policy(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeIamPolicyResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.AnalyzeIamPolicyResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -953,8 +961,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -983,8 +995,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1063,8 +1079,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1095,8 +1115,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_move(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeMoveResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.AnalyzeMoveResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1175,8 +1199,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1207,8 +1235,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_org_policies(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeOrgPoliciesResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.AnalyzeOrgPoliciesResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1288,8 +1320,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1320,8 +1356,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1401,8 +1441,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1433,8 +1477,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1510,8 +1558,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1542,8 +1594,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_batch_get_assets_history(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.BatchGetAssetsHistoryResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.BatchGetAssetsHistoryResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1623,8 +1679,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1655,8 +1715,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1743,8 +1807,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1775,8 +1843,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_create_feed(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.Feed.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1857,8 +1929,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1889,8 +1965,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_create_saved_query(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.SavedQuery.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1962,8 +2042,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2043,8 +2127,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2134,8 +2222,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2164,8 +2256,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_export_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2249,8 +2345,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2281,8 +2381,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_get_feed(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.Feed.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2360,8 +2464,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2392,8 +2500,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_get_saved_query(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.SavedQuery.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2469,8 +2581,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2501,8 +2617,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_list_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.ListAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.ListAssetsResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2578,8 +2698,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2610,8 +2734,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_list_feeds(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.ListFeedsResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.ListFeedsResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2687,8 +2815,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2719,8 +2851,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_list_saved_queries(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.ListSavedQueriesResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.ListSavedQueriesResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2799,8 +2935,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2831,8 +2971,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_query_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.QueryAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.QueryAssetsResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2908,8 +3052,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2940,8 +3088,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_search_all_iam_policies(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SearchAllIamPoliciesResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.SearchAllIamPoliciesResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -3017,8 +3169,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -3049,8 +3205,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_search_all_resources(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SearchAllResourcesResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.SearchAllResourcesResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -3137,8 +3297,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -3169,8 +3333,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_update_feed(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.Feed.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -3251,8 +3419,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -3283,8 +3455,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_update_saved_query(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": asset_service.SavedQuery.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -3548,8 +3724,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -3577,8 +3757,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                    "payload": json_format.MessageToJson(response),
+                    "payload": response_payload,
                     "headers":  dict(response.headers),
                     "status": response.status_code,
                 }

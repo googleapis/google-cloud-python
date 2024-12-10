@@ -1096,6 +1096,7 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
         req.return_value = Response()
         req.return_value.status_code = 500
         req.return_value.request = PreparedRequest()
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {% if method.void %}
         json_return_value = ''
         {% elif method.server_streaming %}
@@ -1249,6 +1250,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {% if method.client_streaming %}
         response = client.{{ method.safe_name|snake_case }}(iter(requests))
         {% elif method.server_streaming %}
@@ -1495,6 +1497,7 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
         }
 
         req.return_value = Response()
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
         {% if not method.void %}
@@ -1545,6 +1548,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {% if method.client_streaming %}
         client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}

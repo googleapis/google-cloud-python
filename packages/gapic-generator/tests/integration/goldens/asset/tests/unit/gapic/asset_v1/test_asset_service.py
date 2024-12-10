@@ -8966,6 +8966,7 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_assets(request)
 
@@ -9079,6 +9080,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_assets(request)
 
@@ -9123,6 +9125,7 @@ def test_list_assets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_assets(**mock_args)
 
@@ -9307,6 +9310,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_get_assets_history(request)
 
@@ -9423,6 +9427,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_feed(request)
 
@@ -9467,6 +9472,7 @@ def test_create_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_feed(**mock_args)
 
@@ -9587,6 +9593,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_feed(request)
 
@@ -9631,6 +9638,7 @@ def test_get_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_feed(**mock_args)
 
@@ -9751,6 +9759,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_feeds(request)
 
@@ -9795,6 +9804,7 @@ def test_list_feeds_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_feeds(**mock_args)
 
@@ -9911,6 +9921,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_feed(request)
 
@@ -9955,6 +9966,7 @@ def test_update_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_feed(**mock_args)
 
@@ -10072,6 +10084,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_feed(request)
 
@@ -10114,6 +10127,7 @@ def test_delete_feed_rest_flattened():
         json_return_value = ''
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_feed(**mock_args)
 
@@ -10236,6 +10250,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_all_resources(request)
 
@@ -10282,6 +10297,7 @@ def test_search_all_resources_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_all_resources(**mock_args)
 
@@ -10468,6 +10484,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_all_iam_policies(request)
 
@@ -10513,6 +10530,7 @@ def test_search_all_iam_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_all_iam_policies(**mock_args)
 
@@ -10693,6 +10711,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_iam_policy(request)
 
@@ -10801,6 +10820,7 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_iam_policy_longrunning(request)
 
@@ -10921,6 +10941,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_move(request)
 
@@ -11037,6 +11058,7 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_assets(request)
 
@@ -11158,6 +11180,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_saved_query(request)
 
@@ -11208,6 +11231,7 @@ def test_create_saved_query_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_saved_query(**mock_args)
 
@@ -11330,6 +11354,7 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_saved_query(request)
 
@@ -11374,6 +11399,7 @@ def test_get_saved_query_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_saved_query(**mock_args)
 
@@ -11496,6 +11522,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_saved_queries(request)
 
@@ -11540,6 +11567,7 @@ def test_list_saved_queries_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_saved_queries(**mock_args)
 
@@ -11720,6 +11748,7 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_saved_query(request)
 
@@ -11765,6 +11794,7 @@ def test_update_saved_query_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_saved_query(**mock_args)
 
@@ -11883,6 +11913,7 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_saved_query(request)
 
@@ -11925,6 +11956,7 @@ def test_delete_saved_query_rest_flattened():
         json_return_value = ''
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_saved_query(**mock_args)
 
@@ -12054,6 +12086,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_get_effective_iam_policies(request)
 
@@ -12178,6 +12211,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_org_policies(request)
 
@@ -12228,6 +12262,7 @@ def test_analyze_org_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_org_policies(**mock_args)
 
@@ -12421,6 +12456,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_org_policy_governed_containers(request)
 
@@ -12471,6 +12507,7 @@ def test_analyze_org_policy_governed_containers_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_org_policy_governed_containers(**mock_args)
 
@@ -12664,6 +12701,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_org_policy_governed_assets(request)
 
@@ -12714,6 +12752,7 @@ def test_analyze_org_policy_governed_assets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_org_policy_governed_assets(**mock_args)
 
@@ -14109,6 +14148,7 @@ def test_export_assets_rest_bad_request(request_type=asset_service.ExportAssetsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_assets(request)
 
 
@@ -14137,6 +14177,7 @@ def test_export_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -14168,6 +14209,7 @@ def test_export_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14203,6 +14245,7 @@ def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_assets(request)
 
 
@@ -14236,6 +14279,7 @@ def test_list_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -14267,6 +14311,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.ListAssetsResponse.to_json(asset_service.ListAssetsResponse())
         req.return_value.content = return_value
 
@@ -14302,6 +14347,7 @@ def test_batch_get_assets_history_rest_bad_request(request_type=asset_service.Ba
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_get_assets_history(request)
 
 
@@ -14334,6 +14380,7 @@ def test_batch_get_assets_history_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_get_assets_history(request)
 
     # Establish that the response is the type that we expect.
@@ -14364,6 +14411,7 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.BatchGetAssetsHistoryResponse.to_json(asset_service.BatchGetAssetsHistoryResponse())
         req.return_value.content = return_value
 
@@ -14399,6 +14447,7 @@ def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_feed(request)
 
 
@@ -14436,6 +14485,7 @@ def test_create_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14471,6 +14521,7 @@ def test_create_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14506,6 +14557,7 @@ def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_feed(request)
 
 
@@ -14543,6 +14595,7 @@ def test_get_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14578,6 +14631,7 @@ def test_get_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14613,6 +14667,7 @@ def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_feeds(request)
 
 
@@ -14645,6 +14700,7 @@ def test_list_feeds_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_feeds(request)
 
     # Establish that the response is the type that we expect.
@@ -14675,6 +14731,7 @@ def test_list_feeds_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.ListFeedsResponse.to_json(asset_service.ListFeedsResponse())
         req.return_value.content = return_value
 
@@ -14710,6 +14767,7 @@ def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_feed(request)
 
 
@@ -14747,6 +14805,7 @@ def test_update_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14782,6 +14841,7 @@ def test_update_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14817,6 +14877,7 @@ def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_feed(request)
 
 
@@ -14845,6 +14906,7 @@ def test_delete_feed_rest_call_success(request_type):
         json_return_value = ''
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14873,6 +14935,7 @@ def test_delete_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = asset_service.DeleteFeedRequest()
         metadata =[
@@ -14904,6 +14967,7 @@ def test_search_all_resources_rest_bad_request(request_type=asset_service.Search
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_all_resources(request)
 
 
@@ -14937,6 +15001,7 @@ def test_search_all_resources_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_all_resources(request)
 
     # Establish that the response is the type that we expect.
@@ -14968,6 +15033,7 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SearchAllResourcesResponse.to_json(asset_service.SearchAllResourcesResponse())
         req.return_value.content = return_value
 
@@ -15003,6 +15069,7 @@ def test_search_all_iam_policies_rest_bad_request(request_type=asset_service.Sea
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_all_iam_policies(request)
 
 
@@ -15036,6 +15103,7 @@ def test_search_all_iam_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_all_iam_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -15067,6 +15135,7 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SearchAllIamPoliciesResponse.to_json(asset_service.SearchAllIamPoliciesResponse())
         req.return_value.content = return_value
 
@@ -15102,6 +15171,7 @@ def test_analyze_iam_policy_rest_bad_request(request_type=asset_service.AnalyzeI
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_iam_policy(request)
 
 
@@ -15135,6 +15205,7 @@ def test_analyze_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -15166,6 +15237,7 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeIamPolicyResponse.to_json(asset_service.AnalyzeIamPolicyResponse())
         req.return_value.content = return_value
 
@@ -15201,6 +15273,7 @@ def test_analyze_iam_policy_longrunning_rest_bad_request(request_type=asset_serv
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_iam_policy_longrunning(request)
 
 
@@ -15229,6 +15302,7 @@ def test_analyze_iam_policy_longrunning_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_iam_policy_longrunning(request)
 
     # Establish that the response is the type that we expect.
@@ -15260,6 +15334,7 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15295,6 +15370,7 @@ def test_analyze_move_rest_bad_request(request_type=asset_service.AnalyzeMoveReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_move(request)
 
 
@@ -15327,6 +15403,7 @@ def test_analyze_move_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_move(request)
 
     # Establish that the response is the type that we expect.
@@ -15357,6 +15434,7 @@ def test_analyze_move_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
         req.return_value.content = return_value
 
@@ -15392,6 +15470,7 @@ def test_query_assets_rest_bad_request(request_type=asset_service.QueryAssetsReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_assets(request)
 
 
@@ -15426,6 +15505,7 @@ def test_query_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -15458,6 +15538,7 @@ def test_query_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
         req.return_value.content = return_value
 
@@ -15493,6 +15574,7 @@ def test_create_saved_query_rest_bad_request(request_type=asset_service.CreateSa
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_saved_query(request)
 
 
@@ -15593,6 +15675,7 @@ def test_create_saved_query_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -15627,6 +15710,7 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -15662,6 +15746,7 @@ def test_get_saved_query_rest_bad_request(request_type=asset_service.GetSavedQue
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_saved_query(request)
 
 
@@ -15698,6 +15783,7 @@ def test_get_saved_query_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -15732,6 +15818,7 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -15767,6 +15854,7 @@ def test_list_saved_queries_rest_bad_request(request_type=asset_service.ListSave
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_saved_queries(request)
 
 
@@ -15800,6 +15888,7 @@ def test_list_saved_queries_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_saved_queries(request)
 
     # Establish that the response is the type that we expect.
@@ -15831,6 +15920,7 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
         req.return_value.content = return_value
 
@@ -15866,6 +15956,7 @@ def test_update_saved_query_rest_bad_request(request_type=asset_service.UpdateSa
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_saved_query(request)
 
 
@@ -15966,6 +16057,7 @@ def test_update_saved_query_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -16000,6 +16092,7 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -16035,6 +16128,7 @@ def test_delete_saved_query_rest_bad_request(request_type=asset_service.DeleteSa
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_saved_query(request)
 
 
@@ -16063,6 +16157,7 @@ def test_delete_saved_query_rest_call_success(request_type):
         json_return_value = ''
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -16091,6 +16186,7 @@ def test_delete_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = asset_service.DeleteSavedQueryRequest()
         metadata =[
@@ -16122,6 +16218,7 @@ def test_batch_get_effective_iam_policies_rest_bad_request(request_type=asset_se
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_get_effective_iam_policies(request)
 
 
@@ -16154,6 +16251,7 @@ def test_batch_get_effective_iam_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_get_effective_iam_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -16184,6 +16282,7 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
         req.return_value.content = return_value
 
@@ -16219,6 +16318,7 @@ def test_analyze_org_policies_rest_bad_request(request_type=asset_service.Analyz
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_org_policies(request)
 
 
@@ -16252,6 +16352,7 @@ def test_analyze_org_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_org_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -16283,6 +16384,7 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
         req.return_value.content = return_value
 
@@ -16318,6 +16420,7 @@ def test_analyze_org_policy_governed_containers_rest_bad_request(request_type=as
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_org_policy_governed_containers(request)
 
 
@@ -16351,6 +16454,7 @@ def test_analyze_org_policy_governed_containers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_org_policy_governed_containers(request)
 
     # Establish that the response is the type that we expect.
@@ -16382,6 +16486,7 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
         req.return_value.content = return_value
 
@@ -16417,6 +16522,7 @@ def test_analyze_org_policy_governed_assets_rest_bad_request(request_type=asset_
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_org_policy_governed_assets(request)
 
 
@@ -16450,6 +16556,7 @@ def test_analyze_org_policy_governed_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_org_policy_governed_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -16481,6 +16588,7 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
         req.return_value.content = return_value
 
@@ -16515,6 +16623,7 @@ def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperation
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -16542,6 +16651,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

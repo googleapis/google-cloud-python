@@ -37,10 +37,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
-    CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
@@ -640,7 +640,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                         "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                    },
+                    } if hasattr(self._transport, "_credentials") else {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "credentialsType": None,
+                    }
                 )
 
     def export_assets(self,

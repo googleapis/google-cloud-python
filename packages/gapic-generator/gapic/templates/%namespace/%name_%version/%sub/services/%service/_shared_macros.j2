@@ -197,7 +197,7 @@ def _get_http_options():
         method_name (str): The method name.
         service: The service.
         is_async (bool): Used to determine the code path i.e. whether for sync or async call. #}
-{% macro rest_call_method_common(body_spec, method_name, service, is_async=False) %}
+{% macro rest_call_method_common(body_spec, method_name, service, is_async=False, is_proto_plus_type=False) %}
 {% set service_name = service.name %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_class_prefix = "Async" if is_async else "" %}
@@ -217,8 +217,14 @@ def _get_http_options():
     if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
+        try:
+            request_payload = {% if is_proto_plus_type %}type(request).to_json(request){% else %}json_format.MessageToJson(request){% endif %}
+
+        except:
+            {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2282): Remove try/except and correctly parse request payload. #}
+            request_payload = None
         http_request = {
-          "payload": type(request).to_json(request),
+          "payload": request_payload,
           "requestMethod": method,
           "requestUrl": request_url,
           "headers": dict(metadata),
@@ -470,8 +476,13 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         resp = json_format.Parse(content, resp)
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            try:
+                response_payload = json_format.MessageToJson(resp)
+            except:
+                {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2283): Remove try/except once unit tests are updated. #}
+                response_payload = None
             http_response = {
-                "payload": json_format.MessageToJson(response),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
             }        

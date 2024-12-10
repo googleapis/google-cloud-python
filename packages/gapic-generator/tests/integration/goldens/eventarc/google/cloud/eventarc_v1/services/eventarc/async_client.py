@@ -56,10 +56,10 @@ from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
 from .client import EventarcClient
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
-    CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
@@ -279,9 +279,12 @@ class EventarcAsyncClient:
                 extra = {
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                },
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
+                    "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                    "credentialsType": None,
+                }
             )
 
     async def get_trigger(self,

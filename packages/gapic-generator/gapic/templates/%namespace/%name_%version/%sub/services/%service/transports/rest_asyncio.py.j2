@@ -61,10 +61,10 @@ from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 import logging
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
-    CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
@@ -199,7 +199,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}
             """
 
-            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, is_async=True)|indent(8) }}
+            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, True, method.output.ident.is_proto_plus_type)|indent(8) }}
 
             {% if not method.void %}
             # Return the response
@@ -220,8 +220,14 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2279): Add logging support for rest streaming. #}
             {% if not method.server_streaming %}
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(resp){% endif %}
+
+                except:
+                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2283): Remove try/except once unit tests are updated. #}
+                    response_payload = None
                 http_response = {
-                    "payload": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(response){% endif %},
+                    "payload": response_payload,
                     "headers":  str(dict(response.headers)),
                     "status": "OK", # need to obtain this properly
                 }

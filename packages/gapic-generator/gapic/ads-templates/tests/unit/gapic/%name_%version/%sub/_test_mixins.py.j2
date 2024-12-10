@@ -17,6 +17,7 @@ def test_{{ name|snake_case }}_rest_bad_request(transport: str = 'rest', request
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.{{ name|snake_case }}(request)
 
 @pytest.mark.parametrize("request_type", [
@@ -50,6 +51,7 @@ def test_{{ name|snake_case }}_rest(request_type):
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.{{ name|snake_case }}(request)
 

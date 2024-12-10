@@ -43,10 +43,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
-    CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
@@ -340,8 +340,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -372,8 +376,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_generate_access_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = common.GenerateAccessTokenResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": common.GenerateAccessTokenResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -452,8 +460,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -484,8 +496,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_generate_id_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = common.GenerateIdTokenResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": common.GenerateIdTokenResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -564,8 +580,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -596,8 +616,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_sign_blob(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = common.SignBlobResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": common.SignBlobResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -676,8 +700,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -708,8 +736,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             resp = self._interceptor.post_sign_jwt(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = common.SignJwtResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": common.SignJwtResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }

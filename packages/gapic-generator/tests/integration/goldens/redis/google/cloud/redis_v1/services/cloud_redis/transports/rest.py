@@ -46,10 +46,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
-    CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
@@ -737,8 +737,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -767,8 +771,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_create_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -848,8 +856,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -878,8 +890,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_delete_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -962,8 +978,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -992,8 +1012,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_export_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1076,8 +1100,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1106,8 +1134,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_failover_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1184,8 +1216,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1216,8 +1252,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis.Instance.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": cloud_redis.Instance.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1294,8 +1334,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1326,8 +1370,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_get_instance_auth_string(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis.InstanceAuthString.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": cloud_redis.InstanceAuthString.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1410,8 +1458,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1440,8 +1492,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_import_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1520,8 +1576,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1552,8 +1612,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis.ListInstancesResponse.to_json(response)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": cloud_redis.ListInstancesResponse.to_json(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1636,8 +1700,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1666,8 +1734,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_reschedule_maintenance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1750,8 +1822,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1780,8 +1856,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_update_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -1864,8 +1944,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -1894,8 +1978,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             resp = self._interceptor.post_upgrade_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                "payload": json_format.MessageToJson(resp),
+                "payload": response_payload,
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -2063,8 +2151,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2092,8 +2184,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                    "payload": json_format.MessageToJson(response),
+                    "payload": response_payload,
                     "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
@@ -2173,8 +2269,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2202,8 +2302,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                    "payload": json_format.MessageToJson(response),
+                    "payload": response_payload,
                     "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
@@ -2280,8 +2384,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2368,8 +2476,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2459,8 +2571,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2488,8 +2604,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                    "payload": json_format.MessageToJson(response),
+                    "payload": response_payload,
                     "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
@@ -2569,8 +2689,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2598,8 +2722,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                    "payload": json_format.MessageToJson(response),
+                    "payload": response_payload,
                     "headers":  dict(response.headers),
                     "status": response.status_code,
                 }
@@ -2682,8 +2810,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
                 http_request = {
-                  "payload": type(request).to_json(request),
+                  "payload": request_payload,
                   "requestMethod": method,
                   "requestUrl": request_url,
                   "headers": dict(metadata),
@@ -2711,8 +2843,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_wait_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
                 http_response = {
-                    "payload": json_format.MessageToJson(response),
+                    "payload": response_payload,
                     "headers":  dict(response.headers),
                     "status": response.status_code,
                 }

@@ -1171,6 +1171,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             {% if method.client_streaming %}
             response = client.{{ method_name }}(iter(requests))
@@ -1263,6 +1264,7 @@ def test_{{ method_name }}_rest_flattened():
         {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         {% if method.server_streaming %}
         with mock.patch.object(response_value, 'iter_content') as iter_content:
@@ -1796,6 +1798,7 @@ def test_initialize_client_w_{{transport_name}}():
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {{ await_prefix }}client.{{ method_name }}(request)
 
 {% endif %}{# if 'grpc' in transport #}
@@ -1846,6 +1849,7 @@ def test_initialize_client_w_{{transport_name}}():
         response_value.request = Request()
         {% endif %}
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {{ await_prefix }}client.{{ method_name }}(request)
 {% endif %}{# if 'grpc' in transport #}
 {% endmacro %}
@@ -2029,6 +2033,7 @@ def test_initialize_client_w_{{transport_name}}():
         {% endif %}{# is_async #}
         {% endif %}{# method.server_streaming #}
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = {{ await_prefix }}client.{{ method_name }}(request)
     {% if "next_page_token" in method_output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2199): The following assert statement is added to force
@@ -2139,6 +2144,7 @@ def test_initialize_client_w_{{transport_name}}():
         {% endif %}
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = {{ await_prefix }}client.{{ method_name }}(request)
 
@@ -2232,6 +2238,7 @@ def test_initialize_client_w_{{transport_name}}():
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         {% if not method.void %}
         return_value = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
 

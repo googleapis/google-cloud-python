@@ -58,6 +58,8 @@ jobs:
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
         python: ["3.7", "3.13"]
         target: [showcase, showcase_alternative_templates, showcase_w_rest_async]
+        logging_scope: ["", "google"]
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -90,6 +92,9 @@ jobs:
             unzip protoc-${PROTOC_VERSION}.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
+        env:
+          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2286): Construct nox sessions with logging enabled.
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
         run: nox -s ${{ matrix.target }}-${{ matrix.python }}
   showcase-mtls:
     if: ${{ false }}            # TODO(dovs): reenable when #1218 is fixed
@@ -143,6 +148,7 @@ jobs:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
+        logging_scope: ["", "google"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -166,6 +172,9 @@ jobs:
       - name: Install nox.
         run: python -m pip install nox
       - name: Run unit tests.
+        env:
+          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2286): Construct nox sessions with logging enabled.
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
         run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
