@@ -534,11 +534,11 @@ class RegionTargetHttpsProxiesRestTransport(_BaseRegionTargetHttpsProxiesRestTra
                 `Global </compute/docs/reference/rest/v1/targetHttpsProxies>`__
                 \*
                 `Regional </compute/docs/reference/rest/v1/regionTargetHttpsProxies>`__
-                A target HTTPS proxy is a component of GCP HTTPS load
-                balancers. \* targetHttpProxies are used by global
-                external Application Load Balancers, classic Application
-                Load Balancers, cross-region internal Application Load
-                Balancers, and Traffic Director. \*
+                A target HTTPS proxy is a component of Google Cloud
+                HTTPS load balancers. \* targetHttpProxies are used by
+                global external Application Load Balancers, classic
+                Application Load Balancers, cross-region internal
+                Application Load Balancers, and Traffic Director. \*
                 regionTargetHttpProxies are used by regional internal
                 Application Load Balancers and regional external
                 Application Load Balancers. Forwarding rules reference a

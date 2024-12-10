@@ -196,6 +196,14 @@ class InstanceGroupManagersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_resume_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_resume_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_set_instance_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -209,6 +217,30 @@ class InstanceGroupManagersRestInterceptor:
                 return request, metadata
 
             def post_set_target_pools(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_start_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_start_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_stop_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stop_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_suspend_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_suspend_instances(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -628,6 +660,29 @@ class InstanceGroupManagersRestInterceptor:
         """
         return response
 
+    def pre_resume_instances(
+        self,
+        request: compute.ResumeInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.ResumeInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for resume_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_resume_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for resume_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_set_instance_template(
         self,
         request: compute.SetInstanceTemplateInstanceGroupManagerRequest,
@@ -670,6 +725,75 @@ class InstanceGroupManagersRestInterceptor:
 
     def post_set_target_pools(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_target_pools
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_start_instances(
+        self,
+        request: compute.StartInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.StartInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for start_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_start_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for start_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_stop_instances(
+        self,
+        request: compute.StopInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.StopInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for stop_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_stop_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for stop_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_suspend_instances(
+        self,
+        request: compute.SuspendInstancesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        compute.SuspendInstancesInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for suspend_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_suspend_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for suspend_instances
 
         Override in a subclass to manipulate the response
         after it is returned by the InstanceGroupManagers server but before
@@ -2622,6 +2746,124 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
             resp = self._interceptor.post_resize(resp)
             return resp
 
+    class _ResumeInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseResumeInstances,
+        InstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("InstanceGroupManagersRestTransport.ResumeInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.ResumeInstancesInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the resume instances method over HTTP.
+
+            Args:
+                request (~.compute.ResumeInstancesInstanceGroupManagerRequest):
+                    The request object. A request message for
+                InstanceGroupManagers.ResumeInstances.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_resume_instances(
+                request, metadata
+            )
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                InstanceGroupManagersRestTransport._ResumeInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_resume_instances(resp)
+            return resp
+
     class _SetInstanceTemplate(
         _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate,
         InstanceGroupManagersRestStub,
@@ -2854,6 +3096,352 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_target_pools(resp)
+            return resp
+
+    class _StartInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseStartInstances,
+        InstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("InstanceGroupManagersRestTransport.StartInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.StartInstancesInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the start instances method over HTTP.
+
+            Args:
+                request (~.compute.StartInstancesInstanceGroupManagerRequest):
+                    The request object. A request message for
+                InstanceGroupManagers.StartInstances.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_start_instances(request, metadata)
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = InstanceGroupManagersRestTransport._StartInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_start_instances(resp)
+            return resp
+
+    class _StopInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseStopInstances,
+        InstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("InstanceGroupManagersRestTransport.StopInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.StopInstancesInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the stop instances method over HTTP.
+
+            Args:
+                request (~.compute.StopInstancesInstanceGroupManagerRequest):
+                    The request object. A request message for
+                InstanceGroupManagers.StopInstances. See
+                the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_stop_instances(request, metadata)
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = InstanceGroupManagersRestTransport._StopInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_stop_instances(resp)
+            return resp
+
+    class _SuspendInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances,
+        InstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("InstanceGroupManagersRestTransport.SuspendInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.SuspendInstancesInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the suspend instances method over HTTP.
+
+            Args:
+                request (~.compute.SuspendInstancesInstanceGroupManagerRequest):
+                    The request object. A request message for
+                InstanceGroupManagers.SuspendInstances.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_suspend_instances(
+                request, metadata
+            )
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            # Send the request
+            response = (
+                InstanceGroupManagersRestTransport._SuspendInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_suspend_instances(resp)
             return resp
 
     class _UpdatePerInstanceConfigs(
@@ -3140,6 +3728,16 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
         return self._Resize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def resume_instances(
+        self,
+    ) -> Callable[
+        [compute.ResumeInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ResumeInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def set_instance_template(
         self,
     ) -> Callable[
@@ -3158,6 +3756,36 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetTargetPools(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def start_instances(
+        self,
+    ) -> Callable[
+        [compute.StartInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StartInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stop_instances(
+        self,
+    ) -> Callable[
+        [compute.StopInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StopInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def suspend_instances(
+        self,
+    ) -> Callable[
+        [compute.SuspendInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SuspendInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_per_instance_configs(

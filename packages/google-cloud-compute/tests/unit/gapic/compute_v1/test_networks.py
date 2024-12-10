@@ -5122,6 +5122,7 @@ def test_get_rest_call_success(request_type):
             mtu=342,
             name="name_value",
             network_firewall_policy_enforcement_order="network_firewall_policy_enforcement_order_value",
+            network_profile="network_profile_value",
             self_link="self_link_value",
             self_link_with_id="self_link_with_id_value",
             subnetworks=["subnetworks_value"],
@@ -5156,6 +5157,7 @@ def test_get_rest_call_success(request_type):
         response.network_firewall_policy_enforcement_order
         == "network_firewall_policy_enforcement_order_value"
     )
+    assert response.network_profile == "network_profile_value"
     assert response.self_link == "self_link_value"
     assert response.self_link_with_id == "self_link_with_id_value"
     assert response.subnetworks == ["subnetworks_value"]
@@ -5379,6 +5381,7 @@ def test_insert_rest_call_success(request_type):
         "mtu": 342,
         "name": "name_value",
         "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
+        "network_profile": "network_profile_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -5395,7 +5398,12 @@ def test_insert_rest_call_success(request_type):
                 "state_details": "state_details_value",
             }
         ],
-        "routing_config": {"routing_mode": "routing_mode_value"},
+        "routing_config": {
+            "bgp_always_compare_med": True,
+            "bgp_best_path_selection_mode": "bgp_best_path_selection_mode_value",
+            "bgp_inter_region_cost": "bgp_inter_region_cost_value",
+            "routing_mode": "routing_mode_value",
+        },
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value1", "subnetworks_value2"],
@@ -5880,6 +5888,7 @@ def test_patch_rest_call_success(request_type):
         "mtu": 342,
         "name": "name_value",
         "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
+        "network_profile": "network_profile_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -5896,7 +5905,12 @@ def test_patch_rest_call_success(request_type):
                 "state_details": "state_details_value",
             }
         ],
-        "routing_config": {"routing_mode": "routing_mode_value"},
+        "routing_config": {
+            "bgp_always_compare_med": True,
+            "bgp_best_path_selection_mode": "bgp_best_path_selection_mode_value",
+            "bgp_inter_region_cost": "bgp_inter_region_cost_value",
+            "routing_mode": "routing_mode_value",
+        },
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value1", "subnetworks_value2"],

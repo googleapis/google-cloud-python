@@ -2365,8 +2365,11 @@ def test_get_rest_call_success(request_type):
             next_hop_hub="next_hop_hub_value",
             next_hop_ilb="next_hop_ilb_value",
             next_hop_instance="next_hop_instance_value",
+            next_hop_inter_region_cost=2785,
             next_hop_ip="next_hop_ip_value",
+            next_hop_med=1274,
             next_hop_network="next_hop_network_value",
+            next_hop_origin="next_hop_origin_value",
             next_hop_peering="next_hop_peering_value",
             next_hop_vpn_tunnel="next_hop_vpn_tunnel_value",
             priority=898,
@@ -2400,8 +2403,11 @@ def test_get_rest_call_success(request_type):
     assert response.next_hop_hub == "next_hop_hub_value"
     assert response.next_hop_ilb == "next_hop_ilb_value"
     assert response.next_hop_instance == "next_hop_instance_value"
+    assert response.next_hop_inter_region_cost == 2785
     assert response.next_hop_ip == "next_hop_ip_value"
+    assert response.next_hop_med == 1274
     assert response.next_hop_network == "next_hop_network_value"
+    assert response.next_hop_origin == "next_hop_origin_value"
     assert response.next_hop_peering == "next_hop_peering_value"
     assert response.next_hop_vpn_tunnel == "next_hop_vpn_tunnel_value"
     assert response.priority == 898
@@ -2514,8 +2520,11 @@ def test_insert_rest_call_success(request_type):
         "next_hop_hub": "next_hop_hub_value",
         "next_hop_ilb": "next_hop_ilb_value",
         "next_hop_instance": "next_hop_instance_value",
+        "next_hop_inter_region_cost": 2785,
         "next_hop_ip": "next_hop_ip_value",
+        "next_hop_med": 1274,
         "next_hop_network": "next_hop_network_value",
+        "next_hop_origin": "next_hop_origin_value",
         "next_hop_peering": "next_hop_peering_value",
         "next_hop_vpn_tunnel": "next_hop_vpn_tunnel_value",
         "priority": 898,
