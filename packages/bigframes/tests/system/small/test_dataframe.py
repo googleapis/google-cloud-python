@@ -2671,11 +2671,11 @@ def test_dataframe_agg_int_multi_string(scalars_dfs):
 
 
 @skip_legacy_pandas
-def test_df_describe(scalars_dfs):
+def test_df_describe_non_temporal(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
-    # pyarrows time columns fail in pandas
+    # excluding temporal columns here because BigFrames cannot perform percentiles operations on them
     unsupported_columns = ["datetime_col", "timestamp_col", "time_col", "date_col"]
-    bf_result = scalars_df.describe().to_pandas()
+    bf_result = scalars_df.drop(columns=unsupported_columns).describe().to_pandas()
 
     modified_pd_df = scalars_pandas_df.drop(columns=unsupported_columns)
     pd_result = modified_pd_df.describe()
@@ -2709,12 +2709,14 @@ def test_df_describe(scalars_dfs):
 def test_df_describe_non_numeric(scalars_dfs, include):
     scalars_df, scalars_pandas_df = scalars_dfs
 
-    non_numeric_columns = ["string_col", "bytes_col", "bool_col"]
+    # Excluding "date_col" here because in BigFrames it is used as PyArrow[date32()], which is
+    # considered numerical in Pandas
+    target_columns = ["string_col", "bytes_col", "bool_col", "time_col"]
 
-    modified_bf = scalars_df[non_numeric_columns]
+    modified_bf = scalars_df[target_columns]
     bf_result = modified_bf.describe(include=include).to_pandas()
 
-    modified_pd_df = scalars_pandas_df[non_numeric_columns]
+    modified_pd_df = scalars_pandas_df[target_columns]
     pd_result = modified_pd_df.describe(include=include)
 
     # Reindex results with the specified keys and their order, because
@@ -2726,8 +2728,35 @@ def test_df_describe_non_numeric(scalars_dfs, include):
     ).rename(index={"unique": "nunique"})
 
     pd.testing.assert_frame_equal(
-        pd_result[non_numeric_columns].astype("Int64"),
-        bf_result[non_numeric_columns],
+        pd_result.astype("Int64"),
+        bf_result,
+        check_index_type=False,
+    )
+
+
+@skip_legacy_pandas
+def test_df_describe_temporal(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    temporal_columns = ["datetime_col", "timestamp_col", "time_col", "date_col"]
+
+    modified_bf = scalars_df[temporal_columns]
+    bf_result = modified_bf.describe(include="all").to_pandas()
+
+    modified_pd_df = scalars_pandas_df[temporal_columns]
+    pd_result = modified_pd_df.describe(include="all")
+
+    # Reindex results with the specified keys and their order, because
+    # the relative order is not important.
+    bf_result = bf_result.reindex(["count", "nunique"])
+    pd_result = pd_result.reindex(
+        ["count", "unique"]
+        # BF counter part of "unique" is called "nunique"
+    ).rename(index={"unique": "nunique"})
+
+    pd.testing.assert_frame_equal(
+        pd_result.astype("Float64"),
+        bf_result.astype("Float64"),
         check_index_type=False,
     )
 

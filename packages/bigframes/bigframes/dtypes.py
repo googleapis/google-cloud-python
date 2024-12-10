@@ -18,7 +18,7 @@ from dataclasses import dataclass
 import datetime
 import decimal
 import typing
-from typing import Dict, Literal, Union
+from typing import Dict, List, Literal, Union
 
 import bigframes_vendored.constants as constants
 import geopandas as gpd  # type: ignore
@@ -211,7 +211,7 @@ BOOL_BIGFRAMES_TYPES = [BOOL_DTYPE]
 
 # Corresponds to the pandas concept of numeric type (such as when 'numeric_only' is specified in an operation)
 # Pandas is inconsistent, so two definitions are provided, each used in different contexts
-NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE = [
+NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE: List[Dtype] = [
     FLOAT_DTYPE,
     INT_DTYPE,
 ]
@@ -222,7 +222,16 @@ NUMERIC_BIGFRAMES_TYPES_PERMISSIVE = NUMERIC_BIGFRAMES_TYPES_RESTRICTIVE + [
 ]
 
 
-## dtype predicates - use these to maintain consistency
+# Temporal types that are considered as "numeric" by Pandas
+TEMPORAL_NUMERIC_BIGFRAMES_TYPES: List[Dtype] = [
+    DATE_DTYPE,
+    TIMESTAMP_DTYPE,
+    DATETIME_DTYPE,
+]
+TEMPORAL_BIGFRAMES_TYPES = TEMPORAL_NUMERIC_BIGFRAMES_TYPES + [TIME_DTYPE]
+
+
+# dtype predicates - use these to maintain consistency
 def is_datetime_like(type_: ExpressionType) -> bool:
     return type_ in (DATETIME_DTYPE, TIMESTAMP_DTYPE)
 
@@ -630,7 +639,7 @@ def can_coerce(source_type: ExpressionType, target_type: ExpressionType) -> bool
         return True  # None can be coerced to any supported type
     else:
         return (source_type == STRING_DTYPE) and (
-            target_type in (DATETIME_DTYPE, TIMESTAMP_DTYPE, TIME_DTYPE, DATE_DTYPE)
+            target_type in TEMPORAL_BIGFRAMES_TYPES
         )
 
 
