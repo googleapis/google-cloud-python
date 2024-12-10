@@ -39,8 +39,12 @@ def llm_remote_text_df(session, llm_remote_text_pandas_df):
 
 
 @pytest.mark.flaky(retries=2)
-def test_llm_gemini_configure_fit(llm_fine_tune_df_default_index, llm_remote_text_df):
-    model = llm.GeminiTextGenerator(model_name="gemini-pro", max_iterations=1)
+def test_llm_gemini_configure_fit(
+    session, llm_fine_tune_df_default_index, llm_remote_text_df
+):
+    model = llm.GeminiTextGenerator(
+        session=session, model_name="gemini-pro", max_iterations=1
+    )
 
     X_train = llm_fine_tune_df_default_index[["prompt"]]
     y_train = llm_fine_tune_df_default_index[["label"]]
