@@ -188,6 +188,11 @@ class ReservationServiceTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.failover_reservation: gapic_v1.method.wrap_method(
+                self.failover_reservation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_capacity_commitment: gapic_v1.method.wrap_method(
                 self.create_capacity_commitment,
                 default_timeout=300.0,
@@ -394,6 +399,15 @@ class ReservationServiceTransport(abc.ABC):
     ) -> Callable[
         [gcbr_reservation.UpdateReservationRequest],
         Union[gcbr_reservation.Reservation, Awaitable[gcbr_reservation.Reservation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def failover_reservation(
+        self,
+    ) -> Callable[
+        [reservation.FailoverReservationRequest],
+        Union[reservation.Reservation, Awaitable[reservation.Reservation]],
     ]:
         raise NotImplementedError()
 
