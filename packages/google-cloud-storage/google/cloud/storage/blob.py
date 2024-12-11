@@ -1252,8 +1252,8 @@ class Blob(_PropertyMixin):
                     **kwargs,
                 )
 
-        except DataCorruption:
-            # Delete the corrupt downloaded file.
+        except (DataCorruption, NotFound):
+            # Delete the corrupt or empty downloaded file.
             os.remove(filename)
             raise
 

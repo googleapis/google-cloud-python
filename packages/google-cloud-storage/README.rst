@@ -99,6 +99,8 @@ Miscellaneous
 - Retry behavior is now identical between media operations (uploads and
   downloads) and other operations, and custom predicates are now supported for
   media operations as well.
+- Blob.download_as_filename() will now delete the empty file if it results in a
+  google.cloud.exceptions.NotFound exception (HTTP 404).
 
 Quick Start
 -----------

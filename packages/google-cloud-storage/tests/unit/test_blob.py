@@ -27,6 +27,7 @@ from urllib.parse import urlencode
 import mock
 import pytest
 
+from google.cloud.exceptions import NotFound
 from google.cloud.storage import _helpers
 from google.cloud.storage._helpers import _get_default_headers
 from google.cloud.storage._helpers import _get_default_storage_base_url
@@ -1823,6 +1824,48 @@ class Test_Blob(unittest.TestCase):
             self.assertTrue(os.path.exists(filename))
 
             with self.assertRaises(DataCorruption):
+                blob.download_to_filename(filename)
+
+            # Make sure the file was cleaned up.
+            self.assertFalse(os.path.exists(filename))
+
+            expected_timeout = self._get_default_timeout()
+            blob._prep_and_do_download.assert_called_once_with(
+                mock.ANY,
+                client=None,
+                start=None,
+                end=None,
+                if_etag_match=None,
+                if_etag_not_match=None,
+                if_generation_match=None,
+                if_generation_not_match=None,
+                if_metageneration_match=None,
+                if_metageneration_not_match=None,
+                raw_download=False,
+                timeout=expected_timeout,
+                checksum="auto",
+                retry=DEFAULT_RETRY,
+            )
+            stream = blob._prep_and_do_download.mock_calls[0].args[0]
+            self.assertEqual(stream.name, filename)
+
+    def test_download_to_filename_notfound(self):
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        with mock.patch.object(blob, "_prep_and_do_download"):
+            blob._prep_and_do_download.side_effect = NotFound("testing")
+
+            # Try to download into a temporary file (don't use
+            # `_NamedTemporaryFile` it will try to remove after the file is
+            # already removed)
+            filehandle, filename = tempfile.mkstemp()
+            os.close(filehandle)
+            self.assertTrue(os.path.exists(filename))
+
+            with self.assertRaises(NotFound):
                 blob.download_to_filename(filename)
 
             # Make sure the file was cleaned up.
