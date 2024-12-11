@@ -1358,4 +1358,4 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
         # backend flakiness.
         #
         # Let's stop further clean up and leave it to later.
-        traceback.print_exception(exc)
+        traceback.print_exception(type(exc), exc, None)
