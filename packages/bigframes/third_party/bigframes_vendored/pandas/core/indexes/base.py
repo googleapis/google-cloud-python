@@ -987,7 +987,7 @@ class Index:
             labels (array-like or scalar):
 
         Returns:
-            Index: Will be same type as self.
+            bigframes.pandas.Index: Will be same type as self.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
