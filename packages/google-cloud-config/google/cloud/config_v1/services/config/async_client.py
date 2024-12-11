@@ -1256,7 +1256,7 @@ class ConfigAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListResourcesAsyncPager:
-        r"""Lists [Resource][google.cloud.config.v1.Resource]s in a given
+        r"""Lists [Resources][google.cloud.config.v1.Resource] in a given
         revision.
 
         .. code-block:: python
@@ -2144,6 +2144,7 @@ class ConfigAsyncClient:
                 # Initialize request argument(s)
                 preview = config_v1.Preview()
                 preview.terraform_blueprint.gcs_source = "gcs_source_value"
+                preview.service_account = "service_account_value"
 
                 request = config_v1.CreatePreviewRequest(
                     parent="parent_value",

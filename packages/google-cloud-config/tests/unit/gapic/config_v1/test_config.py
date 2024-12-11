@@ -17685,6 +17685,7 @@ def test_create_preview_rest_call_success(request_type):
         "logs": "logs_value",
         "tf_version": "tf_version_value",
         "tf_version_constraint": "tf_version_constraint_value",
+        "annotations": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

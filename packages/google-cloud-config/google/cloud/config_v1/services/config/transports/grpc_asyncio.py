@@ -497,7 +497,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
     ]:
         r"""Return a callable for the list resources method over gRPC.
 
-        Lists [Resource][google.cloud.config.v1.Resource]s in a given
+        Lists [Resources][google.cloud.config.v1.Resource] in a given
         revision.
 
         Returns:
