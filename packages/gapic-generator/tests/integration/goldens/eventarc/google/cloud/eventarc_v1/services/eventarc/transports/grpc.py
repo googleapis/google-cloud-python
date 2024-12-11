@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging as std_logging
+import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -22,8 +24,11 @@ from google.api_core import gapic_v1
 import google.auth                         # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
@@ -37,6 +42,69 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 from .base import EventarcTransport, DEFAULT_CLIENT_INFO
+
+try:
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(result).__name__}: {pickle.dumps(request)}"
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra = {
+                    "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = dict([(k, v) for k, v in response_metadata]) if response_metadata else None
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra = {
+                    "serviceName": "google.cloud.eventarc.v1.Eventarc",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class EventarcGrpcTransport(EventarcTransport):
@@ -191,7 +259,10 @@ class EventarcGrpcTransport(EventarcTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -255,7 +326,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -280,7 +351,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_trigger' not in self._stubs:
-            self._stubs['get_trigger'] = self.grpc_channel.unary_unary(
+            self._stubs['get_trigger'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/GetTrigger',
                 request_serializer=eventarc.GetTriggerRequest.serialize,
                 response_deserializer=trigger.Trigger.deserialize,
@@ -306,7 +377,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_triggers' not in self._stubs:
-            self._stubs['list_triggers'] = self.grpc_channel.unary_unary(
+            self._stubs['list_triggers'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/ListTriggers',
                 request_serializer=eventarc.ListTriggersRequest.serialize,
                 response_deserializer=eventarc.ListTriggersResponse.deserialize,
@@ -333,7 +404,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_trigger' not in self._stubs:
-            self._stubs['create_trigger'] = self.grpc_channel.unary_unary(
+            self._stubs['create_trigger'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/CreateTrigger',
                 request_serializer=eventarc.CreateTriggerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -359,7 +430,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_trigger' not in self._stubs:
-            self._stubs['update_trigger'] = self.grpc_channel.unary_unary(
+            self._stubs['update_trigger'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/UpdateTrigger',
                 request_serializer=eventarc.UpdateTriggerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -385,7 +456,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_trigger' not in self._stubs:
-            self._stubs['delete_trigger'] = self.grpc_channel.unary_unary(
+            self._stubs['delete_trigger'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/DeleteTrigger',
                 request_serializer=eventarc.DeleteTriggerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -411,7 +482,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_channel' not in self._stubs:
-            self._stubs['get_channel'] = self.grpc_channel.unary_unary(
+            self._stubs['get_channel'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/GetChannel',
                 request_serializer=eventarc.GetChannelRequest.serialize,
                 response_deserializer=channel.Channel.deserialize,
@@ -437,7 +508,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_channels' not in self._stubs:
-            self._stubs['list_channels'] = self.grpc_channel.unary_unary(
+            self._stubs['list_channels'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/ListChannels',
                 request_serializer=eventarc.ListChannelsRequest.serialize,
                 response_deserializer=eventarc.ListChannelsResponse.deserialize,
@@ -464,7 +535,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_channel_' not in self._stubs:
-            self._stubs['create_channel_'] = self.grpc_channel.unary_unary(
+            self._stubs['create_channel_'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/CreateChannel',
                 request_serializer=eventarc.CreateChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -490,7 +561,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_channel' not in self._stubs:
-            self._stubs['update_channel'] = self.grpc_channel.unary_unary(
+            self._stubs['update_channel'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/UpdateChannel',
                 request_serializer=eventarc.UpdateChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -516,7 +587,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_channel' not in self._stubs:
-            self._stubs['delete_channel'] = self.grpc_channel.unary_unary(
+            self._stubs['delete_channel'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/DeleteChannel',
                 request_serializer=eventarc.DeleteChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -542,7 +613,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_provider' not in self._stubs:
-            self._stubs['get_provider'] = self.grpc_channel.unary_unary(
+            self._stubs['get_provider'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/GetProvider',
                 request_serializer=eventarc.GetProviderRequest.serialize,
                 response_deserializer=discovery.Provider.deserialize,
@@ -568,7 +639,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_providers' not in self._stubs:
-            self._stubs['list_providers'] = self.grpc_channel.unary_unary(
+            self._stubs['list_providers'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/ListProviders',
                 request_serializer=eventarc.ListProvidersRequest.serialize,
                 response_deserializer=eventarc.ListProvidersResponse.deserialize,
@@ -594,7 +665,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_channel_connection' not in self._stubs:
-            self._stubs['get_channel_connection'] = self.grpc_channel.unary_unary(
+            self._stubs['get_channel_connection'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/GetChannelConnection',
                 request_serializer=eventarc.GetChannelConnectionRequest.serialize,
                 response_deserializer=channel_connection.ChannelConnection.deserialize,
@@ -620,7 +691,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_channel_connections' not in self._stubs:
-            self._stubs['list_channel_connections'] = self.grpc_channel.unary_unary(
+            self._stubs['list_channel_connections'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/ListChannelConnections',
                 request_serializer=eventarc.ListChannelConnectionsRequest.serialize,
                 response_deserializer=eventarc.ListChannelConnectionsResponse.deserialize,
@@ -647,7 +718,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_channel_connection' not in self._stubs:
-            self._stubs['create_channel_connection'] = self.grpc_channel.unary_unary(
+            self._stubs['create_channel_connection'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/CreateChannelConnection',
                 request_serializer=eventarc.CreateChannelConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -673,7 +744,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_channel_connection' not in self._stubs:
-            self._stubs['delete_channel_connection'] = self.grpc_channel.unary_unary(
+            self._stubs['delete_channel_connection'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/DeleteChannelConnection',
                 request_serializer=eventarc.DeleteChannelConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -699,7 +770,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_google_channel_config' not in self._stubs:
-            self._stubs['get_google_channel_config'] = self.grpc_channel.unary_unary(
+            self._stubs['get_google_channel_config'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/GetGoogleChannelConfig',
                 request_serializer=eventarc.GetGoogleChannelConfigRequest.serialize,
                 response_deserializer=google_channel_config.GoogleChannelConfig.deserialize,
@@ -725,7 +796,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_google_channel_config' not in self._stubs:
-            self._stubs['update_google_channel_config'] = self.grpc_channel.unary_unary(
+            self._stubs['update_google_channel_config'] = self._logged_channel.unary_unary(
                 '/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig',
                 request_serializer=eventarc.UpdateGoogleChannelConfigRequest.serialize,
                 response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
@@ -733,7 +804,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs['update_google_channel_config']
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
