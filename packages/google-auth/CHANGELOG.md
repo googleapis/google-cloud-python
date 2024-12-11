@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.37.0](https://github.com/googleapis/google-auth-library-python/compare/v2.36.1...v2.37.0) (2024-12-11)
+
+
+### Features
+
+* Allow users to use jwk keys for verifying ID token ([#1641](https://github.com/googleapis/google-auth-library-python/issues/1641)) ([98c3ed9](https://github.com/googleapis/google-auth-library-python/commit/98c3ed94a25bd99e89f87f9500408e8e65d79723))
+
 ## [2.36.1](https://github.com/googleapis/google-auth-library-python/compare/v2.36.0...v2.36.1) (2024-11-08)
 
 
