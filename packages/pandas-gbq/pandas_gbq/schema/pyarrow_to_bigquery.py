@@ -38,6 +38,15 @@ _ARROW_SCALAR_IDS_TO_BQ = {
 
 
 def arrow_type_to_bigquery_field(name, type_) -> Optional[schema.SchemaField]:
+    # Since both TIMESTAMP/DATETIME use pyarrow.timestamp(...), we need to use
+    # a special case to disambiguate them. See:
+    # https://github.com/googleapis/python-bigquery-pandas/issues/450
+    if pyarrow.types.is_timestamp(type_):
+        if type_.tz is None:
+            return schema.SchemaField(name, "DATETIME")
+        else:
+            return schema.SchemaField(name, "TIMESTAMP")
+
     detected_type = _ARROW_SCALAR_IDS_TO_BQ.get(type_.id, None)
     if detected_type is not None:
         return schema.SchemaField(name, detected_type)
