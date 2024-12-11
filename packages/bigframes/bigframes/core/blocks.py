@@ -2025,7 +2025,7 @@ class Block:
         assert len(other.value_columns) == 1
         unique_other_values = other.expr.select_columns(
             [other.value_columns[0]]
-        ).aggregate((), by_column_ids=(other.value_columns[0],))
+        ).aggregate((), by_column_ids=(other.value_columns[0],), dropna=False)
         block = self
         # for each original column, join with other
         for i in range(len(self.value_columns)):
@@ -2039,9 +2039,7 @@ class Block:
         expr, (l_map, r_map) = self._expr.relational_join(
             unique_values, ((col, unique_values.column_ids[0]),), type="left"
         )
-        expr, matches = expr.project_to_id(
-            ops.eq_op.as_expr(ex.const(True), r_map[const])
-        )
+        expr, matches = expr.project_to_id(ops.notnull_op.as_expr(r_map[const]))
 
         new_index_cols = tuple(l_map[idx_col] for idx_col in self.index_columns)
         new_value_cols = tuple(
