@@ -23,16 +23,17 @@ import bigframes.core.identifiers as ids
 import bigframes.core.join_def as join_defs
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
+import bigframes.core.rewrite.implicit_align
 import bigframes.operations as ops
 
 Selection = Tuple[Tuple[scalar_exprs.Expression, ids.ColumnId], ...]
 
-REWRITABLE_NODE_TYPES = (
-    nodes.SelectionNode,
-    nodes.ProjectionNode,
-    nodes.FilterNode,
-    nodes.ReversedNode,
-    nodes.OrderByNode,
+LEGACY_REWRITER_NODES = (
+    bigframes.core.nodes.ProjectionNode,
+    bigframes.core.nodes.SelectionNode,
+    bigframes.core.nodes.ReversedNode,
+    bigframes.core.nodes.OrderByNode,
+    bigframes.core.nodes.FilterNode,
 )
 
 
@@ -51,9 +52,7 @@ class SquashedSelect:
         cls, node: nodes.BigFrameNode, target: nodes.BigFrameNode
     ) -> SquashedSelect:
         if node == target:
-            selection = tuple(
-                (scalar_exprs.DerefOp(id), id) for id in get_node_column_ids(node)
-            )
+            selection = tuple((scalar_exprs.DerefOp(id), id) for id in node.ids)
             return cls(node, selection, None, ())
 
         if isinstance(node, nodes.SelectionNode):
@@ -357,27 +356,10 @@ def decompose_conjunction(
         return (expr,)
 
 
-def get_node_column_ids(node: nodes.BigFrameNode) -> Tuple[ids.ColumnId, ...]:
-    return tuple(field.id for field in node.fields)
-
-
 def common_selection_root(
     l_tree: nodes.BigFrameNode, r_tree: nodes.BigFrameNode
 ) -> Optional[nodes.BigFrameNode]:
     """Find common subtree between join subtrees"""
-    l_node = l_tree
-    l_nodes: set[nodes.BigFrameNode] = set()
-    while isinstance(l_node, REWRITABLE_NODE_TYPES):
-        l_nodes.add(l_node)
-        l_node = l_node.child
-    l_nodes.add(l_node)
-
-    r_node = r_tree
-    while isinstance(r_node, REWRITABLE_NODE_TYPES):
-        if r_node in l_nodes:
-            return r_node
-        r_node = r_node.child
-
-    if r_node in l_nodes:
-        return r_node
-    return None
+    return bigframes.core.rewrite.implicit_align.first_shared_descendent(
+        l_tree, r_tree, descendable_types=LEGACY_REWRITER_NODES
+    )

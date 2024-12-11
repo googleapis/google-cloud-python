@@ -84,10 +84,6 @@ class BigFrameNode(abc.ABC):
         return tuple([])
 
     @property
-    def projection_base(self) -> BigFrameNode:
-        return self
-
-    @property
     @abc.abstractmethod
     def row_count(self) -> typing.Optional[int]:
         return None
@@ -919,10 +915,6 @@ class PromoteOffsetsNode(UnaryNode):
         return (self.col_id,)
 
     @property
-    def projection_base(self) -> BigFrameNode:
-        return self.child.projection_base
-
-    @property
     def added_fields(self) -> Tuple[Field, ...]:
         return (Field(self.col_id, bigframes.dtypes.INT_DTYPE),)
 
@@ -1096,10 +1088,6 @@ class SelectionNode(UnaryNode):
         return True
 
     @property
-    def projection_base(self) -> BigFrameNode:
-        return self.child.projection_base
-
-    @property
     def row_count(self) -> Optional[int]:
         return self.child.row_count
 
@@ -1172,10 +1160,6 @@ class ProjectionNode(UnaryNode):
     @property
     def row_count(self) -> Optional[int]:
         return self.child.row_count
-
-    @property
-    def projection_base(self) -> BigFrameNode:
-        return self.child.projection_base
 
     @property
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
@@ -1360,10 +1344,6 @@ class WindowOpNode(UnaryNode):
     @property
     def variables_introduced(self) -> int:
         return 1
-
-    @property
-    def projection_base(self) -> BigFrameNode:
-        return self.child.projection_base
 
     @property
     def added_fields(self) -> Tuple[Field, ...]:

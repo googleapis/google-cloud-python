@@ -446,7 +446,7 @@ class ArrayValue:
         other_node, r_mapping = self.prepare_join_names(other)
         import bigframes.core.rewrite
 
-        result_node = bigframes.core.rewrite.try_join_as_projection(
+        result_node = bigframes.core.rewrite.try_row_join(
             self.node, other_node, conditions
         )
         if result_node is None:
