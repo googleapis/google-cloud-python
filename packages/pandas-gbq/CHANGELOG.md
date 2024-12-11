@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.25.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.24.0...v0.25.0) (2024-12-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* to_gbq uploads ArrowDtype(pa.timestamp(...) without timezone as DATETIME type ([#832](https://github.com/googleapis/python-bigquery-pandas/issues/832))
+
+### Bug Fixes
+
+* To_gbq uploads ArrowDtype(pa.timestamp(...) without timezone as DATETIME type ([#832](https://github.com/googleapis/python-bigquery-pandas/issues/832)) ([2104b71](https://github.com/googleapis/python-bigquery-pandas/commit/2104b71a8ac1513a49b6e8bb73636d6b2f363d0e))
+
 ## [0.24.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.23.2...v0.24.0) (2024-10-14)
 
 
