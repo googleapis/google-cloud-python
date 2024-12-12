@@ -1957,6 +1957,7 @@ def test_predict_rest_required_fields(request_type=prediction_service.PredictReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.predict(request)
 
@@ -2014,6 +2015,7 @@ def test_predict_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.predict(**mock_args)
 
@@ -2151,6 +2153,7 @@ def test_batch_predict_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_predict(request)
 
@@ -2213,6 +2216,7 @@ def test_batch_predict_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.batch_predict(**mock_args)
 
@@ -2489,6 +2493,7 @@ def test_predict_rest_bad_request(request_type=prediction_service.PredictRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.predict(request)
 
 
@@ -2522,6 +2527,7 @@ def test_predict_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.predict(request)
 
     # Establish that the response is the type that we expect.
@@ -2561,6 +2567,7 @@ def test_predict_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = prediction_service.PredictResponse.to_json(
             prediction_service.PredictResponse()
         )
@@ -2607,6 +2614,7 @@ def test_batch_predict_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_predict(request)
 
 
@@ -2637,6 +2645,7 @@ def test_batch_predict_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_predict(request)
 
     # Establish that the response is the type that we expect.
@@ -2678,6 +2687,7 @@ def test_batch_predict_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
