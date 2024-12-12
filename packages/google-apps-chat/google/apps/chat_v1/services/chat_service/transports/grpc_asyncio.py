@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,8 +26,11 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
@@ -42,6 +48,82 @@ from google.apps.chat_v1.types import space_setup, thread_read_state
 
 from .base import DEFAULT_CLIENT_INFO, ChatServiceTransport
 from .grpc import ChatServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.chat.v1.ChatService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.chat.v1.ChatService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
@@ -240,10 +322,13 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -312,7 +397,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_message" not in self._stubs:
-            self._stubs["create_message"] = self.grpc_channel.unary_unary(
+            self._stubs["create_message"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/CreateMessage",
                 request_serializer=gc_message.CreateMessageRequest.serialize,
                 response_deserializer=gc_message.Message.deserialize,
@@ -348,7 +433,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_messages" not in self._stubs:
-            self._stubs["list_messages"] = self.grpc_channel.unary_unary(
+            self._stubs["list_messages"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/ListMessages",
                 request_serializer=message.ListMessagesRequest.serialize,
                 response_deserializer=message.ListMessagesResponse.deserialize,
@@ -399,7 +484,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_memberships" not in self._stubs:
-            self._stubs["list_memberships"] = self.grpc_channel.unary_unary(
+            self._stubs["list_memberships"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/ListMemberships",
                 request_serializer=membership.ListMembershipsRequest.serialize,
                 response_deserializer=membership.ListMembershipsResponse.deserialize,
@@ -439,7 +524,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_membership" not in self._stubs:
-            self._stubs["get_membership"] = self.grpc_channel.unary_unary(
+            self._stubs["get_membership"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetMembership",
                 request_serializer=membership.GetMembershipRequest.serialize,
                 response_deserializer=membership.Membership.deserialize,
@@ -478,7 +563,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_message" not in self._stubs:
-            self._stubs["get_message"] = self.grpc_channel.unary_unary(
+            self._stubs["get_message"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetMessage",
                 request_serializer=message.GetMessageRequest.serialize,
                 response_deserializer=message.Message.deserialize,
@@ -521,7 +606,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_message" not in self._stubs:
-            self._stubs["update_message"] = self.grpc_channel.unary_unary(
+            self._stubs["update_message"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/UpdateMessage",
                 request_serializer=gc_message.UpdateMessageRequest.serialize,
                 response_deserializer=gc_message.Message.deserialize,
@@ -560,7 +645,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_message" not in self._stubs:
-            self._stubs["delete_message"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_message"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/DeleteMessage",
                 request_serializer=message.DeleteMessageRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -592,7 +677,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_attachment" not in self._stubs:
-            self._stubs["get_attachment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_attachment"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetAttachment",
                 request_serializer=attachment.GetAttachmentRequest.serialize,
                 response_deserializer=attachment.Attachment.deserialize,
@@ -630,7 +715,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "upload_attachment" not in self._stubs:
-            self._stubs["upload_attachment"] = self.grpc_channel.unary_unary(
+            self._stubs["upload_attachment"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/UploadAttachment",
                 request_serializer=attachment.UploadAttachmentRequest.serialize,
                 response_deserializer=attachment.UploadAttachmentResponse.deserialize,
@@ -673,7 +758,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_spaces" not in self._stubs:
-            self._stubs["list_spaces"] = self.grpc_channel.unary_unary(
+            self._stubs["list_spaces"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/ListSpaces",
                 request_serializer=space.ListSpacesRequest.serialize,
                 response_deserializer=space.ListSpacesResponse.deserialize,
@@ -704,7 +789,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_spaces" not in self._stubs:
-            self._stubs["search_spaces"] = self.grpc_channel.unary_unary(
+            self._stubs["search_spaces"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/SearchSpaces",
                 request_serializer=space.SearchSpacesRequest.serialize,
                 response_deserializer=space.SearchSpacesResponse.deserialize,
@@ -742,7 +827,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_space" not in self._stubs:
-            self._stubs["get_space"] = self.grpc_channel.unary_unary(
+            self._stubs["get_space"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetSpace",
                 request_serializer=space.GetSpaceRequest.serialize,
                 response_deserializer=space.Space.deserialize,
@@ -792,7 +877,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_space" not in self._stubs:
-            self._stubs["create_space"] = self.grpc_channel.unary_unary(
+            self._stubs["create_space"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/CreateSpace",
                 request_serializer=gc_space.CreateSpaceRequest.serialize,
                 response_deserializer=gc_space.Space.deserialize,
@@ -875,7 +960,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_up_space" not in self._stubs:
-            self._stubs["set_up_space"] = self.grpc_channel.unary_unary(
+            self._stubs["set_up_space"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/SetUpSpace",
                 request_serializer=space_setup.SetUpSpaceRequest.serialize,
                 response_deserializer=space.Space.deserialize,
@@ -923,7 +1008,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_space" not in self._stubs:
-            self._stubs["update_space"] = self.grpc_channel.unary_unary(
+            self._stubs["update_space"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/UpdateSpace",
                 request_serializer=gc_space.UpdateSpaceRequest.serialize,
                 response_deserializer=gc_space.Space.deserialize,
@@ -969,7 +1054,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_space" not in self._stubs:
-            self._stubs["delete_space"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_space"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/DeleteSpace",
                 request_serializer=space.DeleteSpaceRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1005,7 +1090,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_import_space" not in self._stubs:
-            self._stubs["complete_import_space"] = self.grpc_channel.unary_unary(
+            self._stubs["complete_import_space"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/CompleteImportSpace",
                 request_serializer=space.CompleteImportSpaceRequest.serialize,
                 response_deserializer=space.CompleteImportSpaceResponse.deserialize,
@@ -1053,7 +1138,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "find_direct_message" not in self._stubs:
-            self._stubs["find_direct_message"] = self.grpc_channel.unary_unary(
+            self._stubs["find_direct_message"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/FindDirectMessage",
                 request_serializer=space.FindDirectMessageRequest.serialize,
                 response_deserializer=space.Space.deserialize,
@@ -1114,7 +1199,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_membership" not in self._stubs:
-            self._stubs["create_membership"] = self.grpc_channel.unary_unary(
+            self._stubs["create_membership"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/CreateMembership",
                 request_serializer=gc_membership.CreateMembershipRequest.serialize,
                 response_deserializer=gc_membership.Membership.deserialize,
@@ -1160,7 +1245,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_membership" not in self._stubs:
-            self._stubs["update_membership"] = self.grpc_channel.unary_unary(
+            self._stubs["update_membership"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/UpdateMembership",
                 request_serializer=gc_membership.UpdateMembershipRequest.serialize,
                 response_deserializer=gc_membership.Membership.deserialize,
@@ -1206,7 +1291,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_membership" not in self._stubs:
-            self._stubs["delete_membership"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_membership"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/DeleteMembership",
                 request_serializer=membership.DeleteMembershipRequest.serialize,
                 response_deserializer=membership.Membership.deserialize,
@@ -1237,7 +1322,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_reaction" not in self._stubs:
-            self._stubs["create_reaction"] = self.grpc_channel.unary_unary(
+            self._stubs["create_reaction"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/CreateReaction",
                 request_serializer=gc_reaction.CreateReactionRequest.serialize,
                 response_deserializer=gc_reaction.Reaction.deserialize,
@@ -1270,7 +1355,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_reactions" not in self._stubs:
-            self._stubs["list_reactions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_reactions"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/ListReactions",
                 request_serializer=reaction.ListReactionsRequest.serialize,
                 response_deserializer=reaction.ListReactionsResponse.deserialize,
@@ -1301,7 +1386,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_reaction" not in self._stubs:
-            self._stubs["delete_reaction"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_reaction"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/DeleteReaction",
                 request_serializer=reaction.DeleteReactionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1336,7 +1421,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_space_read_state" not in self._stubs:
-            self._stubs["get_space_read_state"] = self.grpc_channel.unary_unary(
+            self._stubs["get_space_read_state"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetSpaceReadState",
                 request_serializer=space_read_state.GetSpaceReadStateRequest.serialize,
                 response_deserializer=space_read_state.SpaceReadState.deserialize,
@@ -1371,7 +1456,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_space_read_state" not in self._stubs:
-            self._stubs["update_space_read_state"] = self.grpc_channel.unary_unary(
+            self._stubs["update_space_read_state"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/UpdateSpaceReadState",
                 request_serializer=gc_space_read_state.UpdateSpaceReadStateRequest.serialize,
                 response_deserializer=gc_space_read_state.SpaceReadState.deserialize,
@@ -1406,7 +1491,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_thread_read_state" not in self._stubs:
-            self._stubs["get_thread_read_state"] = self.grpc_channel.unary_unary(
+            self._stubs["get_thread_read_state"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetThreadReadState",
                 request_serializer=thread_read_state.GetThreadReadStateRequest.serialize,
                 response_deserializer=thread_read_state.ThreadReadState.deserialize,
@@ -1451,7 +1536,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_space_event" not in self._stubs:
-            self._stubs["get_space_event"] = self.grpc_channel.unary_unary(
+            self._stubs["get_space_event"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetSpaceEvent",
                 request_serializer=space_event.GetSpaceEventRequest.serialize,
                 response_deserializer=space_event.SpaceEvent.deserialize,
@@ -1495,7 +1580,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_space_events" not in self._stubs:
-            self._stubs["list_space_events"] = self.grpc_channel.unary_unary(
+            self._stubs["list_space_events"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/ListSpaceEvents",
                 request_serializer=space_event.ListSpaceEventsRequest.serialize,
                 response_deserializer=space_event.ListSpaceEventsResponse.deserialize,
@@ -1919,7 +2004,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
