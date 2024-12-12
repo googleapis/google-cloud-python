@@ -7922,6 +7922,7 @@ def test_create_dataset_rest_required_fields(request_type=service.CreateDatasetR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_dataset(request)
 
@@ -7978,6 +7979,7 @@ def test_create_dataset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_dataset(**mock_args)
 
@@ -8111,6 +8113,7 @@ def test_get_dataset_rest_required_fields(request_type=service.GetDatasetRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_dataset(request)
 
@@ -8156,6 +8159,7 @@ def test_get_dataset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_dataset(**mock_args)
 
@@ -8292,6 +8296,7 @@ def test_list_datasets_rest_required_fields(request_type=service.ListDatasetsReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_datasets(request)
 
@@ -8346,6 +8351,7 @@ def test_list_datasets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_datasets(**mock_args)
 
@@ -8533,6 +8539,7 @@ def test_update_dataset_rest_required_fields(request_type=service.UpdateDatasetR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_dataset(request)
 
@@ -8593,6 +8600,7 @@ def test_update_dataset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_dataset(**mock_args)
 
@@ -8728,6 +8736,7 @@ def test_delete_dataset_rest_required_fields(request_type=service.DeleteDatasetR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_dataset(request)
 
@@ -8771,6 +8780,7 @@ def test_delete_dataset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_dataset(**mock_args)
 
@@ -8901,6 +8911,7 @@ def test_import_data_rest_required_fields(request_type=service.ImportDataRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.import_data(request)
 
@@ -8955,6 +8966,7 @@ def test_import_data_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.import_data(**mock_args)
 
@@ -9089,6 +9101,7 @@ def test_export_data_rest_required_fields(request_type=service.ExportDataRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_data(request)
 
@@ -9145,6 +9158,7 @@ def test_export_data_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.export_data(**mock_args)
 
@@ -9285,6 +9299,7 @@ def test_get_annotation_spec_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_annotation_spec(request)
 
@@ -9332,6 +9347,7 @@ def test_get_annotation_spec_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_annotation_spec(**mock_args)
 
@@ -9463,6 +9479,7 @@ def test_create_model_rest_required_fields(request_type=service.CreateModelReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_model(request)
 
@@ -9519,6 +9536,7 @@ def test_create_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_model(**mock_args)
 
@@ -9652,6 +9670,7 @@ def test_get_model_rest_required_fields(request_type=service.GetModelRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_model(request)
 
@@ -9697,6 +9716,7 @@ def test_get_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_model(**mock_args)
 
@@ -9833,6 +9853,7 @@ def test_list_models_rest_required_fields(request_type=service.ListModelsRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_models(request)
 
@@ -9887,6 +9908,7 @@ def test_list_models_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_models(**mock_args)
 
@@ -10077,6 +10099,7 @@ def test_delete_model_rest_required_fields(request_type=service.DeleteModelReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_model(request)
 
@@ -10120,6 +10143,7 @@ def test_delete_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_model(**mock_args)
 
@@ -10246,6 +10270,7 @@ def test_update_model_rest_required_fields(request_type=service.UpdateModelReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_model(request)
 
@@ -10306,6 +10331,7 @@ def test_update_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_model(**mock_args)
 
@@ -10442,6 +10468,7 @@ def test_deploy_model_rest_required_fields(request_type=service.DeployModelReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.deploy_model(request)
 
@@ -10485,6 +10512,7 @@ def test_deploy_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.deploy_model(**mock_args)
 
@@ -10616,6 +10644,7 @@ def test_undeploy_model_rest_required_fields(request_type=service.UndeployModelR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.undeploy_model(request)
 
@@ -10659,6 +10688,7 @@ def test_undeploy_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.undeploy_model(**mock_args)
 
@@ -10790,6 +10820,7 @@ def test_export_model_rest_required_fields(request_type=service.ExportModelReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_model(request)
 
@@ -10846,6 +10877,7 @@ def test_export_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.export_model(**mock_args)
 
@@ -10986,6 +11018,7 @@ def test_get_model_evaluation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_model_evaluation(request)
 
@@ -11033,6 +11066,7 @@ def test_get_model_evaluation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_model_evaluation(**mock_args)
 
@@ -11184,6 +11218,7 @@ def test_list_model_evaluations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_model_evaluations(request)
 
@@ -11250,6 +11285,7 @@ def test_list_model_evaluations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_model_evaluations(**mock_args)
 
@@ -12368,6 +12404,7 @@ def test_create_dataset_rest_bad_request(request_type=service.CreateDatasetReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_dataset(request)
 
 
@@ -12483,6 +12520,7 @@ def test_create_dataset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_dataset(request)
 
     # Establish that the response is the type that we expect.
@@ -12520,6 +12558,7 @@ def test_create_dataset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12562,6 +12601,7 @@ def test_get_dataset_rest_bad_request(request_type=service.GetDatasetRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_dataset(request)
 
 
@@ -12601,6 +12641,7 @@ def test_get_dataset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_dataset(request)
 
     # Establish that the response is the type that we expect.
@@ -12641,6 +12682,7 @@ def test_get_dataset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataset.Dataset.to_json(dataset.Dataset())
         req.return_value.content = return_value
 
@@ -12683,6 +12725,7 @@ def test_list_datasets_rest_bad_request(request_type=service.ListDatasetsRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_datasets(request)
 
 
@@ -12718,6 +12761,7 @@ def test_list_datasets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_datasets(request)
 
     # Establish that the response is the type that we expect.
@@ -12754,6 +12798,7 @@ def test_list_datasets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListDatasetsResponse.to_json(
             service.ListDatasetsResponse()
         )
@@ -12800,6 +12845,7 @@ def test_update_dataset_rest_bad_request(request_type=service.UpdateDatasetReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_dataset(request)
 
 
@@ -12926,6 +12972,7 @@ def test_update_dataset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_dataset(request)
 
     # Establish that the response is the type that we expect.
@@ -12966,6 +13013,7 @@ def test_update_dataset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gca_dataset.Dataset.to_json(gca_dataset.Dataset())
         req.return_value.content = return_value
 
@@ -13008,6 +13056,7 @@ def test_delete_dataset_rest_bad_request(request_type=service.DeleteDatasetReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_dataset(request)
 
 
@@ -13038,6 +13087,7 @@ def test_delete_dataset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_dataset(request)
 
     # Establish that the response is the type that we expect.
@@ -13075,6 +13125,7 @@ def test_delete_dataset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13117,6 +13168,7 @@ def test_import_data_rest_bad_request(request_type=service.ImportDataRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.import_data(request)
 
 
@@ -13147,6 +13199,7 @@ def test_import_data_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.import_data(request)
 
     # Establish that the response is the type that we expect.
@@ -13184,6 +13237,7 @@ def test_import_data_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13226,6 +13280,7 @@ def test_export_data_rest_bad_request(request_type=service.ExportDataRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_data(request)
 
 
@@ -13256,6 +13311,7 @@ def test_export_data_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_data(request)
 
     # Establish that the response is the type that we expect.
@@ -13293,6 +13349,7 @@ def test_export_data_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13339,6 +13396,7 @@ def test_get_annotation_spec_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_annotation_spec(request)
 
 
@@ -13378,6 +13436,7 @@ def test_get_annotation_spec_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_annotation_spec(request)
 
     # Establish that the response is the type that we expect.
@@ -13418,6 +13477,7 @@ def test_get_annotation_spec_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = annotation_spec.AnnotationSpec.to_json(
             annotation_spec.AnnotationSpec()
         )
@@ -13462,6 +13522,7 @@ def test_create_model_rest_bad_request(request_type=service.CreateModelRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_model(request)
 
 
@@ -13594,6 +13655,7 @@ def test_create_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_model(request)
 
     # Establish that the response is the type that we expect.
@@ -13631,6 +13693,7 @@ def test_create_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13673,6 +13736,7 @@ def test_get_model_rest_bad_request(request_type=service.GetModelRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_model(request)
 
 
@@ -13712,6 +13776,7 @@ def test_get_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_model(request)
 
     # Establish that the response is the type that we expect.
@@ -13752,6 +13817,7 @@ def test_get_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = model.Model.to_json(model.Model())
         req.return_value.content = return_value
 
@@ -13794,6 +13860,7 @@ def test_list_models_rest_bad_request(request_type=service.ListModelsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_models(request)
 
 
@@ -13829,6 +13896,7 @@ def test_list_models_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_models(request)
 
     # Establish that the response is the type that we expect.
@@ -13865,6 +13933,7 @@ def test_list_models_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListModelsResponse.to_json(service.ListModelsResponse())
         req.return_value.content = return_value
 
@@ -13907,6 +13976,7 @@ def test_delete_model_rest_bad_request(request_type=service.DeleteModelRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_model(request)
 
 
@@ -13937,6 +14007,7 @@ def test_delete_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_model(request)
 
     # Establish that the response is the type that we expect.
@@ -13974,6 +14045,7 @@ def test_delete_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14018,6 +14090,7 @@ def test_update_model_rest_bad_request(request_type=service.UpdateModelRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_model(request)
 
 
@@ -14161,6 +14234,7 @@ def test_update_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_model(request)
 
     # Establish that the response is the type that we expect.
@@ -14201,6 +14275,7 @@ def test_update_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gca_model.Model.to_json(gca_model.Model())
         req.return_value.content = return_value
 
@@ -14243,6 +14318,7 @@ def test_deploy_model_rest_bad_request(request_type=service.DeployModelRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.deploy_model(request)
 
 
@@ -14273,6 +14349,7 @@ def test_deploy_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.deploy_model(request)
 
     # Establish that the response is the type that we expect.
@@ -14310,6 +14387,7 @@ def test_deploy_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14352,6 +14430,7 @@ def test_undeploy_model_rest_bad_request(request_type=service.UndeployModelReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.undeploy_model(request)
 
 
@@ -14382,6 +14461,7 @@ def test_undeploy_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.undeploy_model(request)
 
     # Establish that the response is the type that we expect.
@@ -14419,6 +14499,7 @@ def test_undeploy_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14461,6 +14542,7 @@ def test_export_model_rest_bad_request(request_type=service.ExportModelRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_model(request)
 
 
@@ -14491,6 +14573,7 @@ def test_export_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_model(request)
 
     # Establish that the response is the type that we expect.
@@ -14528,6 +14611,7 @@ def test_export_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14574,6 +14658,7 @@ def test_get_model_evaluation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_model_evaluation(request)
 
 
@@ -14614,6 +14699,7 @@ def test_get_model_evaluation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_model_evaluation(request)
 
     # Establish that the response is the type that we expect.
@@ -14655,6 +14741,7 @@ def test_get_model_evaluation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = model_evaluation.ModelEvaluation.to_json(
             model_evaluation.ModelEvaluation()
         )
@@ -14701,6 +14788,7 @@ def test_list_model_evaluations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_model_evaluations(request)
 
 
@@ -14736,6 +14824,7 @@ def test_list_model_evaluations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_model_evaluations(request)
 
     # Establish that the response is the type that we expect.
@@ -14774,6 +14863,7 @@ def test_list_model_evaluations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListModelEvaluationsResponse.to_json(
             service.ListModelEvaluationsResponse()
         )

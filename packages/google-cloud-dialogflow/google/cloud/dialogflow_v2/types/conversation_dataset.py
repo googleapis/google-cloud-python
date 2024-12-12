@@ -372,7 +372,7 @@ class ImportConversationDataOperationResponse(proto.Message):
 
 
 class CreateConversationDatasetOperationMetadata(proto.Message):
-    r"""Metadata for [ConversationDatasets][CreateConversationDataset].
+    r"""Metadata for [CreateConversationDataset][].
 
     Attributes:
         conversation_dataset (str):
@@ -388,7 +388,7 @@ class CreateConversationDatasetOperationMetadata(proto.Message):
 
 
 class DeleteConversationDatasetOperationMetadata(proto.Message):
-    r"""Metadata for [ConversationDatasets][DeleteConversationDataset]."""
+    r"""Metadata for [DeleteConversationDataset][]."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

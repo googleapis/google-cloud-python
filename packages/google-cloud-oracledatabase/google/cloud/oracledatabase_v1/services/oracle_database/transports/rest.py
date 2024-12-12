@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -44,6 +44,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -252,9 +260,10 @@ class OracleDatabaseRestInterceptor:
     def pre_create_autonomous_database(
         self,
         request: oracledatabase.CreateAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.CreateAutonomousDatabaseRequest, Sequence[Tuple[str, str]]
+        oracledatabase.CreateAutonomousDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_autonomous_database
 
@@ -277,10 +286,10 @@ class OracleDatabaseRestInterceptor:
     def pre_create_cloud_exadata_infrastructure(
         self,
         request: oracledatabase.CreateCloudExadataInfrastructureRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         oracledatabase.CreateCloudExadataInfrastructureRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_cloud_exadata_infrastructure
 
@@ -303,8 +312,11 @@ class OracleDatabaseRestInterceptor:
     def pre_create_cloud_vm_cluster(
         self,
         request: oracledatabase.CreateCloudVmClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.CreateCloudVmClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.CreateCloudVmClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_cloud_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -326,9 +338,10 @@ class OracleDatabaseRestInterceptor:
     def pre_delete_autonomous_database(
         self,
         request: oracledatabase.DeleteAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.DeleteAutonomousDatabaseRequest, Sequence[Tuple[str, str]]
+        oracledatabase.DeleteAutonomousDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_autonomous_database
 
@@ -351,10 +364,10 @@ class OracleDatabaseRestInterceptor:
     def pre_delete_cloud_exadata_infrastructure(
         self,
         request: oracledatabase.DeleteCloudExadataInfrastructureRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         oracledatabase.DeleteCloudExadataInfrastructureRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_cloud_exadata_infrastructure
 
@@ -377,8 +390,11 @@ class OracleDatabaseRestInterceptor:
     def pre_delete_cloud_vm_cluster(
         self,
         request: oracledatabase.DeleteCloudVmClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.DeleteCloudVmClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.DeleteCloudVmClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_cloud_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -400,10 +416,10 @@ class OracleDatabaseRestInterceptor:
     def pre_generate_autonomous_database_wallet(
         self,
         request: oracledatabase.GenerateAutonomousDatabaseWalletRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         oracledatabase.GenerateAutonomousDatabaseWalletRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for generate_autonomous_database_wallet
 
@@ -426,8 +442,11 @@ class OracleDatabaseRestInterceptor:
     def pre_get_autonomous_database(
         self,
         request: oracledatabase.GetAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.GetAutonomousDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.GetAutonomousDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -449,9 +468,10 @@ class OracleDatabaseRestInterceptor:
     def pre_get_cloud_exadata_infrastructure(
         self,
         request: oracledatabase.GetCloudExadataInfrastructureRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.GetCloudExadataInfrastructureRequest, Sequence[Tuple[str, str]]
+        oracledatabase.GetCloudExadataInfrastructureRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_cloud_exadata_infrastructure
 
@@ -474,8 +494,10 @@ class OracleDatabaseRestInterceptor:
     def pre_get_cloud_vm_cluster(
         self,
         request: oracledatabase.GetCloudVmClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.GetCloudVmClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.GetCloudVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_cloud_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -497,9 +519,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_autonomous_database_backups(
         self,
         request: oracledatabase.ListAutonomousDatabaseBackupsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.ListAutonomousDatabaseBackupsRequest, Sequence[Tuple[str, str]]
+        oracledatabase.ListAutonomousDatabaseBackupsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_autonomous_database_backups
 
@@ -522,10 +545,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_autonomous_database_character_sets(
         self,
         request: oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_autonomous_database_character_sets
 
@@ -548,9 +571,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_autonomous_databases(
         self,
         request: oracledatabase.ListAutonomousDatabasesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.ListAutonomousDatabasesRequest, Sequence[Tuple[str, str]]
+        oracledatabase.ListAutonomousDatabasesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_autonomous_databases
 
@@ -573,9 +597,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_autonomous_db_versions(
         self,
         request: oracledatabase.ListAutonomousDbVersionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.ListAutonomousDbVersionsRequest, Sequence[Tuple[str, str]]
+        oracledatabase.ListAutonomousDbVersionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_autonomous_db_versions
 
@@ -598,9 +623,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_cloud_exadata_infrastructures(
         self,
         request: oracledatabase.ListCloudExadataInfrastructuresRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.ListCloudExadataInfrastructuresRequest, Sequence[Tuple[str, str]]
+        oracledatabase.ListCloudExadataInfrastructuresRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_cloud_exadata_infrastructures
 
@@ -623,8 +649,11 @@ class OracleDatabaseRestInterceptor:
     def pre_list_cloud_vm_clusters(
         self,
         request: oracledatabase.ListCloudVmClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.ListCloudVmClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListCloudVmClustersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_cloud_vm_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -646,8 +675,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_db_nodes(
         self,
         request: oracledatabase.ListDbNodesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.ListDbNodesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListDbNodesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_db_nodes
 
         Override in a subclass to manipulate the request or metadata
@@ -669,8 +700,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_db_servers(
         self,
         request: oracledatabase.ListDbServersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.ListDbServersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListDbServersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_db_servers
 
         Override in a subclass to manipulate the request or metadata
@@ -692,8 +725,11 @@ class OracleDatabaseRestInterceptor:
     def pre_list_db_system_shapes(
         self,
         request: oracledatabase.ListDbSystemShapesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.ListDbSystemShapesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListDbSystemShapesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_db_system_shapes
 
         Override in a subclass to manipulate the request or metadata
@@ -715,8 +751,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_entitlements(
         self,
         request: oracledatabase.ListEntitlementsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.ListEntitlementsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListEntitlementsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_entitlements
 
         Override in a subclass to manipulate the request or metadata
@@ -738,8 +776,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_gi_versions(
         self,
         request: oracledatabase.ListGiVersionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[oracledatabase.ListGiVersionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        oracledatabase.ListGiVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_gi_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -761,9 +801,10 @@ class OracleDatabaseRestInterceptor:
     def pre_restore_autonomous_database(
         self,
         request: oracledatabase.RestoreAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        oracledatabase.RestoreAutonomousDatabaseRequest, Sequence[Tuple[str, str]]
+        oracledatabase.RestoreAutonomousDatabaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for restore_autonomous_database
 
@@ -786,8 +827,10 @@ class OracleDatabaseRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -809,8 +852,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -832,8 +877,10 @@ class OracleDatabaseRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -853,8 +900,10 @@ class OracleDatabaseRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -874,8 +923,10 @@ class OracleDatabaseRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -897,8 +948,10 @@ class OracleDatabaseRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1094,7 +1147,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create autonomous
             database method over HTTP.
@@ -1105,8 +1158,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1119,6 +1174,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_autonomous_database(
                 request, metadata
             )
@@ -1134,6 +1190,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.CreateAutonomousDatabase",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "CreateAutonomousDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1156,7 +1239,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_autonomous_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.create_autonomous_database",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "CreateAutonomousDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCloudExadataInfrastructure(
@@ -1195,7 +1300,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create cloud exadata
             infrastructure method over HTTP.
@@ -1206,8 +1311,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1220,6 +1327,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1238,6 +1346,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.CreateCloudExadataInfrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "CreateCloudExadataInfrastructure",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateCloudExadataInfrastructure._get_response(
@@ -1258,7 +1393,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cloud_exadata_infrastructure(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.create_cloud_exadata_infrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "CreateCloudExadataInfrastructure",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCloudVmCluster(
@@ -1297,7 +1454,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create cloud vm cluster method over HTTP.
 
@@ -1307,8 +1464,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1321,6 +1480,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_cloud_vm_cluster(
                 request, metadata
             )
@@ -1336,6 +1496,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.CreateCloudVmCluster",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "CreateCloudVmCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateCloudVmCluster._get_response(
@@ -1356,7 +1543,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cloud_vm_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.create_cloud_vm_cluster",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "CreateCloudVmCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAutonomousDatabase(
@@ -1394,7 +1603,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete autonomous
             database method over HTTP.
@@ -1405,8 +1614,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1419,6 +1630,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_autonomous_database(
                 request, metadata
             )
@@ -1430,6 +1642,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.DeleteAutonomousDatabase",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "DeleteAutonomousDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1451,7 +1690,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_autonomous_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.delete_autonomous_database",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "DeleteAutonomousDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCloudExadataInfrastructure(
@@ -1489,7 +1750,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete cloud exadata
             infrastructure method over HTTP.
@@ -1500,8 +1761,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1514,6 +1777,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1528,6 +1792,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.DeleteCloudExadataInfrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "DeleteCloudExadataInfrastructure",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteCloudExadataInfrastructure._get_response(
@@ -1547,7 +1838,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cloud_exadata_infrastructure(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.delete_cloud_exadata_infrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "DeleteCloudExadataInfrastructure",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCloudVmCluster(
@@ -1585,7 +1898,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete cloud vm cluster method over HTTP.
 
@@ -1595,8 +1908,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1609,6 +1924,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_cloud_vm_cluster(
                 request, metadata
             )
@@ -1620,6 +1936,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.DeleteCloudVmCluster",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "DeleteCloudVmCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteCloudVmCluster._get_response(
@@ -1639,7 +1982,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cloud_vm_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.delete_cloud_vm_cluster",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "DeleteCloudVmCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAutonomousDatabaseWallet(
@@ -1678,7 +2043,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.GenerateAutonomousDatabaseWalletResponse:
             r"""Call the generate autonomous
             database wallet method over HTTP.
@@ -1689,8 +2054,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.oracledatabase.GenerateAutonomousDatabaseWalletResponse:
@@ -1700,6 +2067,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1718,6 +2086,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GenerateAutonomousDatabaseWallet",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GenerateAutonomousDatabaseWallet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._GenerateAutonomousDatabaseWallet._get_response(
@@ -1740,7 +2135,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.GenerateAutonomousDatabaseWalletResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_autonomous_database_wallet(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        oracledatabase.GenerateAutonomousDatabaseWalletResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.generate_autonomous_database_wallet",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GenerateAutonomousDatabaseWallet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAutonomousDatabase(
@@ -1778,7 +2199,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> autonomous_database.AutonomousDatabase:
             r"""Call the get autonomous database method over HTTP.
 
@@ -1788,8 +2209,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.autonomous_database.AutonomousDatabase:
@@ -1802,6 +2225,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_autonomous_database(
                 request, metadata
             )
@@ -1813,6 +2237,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetAutonomousDatabase",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetAutonomousDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._GetAutonomousDatabase._get_response(
@@ -1834,7 +2285,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = autonomous_database.AutonomousDatabase.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_autonomous_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = autonomous_database.AutonomousDatabase.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.get_autonomous_database",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetAutonomousDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCloudExadataInfrastructure(
@@ -1872,7 +2347,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> exadata_infra.CloudExadataInfrastructure:
             r"""Call the get cloud exadata
             infrastructure method over HTTP.
@@ -1883,8 +2358,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.exadata_infra.CloudExadataInfrastructure:
@@ -1897,6 +2374,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cloud_exadata_infrastructure(
                 request, metadata
             )
@@ -1908,6 +2386,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetCloudExadataInfrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetCloudExadataInfrastructure",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._GetCloudExadataInfrastructure._get_response(
@@ -1929,7 +2434,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = exadata_infra.CloudExadataInfrastructure.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cloud_exadata_infrastructure(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = exadata_infra.CloudExadataInfrastructure.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.get_cloud_exadata_infrastructure",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetCloudExadataInfrastructure",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCloudVmCluster(
@@ -1966,7 +2495,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vm_cluster.CloudVmCluster:
             r"""Call the get cloud vm cluster method over HTTP.
 
@@ -1976,8 +2505,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vm_cluster.CloudVmCluster:
@@ -1990,6 +2521,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cloud_vm_cluster(
                 request, metadata
             )
@@ -2001,6 +2533,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetCloudVmCluster",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetCloudVmCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._GetCloudVmCluster._get_response(
@@ -2022,7 +2581,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = vm_cluster.CloudVmCluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cloud_vm_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vm_cluster.CloudVmCluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.get_cloud_vm_cluster",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetCloudVmCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAutonomousDatabaseBackups(
@@ -2060,7 +2641,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListAutonomousDatabaseBackupsResponse:
             r"""Call the list autonomous database
             backups method over HTTP.
@@ -2071,8 +2652,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.oracledatabase.ListAutonomousDatabaseBackupsResponse:
@@ -2082,6 +2665,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_autonomous_database_backups(
                 request, metadata
             )
@@ -2093,6 +2677,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListAutonomousDatabaseBackups",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDatabaseBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListAutonomousDatabaseBackups._get_response(
@@ -2114,7 +2725,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListAutonomousDatabaseBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_autonomous_database_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        oracledatabase.ListAutonomousDatabaseBackupsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_autonomous_database_backups",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDatabaseBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAutonomousDatabaseCharacterSets(
@@ -2154,7 +2791,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListAutonomousDatabaseCharacterSetsResponse:
             r"""Call the list autonomous database
             character sets method over HTTP.
@@ -2165,8 +2802,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.oracledatabase.ListAutonomousDatabaseCharacterSetsResponse:
@@ -2178,6 +2817,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2192,6 +2832,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListAutonomousDatabaseCharacterSets",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDatabaseCharacterSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListAutonomousDatabaseCharacterSets._get_response(
@@ -2215,7 +2882,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_autonomous_database_character_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_autonomous_database_character_sets",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDatabaseCharacterSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAutonomousDatabases(
@@ -2253,7 +2944,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListAutonomousDatabasesResponse:
             r"""Call the list autonomous databases method over HTTP.
 
@@ -2263,8 +2954,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.oracledatabase.ListAutonomousDatabasesResponse:
@@ -2274,6 +2967,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_autonomous_databases(
                 request, metadata
             )
@@ -2285,6 +2979,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListAutonomousDatabases",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDatabases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2308,7 +3029,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListAutonomousDatabasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_autonomous_databases(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        oracledatabase.ListAutonomousDatabasesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_autonomous_databases",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDatabases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAutonomousDbVersions(
@@ -2346,7 +3091,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListAutonomousDbVersionsResponse:
             r"""Call the list autonomous db
             versions method over HTTP.
@@ -2357,8 +3102,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.oracledatabase.ListAutonomousDbVersionsResponse:
@@ -2368,6 +3115,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_autonomous_db_versions(
                 request, metadata
             )
@@ -2379,6 +3127,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListAutonomousDbVersions",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDbVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2402,7 +3177,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListAutonomousDbVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_autonomous_db_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        oracledatabase.ListAutonomousDbVersionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_autonomous_db_versions",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListAutonomousDbVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCloudExadataInfrastructures(
@@ -2440,7 +3241,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListCloudExadataInfrastructuresResponse:
             r"""Call the list cloud exadata
             infrastructures method over HTTP.
@@ -2451,8 +3252,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.oracledatabase.ListCloudExadataInfrastructuresResponse:
@@ -2462,6 +3265,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2476,6 +3280,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListCloudExadataInfrastructures",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListCloudExadataInfrastructures",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListCloudExadataInfrastructures._get_response(
@@ -2497,7 +3328,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListCloudExadataInfrastructuresResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_cloud_exadata_infrastructures(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        oracledatabase.ListCloudExadataInfrastructuresResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_cloud_exadata_infrastructures",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListCloudExadataInfrastructures",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCloudVmClusters(
@@ -2535,7 +3392,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListCloudVmClustersResponse:
             r"""Call the list cloud vm clusters method over HTTP.
 
@@ -2545,8 +3402,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.oracledatabase.ListCloudVmClustersResponse:
@@ -2556,6 +3415,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_cloud_vm_clusters(
                 request, metadata
             )
@@ -2567,6 +3427,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListCloudVmClusters",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListCloudVmClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListCloudVmClusters._get_response(
@@ -2588,7 +3475,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListCloudVmClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_cloud_vm_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        oracledatabase.ListCloudVmClustersResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_cloud_vm_clusters",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListCloudVmClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDbNodes(
@@ -2625,7 +3536,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListDbNodesResponse:
             r"""Call the list db nodes method over HTTP.
 
@@ -2635,8 +3546,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.oracledatabase.ListDbNodesResponse:
@@ -2646,6 +3559,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_db_nodes(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_transcoded_request(
                 http_options, request
@@ -2655,6 +3569,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListDbNodes",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListDbNodes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbNodes._get_response(
@@ -2676,7 +3617,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListDbNodesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_db_nodes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = oracledatabase.ListDbNodesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_db_nodes",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListDbNodes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDbServers(
@@ -2713,7 +3678,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListDbServersResponse:
             r"""Call the list db servers method over HTTP.
 
@@ -2723,8 +3688,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.oracledatabase.ListDbServersResponse:
@@ -2734,6 +3701,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDbServers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_db_servers(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_transcoded_request(
                 http_options, request
@@ -2743,6 +3711,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListDbServers",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListDbServers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbServers._get_response(
@@ -2764,7 +3759,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListDbServersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_db_servers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = oracledatabase.ListDbServersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_db_servers",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListDbServers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDbSystemShapes(
@@ -2801,7 +3820,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListDbSystemShapesResponse:
             r"""Call the list db system shapes method over HTTP.
 
@@ -2811,8 +3830,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.oracledatabase.ListDbSystemShapesResponse:
@@ -2822,6 +3843,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_db_system_shapes(
                 request, metadata
             )
@@ -2833,6 +3855,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListDbSystemShapes",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListDbSystemShapes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbSystemShapes._get_response(
@@ -2854,7 +3903,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListDbSystemShapesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_db_system_shapes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        oracledatabase.ListDbSystemShapesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_db_system_shapes",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListDbSystemShapes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEntitlements(
@@ -2891,7 +3964,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListEntitlementsResponse:
             r"""Call the list entitlements method over HTTP.
 
@@ -2901,8 +3974,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.oracledatabase.ListEntitlementsResponse:
@@ -2912,6 +3987,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_entitlements(
                 request, metadata
             )
@@ -2923,6 +3999,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListEntitlements",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListEntitlements",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListEntitlements._get_response(
@@ -2944,7 +4047,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListEntitlementsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_entitlements(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = oracledatabase.ListEntitlementsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_entitlements",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListEntitlements",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGiVersions(
@@ -2981,7 +4108,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> oracledatabase.ListGiVersionsResponse:
             r"""Call the list gi versions method over HTTP.
 
@@ -2991,8 +4118,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.oracledatabase.ListGiVersionsResponse:
@@ -3002,6 +4131,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_gi_versions(
                 request, metadata
             )
@@ -3013,6 +4143,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListGiVersions",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListGiVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListGiVersions._get_response(
@@ -3034,7 +4191,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             pb_resp = oracledatabase.ListGiVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_gi_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = oracledatabase.ListGiVersionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.list_gi_versions",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListGiVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestoreAutonomousDatabase(
@@ -3073,7 +4254,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restore autonomous
             database method over HTTP.
@@ -3084,8 +4265,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -3098,6 +4281,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restore_autonomous_database(
                 request, metadata
             )
@@ -3113,6 +4297,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.RestoreAutonomousDatabase",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "RestoreAutonomousDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3135,7 +4346,29 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restore_autonomous_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseClient.restore_autonomous_database",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "RestoreAutonomousDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3407,7 +4640,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3417,8 +4650,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3427,6 +4662,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -3436,6 +4672,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._GetLocation._get_response(
@@ -3456,6 +4719,27 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3496,7 +4780,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3506,8 +4790,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3516,6 +4802,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3525,6 +4812,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListLocations._get_response(
@@ -3545,6 +4859,27 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3586,7 +4921,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3596,13 +4931,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3618,6 +4956,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._CancelOperation._get_response(
@@ -3675,7 +5040,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3685,13 +5050,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3703,6 +5071,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteOperation._get_response(
@@ -3759,7 +5154,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3769,8 +5164,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3779,6 +5176,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3788,6 +5186,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._GetOperation._get_response(
@@ -3808,6 +5233,27 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3848,7 +5294,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3858,8 +5304,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3868,6 +5316,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             http_options = (
                 _BaseOracleDatabaseRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3877,6 +5326,33 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             query_params = _BaseOracleDatabaseRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.oracledatabase_v1.OracleDatabaseClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OracleDatabaseRestTransport._ListOperations._get_response(
@@ -3897,6 +5373,27 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.oracledatabase_v1.OracleDatabaseAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,9 +101,10 @@ class AcceleratorTypesRestInterceptor:
     def pre_aggregated_list(
         self,
         request: compute.AggregatedListAcceleratorTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.AggregatedListAcceleratorTypesRequest, Sequence[Tuple[str, str]]
+        compute.AggregatedListAcceleratorTypesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for aggregated_list
 
@@ -118,8 +127,10 @@ class AcceleratorTypesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetAcceleratorTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetAcceleratorTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetAcceleratorTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +150,10 @@ class AcceleratorTypesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListAcceleratorTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListAcceleratorTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListAcceleratorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -286,7 +299,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.AcceleratorTypeAggregatedList:
             r"""Call the aggregated list method over HTTP.
 
@@ -298,8 +311,10 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.AcceleratorTypeAggregatedList:
@@ -309,6 +324,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             http_options = (
                 _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_transcoded_request(
                 http_options, request
@@ -318,6 +334,33 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             query_params = _BaseAcceleratorTypesRestTransport._BaseAggregatedList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.AcceleratorTypesClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.AcceleratorTypes",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AcceleratorTypesRestTransport._AggregatedList._get_response(
@@ -339,7 +382,31 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             pb_resp = compute.AcceleratorTypeAggregatedList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.AcceleratorTypeAggregatedList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.AcceleratorTypesClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.AcceleratorTypes",
+                        "rpcName": "AggregatedList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseAcceleratorTypesRestTransport._BaseGet, AcceleratorTypesRestStub):
@@ -374,7 +441,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.AcceleratorType:
             r"""Call the get method over HTTP.
 
@@ -386,8 +453,10 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.AcceleratorType:
@@ -405,6 +474,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             http_options = (
                 _BaseAcceleratorTypesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseAcceleratorTypesRestTransport._BaseGet._get_transcoded_request(
@@ -418,6 +488,33 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.AcceleratorTypesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.AcceleratorTypes",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AcceleratorTypesRestTransport._Get._get_response(
@@ -439,7 +536,29 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             pb_resp = compute.AcceleratorType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.AcceleratorType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.AcceleratorTypesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.AcceleratorTypes",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseAcceleratorTypesRestTransport._BaseList, AcceleratorTypesRestStub):
@@ -474,7 +593,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.AcceleratorTypeList:
             r"""Call the list method over HTTP.
 
@@ -486,8 +605,10 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.AcceleratorTypeList:
@@ -497,6 +618,7 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             http_options = (
                 _BaseAcceleratorTypesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseAcceleratorTypesRestTransport._BaseList._get_transcoded_request(
@@ -510,6 +632,33 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.AcceleratorTypesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.AcceleratorTypes",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AcceleratorTypesRestTransport._List._get_response(
@@ -531,7 +680,29 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             pb_resp = compute.AcceleratorTypeList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.AcceleratorTypeList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.AcceleratorTypesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.AcceleratorTypes",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
