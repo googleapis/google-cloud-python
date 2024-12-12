@@ -9156,6 +9156,7 @@ def test_create_certificate_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_certificate(request)
 
@@ -9218,6 +9219,7 @@ def test_create_certificate_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_certificate(**mock_args)
 
@@ -9351,6 +9353,7 @@ def test_get_certificate_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_certificate(request)
 
@@ -9398,6 +9401,7 @@ def test_get_certificate_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_certificate(**mock_args)
 
@@ -9540,6 +9544,7 @@ def test_list_certificates_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_certificates(request)
 
@@ -9597,6 +9602,7 @@ def test_list_certificates_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_certificates(**mock_args)
 
@@ -9796,6 +9802,7 @@ def test_revoke_certificate_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.revoke_certificate(request)
 
@@ -9851,6 +9858,7 @@ def test_revoke_certificate_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.revoke_certificate(**mock_args)
 
@@ -9989,6 +9997,7 @@ def test_update_certificate_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_certificate(request)
 
@@ -10052,6 +10061,7 @@ def test_update_certificate_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_certificate(**mock_args)
 
@@ -10195,6 +10205,7 @@ def test_activate_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.activate_certificate_authority(request)
 
@@ -10251,6 +10262,7 @@ def test_activate_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.activate_certificate_authority(**mock_args)
 
@@ -10408,6 +10420,7 @@ def test_create_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_certificate_authority(request)
 
@@ -10473,6 +10486,7 @@ def test_create_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_certificate_authority(**mock_args)
 
@@ -10613,6 +10627,7 @@ def test_disable_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.disable_certificate_authority(request)
 
@@ -10660,6 +10675,7 @@ def test_disable_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.disable_certificate_authority(**mock_args)
 
@@ -10798,6 +10814,7 @@ def test_enable_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.enable_certificate_authority(request)
 
@@ -10843,6 +10860,7 @@ def test_enable_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.enable_certificate_authority(**mock_args)
 
@@ -10979,6 +10997,7 @@ def test_fetch_certificate_authority_csr_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_certificate_authority_csr(request)
 
@@ -11028,6 +11047,7 @@ def test_fetch_certificate_authority_csr_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.fetch_certificate_authority_csr(**mock_args)
 
@@ -11164,6 +11184,7 @@ def test_get_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_certificate_authority(request)
 
@@ -11211,6 +11232,7 @@ def test_get_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_certificate_authority(**mock_args)
 
@@ -11356,6 +11378,7 @@ def test_list_certificate_authorities_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_certificate_authorities(request)
 
@@ -11411,6 +11434,7 @@ def test_list_certificate_authorities_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_certificate_authorities(**mock_args)
 
@@ -11612,6 +11636,7 @@ def test_restore_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.restore_certificate_authority(request)
 
@@ -11659,6 +11684,7 @@ def test_restore_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.restore_certificate_authority(**mock_args)
 
@@ -11801,6 +11827,7 @@ def test_schedule_delete_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.schedule_delete_certificate_authority(request)
 
@@ -11848,6 +11875,7 @@ def test_schedule_delete_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.schedule_delete_certificate_authority(**mock_args)
 
@@ -11990,6 +12018,7 @@ def test_update_certificate_authority_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_certificate_authority(request)
 
@@ -12051,6 +12080,7 @@ def test_update_certificate_authority_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_certificate_authority(**mock_args)
 
@@ -12188,6 +12218,7 @@ def test_get_certificate_revocation_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_certificate_revocation_list(request)
 
@@ -12237,6 +12268,7 @@ def test_get_certificate_revocation_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_certificate_revocation_list(**mock_args)
 
@@ -12384,6 +12416,7 @@ def test_list_certificate_revocation_lists_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_certificate_revocation_lists(request)
 
@@ -12443,6 +12476,7 @@ def test_list_certificate_revocation_lists_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_certificate_revocation_lists(**mock_args)
 
@@ -12652,6 +12686,7 @@ def test_update_certificate_revocation_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_certificate_revocation_list(request)
 
@@ -12717,6 +12752,7 @@ def test_update_certificate_revocation_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_certificate_revocation_list(**mock_args)
 
@@ -12857,6 +12893,7 @@ def test_get_reusable_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_reusable_config(request)
 
@@ -12904,6 +12941,7 @@ def test_get_reusable_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_reusable_config(**mock_args)
 
@@ -13049,6 +13087,7 @@ def test_list_reusable_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_reusable_configs(request)
 
@@ -13104,6 +13143,7 @@ def test_list_reusable_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_reusable_configs(**mock_args)
 
@@ -14388,6 +14428,7 @@ def test_create_certificate_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_certificate(request)
 
 
@@ -14604,6 +14645,7 @@ def test_create_certificate_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_certificate(request)
 
     # Establish that the response is the type that we expect.
@@ -14646,6 +14688,7 @@ def test_create_certificate_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Certificate.to_json(resources.Certificate())
         req.return_value.content = return_value
 
@@ -14690,6 +14733,7 @@ def test_get_certificate_rest_bad_request(request_type=service.GetCertificateReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_certificate(request)
 
 
@@ -14730,6 +14774,7 @@ def test_get_certificate_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_certificate(request)
 
     # Establish that the response is the type that we expect.
@@ -14770,6 +14815,7 @@ def test_get_certificate_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Certificate.to_json(resources.Certificate())
         req.return_value.content = return_value
 
@@ -14816,6 +14862,7 @@ def test_list_certificates_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_certificates(request)
 
 
@@ -14854,6 +14901,7 @@ def test_list_certificates_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_certificates(request)
 
     # Establish that the response is the type that we expect.
@@ -14895,6 +14943,7 @@ def test_list_certificates_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListCertificatesResponse.to_json(
             service.ListCertificatesResponse()
         )
@@ -14943,6 +14992,7 @@ def test_revoke_certificate_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.revoke_certificate(request)
 
 
@@ -14983,6 +15033,7 @@ def test_revoke_certificate_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.revoke_certificate(request)
 
     # Establish that the response is the type that we expect.
@@ -15025,6 +15076,7 @@ def test_revoke_certificate_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Certificate.to_json(resources.Certificate())
         req.return_value.content = return_value
 
@@ -15073,6 +15125,7 @@ def test_update_certificate_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_certificate(request)
 
 
@@ -15291,6 +15344,7 @@ def test_update_certificate_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_certificate(request)
 
     # Establish that the response is the type that we expect.
@@ -15333,6 +15387,7 @@ def test_update_certificate_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Certificate.to_json(resources.Certificate())
         req.return_value.content = return_value
 
@@ -15379,6 +15434,7 @@ def test_activate_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.activate_certificate_authority(request)
 
 
@@ -15411,6 +15467,7 @@ def test_activate_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.activate_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -15454,6 +15511,7 @@ def test_activate_certificate_authority_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15498,6 +15556,7 @@ def test_create_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_certificate_authority(request)
 
 
@@ -15758,6 +15817,7 @@ def test_create_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -15801,6 +15861,7 @@ def test_create_certificate_authority_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15847,6 +15908,7 @@ def test_disable_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.disable_certificate_authority(request)
 
 
@@ -15879,6 +15941,7 @@ def test_disable_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.disable_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -15922,6 +15985,7 @@ def test_disable_certificate_authority_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15968,6 +16032,7 @@ def test_enable_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.enable_certificate_authority(request)
 
 
@@ -16000,6 +16065,7 @@ def test_enable_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.enable_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -16043,6 +16109,7 @@ def test_enable_certificate_authority_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -16089,6 +16156,7 @@ def test_fetch_certificate_authority_csr_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_certificate_authority_csr(request)
 
 
@@ -16126,6 +16194,7 @@ def test_fetch_certificate_authority_csr_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_certificate_authority_csr(request)
 
     # Establish that the response is the type that we expect.
@@ -16168,6 +16237,7 @@ def test_fetch_certificate_authority_csr_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.FetchCertificateAuthorityCsrResponse.to_json(
             service.FetchCertificateAuthorityCsrResponse()
         )
@@ -16216,6 +16286,7 @@ def test_get_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_certificate_authority(request)
 
 
@@ -16258,6 +16329,7 @@ def test_get_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -16305,6 +16377,7 @@ def test_get_certificate_authority_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CertificateAuthority.to_json(
             resources.CertificateAuthority()
         )
@@ -16351,6 +16424,7 @@ def test_list_certificate_authorities_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_certificate_authorities(request)
 
 
@@ -16387,6 +16461,7 @@ def test_list_certificate_authorities_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_certificate_authorities(request)
 
     # Establish that the response is the type that we expect.
@@ -16430,6 +16505,7 @@ def test_list_certificate_authorities_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListCertificateAuthoritiesResponse.to_json(
             service.ListCertificateAuthoritiesResponse()
         )
@@ -16478,6 +16554,7 @@ def test_restore_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.restore_certificate_authority(request)
 
 
@@ -16510,6 +16587,7 @@ def test_restore_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.restore_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -16553,6 +16631,7 @@ def test_restore_certificate_authority_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -16599,6 +16678,7 @@ def test_schedule_delete_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.schedule_delete_certificate_authority(request)
 
 
@@ -16631,6 +16711,7 @@ def test_schedule_delete_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.schedule_delete_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -16674,6 +16755,7 @@ def test_schedule_delete_certificate_authority_rest_interceptors(null_intercepto
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -16722,6 +16804,7 @@ def test_update_certificate_authority_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_certificate_authority(request)
 
 
@@ -16986,6 +17069,7 @@ def test_update_certificate_authority_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_certificate_authority(request)
 
     # Establish that the response is the type that we expect.
@@ -17029,6 +17113,7 @@ def test_update_certificate_authority_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -17075,6 +17160,7 @@ def test_get_certificate_revocation_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_certificate_revocation_list(request)
 
 
@@ -17116,6 +17202,7 @@ def test_get_certificate_revocation_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_certificate_revocation_list(request)
 
     # Establish that the response is the type that we expect.
@@ -17162,6 +17249,7 @@ def test_get_certificate_revocation_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CertificateRevocationList.to_json(
             resources.CertificateRevocationList()
         )
@@ -17210,6 +17298,7 @@ def test_list_certificate_revocation_lists_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_certificate_revocation_lists(request)
 
 
@@ -17248,6 +17337,7 @@ def test_list_certificate_revocation_lists_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_certificate_revocation_lists(request)
 
     # Establish that the response is the type that we expect.
@@ -17291,6 +17381,7 @@ def test_list_certificate_revocation_lists_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListCertificateRevocationListsResponse.to_json(
             service.ListCertificateRevocationListsResponse()
         )
@@ -17341,6 +17432,7 @@ def test_update_certificate_revocation_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_certificate_revocation_list(request)
 
 
@@ -17465,6 +17557,7 @@ def test_update_certificate_revocation_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_certificate_revocation_list(request)
 
     # Establish that the response is the type that we expect.
@@ -17508,6 +17601,7 @@ def test_update_certificate_revocation_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -17554,6 +17648,7 @@ def test_get_reusable_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_reusable_config(request)
 
 
@@ -17592,6 +17687,7 @@ def test_get_reusable_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_reusable_config(request)
 
     # Establish that the response is the type that we expect.
@@ -17634,6 +17730,7 @@ def test_get_reusable_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.ReusableConfig.to_json(resources.ReusableConfig())
         req.return_value.content = return_value
 
@@ -17678,6 +17775,7 @@ def test_list_reusable_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_reusable_configs(request)
 
 
@@ -17714,6 +17812,7 @@ def test_list_reusable_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_reusable_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -17757,6 +17856,7 @@ def test_list_reusable_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListReusableConfigsResponse.to_json(
             service.ListReusableConfigsResponse()
         )

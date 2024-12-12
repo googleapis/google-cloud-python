@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -142,8 +150,10 @@ class TagKeysRestInterceptor:
     """
 
     def pre_create_tag_key(
-        self, request: tag_keys.CreateTagKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tag_keys.CreateTagKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tag_keys.CreateTagKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tag_keys.CreateTagKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tag_key
 
         Override in a subclass to manipulate the request or metadata
@@ -163,8 +173,10 @@ class TagKeysRestInterceptor:
         return response
 
     def pre_delete_tag_key(
-        self, request: tag_keys.DeleteTagKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tag_keys.DeleteTagKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tag_keys.DeleteTagKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tag_keys.DeleteTagKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tag_key
 
         Override in a subclass to manipulate the request or metadata
@@ -186,8 +198,10 @@ class TagKeysRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -207,8 +221,10 @@ class TagKeysRestInterceptor:
     def pre_get_namespaced_tag_key(
         self,
         request: tag_keys.GetNamespacedTagKeyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tag_keys.GetNamespacedTagKeyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tag_keys.GetNamespacedTagKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_namespaced_tag_key
 
         Override in a subclass to manipulate the request or metadata
@@ -226,8 +242,10 @@ class TagKeysRestInterceptor:
         return response
 
     def pre_get_tag_key(
-        self, request: tag_keys.GetTagKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tag_keys.GetTagKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tag_keys.GetTagKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tag_keys.GetTagKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tag_key
 
         Override in a subclass to manipulate the request or metadata
@@ -245,8 +263,10 @@ class TagKeysRestInterceptor:
         return response
 
     def pre_list_tag_keys(
-        self, request: tag_keys.ListTagKeysRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tag_keys.ListTagKeysRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tag_keys.ListTagKeysRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tag_keys.ListTagKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tag_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -268,8 +288,10 @@ class TagKeysRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -289,8 +311,11 @@ class TagKeysRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -310,8 +335,10 @@ class TagKeysRestInterceptor:
         return response
 
     def pre_update_tag_key(
-        self, request: tag_keys.UpdateTagKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tag_keys.UpdateTagKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tag_keys.UpdateTagKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tag_keys.UpdateTagKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_tag_key
 
         Override in a subclass to manipulate the request or metadata
@@ -333,8 +360,10 @@ class TagKeysRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -508,7 +537,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create tag key method over HTTP.
 
@@ -519,8 +548,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -533,6 +564,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseCreateTagKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_tag_key(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseCreateTagKey._get_transcoded_request(
@@ -550,6 +582,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.CreateTagKey",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "CreateTagKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._CreateTagKey._get_response(
@@ -570,7 +629,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_tag_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.create_tag_key",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "CreateTagKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTagKey(_BaseTagKeysRestTransport._BaseDeleteTagKey, TagKeysRestStub):
@@ -605,7 +686,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete tag key method over HTTP.
 
@@ -616,8 +697,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -630,6 +713,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseDeleteTagKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_tag_key(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseDeleteTagKey._get_transcoded_request(
@@ -643,6 +727,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.DeleteTagKey",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "DeleteTagKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._DeleteTagKey._get_response(
@@ -662,7 +773,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_tag_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.delete_tag_key",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "DeleteTagKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(_BaseTagKeysRestTransport._BaseGetIamPolicy, TagKeysRestStub):
@@ -698,7 +831,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -708,8 +841,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -794,6 +929,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -811,6 +947,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._GetIamPolicy._get_response(
@@ -833,7 +996,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNamespacedTagKey(
@@ -870,7 +1055,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tag_keys.TagKey:
             r"""Call the get namespaced tag key method over HTTP.
 
@@ -881,8 +1066,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tag_keys.TagKey:
@@ -894,6 +1081,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseGetNamespacedTagKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_namespaced_tag_key(
                 request, metadata
             )
@@ -905,6 +1093,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             query_params = _BaseTagKeysRestTransport._BaseGetNamespacedTagKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.GetNamespacedTagKey",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetNamespacedTagKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._GetNamespacedTagKey._get_response(
@@ -926,7 +1141,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             pb_resp = tag_keys.TagKey.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_namespaced_tag_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tag_keys.TagKey.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.get_namespaced_tag_key",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetNamespacedTagKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTagKey(_BaseTagKeysRestTransport._BaseGetTagKey, TagKeysRestStub):
@@ -961,7 +1198,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tag_keys.TagKey:
             r"""Call the get tag key method over HTTP.
 
@@ -972,8 +1209,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tag_keys.TagKey:
@@ -983,6 +1222,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             """
 
             http_options = _BaseTagKeysRestTransport._BaseGetTagKey._get_http_options()
+
             request, metadata = self._interceptor.pre_get_tag_key(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseGetTagKey._get_transcoded_request(
@@ -996,6 +1236,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.GetTagKey",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetTagKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._GetTagKey._get_response(
@@ -1017,7 +1284,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             pb_resp = tag_keys.TagKey.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_tag_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tag_keys.TagKey.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.get_tag_key",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetTagKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTagKeys(_BaseTagKeysRestTransport._BaseListTagKeys, TagKeysRestStub):
@@ -1052,7 +1341,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tag_keys.ListTagKeysResponse:
             r"""Call the list tag keys method over HTTP.
 
@@ -1063,8 +1352,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tag_keys.ListTagKeysResponse:
@@ -1074,6 +1365,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseListTagKeys._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tag_keys(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseListTagKeys._get_transcoded_request(
@@ -1087,6 +1379,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.ListTagKeys",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "ListTagKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._ListTagKeys._get_response(
@@ -1108,7 +1427,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             pb_resp = tag_keys.ListTagKeysResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tag_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tag_keys.ListTagKeysResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.list_tag_keys",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "ListTagKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(_BaseTagKeysRestTransport._BaseSetIamPolicy, TagKeysRestStub):
@@ -1144,7 +1485,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1154,8 +1495,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1240,6 +1583,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1257,6 +1601,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._SetIamPolicy._get_response(
@@ -1279,7 +1650,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -1317,7 +1710,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1327,8 +1720,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -1338,6 +1733,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1353,6 +1749,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             query_params = _BaseTagKeysRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._TestIamPermissions._get_response(
@@ -1375,7 +1798,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTagKey(_BaseTagKeysRestTransport._BaseUpdateTagKey, TagKeysRestStub):
@@ -1411,7 +1856,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update tag key method over HTTP.
 
@@ -1422,8 +1867,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1436,6 +1883,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseUpdateTagKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_tag_key(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseUpdateTagKey._get_transcoded_request(
@@ -1453,6 +1901,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.UpdateTagKey",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "UpdateTagKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._UpdateTagKey._get_response(
@@ -1473,7 +1948,29 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_tag_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysClient.update_tag_key",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "UpdateTagKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1585,7 +2082,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1595,8 +2092,10 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1605,6 +2104,7 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             http_options = (
                 _BaseTagKeysRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseTagKeysRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1618,6 +2118,33 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagKeysClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagKeysRestTransport._GetOperation._get_response(
@@ -1638,6 +2165,27 @@ class TagKeysRestTransport(_BaseTagKeysRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagKeysAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagKeys",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
