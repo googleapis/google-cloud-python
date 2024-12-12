@@ -199,6 +199,7 @@
     "packages/google-shopping-merchant-promotions": "0.1.4",
     "packages/google-shopping-merchant-quota": "0.1.4",
     "packages/google-shopping-merchant-reports": "0.1.11",
+    "packages/google-shopping-merchant-reviews": "0.0.0",
     "packages/google-shopping-type": "0.1.9",
     "packages/grafeas": "1.12.1"
 }
