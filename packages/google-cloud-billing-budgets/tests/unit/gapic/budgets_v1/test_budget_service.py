@@ -2993,6 +2993,7 @@ def test_create_budget_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_budget(request)
 
@@ -3047,6 +3048,7 @@ def test_create_budget_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_budget(**mock_args)
 
@@ -3175,6 +3177,7 @@ def test_update_budget_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_budget(request)
 
@@ -3221,6 +3224,7 @@ def test_update_budget_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_budget(**mock_args)
 
@@ -3350,6 +3354,7 @@ def test_get_budget_rest_required_fields(request_type=budget_service.GetBudgetRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_budget(request)
 
@@ -3395,6 +3400,7 @@ def test_get_budget_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_budget(**mock_args)
 
@@ -3532,6 +3538,7 @@ def test_list_budgets_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_budgets(request)
 
@@ -3586,6 +3593,7 @@ def test_list_budgets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_budgets(**mock_args)
 
@@ -3775,6 +3783,7 @@ def test_delete_budget_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_budget(request)
 
@@ -3818,6 +3827,7 @@ def test_delete_budget_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_budget(**mock_args)
 
@@ -4235,6 +4245,7 @@ def test_create_budget_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_budget(request)
 
 
@@ -4380,6 +4391,7 @@ def test_create_budget_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_budget(request)
 
     # Establish that the response is the type that we expect.
@@ -4422,6 +4434,7 @@ def test_create_budget_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = budget_model.Budget.to_json(budget_model.Budget())
         req.return_value.content = return_value
 
@@ -4466,6 +4479,7 @@ def test_update_budget_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_budget(request)
 
 
@@ -4611,6 +4625,7 @@ def test_update_budget_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_budget(request)
 
     # Establish that the response is the type that we expect.
@@ -4653,6 +4668,7 @@ def test_update_budget_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = budget_model.Budget.to_json(budget_model.Budget())
         req.return_value.content = return_value
 
@@ -4695,6 +4711,7 @@ def test_get_budget_rest_bad_request(request_type=budget_service.GetBudgetReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_budget(request)
 
 
@@ -4732,6 +4749,7 @@ def test_get_budget_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_budget(request)
 
     # Establish that the response is the type that we expect.
@@ -4774,6 +4792,7 @@ def test_get_budget_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = budget_model.Budget.to_json(budget_model.Budget())
         req.return_value.content = return_value
 
@@ -4816,6 +4835,7 @@ def test_list_budgets_rest_bad_request(request_type=budget_service.ListBudgetsRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_budgets(request)
 
 
@@ -4851,6 +4871,7 @@ def test_list_budgets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_budgets(request)
 
     # Establish that the response is the type that we expect.
@@ -4891,6 +4912,7 @@ def test_list_budgets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = budget_service.ListBudgetsResponse.to_json(
             budget_service.ListBudgetsResponse()
         )
@@ -4937,6 +4959,7 @@ def test_delete_budget_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_budget(request)
 
 
@@ -4967,6 +4990,7 @@ def test_delete_budget_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_budget(request)
 
     # Establish that the response is the type that we expect.
@@ -5003,6 +5027,7 @@ def test_delete_budget_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = budget_service.DeleteBudgetRequest()
         metadata = [

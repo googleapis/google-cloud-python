@@ -1,2 +1,0 @@
-recursive-include google/cloud/certificate_manager *.py
-recursive-include google/cloud/certificate_manager_v1 *.py

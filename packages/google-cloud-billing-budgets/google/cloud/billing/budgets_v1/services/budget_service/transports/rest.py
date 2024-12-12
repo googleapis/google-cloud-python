@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -106,8 +114,10 @@ class BudgetServiceRestInterceptor:
     def pre_create_budget(
         self,
         request: budget_service.CreateBudgetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[budget_service.CreateBudgetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        budget_service.CreateBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -127,8 +137,10 @@ class BudgetServiceRestInterceptor:
     def pre_delete_budget(
         self,
         request: budget_service.DeleteBudgetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[budget_service.DeleteBudgetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        budget_service.DeleteBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +151,10 @@ class BudgetServiceRestInterceptor:
     def pre_get_budget(
         self,
         request: budget_service.GetBudgetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[budget_service.GetBudgetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        budget_service.GetBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -160,8 +174,10 @@ class BudgetServiceRestInterceptor:
     def pre_list_budgets(
         self,
         request: budget_service.ListBudgetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[budget_service.ListBudgetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        budget_service.ListBudgetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_budgets
 
         Override in a subclass to manipulate the request or metadata
@@ -183,8 +199,10 @@ class BudgetServiceRestInterceptor:
     def pre_update_budget(
         self,
         request: budget_service.UpdateBudgetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[budget_service.UpdateBudgetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        budget_service.UpdateBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -325,7 +343,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> budget_model.Budget:
             r"""Call the create budget method over HTTP.
 
@@ -335,8 +353,10 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.budget_model.Budget:
@@ -355,6 +375,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             http_options = (
                 _BaseBudgetServiceRestTransport._BaseCreateBudget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_budget(request, metadata)
             transcoded_request = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_transcoded_request(
                 http_options, request
@@ -368,6 +389,33 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             query_params = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.billing.budgets_v1.BudgetServiceClient.CreateBudget",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "CreateBudget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BudgetServiceRestTransport._CreateBudget._get_response(
@@ -390,7 +438,29 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             pb_resp = budget_model.Budget.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_budget(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = budget_model.Budget.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.billing.budgets_v1.BudgetServiceClient.create_budget",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "CreateBudget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBudget(
@@ -427,7 +497,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete budget method over HTTP.
 
@@ -437,13 +507,16 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_budget(request, metadata)
             transcoded_request = _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_transcoded_request(
                 http_options, request
@@ -453,6 +526,33 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             query_params = _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.billing.budgets_v1.BudgetServiceClient.DeleteBudget",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "DeleteBudget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BudgetServiceRestTransport._DeleteBudget._get_response(
@@ -503,7 +603,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> budget_model.Budget:
             r"""Call the get budget method over HTTP.
 
@@ -513,8 +613,10 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.budget_model.Budget:
@@ -533,6 +635,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             http_options = (
                 _BaseBudgetServiceRestTransport._BaseGetBudget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_budget(request, metadata)
             transcoded_request = (
                 _BaseBudgetServiceRestTransport._BaseGetBudget._get_transcoded_request(
@@ -546,6 +649,33 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.billing.budgets_v1.BudgetServiceClient.GetBudget",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "GetBudget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BudgetServiceRestTransport._GetBudget._get_response(
@@ -567,7 +697,29 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             pb_resp = budget_model.Budget.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_budget(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = budget_model.Budget.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.billing.budgets_v1.BudgetServiceClient.get_budget",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "GetBudget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBudgets(
@@ -604,7 +756,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> budget_service.ListBudgetsResponse:
             r"""Call the list budgets method over HTTP.
 
@@ -614,8 +766,10 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.budget_service.ListBudgetsResponse:
@@ -625,6 +779,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             http_options = (
                 _BaseBudgetServiceRestTransport._BaseListBudgets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_budgets(request, metadata)
             transcoded_request = _BaseBudgetServiceRestTransport._BaseListBudgets._get_transcoded_request(
                 http_options, request
@@ -636,6 +791,33 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.billing.budgets_v1.BudgetServiceClient.ListBudgets",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "ListBudgets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BudgetServiceRestTransport._ListBudgets._get_response(
@@ -657,7 +839,31 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             pb_resp = budget_service.ListBudgetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_budgets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = budget_service.ListBudgetsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.billing.budgets_v1.BudgetServiceClient.list_budgets",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "ListBudgets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBudget(
@@ -695,7 +901,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> budget_model.Budget:
             r"""Call the update budget method over HTTP.
 
@@ -705,8 +911,10 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.budget_model.Budget:
@@ -725,6 +933,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             http_options = (
                 _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_budget(request, metadata)
             transcoded_request = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_transcoded_request(
                 http_options, request
@@ -738,6 +947,33 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             query_params = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.billing.budgets_v1.BudgetServiceClient.UpdateBudget",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "UpdateBudget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BudgetServiceRestTransport._UpdateBudget._get_response(
@@ -760,7 +996,29 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             pb_resp = budget_model.Budget.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_budget(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = budget_model.Budget.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.billing.budgets_v1.BudgetServiceClient.update_budget",
+                    extra={
+                        "serviceName": "google.cloud.billing.budgets.v1.BudgetService",
+                        "rpcName": "UpdateBudget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

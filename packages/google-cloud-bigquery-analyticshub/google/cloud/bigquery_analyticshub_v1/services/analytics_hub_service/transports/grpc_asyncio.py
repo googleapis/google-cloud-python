@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -26,13 +29,92 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.bigquery_analyticshub_v1.types import analyticshub
 
 from .base import DEFAULT_CLIENT_INFO, AnalyticsHubServiceTransport
 from .grpc import AnalyticsHubServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
@@ -237,10 +319,13 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -263,7 +348,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -292,7 +377,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_data_exchanges" not in self._stubs:
-            self._stubs["list_data_exchanges"] = self.grpc_channel.unary_unary(
+            self._stubs["list_data_exchanges"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListDataExchanges",
                 request_serializer=analyticshub.ListDataExchangesRequest.serialize,
                 response_deserializer=analyticshub.ListDataExchangesResponse.deserialize,
@@ -322,7 +407,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_org_data_exchanges" not in self._stubs:
-            self._stubs["list_org_data_exchanges"] = self.grpc_channel.unary_unary(
+            self._stubs["list_org_data_exchanges"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListOrgDataExchanges",
                 request_serializer=analyticshub.ListOrgDataExchangesRequest.serialize,
                 response_deserializer=analyticshub.ListOrgDataExchangesResponse.deserialize,
@@ -350,7 +435,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_exchange" not in self._stubs:
-            self._stubs["get_data_exchange"] = self.grpc_channel.unary_unary(
+            self._stubs["get_data_exchange"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetDataExchange",
                 request_serializer=analyticshub.GetDataExchangeRequest.serialize,
                 response_deserializer=analyticshub.DataExchange.deserialize,
@@ -378,7 +463,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_data_exchange" not in self._stubs:
-            self._stubs["create_data_exchange"] = self.grpc_channel.unary_unary(
+            self._stubs["create_data_exchange"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateDataExchange",
                 request_serializer=analyticshub.CreateDataExchangeRequest.serialize,
                 response_deserializer=analyticshub.DataExchange.deserialize,
@@ -406,7 +491,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_data_exchange" not in self._stubs:
-            self._stubs["update_data_exchange"] = self.grpc_channel.unary_unary(
+            self._stubs["update_data_exchange"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateDataExchange",
                 request_serializer=analyticshub.UpdateDataExchangeRequest.serialize,
                 response_deserializer=analyticshub.DataExchange.deserialize,
@@ -432,7 +517,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_data_exchange" not in self._stubs:
-            self._stubs["delete_data_exchange"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_data_exchange"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteDataExchange",
                 request_serializer=analyticshub.DeleteDataExchangeRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -460,7 +545,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_listings" not in self._stubs:
-            self._stubs["list_listings"] = self.grpc_channel.unary_unary(
+            self._stubs["list_listings"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListListings",
                 request_serializer=analyticshub.ListListingsRequest.serialize,
                 response_deserializer=analyticshub.ListListingsResponse.deserialize,
@@ -486,7 +571,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_listing" not in self._stubs:
-            self._stubs["get_listing"] = self.grpc_channel.unary_unary(
+            self._stubs["get_listing"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetListing",
                 request_serializer=analyticshub.GetListingRequest.serialize,
                 response_deserializer=analyticshub.Listing.deserialize,
@@ -512,7 +597,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_listing" not in self._stubs:
-            self._stubs["create_listing"] = self.grpc_channel.unary_unary(
+            self._stubs["create_listing"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateListing",
                 request_serializer=analyticshub.CreateListingRequest.serialize,
                 response_deserializer=analyticshub.Listing.deserialize,
@@ -538,7 +623,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_listing" not in self._stubs:
-            self._stubs["update_listing"] = self.grpc_channel.unary_unary(
+            self._stubs["update_listing"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateListing",
                 request_serializer=analyticshub.UpdateListingRequest.serialize,
                 response_deserializer=analyticshub.Listing.deserialize,
@@ -564,7 +649,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_listing" not in self._stubs:
-            self._stubs["delete_listing"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_listing"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteListing",
                 request_serializer=analyticshub.DeleteListingRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -599,7 +684,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "subscribe_listing" not in self._stubs:
-            self._stubs["subscribe_listing"] = self.grpc_channel.unary_unary(
+            self._stubs["subscribe_listing"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubscribeListing",
                 request_serializer=analyticshub.SubscribeListingRequest.serialize,
                 response_deserializer=analyticshub.SubscribeListingResponse.deserialize,
@@ -629,7 +714,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "subscribe_data_exchange" not in self._stubs:
-            self._stubs["subscribe_data_exchange"] = self.grpc_channel.unary_unary(
+            self._stubs["subscribe_data_exchange"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubscribeDataExchange",
                 request_serializer=analyticshub.SubscribeDataExchangeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -660,7 +745,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "refresh_subscription" not in self._stubs:
-            self._stubs["refresh_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["refresh_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RefreshSubscription",
                 request_serializer=analyticshub.RefreshSubscriptionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -688,7 +773,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_subscription" not in self._stubs:
-            self._stubs["get_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["get_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetSubscription",
                 request_serializer=analyticshub.GetSubscriptionRequest.serialize,
                 response_deserializer=analyticshub.Subscription.deserialize,
@@ -718,7 +803,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subscriptions" not in self._stubs:
-            self._stubs["list_subscriptions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_subscriptions"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSubscriptions",
                 request_serializer=analyticshub.ListSubscriptionsRequest.serialize,
                 response_deserializer=analyticshub.ListSubscriptionsResponse.deserialize,
@@ -751,7 +836,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         if "list_shared_resource_subscriptions" not in self._stubs:
             self._stubs[
                 "list_shared_resource_subscriptions"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSharedResourceSubscriptions",
                 request_serializer=analyticshub.ListSharedResourceSubscriptionsRequest.serialize,
                 response_deserializer=analyticshub.ListSharedResourceSubscriptionsResponse.deserialize,
@@ -780,7 +865,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "revoke_subscription" not in self._stubs:
-            self._stubs["revoke_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["revoke_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RevokeSubscription",
                 request_serializer=analyticshub.RevokeSubscriptionRequest.serialize,
                 response_deserializer=analyticshub.RevokeSubscriptionResponse.deserialize,
@@ -808,7 +893,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_subscription" not in self._stubs:
-            self._stubs["delete_subscription"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_subscription"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteSubscription",
                 request_serializer=analyticshub.DeleteSubscriptionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -834,7 +919,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -860,7 +945,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -889,7 +974,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
@@ -1017,7 +1102,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
