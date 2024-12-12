@@ -2047,6 +2047,7 @@ def test_get_product_rest_required_fields(request_type=products.GetProductReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_product(request)
 
@@ -2092,6 +2093,7 @@ def test_get_product_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_product(**mock_args)
 
@@ -2227,6 +2229,7 @@ def test_list_products_rest_required_fields(request_type=products.ListProductsRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_products(request)
 
@@ -2280,6 +2283,7 @@ def test_list_products_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_products(**mock_args)
 
@@ -2617,6 +2621,7 @@ def test_get_product_rest_bad_request(request_type=products.GetProductRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_product(request)
 
 
@@ -2658,6 +2663,7 @@ def test_get_product_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_product(request)
 
     # Establish that the response is the type that we expect.
@@ -2702,6 +2708,7 @@ def test_get_product_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = products.Product.to_json(products.Product())
         req.return_value.content = return_value
 
@@ -2744,6 +2751,7 @@ def test_list_products_rest_bad_request(request_type=products.ListProductsReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_products(request)
 
 
@@ -2779,6 +2787,7 @@ def test_list_products_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_products(request)
 
     # Establish that the response is the type that we expect.
@@ -2817,6 +2826,7 @@ def test_list_products_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = products.ListProductsResponse.to_json(
             products.ListProductsResponse()
         )

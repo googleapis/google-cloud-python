@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -141,8 +149,10 @@ class UrlMapsRestInterceptor:
     def pre_aggregated_list(
         self,
         request: compute.AggregatedListUrlMapsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AggregatedListUrlMapsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AggregatedListUrlMapsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -162,8 +172,10 @@ class UrlMapsRestInterceptor:
         return response
 
     def pre_delete(
-        self, request: compute.DeleteUrlMapRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.DeleteUrlMapRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.DeleteUrlMapRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.DeleteUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -181,8 +193,10 @@ class UrlMapsRestInterceptor:
         return response
 
     def pre_get(
-        self, request: compute.GetUrlMapRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.GetUrlMapRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.GetUrlMapRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.GetUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -200,8 +214,10 @@ class UrlMapsRestInterceptor:
         return response
 
     def pre_insert(
-        self, request: compute.InsertUrlMapRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.InsertUrlMapRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.InsertUrlMapRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.InsertUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -221,8 +237,10 @@ class UrlMapsRestInterceptor:
     def pre_invalidate_cache(
         self,
         request: compute.InvalidateCacheUrlMapRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InvalidateCacheUrlMapRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InvalidateCacheUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for invalidate_cache
 
         Override in a subclass to manipulate the request or metadata
@@ -240,8 +258,10 @@ class UrlMapsRestInterceptor:
         return response
 
     def pre_list(
-        self, request: compute.ListUrlMapsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.ListUrlMapsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.ListUrlMapsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.ListUrlMapsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -259,8 +279,10 @@ class UrlMapsRestInterceptor:
         return response
 
     def pre_patch(
-        self, request: compute.PatchUrlMapRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.PatchUrlMapRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.PatchUrlMapRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.PatchUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -278,8 +300,10 @@ class UrlMapsRestInterceptor:
         return response
 
     def pre_update(
-        self, request: compute.UpdateUrlMapRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.UpdateUrlMapRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.UpdateUrlMapRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.UpdateUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -299,8 +323,8 @@ class UrlMapsRestInterceptor:
     def pre_validate(
         self,
         request: compute.ValidateUrlMapRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ValidateUrlMapRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.ValidateUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate
 
         Override in a subclass to manipulate the request or metadata
@@ -444,7 +468,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.UrlMapsAggregatedList:
             r"""Call the aggregated list method over HTTP.
 
@@ -456,8 +480,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.UrlMapsAggregatedList:
@@ -467,6 +493,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = (
                 _BaseUrlMapsRestTransport._BaseAggregatedList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BaseAggregatedList._get_transcoded_request(
@@ -480,6 +507,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._AggregatedList._get_response(
@@ -501,7 +555,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.UrlMapsAggregatedList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.UrlMapsAggregatedList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "AggregatedList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(_BaseUrlMapsRestTransport._BaseDelete, UrlMapsRestStub):
@@ -536,7 +612,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -547,8 +623,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -573,6 +651,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             """
 
             http_options = _BaseUrlMapsRestTransport._BaseDelete._get_http_options()
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BaseDelete._get_transcoded_request(
@@ -584,6 +663,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             query_params = _BaseUrlMapsRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._Delete._get_response(
@@ -605,7 +711,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseUrlMapsRestTransport._BaseGet, UrlMapsRestStub):
@@ -640,7 +768,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.UrlMap:
             r"""Call the get method over HTTP.
 
@@ -651,8 +779,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.UrlMap:
@@ -685,6 +815,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             """
 
             http_options = _BaseUrlMapsRestTransport._BaseGet._get_http_options()
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BaseGet._get_transcoded_request(
@@ -696,6 +827,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             query_params = _BaseUrlMapsRestTransport._BaseGet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._Get._get_response(
@@ -717,7 +875,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.UrlMap.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.UrlMap.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(_BaseUrlMapsRestTransport._BaseInsert, UrlMapsRestStub):
@@ -753,7 +933,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -764,8 +944,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -790,6 +972,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             """
 
             http_options = _BaseUrlMapsRestTransport._BaseInsert._get_http_options()
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BaseInsert._get_transcoded_request(
@@ -805,6 +988,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             query_params = _BaseUrlMapsRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._Insert._get_response(
@@ -827,7 +1037,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InvalidateCache(
@@ -865,7 +1097,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the invalidate cache method over HTTP.
 
@@ -877,8 +1109,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -905,6 +1139,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = (
                 _BaseUrlMapsRestTransport._BaseInvalidateCache._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_invalidate_cache(
                 request, metadata
             )
@@ -927,6 +1162,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.InvalidateCache",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "InvalidateCache",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = UrlMapsRestTransport._InvalidateCache._get_response(
                 self._host,
@@ -948,7 +1210,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_invalidate_cache(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.invalidate_cache",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "InvalidateCache",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseUrlMapsRestTransport._BaseList, UrlMapsRestStub):
@@ -983,7 +1267,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.UrlMapList:
             r"""Call the list method over HTTP.
 
@@ -994,8 +1278,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.UrlMapList:
@@ -1003,6 +1289,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             """
 
             http_options = _BaseUrlMapsRestTransport._BaseList._get_http_options()
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BaseList._get_transcoded_request(
@@ -1014,6 +1301,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             query_params = _BaseUrlMapsRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._List._get_response(
@@ -1035,7 +1349,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.UrlMapList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.UrlMapList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(_BaseUrlMapsRestTransport._BasePatch, UrlMapsRestStub):
@@ -1071,7 +1407,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -1082,8 +1418,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1108,6 +1446,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             """
 
             http_options = _BaseUrlMapsRestTransport._BasePatch._get_http_options()
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BasePatch._get_transcoded_request(
@@ -1123,6 +1462,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             query_params = _BaseUrlMapsRestTransport._BasePatch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._Patch._get_response(
@@ -1145,7 +1511,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Update(_BaseUrlMapsRestTransport._BaseUpdate, UrlMapsRestStub):
@@ -1181,7 +1569,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the update method over HTTP.
 
@@ -1192,8 +1580,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1218,6 +1608,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             """
 
             http_options = _BaseUrlMapsRestTransport._BaseUpdate._get_http_options()
+
             request, metadata = self._interceptor.pre_update(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BaseUpdate._get_transcoded_request(
@@ -1233,6 +1624,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             query_params = _BaseUrlMapsRestTransport._BaseUpdate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.Update",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Update",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._Update._get_response(
@@ -1255,7 +1673,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.update",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Update",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Validate(_BaseUrlMapsRestTransport._BaseValidate, UrlMapsRestStub):
@@ -1291,7 +1731,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.UrlMapsValidateResponse:
             r"""Call the validate method over HTTP.
 
@@ -1303,8 +1743,10 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.UrlMapsValidateResponse:
@@ -1312,6 +1754,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             """
 
             http_options = _BaseUrlMapsRestTransport._BaseValidate._get_http_options()
+
             request, metadata = self._interceptor.pre_validate(request, metadata)
             transcoded_request = (
                 _BaseUrlMapsRestTransport._BaseValidate._get_transcoded_request(
@@ -1329,6 +1772,33 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.UrlMapsClient.Validate",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Validate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = UrlMapsRestTransport._Validate._get_response(
@@ -1351,7 +1821,29 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             pb_resp = compute.UrlMapsValidateResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_validate(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.UrlMapsValidateResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.UrlMapsClient.validate",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.UrlMaps",
+                        "rpcName": "Validate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
