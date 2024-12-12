@@ -28,7 +28,7 @@ import warnings
 import nox
 
 FLAKE8_VERSION = "flake8==6.1.0"
-BLACK_VERSION = "black[jupyter]==23.7.0"
+BLACK_VERSION = "black[jupyter]==23.3.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
@@ -49,6 +49,8 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    BLACK_VERSION,
+    "autoflake",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -64,7 +66,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
-    "black==23.7.0",
+    BLACK_VERSION,
     "pyyaml==6.0.2",
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -561,3 +563,13 @@ def prerelease_deps(session, protobuf_implementation):
                 "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
             },
         )
+
+
+@nox.session(python="3.10")
+def generate_sync(session):
+    """
+    Re-generate sync files for the library from CrossSync-annotated async source
+    """
+    session.install(BLACK_VERSION)
+    session.install("autoflake")
+    session.run("python", ".cross_sync/generate.py", ".")

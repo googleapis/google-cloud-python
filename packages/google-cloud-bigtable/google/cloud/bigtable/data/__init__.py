@@ -17,8 +17,10 @@ from google.cloud.bigtable import gapic_version as package_version
 
 from google.cloud.bigtable.data._async.client import BigtableDataClientAsync
 from google.cloud.bigtable.data._async.client import TableAsync
-
 from google.cloud.bigtable.data._async.mutations_batcher import MutationsBatcherAsync
+from google.cloud.bigtable.data._sync_autogen.client import BigtableDataClient
+from google.cloud.bigtable.data._sync_autogen.client import Table
+from google.cloud.bigtable.data._sync_autogen.mutations_batcher import MutationsBatcher
 
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.cloud.bigtable.data.read_rows_query import RowRange
@@ -52,13 +54,22 @@ from google.cloud.bigtable_v2.services.bigtable.async_client import (
 from google.cloud.bigtable.data._async._read_rows import _ReadRowsOperationAsync
 from google.cloud.bigtable.data._async._mutate_rows import _MutateRowsOperationAsync
 
+from google.cloud.bigtable_v2.services.bigtable.client import (
+    BigtableClient,
+)
+from google.cloud.bigtable.data._sync_autogen._read_rows import _ReadRowsOperation
+from google.cloud.bigtable.data._sync_autogen._mutate_rows import _MutateRowsOperation
+
 from google.cloud.bigtable.data._cross_sync import CrossSync
 
 CrossSync.add_mapping("GapicClient", BigtableAsyncClient)
+CrossSync._Sync_Impl.add_mapping("GapicClient", BigtableClient)
 CrossSync.add_mapping("_ReadRowsOperation", _ReadRowsOperationAsync)
+CrossSync._Sync_Impl.add_mapping("_ReadRowsOperation", _ReadRowsOperation)
 CrossSync.add_mapping("_MutateRowsOperation", _MutateRowsOperationAsync)
+CrossSync._Sync_Impl.add_mapping("_MutateRowsOperation", _MutateRowsOperation)
 CrossSync.add_mapping("MutationsBatcher", MutationsBatcherAsync)
-
+CrossSync._Sync_Impl.add_mapping("MutationsBatcher", MutationsBatcher)
 
 __version__: str = package_version.__version__
 
@@ -66,6 +77,9 @@ __all__ = (
     "BigtableDataClientAsync",
     "TableAsync",
     "MutationsBatcherAsync",
+    "BigtableDataClient",
+    "Table",
+    "MutationsBatcher",
     "RowKeySamples",
     "ReadRowsQuery",
     "RowRange",

@@ -5,10 +5,10 @@
 Client Types
 -------------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
+   data_client/data_client_usage
    classic_client/usage
-   async_data_client/async_data_usage
 
 
 Changelog

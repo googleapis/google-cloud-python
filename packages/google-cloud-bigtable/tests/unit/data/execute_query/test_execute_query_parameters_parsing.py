@@ -47,7 +47,7 @@ pb_date = date_pb2.Date(year=2024, month=5, day=15)
         (b"3", "bytes_value", "bytes_type", b"3"),
         (True, "bool_value", "bool_type", True),
         (
-            datetime.datetime.fromtimestamp(timestamp),
+            datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc),
             "timestamp_value",
             "timestamp_type",
             dt_nanos_zero,

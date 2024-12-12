@@ -7,6 +7,6 @@ Bigtable Data Client Async
     performance benefits, the codebase should be designed to be async from the ground up.
 
 
-.. autoclass:: google.cloud.bigtable.data._async.client.BigtableDataClientAsync
+.. autoclass:: google.cloud.bigtable.data.BigtableDataClientAsync
   :members:
   :show-inheritance:
