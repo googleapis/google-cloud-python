@@ -213,6 +213,11 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.resume_instances: gapic_v1.method.wrap_method(
+                self.resume_instances,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_instance_template: gapic_v1.method.wrap_method(
                 self.set_instance_template,
                 default_timeout=None,
@@ -220,6 +225,21 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
             ),
             self.set_target_pools: gapic_v1.method.wrap_method(
                 self.set_target_pools,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.start_instances: gapic_v1.method.wrap_method(
+                self.start_instances,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stop_instances: gapic_v1.method.wrap_method(
+                self.stop_instances,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.suspend_instances: gapic_v1.method.wrap_method(
+                self.suspend_instances,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -396,6 +416,15 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def resume_instances(
+        self,
+    ) -> Callable[
+        [compute.ResumeInstancesRegionInstanceGroupManagerRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def set_instance_template(
         self,
     ) -> Callable[
@@ -409,6 +438,33 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SetTargetPoolsRegionInstanceGroupManagerRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def start_instances(
+        self,
+    ) -> Callable[
+        [compute.StartInstancesRegionInstanceGroupManagerRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_instances(
+        self,
+    ) -> Callable[
+        [compute.StopInstancesRegionInstanceGroupManagerRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def suspend_instances(
+        self,
+    ) -> Callable[
+        [compute.SuspendInstancesRegionInstanceGroupManagerRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

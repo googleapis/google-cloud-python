@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -188,6 +196,14 @@ class RegionInstanceGroupManagersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_resume_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_resume_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_set_instance_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -201,6 +217,30 @@ class RegionInstanceGroupManagersRestInterceptor:
                 return request, metadata
 
             def post_set_target_pools(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_start_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_start_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_stop_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stop_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_suspend_instances(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_suspend_instances(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -221,10 +261,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_abandon_instances(
         self,
         request: compute.AbandonInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.AbandonInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for abandon_instances
 
@@ -245,10 +285,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_apply_updates_to_instances(
         self,
         request: compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for apply_updates_to_instances
 
@@ -271,10 +311,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_create_instances(
         self,
         request: compute.CreateInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.CreateInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_instances
 
@@ -295,9 +335,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.DeleteRegionInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+        compute.DeleteRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete
 
@@ -318,10 +359,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_delete_instances(
         self,
         request: compute.DeleteInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.DeleteInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_instances
 
@@ -342,10 +383,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_delete_per_instance_configs(
         self,
         request: compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_per_instance_configs
 
@@ -368,8 +409,11 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_get(
         self,
         request: compute.GetRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetRegionInstanceGroupManagerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -391,9 +435,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.InsertRegionInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+        compute.InsertRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for insert
 
@@ -414,9 +459,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_list(
         self,
         request: compute.ListRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.ListRegionInstanceGroupManagersRequest, Sequence[Tuple[str, str]]
+        compute.ListRegionInstanceGroupManagersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list
 
@@ -439,9 +485,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_list_errors(
         self,
         request: compute.ListErrorsRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.ListErrorsRegionInstanceGroupManagersRequest, Sequence[Tuple[str, str]]
+        compute.ListErrorsRegionInstanceGroupManagersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_errors
 
@@ -464,10 +511,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_list_managed_instances(
         self,
         request: compute.ListManagedInstancesRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.ListManagedInstancesRegionInstanceGroupManagersRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_managed_instances
 
@@ -490,10 +537,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_list_per_instance_configs(
         self,
         request: compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_per_instance_configs
 
@@ -516,9 +563,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.PatchRegionInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+        compute.PatchRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for patch
 
@@ -539,10 +587,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_patch_per_instance_configs(
         self,
         request: compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for patch_per_instance_configs
 
@@ -565,10 +613,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_recreate_instances(
         self,
         request: compute.RecreateInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.RecreateInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for recreate_instances
 
@@ -589,9 +637,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_resize(
         self,
         request: compute.ResizeRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.ResizeRegionInstanceGroupManagerRequest, Sequence[Tuple[str, str]]
+        compute.ResizeRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for resize
 
@@ -609,13 +658,37 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return response
 
+    def pre_resume_instances(
+        self,
+        request: compute.ResumeInstancesRegionInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ResumeInstancesRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for resume_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionInstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_resume_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for resume_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionInstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_set_instance_template(
         self,
         request: compute.SetInstanceTemplateRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.SetInstanceTemplateRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_instance_template
 
@@ -638,10 +711,10 @@ class RegionInstanceGroupManagersRestInterceptor:
     def pre_set_target_pools(
         self,
         request: compute.SetTargetPoolsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.SetTargetPoolsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_target_pools
 
@@ -659,13 +732,85 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return response
 
+    def pre_start_instances(
+        self,
+        request: compute.StartInstancesRegionInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.StartInstancesRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for start_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionInstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_start_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for start_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionInstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_stop_instances(
+        self,
+        request: compute.StopInstancesRegionInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.StopInstancesRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for stop_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionInstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_stop_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for stop_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionInstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_suspend_instances(
+        self,
+        request: compute.SuspendInstancesRegionInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SuspendInstancesRegionInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for suspend_instances
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RegionInstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_suspend_instances(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for suspend_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the RegionInstanceGroupManagers server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_update_per_instance_configs(
         self,
         request: compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_per_instance_configs
 
@@ -814,7 +959,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the abandon instances method over HTTP.
 
@@ -826,8 +971,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -854,6 +1001,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_abandon_instances(
                 request, metadata
             )
@@ -869,6 +1017,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.AbandonInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "AbandonInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._AbandonInstances._get_response(
@@ -891,7 +1066,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_abandon_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.abandon_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "AbandonInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ApplyUpdatesToInstances(
@@ -932,7 +1129,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the apply updates to
             instances method over HTTP.
@@ -945,8 +1142,10 @@ class RegionInstanceGroupManagersRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.compute.Operation:
@@ -973,6 +1172,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_apply_updates_to_instances(
                 request, metadata
             )
@@ -988,6 +1188,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.ApplyUpdatesToInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ApplyUpdatesToInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._ApplyUpdatesToInstances._get_response(
@@ -1010,7 +1237,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_apply_updates_to_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.apply_updates_to_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ApplyUpdatesToInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInstances(
@@ -1049,7 +1298,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the create instances method over HTTP.
 
@@ -1061,8 +1310,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1089,6 +1340,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instances(
                 request, metadata
             )
@@ -1104,6 +1356,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.CreateInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "CreateInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1128,7 +1407,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.create_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "CreateInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(
@@ -1166,7 +1467,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -1178,8 +1479,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1206,6 +1509,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -1215,6 +1519,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Delete._get_response(
@@ -1236,7 +1567,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteInstances(
@@ -1275,7 +1628,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete instances method over HTTP.
 
@@ -1287,8 +1640,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1315,6 +1670,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instances(
                 request, metadata
             )
@@ -1330,6 +1686,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.DeleteInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "DeleteInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1354,7 +1737,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.delete_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "DeleteInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePerInstanceConfigs(
@@ -1395,7 +1800,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete per instance
             configs method over HTTP.
@@ -1408,8 +1813,10 @@ class RegionInstanceGroupManagersRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.compute.Operation:
@@ -1436,6 +1843,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_per_instance_configs(
                 request, metadata
             )
@@ -1451,6 +1859,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.DeletePerInstanceConfigs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "DeletePerInstanceConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._DeletePerInstanceConfigs._get_response(
@@ -1473,7 +1908,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_per_instance_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.delete_per_instance_configs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "DeletePerInstanceConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -1511,7 +1968,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.InstanceGroupManager:
             r"""Call the get method over HTTP.
 
@@ -1523,8 +1980,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.InstanceGroupManager:
@@ -1543,6 +2002,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -1552,6 +2012,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Get._get_response(
@@ -1573,7 +2060,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.InstanceGroupManager.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.InstanceGroupManager.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -1612,7 +2121,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -1624,8 +2133,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1652,6 +2163,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -1665,6 +2177,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Insert._get_response(
@@ -1687,7 +2226,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -1725,7 +2286,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.RegionInstanceGroupManagerList:
             r"""Call the list method over HTTP.
 
@@ -1737,8 +2298,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.RegionInstanceGroupManagerList:
@@ -1750,6 +2313,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_transcoded_request(
                 http_options, request
@@ -1759,6 +2323,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._List._get_response(
@@ -1780,7 +2371,31 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.RegionInstanceGroupManagerList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RegionInstanceGroupManagerList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListErrors(
@@ -1818,7 +2433,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.RegionInstanceGroupManagersListErrorsResponse:
             r"""Call the list errors method over HTTP.
 
@@ -1830,8 +2445,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.RegionInstanceGroupManagersListErrorsResponse:
@@ -1841,6 +2458,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_errors(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_transcoded_request(
                 http_options, request
@@ -1850,6 +2468,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.ListErrors",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ListErrors",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1873,7 +2518,33 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.RegionInstanceGroupManagersListErrorsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_errors(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.list_errors",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ListErrors",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListManagedInstances(
@@ -1911,7 +2582,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.RegionInstanceGroupManagersListInstancesResponse:
             r"""Call the list managed instances method over HTTP.
 
@@ -1923,8 +2594,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.RegionInstanceGroupManagersListInstancesResponse:
@@ -1934,6 +2607,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_managed_instances(
                 request, metadata
             )
@@ -1945,6 +2619,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.ListManagedInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ListManagedInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._ListManagedInstances._get_response(
@@ -1966,7 +2667,31 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.RegionInstanceGroupManagersListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_managed_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.list_managed_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ListManagedInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPerInstanceConfigs(
@@ -2006,7 +2731,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.RegionInstanceGroupManagersListInstanceConfigsResp:
             r"""Call the list per instance configs method over HTTP.
 
@@ -2018,8 +2743,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.RegionInstanceGroupManagersListInstanceConfigsResp:
@@ -2029,6 +2756,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_per_instance_configs(
                 request, metadata
             )
@@ -2040,6 +2768,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.ListPerInstanceConfigs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ListPerInstanceConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._ListPerInstanceConfigs._get_response(
@@ -2063,7 +2818,31 @@ class RegionInstanceGroupManagersRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_per_instance_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.list_per_instance_configs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ListPerInstanceConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(
@@ -2102,7 +2881,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -2114,8 +2893,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2142,6 +2923,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_transcoded_request(
                 http_options, request
@@ -2155,6 +2937,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Patch._get_response(
@@ -2177,7 +2986,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PatchPerInstanceConfigs(
@@ -2218,7 +3049,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch per instance
             configs method over HTTP.
@@ -2231,8 +3062,10 @@ class RegionInstanceGroupManagersRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.compute.Operation:
@@ -2259,6 +3092,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch_per_instance_configs(
                 request, metadata
             )
@@ -2274,6 +3108,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.PatchPerInstanceConfigs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "PatchPerInstanceConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._PatchPerInstanceConfigs._get_response(
@@ -2296,7 +3157,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch_per_instance_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.patch_per_instance_configs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "PatchPerInstanceConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RecreateInstances(
@@ -2335,7 +3218,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the recreate instances method over HTTP.
 
@@ -2347,8 +3230,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2375,6 +3260,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_recreate_instances(
                 request, metadata
             )
@@ -2390,6 +3276,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.RecreateInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "RecreateInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._RecreateInstances._get_response(
@@ -2412,7 +3325,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_recreate_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.recreate_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "RecreateInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Resize(
@@ -2450,7 +3385,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the resize method over HTTP.
 
@@ -2462,8 +3397,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2490,6 +3427,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resize(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_transcoded_request(
                 http_options, request
@@ -2499,6 +3437,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.Resize",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Resize",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Resize._get_response(
@@ -2520,7 +3485,199 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resize(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.resize",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "Resize",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ResumeInstances(
+        _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances,
+        RegionInstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("RegionInstanceGroupManagersRestTransport.ResumeInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.ResumeInstancesRegionInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the resume instances method over HTTP.
+
+            Args:
+                request (~.compute.ResumeInstancesRegionInstanceGroupManagerRequest):
+                    The request object. A request message for
+                RegionInstanceGroupManagers.ResumeInstances.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_resume_instances(
+                request, metadata
+            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.ResumeInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ResumeInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                RegionInstanceGroupManagersRestTransport._ResumeInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_resume_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.resume_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "ResumeInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetInstanceTemplate(
@@ -2559,7 +3716,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set instance template method over HTTP.
 
@@ -2571,8 +3728,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2599,6 +3758,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_instance_template(
                 request, metadata
             )
@@ -2614,6 +3774,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.SetInstanceTemplate",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "SetInstanceTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._SetInstanceTemplate._get_response(
@@ -2636,7 +3823,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_instance_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.set_instance_template",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "SetInstanceTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetTargetPools(
@@ -2675,7 +3884,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set target pools method over HTTP.
 
@@ -2687,8 +3896,10 @@ class RegionInstanceGroupManagersRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2715,6 +3926,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_target_pools(
                 request, metadata
             )
@@ -2730,6 +3942,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.SetTargetPools",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "SetTargetPools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2754,7 +3993,533 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_target_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.set_target_pools",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "SetTargetPools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _StartInstances(
+        _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances,
+        RegionInstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("RegionInstanceGroupManagersRestTransport.StartInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.StartInstancesRegionInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the start instances method over HTTP.
+
+            Args:
+                request (~.compute.StartInstancesRegionInstanceGroupManagerRequest):
+                    The request object. A request message for
+                RegionInstanceGroupManagers.StartInstances.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_start_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.StartInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "StartInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                RegionInstanceGroupManagersRestTransport._StartInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_start_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.start_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "StartInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _StopInstances(
+        _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances,
+        RegionInstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("RegionInstanceGroupManagersRestTransport.StopInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.StopInstancesRegionInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the stop instances method over HTTP.
+
+            Args:
+                request (~.compute.StopInstancesRegionInstanceGroupManagerRequest):
+                    The request object. A request message for
+                RegionInstanceGroupManagers.StopInstances.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_stop_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.StopInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "StopInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                RegionInstanceGroupManagersRestTransport._StopInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_stop_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.stop_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "StopInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _SuspendInstances(
+        _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances,
+        RegionInstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash("RegionInstanceGroupManagersRestTransport.SuspendInstances")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.SuspendInstancesRegionInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the suspend instances method over HTTP.
+
+            Args:
+                request (~.compute.SuspendInstancesRegionInstanceGroupManagerRequest):
+                    The request object. A request message for
+                RegionInstanceGroupManagers.SuspendInstances.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zoneOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_suspend_instances(
+                request, metadata
+            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.SuspendInstances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "SuspendInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RegionInstanceGroupManagersRestTransport._SuspendInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_suspend_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.suspend_instances",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "SuspendInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePerInstanceConfigs(
@@ -2795,7 +4560,7 @@ class RegionInstanceGroupManagersRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the update per instance
             configs method over HTTP.
@@ -2808,8 +4573,10 @@ class RegionInstanceGroupManagersRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.compute.Operation:
@@ -2836,6 +4603,7 @@ class RegionInstanceGroupManagersRestTransport(
             http_options = (
                 _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_per_instance_configs(
                 request, metadata
             )
@@ -2851,6 +4619,33 @@ class RegionInstanceGroupManagersRestTransport(
             query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionInstanceGroupManagersClient.UpdatePerInstanceConfigs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "UpdatePerInstanceConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._UpdatePerInstanceConfigs._get_response(
@@ -2873,7 +4668,29 @@ class RegionInstanceGroupManagersRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_per_instance_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionInstanceGroupManagersClient.update_per_instance_configs",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "rpcName": "UpdatePerInstanceConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3036,6 +4853,16 @@ class RegionInstanceGroupManagersRestTransport(
         return self._Resize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def resume_instances(
+        self,
+    ) -> Callable[
+        [compute.ResumeInstancesRegionInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ResumeInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def set_instance_template(
         self,
     ) -> Callable[
@@ -3055,6 +4882,36 @@ class RegionInstanceGroupManagersRestTransport(
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetTargetPools(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def start_instances(
+        self,
+    ) -> Callable[
+        [compute.StartInstancesRegionInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StartInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stop_instances(
+        self,
+    ) -> Callable[
+        [compute.StopInstancesRegionInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StopInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def suspend_instances(
+        self,
+    ) -> Callable[
+        [compute.SuspendInstancesRegionInstanceGroupManagerRequest], compute.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SuspendInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_per_instance_configs(
