@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -158,8 +166,8 @@ class TablesServiceRestInterceptor:
     def pre_batch_create_rows(
         self,
         request: tables.BatchCreateRowsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tables.BatchCreateRowsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.BatchCreateRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_rows
 
         Override in a subclass to manipulate the request or metadata
@@ -181,8 +189,8 @@ class TablesServiceRestInterceptor:
     def pre_batch_delete_rows(
         self,
         request: tables.BatchDeleteRowsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tables.BatchDeleteRowsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.BatchDeleteRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_rows
 
         Override in a subclass to manipulate the request or metadata
@@ -193,8 +201,8 @@ class TablesServiceRestInterceptor:
     def pre_batch_update_rows(
         self,
         request: tables.BatchUpdateRowsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tables.BatchUpdateRowsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.BatchUpdateRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_rows
 
         Override in a subclass to manipulate the request or metadata
@@ -214,8 +222,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_create_row(
-        self, request: tables.CreateRowRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.CreateRowRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.CreateRowRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.CreateRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_row
 
         Override in a subclass to manipulate the request or metadata
@@ -233,8 +243,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_delete_row(
-        self, request: tables.DeleteRowRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.DeleteRowRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.DeleteRowRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.DeleteRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_row
 
         Override in a subclass to manipulate the request or metadata
@@ -243,8 +255,10 @@ class TablesServiceRestInterceptor:
         return request, metadata
 
     def pre_get_row(
-        self, request: tables.GetRowRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.GetRowRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.GetRowRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.GetRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_row
 
         Override in a subclass to manipulate the request or metadata
@@ -262,8 +276,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_get_table(
-        self, request: tables.GetTableRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.GetTableRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.GetTableRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.GetTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_table
 
         Override in a subclass to manipulate the request or metadata
@@ -281,8 +297,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_get_workspace(
-        self, request: tables.GetWorkspaceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.GetWorkspaceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.GetWorkspaceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.GetWorkspaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_workspace
 
         Override in a subclass to manipulate the request or metadata
@@ -300,8 +318,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_list_rows(
-        self, request: tables.ListRowsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.ListRowsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.ListRowsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.ListRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_rows
 
         Override in a subclass to manipulate the request or metadata
@@ -321,8 +341,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_list_tables(
-        self, request: tables.ListTablesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.ListTablesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.ListTablesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.ListTablesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tables
 
         Override in a subclass to manipulate the request or metadata
@@ -342,8 +364,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_list_workspaces(
-        self, request: tables.ListWorkspacesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.ListWorkspacesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.ListWorkspacesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.ListWorkspacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_workspaces
 
         Override in a subclass to manipulate the request or metadata
@@ -363,8 +387,10 @@ class TablesServiceRestInterceptor:
         return response
 
     def pre_update_row(
-        self, request: tables.UpdateRowRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tables.UpdateRowRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tables.UpdateRowRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tables.UpdateRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_row
 
         Override in a subclass to manipulate the request or metadata
@@ -516,7 +542,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.BatchCreateRowsResponse:
             r"""Call the batch create rows method over HTTP.
 
@@ -527,8 +553,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.BatchCreateRowsResponse:
@@ -540,6 +568,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_rows(
                 request, metadata
             )
@@ -555,6 +584,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             query_params = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.BatchCreateRows",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "BatchCreateRows",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._BatchCreateRows._get_response(
@@ -577,7 +633,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.BatchCreateRowsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_rows(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.BatchCreateRowsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.batch_create_rows",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "BatchCreateRows",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchDeleteRows(
@@ -615,7 +693,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the batch delete rows method over HTTP.
 
@@ -626,13 +704,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_delete_rows(
                 request, metadata
             )
@@ -648,6 +729,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             query_params = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.BatchDeleteRows",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "BatchDeleteRows",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._BatchDeleteRows._get_response(
@@ -700,7 +808,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.BatchUpdateRowsResponse:
             r"""Call the batch update rows method over HTTP.
 
@@ -711,8 +819,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.BatchUpdateRowsResponse:
@@ -724,6 +834,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_update_rows(
                 request, metadata
             )
@@ -739,6 +850,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             query_params = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.BatchUpdateRows",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "BatchUpdateRows",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._BatchUpdateRows._get_response(
@@ -761,7 +899,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.BatchUpdateRowsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_rows(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.BatchUpdateRowsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.batch_update_rows",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "BatchUpdateRows",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRow(
@@ -799,7 +959,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.Row:
             r"""Call the create row method over HTTP.
 
@@ -810,8 +970,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.Row:
@@ -821,6 +983,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseCreateRow._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_row(request, metadata)
             transcoded_request = (
                 _BaseTablesServiceRestTransport._BaseCreateRow._get_transcoded_request(
@@ -840,6 +1003,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.CreateRow",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "CreateRow",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._CreateRow._get_response(
@@ -862,7 +1052,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.Row.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_row(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.Row.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.create_row",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "CreateRow",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRow(
@@ -899,7 +1111,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete row method over HTTP.
 
@@ -910,13 +1122,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTablesServiceRestTransport._BaseDeleteRow._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_row(request, metadata)
             transcoded_request = (
                 _BaseTablesServiceRestTransport._BaseDeleteRow._get_transcoded_request(
@@ -930,6 +1145,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.DeleteRow",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "DeleteRow",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._DeleteRow._get_response(
@@ -978,7 +1220,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.Row:
             r"""Call the get row method over HTTP.
 
@@ -989,8 +1231,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.Row:
@@ -1000,6 +1244,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseGetRow._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_row(request, metadata)
             transcoded_request = (
                 _BaseTablesServiceRestTransport._BaseGetRow._get_transcoded_request(
@@ -1013,6 +1258,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.GetRow",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "GetRow",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._GetRow._get_response(
@@ -1034,7 +1306,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.Row.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_row(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.Row.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.get_row",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "GetRow",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTable(
@@ -1071,7 +1365,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.Table:
             r"""Call the get table method over HTTP.
 
@@ -1082,8 +1376,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.Table:
@@ -1093,6 +1389,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseGetTable._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_table(request, metadata)
             transcoded_request = (
                 _BaseTablesServiceRestTransport._BaseGetTable._get_transcoded_request(
@@ -1106,6 +1403,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.GetTable",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "GetTable",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._GetTable._get_response(
@@ -1127,7 +1451,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.Table.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_table(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.Table.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.get_table",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "GetTable",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetWorkspace(
@@ -1164,7 +1510,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.Workspace:
             r"""Call the get workspace method over HTTP.
 
@@ -1175,8 +1521,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.Workspace:
@@ -1186,6 +1534,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseGetWorkspace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_workspace(request, metadata)
             transcoded_request = _BaseTablesServiceRestTransport._BaseGetWorkspace._get_transcoded_request(
                 http_options, request
@@ -1195,6 +1544,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             query_params = _BaseTablesServiceRestTransport._BaseGetWorkspace._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.GetWorkspace",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "GetWorkspace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._GetWorkspace._get_response(
@@ -1216,7 +1592,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.Workspace.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_workspace(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.Workspace.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.get_workspace",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "GetWorkspace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRows(
@@ -1253,7 +1651,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.ListRowsResponse:
             r"""Call the list rows method over HTTP.
 
@@ -1264,8 +1662,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.ListRowsResponse:
@@ -1277,6 +1677,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseListRows._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_rows(request, metadata)
             transcoded_request = (
                 _BaseTablesServiceRestTransport._BaseListRows._get_transcoded_request(
@@ -1290,6 +1691,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.ListRows",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "ListRows",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._ListRows._get_response(
@@ -1311,7 +1739,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.ListRowsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_rows(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.ListRowsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.list_rows",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "ListRows",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTables(
@@ -1348,7 +1798,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.ListTablesResponse:
             r"""Call the list tables method over HTTP.
 
@@ -1359,8 +1809,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.ListTablesResponse:
@@ -1372,6 +1824,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseListTables._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tables(request, metadata)
             transcoded_request = (
                 _BaseTablesServiceRestTransport._BaseListTables._get_transcoded_request(
@@ -1385,6 +1838,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.ListTables",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "ListTables",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._ListTables._get_response(
@@ -1406,7 +1886,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.ListTablesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tables(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.ListTablesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.list_tables",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "ListTables",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkspaces(
@@ -1443,7 +1945,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.ListWorkspacesResponse:
             r"""Call the list workspaces method over HTTP.
 
@@ -1454,8 +1956,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.ListWorkspacesResponse:
@@ -1467,6 +1971,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseListWorkspaces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workspaces(request, metadata)
             transcoded_request = _BaseTablesServiceRestTransport._BaseListWorkspaces._get_transcoded_request(
                 http_options, request
@@ -1476,6 +1981,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             query_params = _BaseTablesServiceRestTransport._BaseListWorkspaces._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.ListWorkspaces",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "ListWorkspaces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._ListWorkspaces._get_response(
@@ -1497,7 +2029,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.ListWorkspacesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workspaces(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.ListWorkspacesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.list_workspaces",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "ListWorkspaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRow(
@@ -1535,7 +2089,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tables.Row:
             r"""Call the update row method over HTTP.
 
@@ -1546,8 +2100,10 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tables.Row:
@@ -1557,6 +2113,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             http_options = (
                 _BaseTablesServiceRestTransport._BaseUpdateRow._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_row(request, metadata)
             transcoded_request = (
                 _BaseTablesServiceRestTransport._BaseUpdateRow._get_transcoded_request(
@@ -1576,6 +2133,33 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.area120.tables_v1alpha1.TablesServiceClient.UpdateRow",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "UpdateRow",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TablesServiceRestTransport._UpdateRow._get_response(
@@ -1598,7 +2182,29 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             pb_resp = tables.Row.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_row(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tables.Row.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.area120.tables_v1alpha1.TablesServiceClient.update_row",
+                    extra={
+                        "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                        "rpcName": "UpdateRow",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

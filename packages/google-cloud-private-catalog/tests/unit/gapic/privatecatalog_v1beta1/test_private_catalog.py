@@ -2487,6 +2487,7 @@ def test_search_catalogs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_catalogs(request)
 
@@ -2686,6 +2687,7 @@ def test_search_products_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_products(request)
 
@@ -2892,6 +2894,7 @@ def test_search_versions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_versions(request)
 
@@ -3284,6 +3287,7 @@ def test_search_catalogs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_catalogs(request)
 
 
@@ -3319,6 +3323,7 @@ def test_search_catalogs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_catalogs(request)
 
     # Establish that the response is the type that we expect.
@@ -3359,6 +3364,7 @@ def test_search_catalogs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = private_catalog.SearchCatalogsResponse.to_json(
             private_catalog.SearchCatalogsResponse()
         )
@@ -3405,6 +3411,7 @@ def test_search_products_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_products(request)
 
 
@@ -3440,6 +3447,7 @@ def test_search_products_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_products(request)
 
     # Establish that the response is the type that we expect.
@@ -3480,6 +3488,7 @@ def test_search_products_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = private_catalog.SearchProductsResponse.to_json(
             private_catalog.SearchProductsResponse()
         )
@@ -3526,6 +3535,7 @@ def test_search_versions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_versions(request)
 
 
@@ -3561,6 +3571,7 @@ def test_search_versions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_versions(request)
 
     # Establish that the response is the type that we expect.
@@ -3601,6 +3612,7 @@ def test_search_versions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = private_catalog.SearchVersionsResponse.to_json(
             private_catalog.SearchVersionsResponse()
         )

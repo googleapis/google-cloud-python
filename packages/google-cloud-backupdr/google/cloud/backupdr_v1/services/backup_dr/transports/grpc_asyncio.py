@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -26,8 +29,11 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.backupdr_v1.types import (
     backupdr,
@@ -38,6 +44,82 @@ from google.cloud.backupdr_v1.types import (
 
 from .base import DEFAULT_CLIENT_INFO, BackupDRTransport
 from .grpc import BackupDRGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
@@ -236,10 +318,13 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -262,7 +347,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -291,7 +376,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_management_servers" not in self._stubs:
-            self._stubs["list_management_servers"] = self.grpc_channel.unary_unary(
+            self._stubs["list_management_servers"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListManagementServers",
                 request_serializer=backupdr.ListManagementServersRequest.serialize,
                 response_deserializer=backupdr.ListManagementServersResponse.deserialize,
@@ -319,7 +404,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_management_server" not in self._stubs:
-            self._stubs["get_management_server"] = self.grpc_channel.unary_unary(
+            self._stubs["get_management_server"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/GetManagementServer",
                 request_serializer=backupdr.GetManagementServerRequest.serialize,
                 response_deserializer=backupdr.ManagementServer.deserialize,
@@ -348,7 +433,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_management_server" not in self._stubs:
-            self._stubs["create_management_server"] = self.grpc_channel.unary_unary(
+            self._stubs["create_management_server"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/CreateManagementServer",
                 request_serializer=backupdr.CreateManagementServerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -376,7 +461,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_management_server" not in self._stubs:
-            self._stubs["delete_management_server"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_management_server"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/DeleteManagementServer",
                 request_serializer=backupdr.DeleteManagementServerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -405,7 +490,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_backup_vault" not in self._stubs:
-            self._stubs["create_backup_vault"] = self.grpc_channel.unary_unary(
+            self._stubs["create_backup_vault"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/CreateBackupVault",
                 request_serializer=backupvault.CreateBackupVaultRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -434,7 +519,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backup_vaults" not in self._stubs:
-            self._stubs["list_backup_vaults"] = self.grpc_channel.unary_unary(
+            self._stubs["list_backup_vaults"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListBackupVaults",
                 request_serializer=backupvault.ListBackupVaultsRequest.serialize,
                 response_deserializer=backupvault.ListBackupVaultsResponse.deserialize,
@@ -465,7 +550,9 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_usable_backup_vaults" not in self._stubs:
-            self._stubs["fetch_usable_backup_vaults"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "fetch_usable_backup_vaults"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/FetchUsableBackupVaults",
                 request_serializer=backupvault.FetchUsableBackupVaultsRequest.serialize,
                 response_deserializer=backupvault.FetchUsableBackupVaultsResponse.deserialize,
@@ -493,7 +580,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_vault" not in self._stubs:
-            self._stubs["get_backup_vault"] = self.grpc_channel.unary_unary(
+            self._stubs["get_backup_vault"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/GetBackupVault",
                 request_serializer=backupvault.GetBackupVaultRequest.serialize,
                 response_deserializer=backupvault.BackupVault.deserialize,
@@ -521,7 +608,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_backup_vault" not in self._stubs:
-            self._stubs["update_backup_vault"] = self.grpc_channel.unary_unary(
+            self._stubs["update_backup_vault"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/UpdateBackupVault",
                 request_serializer=backupvault.UpdateBackupVaultRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -549,7 +636,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup_vault" not in self._stubs:
-            self._stubs["delete_backup_vault"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_backup_vault"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/DeleteBackupVault",
                 request_serializer=backupvault.DeleteBackupVaultRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -578,7 +665,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_data_sources" not in self._stubs:
-            self._stubs["list_data_sources"] = self.grpc_channel.unary_unary(
+            self._stubs["list_data_sources"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListDataSources",
                 request_serializer=backupvault.ListDataSourcesRequest.serialize,
                 response_deserializer=backupvault.ListDataSourcesResponse.deserialize,
@@ -606,7 +693,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_source" not in self._stubs:
-            self._stubs["get_data_source"] = self.grpc_channel.unary_unary(
+            self._stubs["get_data_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/GetDataSource",
                 request_serializer=backupvault.GetDataSourceRequest.serialize,
                 response_deserializer=backupvault.DataSource.deserialize,
@@ -634,7 +721,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_data_source" not in self._stubs:
-            self._stubs["update_data_source"] = self.grpc_channel.unary_unary(
+            self._stubs["update_data_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/UpdateDataSource",
                 request_serializer=backupvault.UpdateDataSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -662,7 +749,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backups" not in self._stubs:
-            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
+            self._stubs["list_backups"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListBackups",
                 request_serializer=backupvault.ListBackupsRequest.serialize,
                 response_deserializer=backupvault.ListBackupsResponse.deserialize,
@@ -688,7 +775,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup" not in self._stubs:
-            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["get_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/GetBackup",
                 request_serializer=backupvault.GetBackupRequest.serialize,
                 response_deserializer=backupvault.Backup.deserialize,
@@ -716,7 +803,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_backup" not in self._stubs:
-            self._stubs["update_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["update_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/UpdateBackup",
                 request_serializer=backupvault.UpdateBackupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -744,7 +831,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup" not in self._stubs:
-            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/DeleteBackup",
                 request_serializer=backupvault.DeleteBackupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -772,7 +859,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_backup" not in self._stubs:
-            self._stubs["restore_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["restore_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/RestoreBackup",
                 request_serializer=backupvault.RestoreBackupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -800,7 +887,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_backup_plan" not in self._stubs:
-            self._stubs["create_backup_plan"] = self.grpc_channel.unary_unary(
+            self._stubs["create_backup_plan"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/CreateBackupPlan",
                 request_serializer=backupplan.CreateBackupPlanRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -826,7 +913,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_plan" not in self._stubs:
-            self._stubs["get_backup_plan"] = self.grpc_channel.unary_unary(
+            self._stubs["get_backup_plan"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/GetBackupPlan",
                 request_serializer=backupplan.GetBackupPlanRequest.serialize,
                 response_deserializer=backupplan.BackupPlan.deserialize,
@@ -855,7 +942,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backup_plans" not in self._stubs:
-            self._stubs["list_backup_plans"] = self.grpc_channel.unary_unary(
+            self._stubs["list_backup_plans"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListBackupPlans",
                 request_serializer=backupplan.ListBackupPlansRequest.serialize,
                 response_deserializer=backupplan.ListBackupPlansResponse.deserialize,
@@ -883,7 +970,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup_plan" not in self._stubs:
-            self._stubs["delete_backup_plan"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_backup_plan"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/DeleteBackupPlan",
                 request_serializer=backupplan.DeleteBackupPlanRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -914,7 +1001,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         if "create_backup_plan_association" not in self._stubs:
             self._stubs[
                 "create_backup_plan_association"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/CreateBackupPlanAssociation",
                 request_serializer=backupplanassociation.CreateBackupPlanAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -943,7 +1030,9 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_plan_association" not in self._stubs:
-            self._stubs["get_backup_plan_association"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "get_backup_plan_association"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/GetBackupPlanAssociation",
                 request_serializer=backupplanassociation.GetBackupPlanAssociationRequest.serialize,
                 response_deserializer=backupplanassociation.BackupPlanAssociation.deserialize,
@@ -975,7 +1064,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         if "list_backup_plan_associations" not in self._stubs:
             self._stubs[
                 "list_backup_plan_associations"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanAssociations",
                 request_serializer=backupplanassociation.ListBackupPlanAssociationsRequest.serialize,
                 response_deserializer=backupplanassociation.ListBackupPlanAssociationsResponse.deserialize,
@@ -1006,7 +1095,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         if "delete_backup_plan_association" not in self._stubs:
             self._stubs[
                 "delete_backup_plan_association"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/DeleteBackupPlanAssociation",
                 request_serializer=backupplanassociation.DeleteBackupPlanAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1035,7 +1124,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "trigger_backup" not in self._stubs:
-            self._stubs["trigger_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["trigger_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.backupdr.v1.BackupDR/TriggerBackup",
                 request_serializer=backupplanassociation.TriggerBackupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1332,7 +1421,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -1348,7 +1437,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1365,7 +1454,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1382,7 +1471,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1401,7 +1490,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1420,7 +1509,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1437,7 +1526,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -1462,7 +1551,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1488,7 +1577,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1517,7 +1606,7 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,

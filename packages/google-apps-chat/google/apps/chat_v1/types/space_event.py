@@ -399,9 +399,9 @@ class ListSpaceEventsRequest(proto.Message):
 
             Negative values return an ``INVALID_ARGUMENT`` error.
         page_token (str):
-            A page token, received from a previous list
-            space events call. Provide this to retrieve the
-            subsequent page.
+            Optional. A page token, received from a
+            previous list space events call. Provide this to
+            retrieve the subsequent page.
 
             When paginating, all other parameters provided
             to list space events must match the call that

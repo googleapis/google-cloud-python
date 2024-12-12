@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -25,7 +28,10 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.translate_v3.types import (
     adaptive_mt,
@@ -35,6 +41,81 @@ from google.cloud.translate_v3.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO, TranslationServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.translation.v3.TranslationService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.translation.v3.TranslationService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class TranslationServiceGrpcTransport(TranslationServiceTransport):
@@ -190,7 +271,12 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -254,7 +340,9 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -281,7 +369,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "translate_text" not in self._stubs:
-            self._stubs["translate_text"] = self.grpc_channel.unary_unary(
+            self._stubs["translate_text"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/TranslateText",
                 request_serializer=translation_service.TranslateTextRequest.serialize,
                 response_deserializer=translation_service.TranslateTextResponse.deserialize,
@@ -311,7 +399,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "romanize_text" not in self._stubs:
-            self._stubs["romanize_text"] = self.grpc_channel.unary_unary(
+            self._stubs["romanize_text"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/RomanizeText",
                 request_serializer=translation_service.RomanizeTextRequest.serialize,
                 response_deserializer=translation_service.RomanizeTextResponse.deserialize,
@@ -340,7 +428,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "detect_language" not in self._stubs:
-            self._stubs["detect_language"] = self.grpc_channel.unary_unary(
+            self._stubs["detect_language"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DetectLanguage",
                 request_serializer=translation_service.DetectLanguageRequest.serialize,
                 response_deserializer=translation_service.DetectLanguageResponse.deserialize,
@@ -370,7 +458,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_supported_languages" not in self._stubs:
-            self._stubs["get_supported_languages"] = self.grpc_channel.unary_unary(
+            self._stubs["get_supported_languages"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/GetSupportedLanguages",
                 request_serializer=translation_service.GetSupportedLanguagesRequest.serialize,
                 response_deserializer=translation_service.SupportedLanguages.deserialize,
@@ -399,7 +487,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "translate_document" not in self._stubs:
-            self._stubs["translate_document"] = self.grpc_channel.unary_unary(
+            self._stubs["translate_document"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/TranslateDocument",
                 request_serializer=translation_service.TranslateDocumentRequest.serialize,
                 response_deserializer=translation_service.TranslateDocumentResponse.deserialize,
@@ -436,7 +524,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_translate_text" not in self._stubs:
-            self._stubs["batch_translate_text"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_translate_text"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/BatchTranslateText",
                 request_serializer=translation_service.BatchTranslateTextRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -473,7 +561,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_translate_document" not in self._stubs:
-            self._stubs["batch_translate_document"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_translate_document"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/BatchTranslateDocument",
                 request_serializer=translation_service.BatchTranslateDocumentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -502,7 +590,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_glossary" not in self._stubs:
-            self._stubs["create_glossary"] = self.grpc_channel.unary_unary(
+            self._stubs["create_glossary"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/CreateGlossary",
                 request_serializer=translation_service.CreateGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -531,7 +619,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_glossary" not in self._stubs:
-            self._stubs["update_glossary"] = self.grpc_channel.unary_unary(
+            self._stubs["update_glossary"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/UpdateGlossary",
                 request_serializer=translation_service.UpdateGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -561,7 +649,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_glossaries" not in self._stubs:
-            self._stubs["list_glossaries"] = self.grpc_channel.unary_unary(
+            self._stubs["list_glossaries"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListGlossaries",
                 request_serializer=translation_service.ListGlossariesRequest.serialize,
                 response_deserializer=translation_service.ListGlossariesResponse.deserialize,
@@ -590,7 +678,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_glossary" not in self._stubs:
-            self._stubs["get_glossary"] = self.grpc_channel.unary_unary(
+            self._stubs["get_glossary"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/GetGlossary",
                 request_serializer=translation_service.GetGlossaryRequest.serialize,
                 response_deserializer=translation_service.Glossary.deserialize,
@@ -620,7 +708,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_glossary" not in self._stubs:
-            self._stubs["delete_glossary"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_glossary"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DeleteGlossary",
                 request_serializer=translation_service.DeleteGlossaryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -646,7 +734,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_glossary_entry" not in self._stubs:
-            self._stubs["get_glossary_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["get_glossary_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/GetGlossaryEntry",
                 request_serializer=translation_service.GetGlossaryEntryRequest.serialize,
                 response_deserializer=common.GlossaryEntry.deserialize,
@@ -675,7 +763,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_glossary_entries" not in self._stubs:
-            self._stubs["list_glossary_entries"] = self.grpc_channel.unary_unary(
+            self._stubs["list_glossary_entries"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListGlossaryEntries",
                 request_serializer=translation_service.ListGlossaryEntriesRequest.serialize,
                 response_deserializer=translation_service.ListGlossaryEntriesResponse.deserialize,
@@ -703,7 +791,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_glossary_entry" not in self._stubs:
-            self._stubs["create_glossary_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["create_glossary_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/CreateGlossaryEntry",
                 request_serializer=translation_service.CreateGlossaryEntryRequest.serialize,
                 response_deserializer=common.GlossaryEntry.deserialize,
@@ -731,7 +819,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_glossary_entry" not in self._stubs:
-            self._stubs["update_glossary_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["update_glossary_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/UpdateGlossaryEntry",
                 request_serializer=translation_service.UpdateGlossaryEntryRequest.serialize,
                 response_deserializer=common.GlossaryEntry.deserialize,
@@ -757,7 +845,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_glossary_entry" not in self._stubs:
-            self._stubs["delete_glossary_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_glossary_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DeleteGlossaryEntry",
                 request_serializer=translation_service.DeleteGlossaryEntryRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -783,7 +871,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_dataset" not in self._stubs:
-            self._stubs["create_dataset"] = self.grpc_channel.unary_unary(
+            self._stubs["create_dataset"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/CreateDataset",
                 request_serializer=automl_translation.CreateDatasetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -809,7 +897,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_dataset" not in self._stubs:
-            self._stubs["get_dataset"] = self.grpc_channel.unary_unary(
+            self._stubs["get_dataset"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/GetDataset",
                 request_serializer=automl_translation.GetDatasetRequest.serialize,
                 response_deserializer=automl_translation.Dataset.deserialize,
@@ -838,7 +926,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_datasets" not in self._stubs:
-            self._stubs["list_datasets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_datasets"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListDatasets",
                 request_serializer=automl_translation.ListDatasetsRequest.serialize,
                 response_deserializer=automl_translation.ListDatasetsResponse.deserialize,
@@ -864,7 +952,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_dataset" not in self._stubs:
-            self._stubs["delete_dataset"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_dataset"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DeleteDataset",
                 request_serializer=automl_translation.DeleteDatasetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -892,7 +980,9 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_adaptive_mt_dataset" not in self._stubs:
-            self._stubs["create_adaptive_mt_dataset"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_adaptive_mt_dataset"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/CreateAdaptiveMtDataset",
                 request_serializer=adaptive_mt.CreateAdaptiveMtDatasetRequest.serialize,
                 response_deserializer=adaptive_mt.AdaptiveMtDataset.deserialize,
@@ -919,7 +1009,9 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_adaptive_mt_dataset" not in self._stubs:
-            self._stubs["delete_adaptive_mt_dataset"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_adaptive_mt_dataset"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtDataset",
                 request_serializer=adaptive_mt.DeleteAdaptiveMtDatasetRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -947,7 +1039,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_adaptive_mt_dataset" not in self._stubs:
-            self._stubs["get_adaptive_mt_dataset"] = self.grpc_channel.unary_unary(
+            self._stubs["get_adaptive_mt_dataset"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/GetAdaptiveMtDataset",
                 request_serializer=adaptive_mt.GetAdaptiveMtDatasetRequest.serialize,
                 response_deserializer=adaptive_mt.AdaptiveMtDataset.deserialize,
@@ -977,7 +1069,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_adaptive_mt_datasets" not in self._stubs:
-            self._stubs["list_adaptive_mt_datasets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_adaptive_mt_datasets"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtDatasets",
                 request_serializer=adaptive_mt.ListAdaptiveMtDatasetsRequest.serialize,
                 response_deserializer=adaptive_mt.ListAdaptiveMtDatasetsResponse.deserialize,
@@ -1006,7 +1098,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "adaptive_mt_translate" not in self._stubs:
-            self._stubs["adaptive_mt_translate"] = self.grpc_channel.unary_unary(
+            self._stubs["adaptive_mt_translate"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/AdaptiveMtTranslate",
                 request_serializer=adaptive_mt.AdaptiveMtTranslateRequest.serialize,
                 response_deserializer=adaptive_mt.AdaptiveMtTranslateResponse.deserialize,
@@ -1032,7 +1124,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_adaptive_mt_file" not in self._stubs:
-            self._stubs["get_adaptive_mt_file"] = self.grpc_channel.unary_unary(
+            self._stubs["get_adaptive_mt_file"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/GetAdaptiveMtFile",
                 request_serializer=adaptive_mt.GetAdaptiveMtFileRequest.serialize,
                 response_deserializer=adaptive_mt.AdaptiveMtFile.deserialize,
@@ -1058,7 +1150,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_adaptive_mt_file" not in self._stubs:
-            self._stubs["delete_adaptive_mt_file"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_adaptive_mt_file"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtFile",
                 request_serializer=adaptive_mt.DeleteAdaptiveMtFileRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1088,7 +1180,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_adaptive_mt_file" not in self._stubs:
-            self._stubs["import_adaptive_mt_file"] = self.grpc_channel.unary_unary(
+            self._stubs["import_adaptive_mt_file"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ImportAdaptiveMtFile",
                 request_serializer=adaptive_mt.ImportAdaptiveMtFileRequest.serialize,
                 response_deserializer=adaptive_mt.ImportAdaptiveMtFileResponse.deserialize,
@@ -1118,7 +1210,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_adaptive_mt_files" not in self._stubs:
-            self._stubs["list_adaptive_mt_files"] = self.grpc_channel.unary_unary(
+            self._stubs["list_adaptive_mt_files"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtFiles",
                 request_serializer=adaptive_mt.ListAdaptiveMtFilesRequest.serialize,
                 response_deserializer=adaptive_mt.ListAdaptiveMtFilesResponse.deserialize,
@@ -1148,7 +1240,9 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_adaptive_mt_sentences" not in self._stubs:
-            self._stubs["list_adaptive_mt_sentences"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_adaptive_mt_sentences"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtSentences",
                 request_serializer=adaptive_mt.ListAdaptiveMtSentencesRequest.serialize,
                 response_deserializer=adaptive_mt.ListAdaptiveMtSentencesResponse.deserialize,
@@ -1174,7 +1268,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_data" not in self._stubs:
-            self._stubs["import_data"] = self.grpc_channel.unary_unary(
+            self._stubs["import_data"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ImportData",
                 request_serializer=automl_translation.ImportDataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1201,7 +1295,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_data" not in self._stubs:
-            self._stubs["export_data"] = self.grpc_channel.unary_unary(
+            self._stubs["export_data"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ExportData",
                 request_serializer=automl_translation.ExportDataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1230,7 +1324,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_examples" not in self._stubs:
-            self._stubs["list_examples"] = self.grpc_channel.unary_unary(
+            self._stubs["list_examples"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListExamples",
                 request_serializer=automl_translation.ListExamplesRequest.serialize,
                 response_deserializer=automl_translation.ListExamplesResponse.deserialize,
@@ -1256,7 +1350,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_model" not in self._stubs:
-            self._stubs["create_model"] = self.grpc_channel.unary_unary(
+            self._stubs["create_model"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/CreateModel",
                 request_serializer=automl_translation.CreateModelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1284,7 +1378,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_models" not in self._stubs:
-            self._stubs["list_models"] = self.grpc_channel.unary_unary(
+            self._stubs["list_models"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListModels",
                 request_serializer=automl_translation.ListModelsRequest.serialize,
                 response_deserializer=automl_translation.ListModelsResponse.deserialize,
@@ -1310,7 +1404,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_model" not in self._stubs:
-            self._stubs["get_model"] = self.grpc_channel.unary_unary(
+            self._stubs["get_model"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/GetModel",
                 request_serializer=automl_translation.GetModelRequest.serialize,
                 response_deserializer=automl_translation.Model.deserialize,
@@ -1336,7 +1430,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_model" not in self._stubs:
-            self._stubs["delete_model"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_model"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DeleteModel",
                 request_serializer=automl_translation.DeleteModelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1344,7 +1438,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         return self._stubs["delete_model"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1356,7 +1450,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1373,7 +1467,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1390,7 +1484,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "wait_operation" not in self._stubs:
-            self._stubs["wait_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["wait_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/WaitOperation",
                 request_serializer=operations_pb2.WaitOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1407,7 +1501,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1426,7 +1520,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1445,7 +1539,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1462,7 +1556,7 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -132,8 +140,10 @@ class ApiKeysRestInterceptor:
     """
 
     def pre_create_key(
-        self, request: apikeys.CreateKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.CreateKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.CreateKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.CreateKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_key
 
         Override in a subclass to manipulate the request or metadata
@@ -153,8 +163,10 @@ class ApiKeysRestInterceptor:
         return response
 
     def pre_delete_key(
-        self, request: apikeys.DeleteKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.DeleteKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.DeleteKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.DeleteKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_key
 
         Override in a subclass to manipulate the request or metadata
@@ -174,8 +186,10 @@ class ApiKeysRestInterceptor:
         return response
 
     def pre_get_key(
-        self, request: apikeys.GetKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.GetKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.GetKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.GetKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_key
 
         Override in a subclass to manipulate the request or metadata
@@ -193,8 +207,10 @@ class ApiKeysRestInterceptor:
         return response
 
     def pre_get_key_string(
-        self, request: apikeys.GetKeyStringRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.GetKeyStringRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.GetKeyStringRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.GetKeyStringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_key_string
 
         Override in a subclass to manipulate the request or metadata
@@ -214,8 +230,10 @@ class ApiKeysRestInterceptor:
         return response
 
     def pre_list_keys(
-        self, request: apikeys.ListKeysRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.ListKeysRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.ListKeysRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.ListKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -235,8 +253,10 @@ class ApiKeysRestInterceptor:
         return response
 
     def pre_lookup_key(
-        self, request: apikeys.LookupKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.LookupKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.LookupKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.LookupKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_key
 
         Override in a subclass to manipulate the request or metadata
@@ -256,8 +276,10 @@ class ApiKeysRestInterceptor:
         return response
 
     def pre_undelete_key(
-        self, request: apikeys.UndeleteKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.UndeleteKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.UndeleteKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.UndeleteKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_key
 
         Override in a subclass to manipulate the request or metadata
@@ -277,8 +299,10 @@ class ApiKeysRestInterceptor:
         return response
 
     def pre_update_key(
-        self, request: apikeys.UpdateKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apikeys.UpdateKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apikeys.UpdateKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apikeys.UpdateKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_key
 
         Override in a subclass to manipulate the request or metadata
@@ -300,8 +324,10 @@ class ApiKeysRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -475,7 +501,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create key method over HTTP.
 
@@ -485,8 +511,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -497,6 +525,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             """
 
             http_options = _BaseApiKeysRestTransport._BaseCreateKey._get_http_options()
+
             request, metadata = self._interceptor.pre_create_key(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseCreateKey._get_transcoded_request(
@@ -514,6 +543,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.CreateKey",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "CreateKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._CreateKey._get_response(
@@ -534,7 +590,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.create_key",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "CreateKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteKey(_BaseApiKeysRestTransport._BaseDeleteKey, ApiKeysRestStub):
@@ -569,7 +647,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete key method over HTTP.
 
@@ -579,8 +657,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -591,6 +671,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             """
 
             http_options = _BaseApiKeysRestTransport._BaseDeleteKey._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_key(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseDeleteKey._get_transcoded_request(
@@ -604,6 +685,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.DeleteKey",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "DeleteKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._DeleteKey._get_response(
@@ -623,7 +731,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.delete_key",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "DeleteKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetKey(_BaseApiKeysRestTransport._BaseGetKey, ApiKeysRestStub):
@@ -658,7 +788,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Key:
             r"""Call the get key method over HTTP.
 
@@ -668,8 +798,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Key:
@@ -679,6 +811,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             """
 
             http_options = _BaseApiKeysRestTransport._BaseGetKey._get_http_options()
+
             request, metadata = self._interceptor.pre_get_key(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseGetKey._get_transcoded_request(
@@ -690,6 +823,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             query_params = _BaseApiKeysRestTransport._BaseGetKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.GetKey",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "GetKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._GetKey._get_response(
@@ -711,7 +871,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             pb_resp = resources.Key.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Key.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.get_key",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "GetKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetKeyString(_BaseApiKeysRestTransport._BaseGetKeyString, ApiKeysRestStub):
@@ -746,7 +928,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apikeys.GetKeyStringResponse:
             r"""Call the get key string method over HTTP.
 
@@ -756,8 +938,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apikeys.GetKeyStringResponse:
@@ -767,6 +951,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = (
                 _BaseApiKeysRestTransport._BaseGetKeyString._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_key_string(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseGetKeyString._get_transcoded_request(
@@ -780,6 +965,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.GetKeyString",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "GetKeyString",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._GetKeyString._get_response(
@@ -801,7 +1013,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             pb_resp = apikeys.GetKeyStringResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_key_string(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apikeys.GetKeyStringResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.get_key_string",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "GetKeyString",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListKeys(_BaseApiKeysRestTransport._BaseListKeys, ApiKeysRestStub):
@@ -836,7 +1070,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apikeys.ListKeysResponse:
             r"""Call the list keys method over HTTP.
 
@@ -846,8 +1080,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apikeys.ListKeysResponse:
@@ -855,6 +1091,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             """
 
             http_options = _BaseApiKeysRestTransport._BaseListKeys._get_http_options()
+
             request, metadata = self._interceptor.pre_list_keys(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseListKeys._get_transcoded_request(
@@ -868,6 +1105,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.ListKeys",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "ListKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._ListKeys._get_response(
@@ -889,7 +1153,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             pb_resp = apikeys.ListKeysResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apikeys.ListKeysResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.list_keys",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "ListKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LookupKey(_BaseApiKeysRestTransport._BaseLookupKey, ApiKeysRestStub):
@@ -924,7 +1210,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apikeys.LookupKeyResponse:
             r"""Call the lookup key method over HTTP.
 
@@ -934,8 +1220,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apikeys.LookupKeyResponse:
@@ -943,6 +1231,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             """
 
             http_options = _BaseApiKeysRestTransport._BaseLookupKey._get_http_options()
+
             request, metadata = self._interceptor.pre_lookup_key(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseLookupKey._get_transcoded_request(
@@ -956,6 +1245,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.LookupKey",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "LookupKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._LookupKey._get_response(
@@ -977,7 +1293,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             pb_resp = apikeys.LookupKeyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apikeys.LookupKeyResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.lookup_key",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "LookupKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeleteKey(_BaseApiKeysRestTransport._BaseUndeleteKey, ApiKeysRestStub):
@@ -1013,7 +1351,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete key method over HTTP.
 
@@ -1023,8 +1361,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1037,6 +1377,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = (
                 _BaseApiKeysRestTransport._BaseUndeleteKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_key(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseUndeleteKey._get_transcoded_request(
@@ -1054,6 +1395,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.UndeleteKey",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "UndeleteKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._UndeleteKey._get_response(
@@ -1074,7 +1442,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.undelete_key",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "UndeleteKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateKey(_BaseApiKeysRestTransport._BaseUpdateKey, ApiKeysRestStub):
@@ -1110,7 +1500,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update key method over HTTP.
 
@@ -1120,8 +1510,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1132,6 +1524,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             """
 
             http_options = _BaseApiKeysRestTransport._BaseUpdateKey._get_http_options()
+
             request, metadata = self._interceptor.pre_update_key(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseUpdateKey._get_transcoded_request(
@@ -1149,6 +1542,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.UpdateKey",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "UpdateKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._UpdateKey._get_response(
@@ -1169,7 +1589,29 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysClient.update_key",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "UpdateKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1270,7 +1712,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1280,8 +1722,10 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1290,6 +1734,7 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             http_options = (
                 _BaseApiKeysRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseApiKeysRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1303,6 +1748,33 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.apikeys_v2.ApiKeysClient.GetOperation",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiKeysRestTransport._GetOperation._get_response(
@@ -1323,6 +1795,27 @@ class ApiKeysRestTransport(_BaseApiKeysRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.apikeys_v2.ApiKeysAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.api.apikeys.v2.ApiKeys",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

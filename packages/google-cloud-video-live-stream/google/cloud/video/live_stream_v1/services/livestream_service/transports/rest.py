@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -274,8 +282,10 @@ class LivestreamServiceRestInterceptor:
     """
 
     def pre_create_asset(
-        self, request: service.CreateAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -295,8 +305,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_create_channel(
-        self, request: service.CreateChannelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateChannelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -316,8 +328,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_create_clip(
-        self, request: service.CreateClipRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateClipRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateClipRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateClipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_clip
 
         Override in a subclass to manipulate the request or metadata
@@ -337,8 +351,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_create_event(
-        self, request: service.CreateEventRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateEventRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateEventRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_event
 
         Override in a subclass to manipulate the request or metadata
@@ -356,8 +372,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_create_input(
-        self, request: service.CreateInputRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateInputRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateInputRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_input
 
         Override in a subclass to manipulate the request or metadata
@@ -377,8 +395,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_delete_asset(
-        self, request: service.DeleteAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -398,8 +418,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_delete_channel(
-        self, request: service.DeleteChannelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteChannelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -419,8 +441,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_delete_clip(
-        self, request: service.DeleteClipRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteClipRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteClipRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteClipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_clip
 
         Override in a subclass to manipulate the request or metadata
@@ -440,8 +464,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_delete_event(
-        self, request: service.DeleteEventRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteEventRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteEventRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_event
 
         Override in a subclass to manipulate the request or metadata
@@ -450,8 +476,10 @@ class LivestreamServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_input(
-        self, request: service.DeleteInputRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteInputRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteInputRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_input
 
         Override in a subclass to manipulate the request or metadata
@@ -471,8 +499,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_get_asset(
-        self, request: service.GetAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -490,8 +520,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_get_channel(
-        self, request: service.GetChannelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetChannelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -509,8 +541,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_get_clip(
-        self, request: service.GetClipRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetClipRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetClipRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetClipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_clip
 
         Override in a subclass to manipulate the request or metadata
@@ -528,8 +562,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_get_event(
-        self, request: service.GetEventRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetEventRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetEventRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_event
 
         Override in a subclass to manipulate the request or metadata
@@ -547,8 +583,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_get_input(
-        self, request: service.GetInputRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetInputRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetInputRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_input
 
         Override in a subclass to manipulate the request or metadata
@@ -566,8 +604,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_get_pool(
-        self, request: service.GetPoolRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetPoolRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetPoolRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -585,8 +625,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_list_assets(
-        self, request: service.ListAssetsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListAssetsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListAssetsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -606,8 +648,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_list_channels(
-        self, request: service.ListChannelsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListChannelsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListChannelsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channels
 
         Override in a subclass to manipulate the request or metadata
@@ -627,8 +671,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_list_clips(
-        self, request: service.ListClipsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListClipsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListClipsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListClipsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clips
 
         Override in a subclass to manipulate the request or metadata
@@ -648,8 +694,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_list_events(
-        self, request: service.ListEventsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListEventsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListEventsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_events
 
         Override in a subclass to manipulate the request or metadata
@@ -669,8 +717,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_list_inputs(
-        self, request: service.ListInputsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListInputsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListInputsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListInputsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_inputs
 
         Override in a subclass to manipulate the request or metadata
@@ -690,8 +740,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_start_channel(
-        self, request: service.StartChannelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.StartChannelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.StartChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.StartChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -711,8 +763,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_stop_channel(
-        self, request: service.StopChannelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.StopChannelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.StopChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.StopChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -732,8 +786,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_update_channel(
-        self, request: service.UpdateChannelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateChannelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -753,8 +809,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_update_input(
-        self, request: service.UpdateInputRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateInputRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateInputRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_input
 
         Override in a subclass to manipulate the request or metadata
@@ -774,8 +832,10 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_update_pool(
-        self, request: service.UpdatePoolRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdatePoolRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdatePoolRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdatePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -797,8 +857,10 @@ class LivestreamServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -820,8 +882,10 @@ class LivestreamServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -843,8 +907,10 @@ class LivestreamServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -864,8 +930,10 @@ class LivestreamServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -885,8 +953,10 @@ class LivestreamServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -908,8 +978,10 @@ class LivestreamServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1109,7 +1181,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create asset method over HTTP.
 
@@ -1120,8 +1192,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1134,6 +1208,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_asset(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_transcoded_request(
                 http_options, request
@@ -1147,6 +1222,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.CreateAsset",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateAsset._get_response(
@@ -1167,7 +1269,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.create_asset",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateChannel(
@@ -1206,7 +1330,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create channel method over HTTP.
 
@@ -1217,8 +1341,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1231,6 +1357,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_channel(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_transcoded_request(
                 http_options, request
@@ -1244,6 +1371,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.CreateChannel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateChannel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateChannel._get_response(
@@ -1264,7 +1418,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.create_channel_",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateClip(
@@ -1302,7 +1478,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create clip method over HTTP.
 
@@ -1313,8 +1489,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1327,6 +1505,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseCreateClip._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_clip(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_transcoded_request(
                 http_options, request
@@ -1340,6 +1519,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.CreateClip",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateClip",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateClip._get_response(
@@ -1360,7 +1566,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_clip(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.create_clip",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateClip",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEvent(
@@ -1398,7 +1626,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Event:
             r"""Call the create event method over HTTP.
 
@@ -1409,8 +1637,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Event:
@@ -1424,6 +1654,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_event(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_transcoded_request(
                 http_options, request
@@ -1437,6 +1668,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.CreateEvent",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateEvent._get_response(
@@ -1459,7 +1717,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = resources.Event.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Event.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.create_event",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInput(
@@ -1497,7 +1777,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create input method over HTTP.
 
@@ -1508,8 +1788,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1522,6 +1804,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseCreateInput._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_input(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_transcoded_request(
                 http_options, request
@@ -1535,6 +1818,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.CreateInput",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateInput._get_response(
@@ -1555,7 +1865,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_input(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.create_input",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CreateInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAsset(
@@ -1592,7 +1924,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete asset method over HTTP.
 
@@ -1603,8 +1935,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1617,6 +1951,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_transcoded_request(
                 http_options, request
@@ -1626,6 +1961,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.DeleteAsset",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteAsset._get_response(
@@ -1645,7 +2007,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.delete_asset",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteChannel(
@@ -1683,7 +2067,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete channel method over HTTP.
 
@@ -1694,8 +2078,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1708,6 +2094,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_channel(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_transcoded_request(
                 http_options, request
@@ -1717,6 +2104,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.DeleteChannel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteChannel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteChannel._get_response(
@@ -1736,7 +2150,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.delete_channel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteClip(
@@ -1773,7 +2209,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete clip method over HTTP.
 
@@ -1784,8 +2220,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1798,6 +2236,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_clip(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_transcoded_request(
                 http_options, request
@@ -1807,6 +2246,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.DeleteClip",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteClip",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteClip._get_response(
@@ -1826,7 +2292,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_clip(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.delete_clip",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteClip",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEvent(
@@ -1863,7 +2351,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete event method over HTTP.
 
@@ -1874,13 +2362,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_event(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_transcoded_request(
                 http_options, request
@@ -1890,6 +2381,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.DeleteEvent",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteEvent._get_response(
@@ -1940,7 +2458,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete input method over HTTP.
 
@@ -1951,8 +2469,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1965,6 +2485,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_input(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_transcoded_request(
                 http_options, request
@@ -1974,6 +2495,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.DeleteInput",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteInput._get_response(
@@ -1993,7 +2541,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_input(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.delete_input",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAsset(
@@ -2030,7 +2600,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Asset:
             r"""Call the get asset method over HTTP.
 
@@ -2041,8 +2611,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Asset:
@@ -2054,6 +2626,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetAsset._get_transcoded_request(
                 http_options, request
@@ -2063,6 +2636,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseGetAsset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetAsset",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetAsset._get_response(
@@ -2084,7 +2684,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = resources.Asset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Asset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.get_asset",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetChannel(
@@ -2121,7 +2743,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Channel:
             r"""Call the get channel method over HTTP.
 
@@ -2132,8 +2754,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Channel:
@@ -2151,6 +2775,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetChannel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_channel(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetChannel._get_transcoded_request(
                 http_options, request
@@ -2160,6 +2785,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseGetChannel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetChannel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetChannel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetChannel._get_response(
@@ -2181,7 +2833,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = resources.Channel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Channel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.get_channel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetClip(
@@ -2218,7 +2892,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Clip:
             r"""Call the get clip method over HTTP.
 
@@ -2229,8 +2903,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Clip:
@@ -2245,6 +2921,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetClip._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_clip(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetClip._get_transcoded_request(
                 http_options, request
@@ -2256,6 +2933,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetClip",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetClip",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetClip._get_response(
@@ -2277,7 +2981,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = resources.Clip.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_clip(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Clip.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.get_clip",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetClip",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEvent(
@@ -2314,7 +3040,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Event:
             r"""Call the get event method over HTTP.
 
@@ -2325,8 +3051,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Event:
@@ -2340,6 +3068,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_event(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetEvent._get_transcoded_request(
                 http_options, request
@@ -2349,6 +3078,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseGetEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetEvent",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetEvent._get_response(
@@ -2370,7 +3126,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = resources.Event.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Event.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.get_event",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInput(
@@ -2407,7 +3185,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Input:
             r"""Call the get input method over HTTP.
 
@@ -2418,8 +3196,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Input:
@@ -2432,6 +3212,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetInput._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_input(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetInput._get_transcoded_request(
                 http_options, request
@@ -2441,6 +3222,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseGetInput._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetInput",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetInput._get_response(
@@ -2462,7 +3270,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = resources.Input.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_input(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Input.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.get_input",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPool(
@@ -2499,7 +3329,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Pool:
             r"""Call the get pool method over HTTP.
 
@@ -2510,8 +3340,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Pool:
@@ -2529,6 +3361,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_pool(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetPool._get_transcoded_request(
                 http_options, request
@@ -2540,6 +3373,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetPool",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetPool._get_response(
@@ -2561,7 +3421,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = resources.Pool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Pool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.get_pool",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAssets(
@@ -2598,7 +3480,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
 
@@ -2609,8 +3491,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListAssetsResponse:
@@ -2622,6 +3506,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseListAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseListAssets._get_transcoded_request(
                 http_options, request
@@ -2631,6 +3516,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseListAssets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.ListAssets",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._ListAssets._get_response(
@@ -2652,7 +3564,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = service.ListAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.list_assets",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListChannels(
@@ -2689,7 +3623,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListChannelsResponse:
             r"""Call the list channels method over HTTP.
 
@@ -2700,8 +3634,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListChannelsResponse:
@@ -2713,6 +3649,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseListChannels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_channels(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseListChannels._get_transcoded_request(
                 http_options, request
@@ -2722,6 +3659,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseListChannels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.ListChannels",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListChannels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._ListChannels._get_response(
@@ -2743,7 +3707,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = service.ListChannelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_channels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListChannelsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.list_channels",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListChannels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClips(
@@ -2780,7 +3766,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListClipsResponse:
             r"""Call the list clips method over HTTP.
 
@@ -2791,8 +3777,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListClipsResponse:
@@ -2804,6 +3792,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseListClips._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_clips(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseListClips._get_transcoded_request(
                 http_options, request
@@ -2813,6 +3802,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseListClips._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.ListClips",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListClips",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._ListClips._get_response(
@@ -2834,7 +3850,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = service.ListClipsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_clips(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListClipsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.list_clips",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListClips",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEvents(
@@ -2871,7 +3909,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListEventsResponse:
             r"""Call the list events method over HTTP.
 
@@ -2882,8 +3920,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListEventsResponse:
@@ -2895,6 +3935,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseListEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_events(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseListEvents._get_transcoded_request(
                 http_options, request
@@ -2904,6 +3945,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseListEvents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.ListEvents",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._ListEvents._get_response(
@@ -2925,7 +3993,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = service.ListEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListEventsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.list_events",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInputs(
@@ -2962,7 +4052,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListInputsResponse:
             r"""Call the list inputs method over HTTP.
 
@@ -2973,8 +4063,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListInputsResponse:
@@ -2986,6 +4078,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseListInputs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_inputs(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseListInputs._get_transcoded_request(
                 http_options, request
@@ -2995,6 +4088,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseListInputs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.ListInputs",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListInputs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._ListInputs._get_response(
@@ -3016,7 +4136,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             pb_resp = service.ListInputsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_inputs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListInputsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.list_inputs",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListInputs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StartChannel(
@@ -3054,7 +4196,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the start channel method over HTTP.
 
@@ -3065,8 +4207,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3079,6 +4223,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseStartChannel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_start_channel(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_transcoded_request(
                 http_options, request
@@ -3092,6 +4237,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.StartChannel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StartChannel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._StartChannel._get_response(
@@ -3112,7 +4284,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_start_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.start_channel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StartChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopChannel(
@@ -3150,7 +4344,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the stop channel method over HTTP.
 
@@ -3161,8 +4355,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3175,6 +4371,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseStopChannel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_channel(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_transcoded_request(
                 http_options, request
@@ -3188,6 +4385,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.StopChannel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StopChannel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._StopChannel._get_response(
@@ -3208,7 +4432,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.stop_channel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "StopChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateChannel(
@@ -3247,7 +4493,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update channel method over HTTP.
 
@@ -3258,8 +4504,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3272,6 +4520,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_channel(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_transcoded_request(
                 http_options, request
@@ -3285,6 +4534,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.UpdateChannel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "UpdateChannel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._UpdateChannel._get_response(
@@ -3305,7 +4581,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.update_channel",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "UpdateChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInput(
@@ -3343,7 +4641,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update input method over HTTP.
 
@@ -3354,8 +4652,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3368,6 +4668,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_input(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_transcoded_request(
                 http_options, request
@@ -3381,6 +4682,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.UpdateInput",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "UpdateInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._UpdateInput._get_response(
@@ -3401,7 +4729,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_input(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.update_input",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "UpdateInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePool(
@@ -3439,7 +4789,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update pool method over HTTP.
 
@@ -3450,8 +4800,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3464,6 +4816,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_pool(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_transcoded_request(
                 http_options, request
@@ -3477,6 +4830,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.UpdatePool",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "UpdatePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._UpdatePool._get_response(
@@ -3497,7 +4877,29 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceClient.update_pool",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "UpdatePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3730,7 +5132,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3740,8 +5142,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3750,6 +5154,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -3759,6 +5164,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetLocation._get_response(
@@ -3779,6 +5211,27 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3820,7 +5273,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3830,8 +5283,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3840,6 +5295,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3849,6 +5305,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._ListLocations._get_response(
@@ -3869,6 +5352,27 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3911,7 +5415,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3921,13 +5425,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3943,6 +5450,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._CancelOperation._get_response(
@@ -4001,7 +5535,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4011,13 +5545,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4029,6 +5566,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteOperation._get_response(
@@ -4085,7 +5649,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4095,8 +5659,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4105,6 +5671,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -4114,6 +5681,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._GetOperation._get_response(
@@ -4134,6 +5728,27 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4175,7 +5790,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4185,8 +5800,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4195,6 +5812,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             http_options = (
                 _BaseLivestreamServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseLivestreamServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4204,6 +5822,33 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             query_params = _BaseLivestreamServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.livestream_v1.LivestreamServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LivestreamServiceRestTransport._ListOperations._get_response(
@@ -4224,6 +5869,27 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.livestream_v1.LivestreamServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

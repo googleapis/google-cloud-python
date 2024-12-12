@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -148,8 +156,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_create_tunnel_dest_group(
         self,
         request: service.CreateTunnelDestGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateTunnelDestGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateTunnelDestGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_tunnel_dest_group
 
         Override in a subclass to manipulate the request or metadata
@@ -171,8 +181,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_delete_tunnel_dest_group(
         self,
         request: service.DeleteTunnelDestGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteTunnelDestGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DeleteTunnelDestGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_tunnel_dest_group
 
         Override in a subclass to manipulate the request or metadata
@@ -183,8 +195,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -204,8 +218,8 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_get_iap_settings(
         self,
         request: service.GetIapSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetIapSettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetIapSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iap_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -227,8 +241,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_get_tunnel_dest_group(
         self,
         request: service.GetTunnelDestGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetTunnelDestGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetTunnelDestGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_tunnel_dest_group
 
         Override in a subclass to manipulate the request or metadata
@@ -250,8 +266,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_list_tunnel_dest_groups(
         self,
         request: service.ListTunnelDestGroupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListTunnelDestGroupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListTunnelDestGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_tunnel_dest_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -273,8 +291,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -294,8 +314,11 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -317,8 +340,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_update_iap_settings(
         self,
         request: service.UpdateIapSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateIapSettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.UpdateIapSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_iap_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -340,8 +365,10 @@ class IdentityAwareProxyAdminServiceRestInterceptor:
     def pre_update_tunnel_dest_group(
         self,
         request: service.UpdateTunnelDestGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateTunnelDestGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.UpdateTunnelDestGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_tunnel_dest_group
 
         Override in a subclass to manipulate the request or metadata
@@ -489,7 +516,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.TunnelDestGroup:
             r"""Call the create tunnel dest group method over HTTP.
 
@@ -499,8 +526,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.TunnelDestGroup:
@@ -510,6 +539,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseCreateTunnelDestGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_tunnel_dest_group(
                 request, metadata
             )
@@ -525,6 +555,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseCreateTunnelDestGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.CreateTunnelDestGroup",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "CreateTunnelDestGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._CreateTunnelDestGroup._get_response(
@@ -547,7 +604,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = service.TunnelDestGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_tunnel_dest_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.TunnelDestGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.create_tunnel_dest_group",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "CreateTunnelDestGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTunnelDestGroup(
@@ -587,7 +666,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete tunnel dest group method over HTTP.
 
@@ -597,13 +676,16 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseDeleteTunnelDestGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_tunnel_dest_group(
                 request, metadata
             )
@@ -615,6 +697,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseDeleteTunnelDestGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.DeleteTunnelDestGroup",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "DeleteTunnelDestGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._DeleteTunnelDestGroup._get_response(
@@ -667,7 +776,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -677,8 +786,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -763,6 +874,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -776,6 +888,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -800,7 +939,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIapSettings(
@@ -838,7 +999,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.IapSettings:
             r"""Call the get iap settings method over HTTP.
 
@@ -848,8 +1009,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.IapSettings:
@@ -859,6 +1022,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIapSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iap_settings(
                 request, metadata
             )
@@ -870,6 +1034,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIapSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.GetIapSettings",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "GetIapSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._GetIapSettings._get_response(
@@ -891,7 +1082,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = service.IapSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iap_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.IapSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.get_iap_settings",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "GetIapSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTunnelDestGroup(
@@ -931,7 +1144,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.TunnelDestGroup:
             r"""Call the get tunnel dest group method over HTTP.
 
@@ -941,8 +1154,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.TunnelDestGroup:
@@ -952,6 +1167,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetTunnelDestGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_tunnel_dest_group(
                 request, metadata
             )
@@ -963,6 +1179,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetTunnelDestGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.GetTunnelDestGroup",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "GetTunnelDestGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._GetTunnelDestGroup._get_response(
@@ -984,7 +1227,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = service.TunnelDestGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_tunnel_dest_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.TunnelDestGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.get_tunnel_dest_group",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "GetTunnelDestGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTunnelDestGroups(
@@ -1024,7 +1289,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListTunnelDestGroupsResponse:
             r"""Call the list tunnel dest groups method over HTTP.
 
@@ -1034,8 +1299,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListTunnelDestGroupsResponse:
@@ -1047,6 +1314,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseListTunnelDestGroups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tunnel_dest_groups(
                 request, metadata
             )
@@ -1058,6 +1326,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseListTunnelDestGroups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.ListTunnelDestGroups",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "ListTunnelDestGroups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._ListTunnelDestGroups._get_response(
@@ -1079,7 +1374,31 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = service.ListTunnelDestGroupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tunnel_dest_groups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListTunnelDestGroupsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.list_tunnel_dest_groups",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "ListTunnelDestGroups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -1118,7 +1437,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1128,8 +1447,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1214,6 +1535,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1227,6 +1549,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1251,7 +1600,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -1292,7 +1663,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1302,8 +1673,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -1313,6 +1686,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1328,6 +1702,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._TestIamPermissions._get_response(
@@ -1350,7 +1751,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateIapSettings(
@@ -1389,7 +1812,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.IapSettings:
             r"""Call the update iap settings method over HTTP.
 
@@ -1400,8 +1823,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.IapSettings:
@@ -1411,6 +1836,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateIapSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_iap_settings(
                 request, metadata
             )
@@ -1426,6 +1852,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateIapSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.UpdateIapSettings",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "UpdateIapSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._UpdateIapSettings._get_response(
@@ -1448,7 +1901,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = service.IapSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_iap_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.IapSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.update_iap_settings",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "UpdateIapSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTunnelDestGroup(
@@ -1489,7 +1964,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.TunnelDestGroup:
             r"""Call the update tunnel dest group method over HTTP.
 
@@ -1499,8 +1974,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.TunnelDestGroup:
@@ -1510,6 +1987,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateTunnelDestGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_tunnel_dest_group(
                 request, metadata
             )
@@ -1525,6 +2003,33 @@ class IdentityAwareProxyAdminServiceRestTransport(
             query_params = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateTunnelDestGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.UpdateTunnelDestGroup",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "UpdateTunnelDestGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyAdminServiceRestTransport._UpdateTunnelDestGroup._get_response(
@@ -1547,7 +2052,29 @@ class IdentityAwareProxyAdminServiceRestTransport(
             pb_resp = service.TunnelDestGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_tunnel_dest_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.TunnelDestGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyAdminServiceClient.update_tunnel_dest_group",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "rpcName": "UpdateTunnelDestGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

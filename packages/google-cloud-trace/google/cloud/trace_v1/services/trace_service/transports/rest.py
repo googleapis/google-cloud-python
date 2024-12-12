@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -88,8 +96,10 @@ class TraceServiceRestInterceptor:
     """
 
     def pre_get_trace(
-        self, request: trace.GetTraceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[trace.GetTraceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: trace.GetTraceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[trace.GetTraceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_trace
 
         Override in a subclass to manipulate the request or metadata
@@ -107,8 +117,10 @@ class TraceServiceRestInterceptor:
         return response
 
     def pre_list_traces(
-        self, request: trace.ListTracesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[trace.ListTracesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: trace.ListTracesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[trace.ListTracesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_traces
 
         Override in a subclass to manipulate the request or metadata
@@ -128,8 +140,10 @@ class TraceServiceRestInterceptor:
         return response
 
     def pre_patch_traces(
-        self, request: trace.PatchTracesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[trace.PatchTracesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: trace.PatchTracesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[trace.PatchTracesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch_traces
 
         Override in a subclass to manipulate the request or metadata
@@ -261,7 +275,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> trace.Trace:
             r"""Call the get trace method over HTTP.
 
@@ -271,8 +285,10 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.trace.Trace:
@@ -287,6 +303,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             http_options = (
                 _BaseTraceServiceRestTransport._BaseGetTrace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_trace(request, metadata)
             transcoded_request = (
                 _BaseTraceServiceRestTransport._BaseGetTrace._get_transcoded_request(
@@ -300,6 +317,33 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudtrace_v1.TraceServiceClient.GetTrace",
+                    extra={
+                        "serviceName": "google.devtools.cloudtrace.v1.TraceService",
+                        "rpcName": "GetTrace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TraceServiceRestTransport._GetTrace._get_response(
@@ -321,7 +365,29 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             pb_resp = trace.Trace.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_trace(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = trace.Trace.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudtrace_v1.TraceServiceClient.get_trace",
+                    extra={
+                        "serviceName": "google.devtools.cloudtrace.v1.TraceService",
+                        "rpcName": "GetTrace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTraces(
@@ -358,7 +424,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> trace.ListTracesResponse:
             r"""Call the list traces method over HTTP.
 
@@ -369,8 +435,10 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.trace.ListTracesResponse:
@@ -380,6 +448,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             http_options = (
                 _BaseTraceServiceRestTransport._BaseListTraces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_traces(request, metadata)
             transcoded_request = (
                 _BaseTraceServiceRestTransport._BaseListTraces._get_transcoded_request(
@@ -393,6 +462,33 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudtrace_v1.TraceServiceClient.ListTraces",
+                    extra={
+                        "serviceName": "google.devtools.cloudtrace.v1.TraceService",
+                        "rpcName": "ListTraces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TraceServiceRestTransport._ListTraces._get_response(
@@ -414,7 +510,29 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             pb_resp = trace.ListTracesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_traces(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = trace.ListTracesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudtrace_v1.TraceServiceClient.list_traces",
+                    extra={
+                        "serviceName": "google.devtools.cloudtrace.v1.TraceService",
+                        "rpcName": "ListTraces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PatchTraces(
@@ -452,7 +570,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the patch traces method over HTTP.
 
@@ -462,13 +580,16 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTraceServiceRestTransport._BasePatchTraces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch_traces(request, metadata)
             transcoded_request = (
                 _BaseTraceServiceRestTransport._BasePatchTraces._get_transcoded_request(
@@ -488,6 +609,33 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudtrace_v1.TraceServiceClient.PatchTraces",
+                    extra={
+                        "serviceName": "google.devtools.cloudtrace.v1.TraceService",
+                        "rpcName": "PatchTraces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TraceServiceRestTransport._PatchTraces._get_response(

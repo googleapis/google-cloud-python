@@ -1074,6 +1074,7 @@ def test_get_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.get_billing_account(request)
 
@@ -1090,6 +1091,7 @@ def test_get_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_get_billing_account_non_empty_request_with_auto_populated_field():
@@ -1228,6 +1230,7 @@ async def test_get_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.get_billing_account(request)
@@ -1245,6 +1248,7 @@ async def test_get_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -1912,6 +1916,7 @@ def test_update_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.update_billing_account(request)
 
@@ -1928,6 +1933,7 @@ def test_update_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_update_billing_account_non_empty_request_with_auto_populated_field():
@@ -2068,6 +2074,7 @@ async def test_update_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.update_billing_account(request)
@@ -2085,6 +2092,7 @@ async def test_update_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -2281,6 +2289,7 @@ def test_create_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.create_billing_account(request)
 
@@ -2297,6 +2306,7 @@ def test_create_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_create_billing_account_non_empty_request_with_auto_populated_field():
@@ -2437,6 +2447,7 @@ async def test_create_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.create_billing_account(request)
@@ -2454,6 +2465,7 @@ async def test_create_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -4906,6 +4918,7 @@ def test_move_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.move_billing_account(request)
 
@@ -4922,6 +4935,7 @@ def test_move_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_move_billing_account_non_empty_request_with_auto_populated_field():
@@ -5063,6 +5077,7 @@ async def test_move_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.move_billing_account(request)
@@ -5080,6 +5095,7 @@ async def test_move_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -5258,6 +5274,7 @@ def test_get_billing_account_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_billing_account(request)
 
@@ -5303,6 +5320,7 @@ def test_get_billing_account_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_billing_account(**mock_args)
 
@@ -5399,6 +5417,7 @@ def test_list_billing_accounts_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_billing_accounts(**mock_args)
 
@@ -5599,6 +5618,7 @@ def test_update_billing_account_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_billing_account(request)
 
@@ -5653,6 +5673,7 @@ def test_update_billing_account_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_billing_account(**mock_args)
 
@@ -5786,6 +5807,7 @@ def test_create_billing_account_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_billing_account(request)
 
@@ -5832,6 +5854,7 @@ def test_create_billing_account_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_billing_account(**mock_args)
 
@@ -5974,6 +5997,7 @@ def test_list_project_billing_info_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_project_billing_info(request)
 
@@ -6027,6 +6051,7 @@ def test_list_project_billing_info_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_project_billing_info(**mock_args)
 
@@ -6224,6 +6249,7 @@ def test_get_project_billing_info_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_project_billing_info(request)
 
@@ -6269,6 +6295,7 @@ def test_get_project_billing_info_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_project_billing_info(**mock_args)
 
@@ -6404,6 +6431,7 @@ def test_update_project_billing_info_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_project_billing_info(request)
 
@@ -6450,6 +6478,7 @@ def test_update_project_billing_info_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_project_billing_info(**mock_args)
 
@@ -6580,6 +6609,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_iam_policy(request)
 
@@ -6623,6 +6653,7 @@ def test_get_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_iam_policy(**mock_args)
 
@@ -6752,6 +6783,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.set_iam_policy(request)
 
@@ -6803,6 +6835,7 @@ def test_set_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.set_iam_policy(**mock_args)
 
@@ -6940,6 +6973,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.test_iam_permissions(request)
 
@@ -6992,6 +7026,7 @@ def test_test_iam_permissions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.test_iam_permissions(**mock_args)
 
@@ -7133,6 +7168,7 @@ def test_move_billing_account_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.move_billing_account(request)
 
@@ -7548,6 +7584,7 @@ async def test_get_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.get_billing_account(request=None)
@@ -7610,6 +7647,7 @@ async def test_update_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.update_billing_account(request=None)
@@ -7643,6 +7681,7 @@ async def test_create_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.create_billing_account(request=None)
@@ -7854,6 +7893,7 @@ async def test_move_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.move_billing_account(request=None)
@@ -7894,6 +7934,7 @@ def test_get_billing_account_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_billing_account(request)
 
 
@@ -7922,6 +7963,7 @@ def test_get_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -7933,6 +7975,7 @@ def test_get_billing_account_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_billing_account(request)
 
     # Establish that the response is the type that we expect.
@@ -7942,6 +7985,7 @@ def test_get_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7977,6 +8021,7 @@ def test_get_billing_account_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.BillingAccount.to_json(
             cloud_billing.BillingAccount()
         )
@@ -8023,6 +8068,7 @@ def test_list_billing_accounts_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_billing_accounts(request)
 
 
@@ -8058,6 +8104,7 @@ def test_list_billing_accounts_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_billing_accounts(request)
 
     # Establish that the response is the type that we expect.
@@ -8098,6 +8145,7 @@ def test_list_billing_accounts_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.ListBillingAccountsResponse.to_json(
             cloud_billing.ListBillingAccountsResponse()
         )
@@ -8144,6 +8192,7 @@ def test_update_billing_account_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_billing_account(request)
 
 
@@ -8167,6 +8216,7 @@ def test_update_billing_account_rest_call_success(request_type):
         "display_name": "display_name_value",
         "master_billing_account": "master_billing_account_value",
         "parent": "parent_value",
+        "currency_code": "currency_code_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8246,6 +8296,7 @@ def test_update_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8257,6 +8308,7 @@ def test_update_billing_account_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_billing_account(request)
 
     # Establish that the response is the type that we expect.
@@ -8266,6 +8318,7 @@ def test_update_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8301,6 +8354,7 @@ def test_update_billing_account_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.BillingAccount.to_json(
             cloud_billing.BillingAccount()
         )
@@ -8347,6 +8401,7 @@ def test_create_billing_account_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_billing_account(request)
 
 
@@ -8370,6 +8425,7 @@ def test_create_billing_account_rest_call_success(request_type):
         "display_name": "display_name_value",
         "master_billing_account": "master_billing_account_value",
         "parent": "parent_value",
+        "currency_code": "currency_code_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8451,6 +8507,7 @@ def test_create_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8462,6 +8519,7 @@ def test_create_billing_account_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_billing_account(request)
 
     # Establish that the response is the type that we expect.
@@ -8471,6 +8529,7 @@ def test_create_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8506,6 +8565,7 @@ def test_create_billing_account_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.BillingAccount.to_json(
             cloud_billing.BillingAccount()
         )
@@ -8552,6 +8612,7 @@ def test_list_project_billing_info_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_project_billing_info(request)
 
 
@@ -8587,6 +8648,7 @@ def test_list_project_billing_info_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_project_billing_info(request)
 
     # Establish that the response is the type that we expect.
@@ -8627,6 +8689,7 @@ def test_list_project_billing_info_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.ListProjectBillingInfoResponse.to_json(
             cloud_billing.ListProjectBillingInfoResponse()
         )
@@ -8673,6 +8736,7 @@ def test_get_project_billing_info_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_project_billing_info(request)
 
 
@@ -8711,6 +8775,7 @@ def test_get_project_billing_info_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_project_billing_info(request)
 
     # Establish that the response is the type that we expect.
@@ -8754,6 +8819,7 @@ def test_get_project_billing_info_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.ProjectBillingInfo.to_json(
             cloud_billing.ProjectBillingInfo()
         )
@@ -8800,6 +8866,7 @@ def test_update_project_billing_info_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_project_billing_info(request)
 
 
@@ -8915,6 +8982,7 @@ def test_update_project_billing_info_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_project_billing_info(request)
 
     # Establish that the response is the type that we expect.
@@ -8958,6 +9026,7 @@ def test_update_project_billing_info_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.ProjectBillingInfo.to_json(
             cloud_billing.ProjectBillingInfo()
         )
@@ -9004,6 +9073,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -9037,6 +9107,7 @@ def test_get_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -9076,6 +9147,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(policy_pb2.Policy())
         req.return_value.content = return_value
 
@@ -9120,6 +9192,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -9153,6 +9226,7 @@ def test_set_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -9192,6 +9266,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(policy_pb2.Policy())
         req.return_value.content = return_value
 
@@ -9236,6 +9311,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -9268,6 +9344,7 @@ def test_test_iam_permissions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
@@ -9306,6 +9383,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(
             iam_policy_pb2.TestIamPermissionsResponse()
         )
@@ -9352,6 +9430,7 @@ def test_move_billing_account_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.move_billing_account(request)
 
 
@@ -9380,6 +9459,7 @@ def test_move_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9391,6 +9471,7 @@ def test_move_billing_account_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.move_billing_account(request)
 
     # Establish that the response is the type that we expect.
@@ -9400,6 +9481,7 @@ def test_move_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9435,6 +9517,7 @@ def test_move_billing_account_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_billing.BillingAccount.to_json(
             cloud_billing.BillingAccount()
         )

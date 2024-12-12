@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,14 +26,93 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 from google.cloud.bigquery_reservation_v1.types import reservation
 
 from .base import DEFAULT_CLIENT_INFO, ReservationServiceTransport
 from .grpc import ReservationServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.bigquery.reservation.v1.ReservationService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
@@ -243,10 +325,13 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -281,7 +366,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_reservation" not in self._stubs:
-            self._stubs["create_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["create_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/CreateReservation",
                 request_serializer=gcbr_reservation.CreateReservationRequest.serialize,
                 response_deserializer=gcbr_reservation.Reservation.deserialize,
@@ -311,7 +396,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_reservations" not in self._stubs:
-            self._stubs["list_reservations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_reservations"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/ListReservations",
                 request_serializer=reservation.ListReservationsRequest.serialize,
                 response_deserializer=reservation.ListReservationsResponse.deserialize,
@@ -339,7 +424,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_reservation" not in self._stubs:
-            self._stubs["get_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/GetReservation",
                 request_serializer=reservation.GetReservationRequest.serialize,
                 response_deserializer=reservation.Reservation.deserialize,
@@ -367,7 +452,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_reservation" not in self._stubs:
-            self._stubs["delete_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteReservation",
                 request_serializer=reservation.DeleteReservationRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -396,12 +481,45 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_reservation" not in self._stubs:
-            self._stubs["update_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["update_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateReservation",
                 request_serializer=gcbr_reservation.UpdateReservationRequest.serialize,
                 response_deserializer=gcbr_reservation.Reservation.deserialize,
             )
         return self._stubs["update_reservation"]
+
+    @property
+    def failover_reservation(
+        self,
+    ) -> Callable[
+        [reservation.FailoverReservationRequest], Awaitable[reservation.Reservation]
+    ]:
+        r"""Return a callable for the failover reservation method over gRPC.
+
+        Fail over a reservation to the secondary location. The operation
+        should be done in the current secondary location, which will be
+        promoted to the new primary location for the reservation.
+        Attempting to failover a reservation in the current primary
+        location will fail with the error code
+        ``google.rpc.Code.FAILED_PRECONDITION``.
+
+        Returns:
+            Callable[[~.FailoverReservationRequest],
+                    Awaitable[~.Reservation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "failover_reservation" not in self._stubs:
+            self._stubs["failover_reservation"] = self._logged_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/FailoverReservation",
+                request_serializer=reservation.FailoverReservationRequest.serialize,
+                response_deserializer=reservation.Reservation.deserialize,
+            )
+        return self._stubs["failover_reservation"]
 
     @property
     def create_capacity_commitment(
@@ -425,7 +543,9 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_capacity_commitment" not in self._stubs:
-            self._stubs["create_capacity_commitment"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_capacity_commitment"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/CreateCapacityCommitment",
                 request_serializer=reservation.CreateCapacityCommitmentRequest.serialize,
                 response_deserializer=reservation.CapacityCommitment.deserialize,
@@ -455,7 +575,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_capacity_commitments" not in self._stubs:
-            self._stubs["list_capacity_commitments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_capacity_commitments"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/ListCapacityCommitments",
                 request_serializer=reservation.ListCapacityCommitmentsRequest.serialize,
                 response_deserializer=reservation.ListCapacityCommitmentsResponse.deserialize,
@@ -484,7 +604,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_capacity_commitment" not in self._stubs:
-            self._stubs["get_capacity_commitment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_capacity_commitment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/GetCapacityCommitment",
                 request_serializer=reservation.GetCapacityCommitmentRequest.serialize,
                 response_deserializer=reservation.CapacityCommitment.deserialize,
@@ -514,7 +634,9 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_capacity_commitment" not in self._stubs:
-            self._stubs["delete_capacity_commitment"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_capacity_commitment"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteCapacityCommitment",
                 request_serializer=reservation.DeleteCapacityCommitmentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -550,7 +672,9 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_capacity_commitment" not in self._stubs:
-            self._stubs["update_capacity_commitment"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_capacity_commitment"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateCapacityCommitment",
                 request_serializer=reservation.UpdateCapacityCommitmentRequest.serialize,
                 response_deserializer=reservation.CapacityCommitment.deserialize,
@@ -587,7 +711,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "split_capacity_commitment" not in self._stubs:
-            self._stubs["split_capacity_commitment"] = self.grpc_channel.unary_unary(
+            self._stubs["split_capacity_commitment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/SplitCapacityCommitment",
                 request_serializer=reservation.SplitCapacityCommitmentRequest.serialize,
                 response_deserializer=reservation.SplitCapacityCommitmentResponse.deserialize,
@@ -625,7 +749,9 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "merge_capacity_commitments" not in self._stubs:
-            self._stubs["merge_capacity_commitments"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "merge_capacity_commitments"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/MergeCapacityCommitments",
                 request_serializer=reservation.MergeCapacityCommitmentsRequest.serialize,
                 response_deserializer=reservation.CapacityCommitment.deserialize,
@@ -690,7 +816,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_assignment" not in self._stubs:
-            self._stubs["create_assignment"] = self.grpc_channel.unary_unary(
+            self._stubs["create_assignment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/CreateAssignment",
                 request_serializer=reservation.CreateAssignmentRequest.serialize,
                 response_deserializer=reservation.Assignment.deserialize,
@@ -740,7 +866,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_assignments" not in self._stubs:
-            self._stubs["list_assignments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_assignments"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/ListAssignments",
                 request_serializer=reservation.ListAssignmentsRequest.serialize,
                 response_deserializer=reservation.ListAssignmentsResponse.deserialize,
@@ -781,7 +907,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_assignment" not in self._stubs:
-            self._stubs["delete_assignment"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_assignment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteAssignment",
                 request_serializer=reservation.DeleteAssignmentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -834,7 +960,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_assignments" not in self._stubs:
-            self._stubs["search_assignments"] = self.grpc_channel.unary_unary(
+            self._stubs["search_assignments"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/SearchAssignments",
                 request_serializer=reservation.SearchAssignmentsRequest.serialize,
                 response_deserializer=reservation.SearchAssignmentsResponse.deserialize,
@@ -885,7 +1011,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_all_assignments" not in self._stubs:
-            self._stubs["search_all_assignments"] = self.grpc_channel.unary_unary(
+            self._stubs["search_all_assignments"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/SearchAllAssignments",
                 request_serializer=reservation.SearchAllAssignmentsRequest.serialize,
                 response_deserializer=reservation.SearchAllAssignmentsResponse.deserialize,
@@ -918,7 +1044,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "move_assignment" not in self._stubs:
-            self._stubs["move_assignment"] = self.grpc_channel.unary_unary(
+            self._stubs["move_assignment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/MoveAssignment",
                 request_serializer=reservation.MoveAssignmentRequest.serialize,
                 response_deserializer=reservation.Assignment.deserialize,
@@ -948,7 +1074,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_assignment" not in self._stubs:
-            self._stubs["update_assignment"] = self.grpc_channel.unary_unary(
+            self._stubs["update_assignment"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateAssignment",
                 request_serializer=reservation.UpdateAssignmentRequest.serialize,
                 response_deserializer=reservation.Assignment.deserialize,
@@ -976,7 +1102,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_bi_reservation" not in self._stubs:
-            self._stubs["get_bi_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_bi_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/GetBiReservation",
                 request_serializer=reservation.GetBiReservationRequest.serialize,
                 response_deserializer=reservation.BiReservation.deserialize,
@@ -1011,7 +1137,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_bi_reservation" not in self._stubs:
-            self._stubs["update_bi_reservation"] = self.grpc_channel.unary_unary(
+            self._stubs["update_bi_reservation"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateBiReservation",
                 request_serializer=reservation.UpdateBiReservationRequest.serialize,
                 response_deserializer=reservation.BiReservation.deserialize,
@@ -1074,6 +1200,11 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
             self.update_reservation: self._wrap_method(
                 self.update_reservation,
                 default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.failover_reservation: self._wrap_method(
+                self.failover_reservation,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.create_capacity_commitment: self._wrap_method(
@@ -1234,7 +1365,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

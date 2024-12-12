@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -117,8 +125,10 @@ class ExternalVpnGatewaysRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteExternalVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteExternalVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteExternalVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -138,8 +148,10 @@ class ExternalVpnGatewaysRestInterceptor:
     def pre_get(
         self,
         request: compute.GetExternalVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetExternalVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetExternalVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -161,8 +173,10 @@ class ExternalVpnGatewaysRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertExternalVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertExternalVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertExternalVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -182,8 +196,10 @@ class ExternalVpnGatewaysRestInterceptor:
     def pre_list(
         self,
         request: compute.ListExternalVpnGatewaysRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListExternalVpnGatewaysRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListExternalVpnGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -205,8 +221,11 @@ class ExternalVpnGatewaysRestInterceptor:
     def pre_set_labels(
         self,
         request: compute.SetLabelsExternalVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetLabelsExternalVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetLabelsExternalVpnGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +245,10 @@ class ExternalVpnGatewaysRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: compute.TestIamPermissionsExternalVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.TestIamPermissionsExternalVpnGatewayRequest, Sequence[Tuple[str, str]]
+        compute.TestIamPermissionsExternalVpnGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for test_iam_permissions
 
@@ -373,7 +393,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -385,8 +405,10 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -413,6 +435,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             http_options = (
                 _BaseExternalVpnGatewaysRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseExternalVpnGatewaysRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -422,6 +445,33 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             query_params = _BaseExternalVpnGatewaysRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ExternalVpnGatewaysClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ExternalVpnGatewaysRestTransport._Delete._get_response(
@@ -443,7 +493,29 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ExternalVpnGatewaysClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -480,7 +552,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.ExternalVpnGateway:
             r"""Call the get method over HTTP.
 
@@ -492,8 +564,10 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.ExternalVpnGateway:
@@ -517,6 +591,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             http_options = (
                 _BaseExternalVpnGatewaysRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseExternalVpnGatewaysRestTransport._BaseGet._get_transcoded_request(
@@ -530,6 +605,33 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ExternalVpnGatewaysClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ExternalVpnGatewaysRestTransport._Get._get_response(
@@ -551,7 +653,29 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             pb_resp = compute.ExternalVpnGateway.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.ExternalVpnGateway.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ExternalVpnGatewaysClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -589,7 +713,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -601,8 +725,10 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -629,6 +755,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             http_options = (
                 _BaseExternalVpnGatewaysRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseExternalVpnGatewaysRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -642,6 +769,33 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             query_params = _BaseExternalVpnGatewaysRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ExternalVpnGatewaysClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ExternalVpnGatewaysRestTransport._Insert._get_response(
@@ -664,7 +818,29 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ExternalVpnGatewaysClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -701,7 +877,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.ExternalVpnGatewayList:
             r"""Call the list method over HTTP.
 
@@ -713,8 +889,10 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.ExternalVpnGatewayList:
@@ -726,6 +904,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             http_options = (
                 _BaseExternalVpnGatewaysRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseExternalVpnGatewaysRestTransport._BaseList._get_transcoded_request(
@@ -739,6 +918,33 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ExternalVpnGatewaysClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ExternalVpnGatewaysRestTransport._List._get_response(
@@ -760,7 +966,29 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             pb_resp = compute.ExternalVpnGatewayList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.ExternalVpnGatewayList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ExternalVpnGatewaysClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLabels(
@@ -799,7 +1027,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set labels method over HTTP.
 
@@ -811,8 +1039,10 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -839,6 +1069,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             http_options = (
                 _BaseExternalVpnGatewaysRestTransport._BaseSetLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
             transcoded_request = _BaseExternalVpnGatewaysRestTransport._BaseSetLabels._get_transcoded_request(
                 http_options, request
@@ -852,6 +1083,33 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             query_params = _BaseExternalVpnGatewaysRestTransport._BaseSetLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ExternalVpnGatewaysClient.SetLabels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "SetLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ExternalVpnGatewaysRestTransport._SetLabels._get_response(
@@ -874,7 +1132,29 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ExternalVpnGatewaysClient.set_labels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "SetLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -913,7 +1193,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TestPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -925,8 +1205,10 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TestPermissionsResponse:
@@ -936,6 +1218,7 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             http_options = (
                 _BaseExternalVpnGatewaysRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -951,6 +1234,33 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             query_params = _BaseExternalVpnGatewaysRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ExternalVpnGatewaysClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -975,7 +1285,29 @@ class ExternalVpnGatewaysRestTransport(_BaseExternalVpnGatewaysRestTransport):
             pb_resp = compute.TestPermissionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TestPermissionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ExternalVpnGatewaysClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ExternalVpnGateways",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

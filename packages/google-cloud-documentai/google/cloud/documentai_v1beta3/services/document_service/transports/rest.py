@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -127,8 +135,11 @@ class DocumentServiceRestInterceptor:
     def pre_batch_delete_documents(
         self,
         request: document_service.BatchDeleteDocumentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.BatchDeleteDocumentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_service.BatchDeleteDocumentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_delete_documents
 
         Override in a subclass to manipulate the request or metadata
@@ -150,8 +161,11 @@ class DocumentServiceRestInterceptor:
     def pre_get_dataset_schema(
         self,
         request: document_service.GetDatasetSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.GetDatasetSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_service.GetDatasetSchemaRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_dataset_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -173,8 +187,10 @@ class DocumentServiceRestInterceptor:
     def pre_get_document(
         self,
         request: document_service.GetDocumentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.GetDocumentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_service.GetDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_document
 
         Override in a subclass to manipulate the request or metadata
@@ -196,8 +212,10 @@ class DocumentServiceRestInterceptor:
     def pre_import_documents(
         self,
         request: document_service.ImportDocumentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.ImportDocumentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_service.ImportDocumentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for import_documents
 
         Override in a subclass to manipulate the request or metadata
@@ -219,8 +237,10 @@ class DocumentServiceRestInterceptor:
     def pre_list_documents(
         self,
         request: document_service.ListDocumentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.ListDocumentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_service.ListDocumentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_documents
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +262,10 @@ class DocumentServiceRestInterceptor:
     def pre_update_dataset(
         self,
         request: document_service.UpdateDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.UpdateDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_service.UpdateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +287,11 @@ class DocumentServiceRestInterceptor:
     def pre_update_dataset_schema(
         self,
         request: document_service.UpdateDatasetSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.UpdateDatasetSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_service.UpdateDatasetSchemaRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_dataset_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +313,10 @@ class DocumentServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -311,8 +338,10 @@ class DocumentServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -334,8 +363,10 @@ class DocumentServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -355,8 +386,10 @@ class DocumentServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -378,8 +411,10 @@ class DocumentServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -581,7 +616,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch delete documents method over HTTP.
 
@@ -591,8 +626,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -605,6 +642,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseBatchDeleteDocuments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_delete_documents(
                 request, metadata
             )
@@ -620,6 +658,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseBatchDeleteDocuments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.BatchDeleteDocuments",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "BatchDeleteDocuments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._BatchDeleteDocuments._get_response(
@@ -640,7 +705,29 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_delete_documents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceClient.batch_delete_documents",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "BatchDeleteDocuments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDatasetSchema(
@@ -677,7 +764,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dataset.DatasetSchema:
             r"""Call the get dataset schema method over HTTP.
 
@@ -687,8 +774,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dataset.DatasetSchema:
@@ -698,6 +787,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseGetDatasetSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dataset_schema(
                 request, metadata
             )
@@ -709,6 +799,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseGetDatasetSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.GetDatasetSchema",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetDatasetSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._GetDatasetSchema._get_response(
@@ -730,7 +847,29 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             pb_resp = dataset.DatasetSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dataset_schema(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataset.DatasetSchema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceClient.get_dataset_schema",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetDatasetSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDocument(
@@ -767,7 +906,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> document_service.GetDocumentResponse:
             r"""Call the get document method over HTTP.
 
@@ -777,8 +916,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.document_service.GetDocumentResponse:
@@ -788,6 +929,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseGetDocument._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_document(request, metadata)
             transcoded_request = _BaseDocumentServiceRestTransport._BaseGetDocument._get_transcoded_request(
                 http_options, request
@@ -797,6 +939,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseGetDocument._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.GetDocument",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetDocument",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._GetDocument._get_response(
@@ -818,7 +987,31 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             pb_resp = document_service.GetDocumentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_document(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = document_service.GetDocumentResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceClient.get_document",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetDocument",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportDocuments(
@@ -856,7 +1049,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import documents method over HTTP.
 
@@ -866,8 +1059,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -880,6 +1075,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseImportDocuments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_documents(
                 request, metadata
             )
@@ -895,6 +1091,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseImportDocuments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.ImportDocuments",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ImportDocuments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._ImportDocuments._get_response(
@@ -915,7 +1138,29 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_documents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceClient.import_documents",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ImportDocuments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDocuments(
@@ -953,7 +1198,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> document_service.ListDocumentsResponse:
             r"""Call the list documents method over HTTP.
 
@@ -963,8 +1208,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.document_service.ListDocumentsResponse:
@@ -974,6 +1221,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseListDocuments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_documents(request, metadata)
             transcoded_request = _BaseDocumentServiceRestTransport._BaseListDocuments._get_transcoded_request(
                 http_options, request
@@ -987,6 +1235,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseListDocuments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.ListDocuments",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ListDocuments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._ListDocuments._get_response(
@@ -1009,7 +1284,31 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             pb_resp = document_service.ListDocumentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_documents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = document_service.ListDocumentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceClient.list_documents",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ListDocuments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataset(
@@ -1047,7 +1346,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update dataset method over HTTP.
 
@@ -1057,8 +1356,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1071,6 +1372,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseUpdateDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_dataset(request, metadata)
             transcoded_request = _BaseDocumentServiceRestTransport._BaseUpdateDataset._get_transcoded_request(
                 http_options, request
@@ -1084,6 +1386,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseUpdateDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.UpdateDataset",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "UpdateDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._UpdateDataset._get_response(
@@ -1104,7 +1433,29 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceClient.update_dataset",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "UpdateDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDatasetSchema(
@@ -1143,7 +1494,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dataset.DatasetSchema:
             r"""Call the update dataset schema method over HTTP.
 
@@ -1153,8 +1504,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dataset.DatasetSchema:
@@ -1164,6 +1517,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseUpdateDatasetSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_dataset_schema(
                 request, metadata
             )
@@ -1179,6 +1533,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseUpdateDatasetSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.UpdateDatasetSchema",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "UpdateDatasetSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._UpdateDatasetSchema._get_response(
@@ -1201,7 +1582,29 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             pb_resp = dataset.DatasetSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_dataset_schema(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataset.DatasetSchema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceClient.update_dataset_schema",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "UpdateDatasetSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1304,7 +1707,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1314,8 +1717,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1324,6 +1729,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseDocumentServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1333,6 +1739,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._GetLocation._get_response(
@@ -1353,6 +1786,27 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1393,7 +1847,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1403,8 +1857,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1413,6 +1869,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDocumentServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1422,6 +1879,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._ListLocations._get_response(
@@ -1442,6 +1926,27 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1482,7 +1987,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1492,13 +1997,16 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1510,6 +2018,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._CancelOperation._get_response(
@@ -1566,7 +2101,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1576,8 +2111,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1586,6 +2123,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDocumentServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1595,6 +2133,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._GetOperation._get_response(
@@ -1615,6 +2180,27 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1655,7 +2241,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1665,8 +2251,10 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1675,6 +2263,7 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             http_options = (
                 _BaseDocumentServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDocumentServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1684,6 +2273,33 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             query_params = _BaseDocumentServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.documentai_v1beta3.DocumentServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DocumentServiceRestTransport._ListOperations._get_response(
@@ -1704,6 +2320,27 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.documentai_v1beta3.DocumentServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

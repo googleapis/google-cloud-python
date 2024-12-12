@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -105,9 +113,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_create_client_gateway(
         self,
         request: client_gateways_service.CreateClientGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        client_gateways_service.CreateClientGatewayRequest, Sequence[Tuple[str, str]]
+        client_gateways_service.CreateClientGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_client_gateway
 
@@ -130,9 +139,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_delete_client_gateway(
         self,
         request: client_gateways_service.DeleteClientGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        client_gateways_service.DeleteClientGatewayRequest, Sequence[Tuple[str, str]]
+        client_gateways_service.DeleteClientGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_client_gateway
 
@@ -155,9 +165,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_get_client_gateway(
         self,
         request: client_gateways_service.GetClientGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        client_gateways_service.GetClientGatewayRequest, Sequence[Tuple[str, str]]
+        client_gateways_service.GetClientGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_client_gateway
 
@@ -180,9 +191,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_list_client_gateways(
         self,
         request: client_gateways_service.ListClientGatewaysRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        client_gateways_service.ListClientGatewaysRequest, Sequence[Tuple[str, str]]
+        client_gateways_service.ListClientGatewaysRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_client_gateways
 
@@ -205,8 +217,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -228,8 +242,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -251,8 +267,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -272,8 +290,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -293,8 +313,11 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -316,8 +339,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -337,8 +362,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -358,8 +385,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -381,8 +410,10 @@ class ClientGatewaysServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -588,7 +619,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create client gateway method over HTTP.
 
@@ -598,8 +629,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -612,6 +645,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseCreateClientGateway._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_client_gateway(
                 request, metadata
             )
@@ -627,6 +661,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseCreateClientGateway._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.CreateClientGateway",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "CreateClientGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -649,7 +710,29 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_client_gateway(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.create_client_gateway",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "CreateClientGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteClientGateway(
@@ -687,7 +770,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete client gateway method over HTTP.
 
@@ -697,8 +780,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -711,6 +796,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseDeleteClientGateway._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_client_gateway(
                 request, metadata
             )
@@ -722,6 +808,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseDeleteClientGateway._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.DeleteClientGateway",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "DeleteClientGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -743,7 +856,29 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_client_gateway(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.delete_client_gateway",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "DeleteClientGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetClientGateway(
@@ -781,7 +916,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> client_gateways_service.ClientGateway:
             r"""Call the get client gateway method over HTTP.
 
@@ -791,8 +926,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.client_gateways_service.ClientGateway:
@@ -804,6 +941,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseGetClientGateway._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_client_gateway(
                 request, metadata
             )
@@ -815,6 +953,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseGetClientGateway._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.GetClientGateway",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetClientGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -838,7 +1003,31 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             pb_resp = client_gateways_service.ClientGateway.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_client_gateway(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = client_gateways_service.ClientGateway.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.get_client_gateway",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetClientGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClientGateways(
@@ -876,7 +1065,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> client_gateways_service.ListClientGatewaysResponse:
             r"""Call the list client gateways method over HTTP.
 
@@ -887,8 +1076,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.client_gateways_service.ListClientGatewaysResponse:
@@ -900,6 +1091,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseListClientGateways._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_client_gateways(
                 request, metadata
             )
@@ -911,6 +1103,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseListClientGateways._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.ListClientGateways",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "ListClientGateways",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -934,7 +1153,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             pb_resp = client_gateways_service.ListClientGatewaysResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_client_gateways(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        client_gateways_service.ListClientGatewaysResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.list_client_gateways",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "ListClientGateways",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1018,7 +1263,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1028,8 +1273,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1038,6 +1285,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1047,6 +1295,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClientGatewaysServiceRestTransport._GetLocation._get_response(
@@ -1067,6 +1342,27 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1108,7 +1404,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1118,8 +1414,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1128,6 +1426,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1137,6 +1436,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClientGatewaysServiceRestTransport._ListLocations._get_response(
@@ -1157,6 +1483,27 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1198,7 +1545,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1208,8 +1555,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1218,6 +1567,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1227,6 +1577,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClientGatewaysServiceRestTransport._GetIamPolicy._get_response(
@@ -1247,6 +1624,27 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1289,7 +1687,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1299,8 +1697,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1309,6 +1709,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1322,6 +1723,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClientGatewaysServiceRestTransport._SetIamPolicy._get_response(
@@ -1343,6 +1771,27 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1385,7 +1834,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1395,8 +1844,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1405,6 +1856,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1420,6 +1872,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1443,6 +1922,27 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1485,7 +1985,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1495,13 +1995,16 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1517,6 +2020,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1577,7 +2107,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1587,13 +2117,16 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1605,6 +2138,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1664,7 +2224,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1674,8 +2234,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1684,6 +2246,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1693,6 +2256,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClientGatewaysServiceRestTransport._GetOperation._get_response(
@@ -1713,6 +2303,27 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1754,7 +2365,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1764,8 +2375,10 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1774,6 +2387,7 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             http_options = (
                 _BaseClientGatewaysServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1783,6 +2397,33 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             query_params = _BaseClientGatewaysServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClientGatewaysServiceRestTransport._ListOperations._get_response(
@@ -1803,6 +2444,27 @@ class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.clientgateways_v1.ClientGatewaysServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.clientgateways.v1.ClientGatewaysService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

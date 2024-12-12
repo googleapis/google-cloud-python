@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,13 +26,92 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.recaptchaenterprise_v1.types import recaptchaenterprise
 
 from .base import DEFAULT_CLIENT_INFO, RecaptchaEnterpriseServiceTransport
 from .grpc import RecaptchaEnterpriseServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
@@ -229,10 +311,13 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -268,7 +353,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_assessment" not in self._stubs:
-            self._stubs["create_assessment"] = self.grpc_channel.unary_unary(
+            self._stubs["create_assessment"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateAssessment",
                 request_serializer=recaptchaenterprise.CreateAssessmentRequest.serialize,
                 response_deserializer=recaptchaenterprise.Assessment.deserialize,
@@ -299,7 +384,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "annotate_assessment" not in self._stubs:
-            self._stubs["annotate_assessment"] = self.grpc_channel.unary_unary(
+            self._stubs["annotate_assessment"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/AnnotateAssessment",
                 request_serializer=recaptchaenterprise.AnnotateAssessmentRequest.serialize,
                 response_deserializer=recaptchaenterprise.AnnotateAssessmentResponse.deserialize,
@@ -327,7 +412,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_key" not in self._stubs:
-            self._stubs["create_key"] = self.grpc_channel.unary_unary(
+            self._stubs["create_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey",
                 request_serializer=recaptchaenterprise.CreateKeyRequest.serialize,
                 response_deserializer=recaptchaenterprise.Key.deserialize,
@@ -357,7 +442,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_keys" not in self._stubs:
-            self._stubs["list_keys"] = self.grpc_channel.unary_unary(
+            self._stubs["list_keys"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListKeys",
                 request_serializer=recaptchaenterprise.ListKeysRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListKeysResponse.deserialize,
@@ -388,7 +473,9 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_legacy_secret_key" not in self._stubs:
-            self._stubs["retrieve_legacy_secret_key"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "retrieve_legacy_secret_key"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RetrieveLegacySecretKey",
                 request_serializer=recaptchaenterprise.RetrieveLegacySecretKeyRequest.serialize,
                 response_deserializer=recaptchaenterprise.RetrieveLegacySecretKeyResponse.deserialize,
@@ -416,7 +503,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_key" not in self._stubs:
-            self._stubs["get_key"] = self.grpc_channel.unary_unary(
+            self._stubs["get_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey",
                 request_serializer=recaptchaenterprise.GetKeyRequest.serialize,
                 response_deserializer=recaptchaenterprise.Key.deserialize,
@@ -444,7 +531,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_key" not in self._stubs:
-            self._stubs["update_key"] = self.grpc_channel.unary_unary(
+            self._stubs["update_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey",
                 request_serializer=recaptchaenterprise.UpdateKeyRequest.serialize,
                 response_deserializer=recaptchaenterprise.Key.deserialize,
@@ -470,7 +557,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_key" not in self._stubs:
-            self._stubs["delete_key"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteKey",
                 request_serializer=recaptchaenterprise.DeleteKeyRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -504,7 +591,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "migrate_key" not in self._stubs:
-            self._stubs["migrate_key"] = self.grpc_channel.unary_unary(
+            self._stubs["migrate_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/MigrateKey",
                 request_serializer=recaptchaenterprise.MigrateKeyRequest.serialize,
                 response_deserializer=recaptchaenterprise.Key.deserialize,
@@ -537,7 +624,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "add_ip_override" not in self._stubs:
-            self._stubs["add_ip_override"] = self.grpc_channel.unary_unary(
+            self._stubs["add_ip_override"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/AddIpOverride",
                 request_serializer=recaptchaenterprise.AddIpOverrideRequest.serialize,
                 response_deserializer=recaptchaenterprise.AddIpOverrideResponse.deserialize,
@@ -573,7 +660,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_ip_override" not in self._stubs:
-            self._stubs["remove_ip_override"] = self.grpc_channel.unary_unary(
+            self._stubs["remove_ip_override"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RemoveIpOverride",
                 request_serializer=recaptchaenterprise.RemoveIpOverrideRequest.serialize,
                 response_deserializer=recaptchaenterprise.RemoveIpOverrideResponse.deserialize,
@@ -602,7 +689,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_ip_overrides" not in self._stubs:
-            self._stubs["list_ip_overrides"] = self.grpc_channel.unary_unary(
+            self._stubs["list_ip_overrides"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListIpOverrides",
                 request_serializer=recaptchaenterprise.ListIpOverridesRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListIpOverridesResponse.deserialize,
@@ -631,7 +718,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_metrics" not in self._stubs:
-            self._stubs["get_metrics"] = self.grpc_channel.unary_unary(
+            self._stubs["get_metrics"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetMetrics",
                 request_serializer=recaptchaenterprise.GetMetricsRequest.serialize,
                 response_deserializer=recaptchaenterprise.Metrics.deserialize,
@@ -662,7 +749,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_firewall_policy" not in self._stubs:
-            self._stubs["create_firewall_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["create_firewall_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateFirewallPolicy",
                 request_serializer=recaptchaenterprise.CreateFirewallPolicyRequest.serialize,
                 response_deserializer=recaptchaenterprise.FirewallPolicy.deserialize,
@@ -692,7 +779,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_firewall_policies" not in self._stubs:
-            self._stubs["list_firewall_policies"] = self.grpc_channel.unary_unary(
+            self._stubs["list_firewall_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListFirewallPolicies",
                 request_serializer=recaptchaenterprise.ListFirewallPoliciesRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListFirewallPoliciesResponse.deserialize,
@@ -721,7 +808,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_firewall_policy" not in self._stubs:
-            self._stubs["get_firewall_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_firewall_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy",
                 request_serializer=recaptchaenterprise.GetFirewallPolicyRequest.serialize,
                 response_deserializer=recaptchaenterprise.FirewallPolicy.deserialize,
@@ -750,7 +837,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_firewall_policy" not in self._stubs:
-            self._stubs["update_firewall_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["update_firewall_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateFirewallPolicy",
                 request_serializer=recaptchaenterprise.UpdateFirewallPolicyRequest.serialize,
                 response_deserializer=recaptchaenterprise.FirewallPolicy.deserialize,
@@ -778,7 +865,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_firewall_policy" not in self._stubs:
-            self._stubs["delete_firewall_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_firewall_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteFirewallPolicy",
                 request_serializer=recaptchaenterprise.DeleteFirewallPolicyRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -807,7 +894,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reorder_firewall_policies" not in self._stubs:
-            self._stubs["reorder_firewall_policies"] = self.grpc_channel.unary_unary(
+            self._stubs["reorder_firewall_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ReorderFirewallPolicies",
                 request_serializer=recaptchaenterprise.ReorderFirewallPoliciesRequest.serialize,
                 response_deserializer=recaptchaenterprise.ReorderFirewallPoliciesResponse.deserialize,
@@ -836,7 +923,9 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_related_account_groups" not in self._stubs:
-            self._stubs["list_related_account_groups"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_related_account_groups"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroups",
                 request_serializer=recaptchaenterprise.ListRelatedAccountGroupsRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListRelatedAccountGroupsResponse.deserialize,
@@ -868,7 +957,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         if "list_related_account_group_memberships" not in self._stubs:
             self._stubs[
                 "list_related_account_group_memberships"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroupMemberships",
                 request_serializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse.deserialize,
@@ -900,7 +989,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         if "search_related_account_group_memberships" not in self._stubs:
             self._stubs[
                 "search_related_account_group_memberships"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/SearchRelatedAccountGroupMemberships",
                 request_serializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest.serialize,
                 response_deserializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse.deserialize,
@@ -1028,7 +1117,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

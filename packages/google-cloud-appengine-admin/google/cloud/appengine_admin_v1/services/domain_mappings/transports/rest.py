@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -110,8 +118,10 @@ class DomainMappingsRestInterceptor:
     def pre_create_domain_mapping(
         self,
         request: appengine.CreateDomainMappingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.CreateDomainMappingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.CreateDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -133,8 +143,10 @@ class DomainMappingsRestInterceptor:
     def pre_delete_domain_mapping(
         self,
         request: appengine.DeleteDomainMappingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.DeleteDomainMappingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.DeleteDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -156,8 +168,10 @@ class DomainMappingsRestInterceptor:
     def pre_get_domain_mapping(
         self,
         request: appengine.GetDomainMappingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.GetDomainMappingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.GetDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -179,8 +193,10 @@ class DomainMappingsRestInterceptor:
     def pre_list_domain_mappings(
         self,
         request: appengine.ListDomainMappingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.ListDomainMappingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.ListDomainMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_domain_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -202,8 +218,10 @@ class DomainMappingsRestInterceptor:
     def pre_update_domain_mapping(
         self,
         request: appengine.UpdateDomainMappingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.UpdateDomainMappingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.UpdateDomainMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_domain_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -386,7 +404,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create domain mapping method over HTTP.
 
@@ -397,8 +415,10 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -411,6 +431,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             http_options = (
                 _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_domain_mapping(
                 request, metadata
             )
@@ -426,6 +447,33 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             query_params = _BaseDomainMappingsRestTransport._BaseCreateDomainMapping._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.DomainMappingsClient.CreateDomainMapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "CreateDomainMapping",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DomainMappingsRestTransport._CreateDomainMapping._get_response(
@@ -446,7 +494,29 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_domain_mapping(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.DomainMappingsClient.create_domain_mapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "CreateDomainMapping",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDomainMapping(
@@ -484,7 +554,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete domain mapping method over HTTP.
 
@@ -495,8 +565,10 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -509,6 +581,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             http_options = (
                 _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_domain_mapping(
                 request, metadata
             )
@@ -520,6 +593,33 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             query_params = _BaseDomainMappingsRestTransport._BaseDeleteDomainMapping._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.DomainMappingsClient.DeleteDomainMapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "DeleteDomainMapping",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DomainMappingsRestTransport._DeleteDomainMapping._get_response(
@@ -539,7 +639,29 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_domain_mapping(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.DomainMappingsClient.delete_domain_mapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "DeleteDomainMapping",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDomainMapping(
@@ -576,7 +698,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> domain_mapping.DomainMapping:
             r"""Call the get domain mapping method over HTTP.
 
@@ -586,8 +708,10 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.domain_mapping.DomainMapping:
@@ -599,6 +723,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             http_options = (
                 _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_domain_mapping(
                 request, metadata
             )
@@ -610,6 +735,33 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             query_params = _BaseDomainMappingsRestTransport._BaseGetDomainMapping._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.DomainMappingsClient.GetDomainMapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "GetDomainMapping",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DomainMappingsRestTransport._GetDomainMapping._get_response(
@@ -631,7 +783,29 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             pb_resp = domain_mapping.DomainMapping.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_domain_mapping(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = domain_mapping.DomainMapping.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.DomainMappingsClient.get_domain_mapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "GetDomainMapping",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDomainMappings(
@@ -668,7 +842,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> appengine.ListDomainMappingsResponse:
             r"""Call the list domain mappings method over HTTP.
 
@@ -679,8 +853,10 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.appengine.ListDomainMappingsResponse:
@@ -692,6 +868,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             http_options = (
                 _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_domain_mappings(
                 request, metadata
             )
@@ -703,6 +880,33 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             query_params = _BaseDomainMappingsRestTransport._BaseListDomainMappings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.DomainMappingsClient.ListDomainMappings",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "ListDomainMappings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DomainMappingsRestTransport._ListDomainMappings._get_response(
@@ -724,7 +928,31 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             pb_resp = appengine.ListDomainMappingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_domain_mappings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = appengine.ListDomainMappingsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.DomainMappingsClient.list_domain_mappings",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "ListDomainMappings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDomainMapping(
@@ -763,7 +991,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update domain mapping method over HTTP.
 
@@ -774,8 +1002,10 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -788,6 +1018,7 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             http_options = (
                 _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_domain_mapping(
                 request, metadata
             )
@@ -803,6 +1034,33 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             query_params = _BaseDomainMappingsRestTransport._BaseUpdateDomainMapping._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.DomainMappingsClient.UpdateDomainMapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "UpdateDomainMapping",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DomainMappingsRestTransport._UpdateDomainMapping._get_response(
@@ -823,7 +1081,29 @@ class DomainMappingsRestTransport(_BaseDomainMappingsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_domain_mapping(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.DomainMappingsClient.update_domain_mapping",
+                    extra={
+                        "serviceName": "google.appengine.v1.DomainMappings",
+                        "rpcName": "UpdateDomainMapping",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

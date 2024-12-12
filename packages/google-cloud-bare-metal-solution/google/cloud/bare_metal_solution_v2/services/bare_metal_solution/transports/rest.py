@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -57,6 +57,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -433,8 +441,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_create_nfs_share(
         self,
         request: gcb_nfs_share.CreateNfsShareRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_nfs_share.CreateNfsShareRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_nfs_share.CreateNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -456,8 +466,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_create_provisioning_config(
         self,
         request: provisioning.CreateProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[provisioning.CreateProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.CreateProvisioningConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -479,8 +492,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_create_ssh_key(
         self,
         request: gcb_ssh_key.CreateSSHKeyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_ssh_key.CreateSSHKeyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_ssh_key.CreateSSHKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_ssh_key
 
         Override in a subclass to manipulate the request or metadata
@@ -500,9 +515,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_create_volume_snapshot(
         self,
         request: gcb_volume_snapshot.CreateVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcb_volume_snapshot.CreateVolumeSnapshotRequest, Sequence[Tuple[str, str]]
+        gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_volume_snapshot
 
@@ -525,8 +541,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_delete_nfs_share(
         self,
         request: nfs_share.DeleteNfsShareRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[nfs_share.DeleteNfsShareRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        nfs_share.DeleteNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -546,8 +564,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_delete_ssh_key(
-        self, request: ssh_key.DeleteSSHKeyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[ssh_key.DeleteSSHKeyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: ssh_key.DeleteSSHKeyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ssh_key.DeleteSSHKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_ssh_key
 
         Override in a subclass to manipulate the request or metadata
@@ -558,8 +578,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_delete_volume_snapshot(
         self,
         request: volume_snapshot.DeleteVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[volume_snapshot.DeleteVolumeSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        volume_snapshot.DeleteVolumeSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_volume_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -570,8 +593,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_detach_lun(
         self,
         request: gcb_instance.DetachLunRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_instance.DetachLunRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcb_instance.DetachLunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for detach_lun
 
         Override in a subclass to manipulate the request or metadata
@@ -593,9 +616,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_disable_interactive_serial_console(
         self,
         request: instance.DisableInteractiveSerialConsoleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        instance.DisableInteractiveSerialConsoleRequest, Sequence[Tuple[str, str]]
+        instance.DisableInteractiveSerialConsoleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for disable_interactive_serial_console
 
@@ -618,9 +642,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_enable_interactive_serial_console(
         self,
         request: instance.EnableInteractiveSerialConsoleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        instance.EnableInteractiveSerialConsoleRequest, Sequence[Tuple[str, str]]
+        instance.EnableInteractiveSerialConsoleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for enable_interactive_serial_console
 
@@ -641,8 +666,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_evict_lun(
-        self, request: lun.EvictLunRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lun.EvictLunRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lun.EvictLunRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lun.EvictLunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for evict_lun
 
         Override in a subclass to manipulate the request or metadata
@@ -662,8 +689,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_evict_volume(
-        self, request: volume.EvictVolumeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.EvictVolumeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.EvictVolumeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.EvictVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for evict_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -683,8 +712,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_get_instance(
-        self, request: instance.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[instance.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: instance.GetInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -702,8 +733,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_get_lun(
-        self, request: lun.GetLunRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lun.GetLunRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lun.GetLunRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lun.GetLunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lun
 
         Override in a subclass to manipulate the request or metadata
@@ -721,8 +754,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_get_network(
-        self, request: network.GetNetworkRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[network.GetNetworkRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: network.GetNetworkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[network.GetNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_network
 
         Override in a subclass to manipulate the request or metadata
@@ -740,8 +775,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_get_nfs_share(
-        self, request: nfs_share.GetNfsShareRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[nfs_share.GetNfsShareRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: nfs_share.GetNfsShareRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[nfs_share.GetNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -761,8 +798,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_get_provisioning_config(
         self,
         request: provisioning.GetProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[provisioning.GetProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.GetProvisioningConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -782,8 +822,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_get_volume(
-        self, request: volume.GetVolumeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.GetVolumeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.GetVolumeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.GetVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -803,8 +845,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_get_volume_snapshot(
         self,
         request: volume_snapshot.GetVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[volume_snapshot.GetVolumeSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        volume_snapshot.GetVolumeSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_volume_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -826,8 +871,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_list_instances(
         self,
         request: instance.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[instance.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -847,8 +892,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_list_luns(
-        self, request: lun.ListLunsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lun.ListLunsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lun.ListLunsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lun.ListLunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_luns
 
         Override in a subclass to manipulate the request or metadata
@@ -866,8 +913,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_list_networks(
-        self, request: network.ListNetworksRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[network.ListNetworksRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: network.ListNetworksRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[network.ListNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_networks
 
         Override in a subclass to manipulate the request or metadata
@@ -889,8 +938,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_list_network_usage(
         self,
         request: network.ListNetworkUsageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[network.ListNetworkUsageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        network.ListNetworkUsageRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_network_usage
 
         Override in a subclass to manipulate the request or metadata
@@ -912,8 +963,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_list_nfs_shares(
         self,
         request: nfs_share.ListNfsSharesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[nfs_share.ListNfsSharesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[nfs_share.ListNfsSharesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_nfs_shares
 
         Override in a subclass to manipulate the request or metadata
@@ -933,8 +984,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_list_os_images(
-        self, request: osimage.ListOSImagesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[osimage.ListOSImagesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: osimage.ListOSImagesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[osimage.ListOSImagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_os_images
 
         Override in a subclass to manipulate the request or metadata
@@ -956,8 +1009,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_list_provisioning_quotas(
         self,
         request: provisioning.ListProvisioningQuotasRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[provisioning.ListProvisioningQuotasRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.ListProvisioningQuotasRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_provisioning_quotas
 
         Override in a subclass to manipulate the request or metadata
@@ -977,8 +1033,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_list_ssh_keys(
-        self, request: ssh_key.ListSSHKeysRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[ssh_key.ListSSHKeysRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: ssh_key.ListSSHKeysRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ssh_key.ListSSHKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_ssh_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -998,8 +1056,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_list_volumes(
-        self, request: volume.ListVolumesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.ListVolumesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.ListVolumesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.ListVolumesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_volumes
 
         Override in a subclass to manipulate the request or metadata
@@ -1021,8 +1081,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_list_volume_snapshots(
         self,
         request: volume_snapshot.ListVolumeSnapshotsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[volume_snapshot.ListVolumeSnapshotsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        volume_snapshot.ListVolumeSnapshotsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_volume_snapshots
 
         Override in a subclass to manipulate the request or metadata
@@ -1044,8 +1107,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_rename_instance(
         self,
         request: instance.RenameInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[instance.RenameInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.RenameInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1063,8 +1126,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_rename_network(
-        self, request: network.RenameNetworkRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[network.RenameNetworkRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: network.RenameNetworkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[network.RenameNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_network
 
         Override in a subclass to manipulate the request or metadata
@@ -1084,8 +1149,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_rename_nfs_share(
         self,
         request: nfs_share.RenameNfsShareRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[nfs_share.RenameNfsShareRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        nfs_share.RenameNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for rename_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -1103,8 +1170,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_rename_volume(
-        self, request: volume.RenameVolumeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.RenameVolumeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.RenameVolumeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.RenameVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -1124,8 +1193,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_reset_instance(
         self,
         request: instance.ResetInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[instance.ResetInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.ResetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1147,8 +1216,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_resize_volume(
         self,
         request: gcb_volume.ResizeVolumeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_volume.ResizeVolumeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcb_volume.ResizeVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resize_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -1170,9 +1239,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_restore_volume_snapshot(
         self,
         request: gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcb_volume_snapshot.RestoreVolumeSnapshotRequest, Sequence[Tuple[str, str]]
+        gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for restore_volume_snapshot
 
@@ -1195,8 +1265,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_start_instance(
         self,
         request: instance.StartInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[instance.StartInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.StartInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1216,8 +1286,10 @@ class BareMetalSolutionRestInterceptor:
         return response
 
     def pre_stop_instance(
-        self, request: instance.StopInstanceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[instance.StopInstanceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: instance.StopInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.StopInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1239,8 +1311,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_submit_provisioning_config(
         self,
         request: provisioning.SubmitProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[provisioning.SubmitProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.SubmitProvisioningConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for submit_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1262,8 +1337,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_update_instance(
         self,
         request: gcb_instance.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_instance.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_instance.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1285,8 +1362,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_update_network(
         self,
         request: gcb_network.UpdateNetworkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_network.UpdateNetworkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_network.UpdateNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_network
 
         Override in a subclass to manipulate the request or metadata
@@ -1308,8 +1387,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_update_nfs_share(
         self,
         request: gcb_nfs_share.UpdateNfsShareRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_nfs_share.UpdateNfsShareRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_nfs_share.UpdateNfsShareRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_nfs_share
 
         Override in a subclass to manipulate the request or metadata
@@ -1331,8 +1412,11 @@ class BareMetalSolutionRestInterceptor:
     def pre_update_provisioning_config(
         self,
         request: provisioning.UpdateProvisioningConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[provisioning.UpdateProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.UpdateProvisioningConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_provisioning_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1354,8 +1438,8 @@ class BareMetalSolutionRestInterceptor:
     def pre_update_volume(
         self,
         request: gcb_volume.UpdateVolumeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcb_volume.UpdateVolumeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcb_volume.UpdateVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -1377,8 +1461,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1400,8 +1486,10 @@ class BareMetalSolutionRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1579,7 +1667,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create nfs share method over HTTP.
 
@@ -1589,8 +1677,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1603,6 +1693,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_nfs_share(
                 request, metadata
             )
@@ -1618,6 +1709,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseCreateNfsShare._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.CreateNfsShare",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateNfsShare",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._CreateNfsShare._get_response(
@@ -1638,7 +1756,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_nfs_share(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.create_nfs_share",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateNfsShare",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateProvisioningConfig(
@@ -1677,7 +1817,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> provisioning.ProvisioningConfig:
             r"""Call the create provisioning
             config method over HTTP.
@@ -1688,8 +1828,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.provisioning.ProvisioningConfig:
@@ -1699,6 +1841,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_provisioning_config(
                 request, metadata
             )
@@ -1714,6 +1857,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseCreateProvisioningConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.CreateProvisioningConfig",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateProvisioningConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1738,7 +1908,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = provisioning.ProvisioningConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_provisioning_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = provisioning.ProvisioningConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.create_provisioning_config",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateProvisioningConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSSHKey(
@@ -1776,7 +1968,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcb_ssh_key.SSHKey:
             r"""Call the create ssh key method over HTTP.
 
@@ -1787,8 +1979,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcb_ssh_key.SSHKey:
@@ -1800,6 +1994,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_ssh_key(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_transcoded_request(
                 http_options, request
@@ -1813,6 +2008,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseCreateSSHKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.CreateSSHKey",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateSSHKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._CreateSSHKey._get_response(
@@ -1835,7 +2057,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = gcb_ssh_key.SSHKey.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_ssh_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcb_ssh_key.SSHKey.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.create_ssh_key",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateSSHKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateVolumeSnapshot(
@@ -1874,7 +2118,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcb_volume_snapshot.VolumeSnapshot:
             r"""Call the create volume snapshot method over HTTP.
 
@@ -1885,8 +2129,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcb_volume_snapshot.VolumeSnapshot:
@@ -1898,6 +2144,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_volume_snapshot(
                 request, metadata
             )
@@ -1913,6 +2160,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseCreateVolumeSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.CreateVolumeSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateVolumeSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1937,7 +2211,31 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = gcb_volume_snapshot.VolumeSnapshot.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_volume_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcb_volume_snapshot.VolumeSnapshot.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.create_volume_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "CreateVolumeSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNfsShare(
@@ -1975,7 +2273,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete nfs share method over HTTP.
 
@@ -1985,8 +2283,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1999,6 +2299,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_nfs_share(
                 request, metadata
             )
@@ -2010,6 +2311,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteNfsShare._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.DeleteNfsShare",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DeleteNfsShare",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._DeleteNfsShare._get_response(
@@ -2029,7 +2357,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_nfs_share(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.delete_nfs_share",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DeleteNfsShare",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSSHKey(
@@ -2066,7 +2416,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete ssh key method over HTTP.
 
@@ -2077,13 +2427,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_ssh_key(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_transcoded_request(
                 http_options, request
@@ -2093,6 +2446,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteSSHKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.DeleteSSHKey",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DeleteSSHKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._DeleteSSHKey._get_response(
@@ -2144,7 +2524,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete volume snapshot method over HTTP.
 
@@ -2155,13 +2535,16 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_volume_snapshot(
                 request, metadata
             )
@@ -2173,6 +2556,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseDeleteVolumeSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.DeleteVolumeSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DeleteVolumeSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2226,7 +2636,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the detach lun method over HTTP.
 
@@ -2237,8 +2647,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2251,6 +2663,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_detach_lun(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_transcoded_request(
                 http_options, request
@@ -2264,6 +2677,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseDetachLun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.DetachLun",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DetachLun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._DetachLun._get_response(
@@ -2284,7 +2724,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_detach_lun(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.detach_lun",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DetachLun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DisableInteractiveSerialConsole(
@@ -2325,7 +2787,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the disable interactive
             serial console method over HTTP.
@@ -2337,8 +2799,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2351,6 +2815,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2369,6 +2834,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseDisableInteractiveSerialConsole._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.DisableInteractiveSerialConsole",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DisableInteractiveSerialConsole",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._DisableInteractiveSerialConsole._get_response(
@@ -2389,7 +2881,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_disable_interactive_serial_console(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.disable_interactive_serial_console",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "DisableInteractiveSerialConsole",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EnableInteractiveSerialConsole(
@@ -2428,7 +2942,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the enable interactive serial
             console method over HTTP.
@@ -2440,8 +2954,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2454,6 +2970,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_enable_interactive_serial_console(
                 request, metadata
             )
@@ -2469,6 +2986,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseEnableInteractiveSerialConsole._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.EnableInteractiveSerialConsole",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "EnableInteractiveSerialConsole",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._EnableInteractiveSerialConsole._get_response(
@@ -2489,7 +3033,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_enable_interactive_serial_console(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.enable_interactive_serial_console",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "EnableInteractiveSerialConsole",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EvictLun(
@@ -2527,7 +3093,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the evict lun method over HTTP.
 
@@ -2538,8 +3104,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2552,6 +3120,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_evict_lun(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_transcoded_request(
                 http_options, request
@@ -2565,6 +3134,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseEvictLun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.EvictLun",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "EvictLun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._EvictLun._get_response(
@@ -2585,7 +3181,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_evict_lun(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.evict_lun",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "EvictLun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EvictVolume(
@@ -2623,7 +3241,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the evict volume method over HTTP.
 
@@ -2634,8 +3252,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2648,6 +3268,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_evict_volume(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_transcoded_request(
                 http_options, request
@@ -2661,6 +3282,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseEvictVolume._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.EvictVolume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "EvictVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._EvictVolume._get_response(
@@ -2681,7 +3329,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_evict_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.evict_volume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "EvictVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstance(
@@ -2718,7 +3388,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> instance.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -2729,8 +3399,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.instance.Instance:
@@ -2740,6 +3412,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_transcoded_request(
                 http_options, request
@@ -2749,6 +3422,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseGetInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetInstance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetInstance._get_response(
@@ -2770,7 +3470,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = instance.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = instance.Instance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.get_instance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetLun(
@@ -2807,7 +3529,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lun.Lun:
             r"""Call the get lun method over HTTP.
 
@@ -2818,8 +3540,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lun.Lun:
@@ -2831,6 +3555,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetLun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_lun(request, metadata)
             transcoded_request = (
                 _BaseBareMetalSolutionRestTransport._BaseGetLun._get_transcoded_request(
@@ -2844,6 +3569,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetLun",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetLun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetLun._get_response(
@@ -2865,7 +3617,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = lun.Lun.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_lun(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lun.Lun.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.get_lun",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetLun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNetwork(
@@ -2902,7 +3676,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> network.Network:
             r"""Call the get network method over HTTP.
 
@@ -2913,8 +3687,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.network.Network:
@@ -2924,6 +3700,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_network(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_transcoded_request(
                 http_options, request
@@ -2933,6 +3710,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseGetNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetNetwork",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetNetwork._get_response(
@@ -2954,7 +3758,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = network.Network.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = network.Network.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.get_network",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNfsShare(
@@ -2991,7 +3817,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> nfs_share.NfsShare:
             r"""Call the get nfs share method over HTTP.
 
@@ -3002,8 +3828,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.nfs_share.NfsShare:
@@ -3013,6 +3841,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_nfs_share(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_transcoded_request(
                 http_options, request
@@ -3022,6 +3851,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseGetNfsShare._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetNfsShare",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetNfsShare",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetNfsShare._get_response(
@@ -3043,7 +3899,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = nfs_share.NfsShare.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_nfs_share(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = nfs_share.NfsShare.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.get_nfs_share",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetNfsShare",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProvisioningConfig(
@@ -3081,7 +3959,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> provisioning.ProvisioningConfig:
             r"""Call the get provisioning config method over HTTP.
 
@@ -3091,8 +3969,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.provisioning.ProvisioningConfig:
@@ -3102,6 +3982,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_provisioning_config(
                 request, metadata
             )
@@ -3113,6 +3994,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseGetProvisioningConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetProvisioningConfig",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetProvisioningConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3136,7 +4044,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = provisioning.ProvisioningConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_provisioning_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = provisioning.ProvisioningConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.get_provisioning_config",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetProvisioningConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVolume(
@@ -3173,7 +4103,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume.Volume:
             r"""Call the get volume method over HTTP.
 
@@ -3184,8 +4114,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume.Volume:
@@ -3195,6 +4127,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_volume(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_transcoded_request(
                 http_options, request
@@ -3204,6 +4137,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolume._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetVolume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetVolume._get_response(
@@ -3225,7 +4185,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = volume.Volume.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume.Volume.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.get_volume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVolumeSnapshot(
@@ -3263,7 +4245,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume_snapshot.VolumeSnapshot:
             r"""Call the get volume snapshot method over HTTP.
 
@@ -3274,8 +4256,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume_snapshot.VolumeSnapshot:
@@ -3287,6 +4271,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_volume_snapshot(
                 request, metadata
             )
@@ -3298,6 +4283,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseGetVolumeSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetVolumeSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetVolumeSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetVolumeSnapshot._get_response(
@@ -3319,7 +4331,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = volume_snapshot.VolumeSnapshot.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_volume_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume_snapshot.VolumeSnapshot.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.get_volume_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetVolumeSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstances(
@@ -3357,7 +4391,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> instance.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -3368,8 +4402,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.instance.ListInstancesResponse:
@@ -3381,6 +4417,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_transcoded_request(
                 http_options, request
@@ -3390,6 +4427,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListInstances",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListInstances._get_response(
@@ -3411,7 +4475,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = instance.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = instance.ListInstancesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_instances",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListLuns(
@@ -3448,7 +4534,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lun.ListLunsResponse:
             r"""Call the list luns method over HTTP.
 
@@ -3459,8 +4545,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lun.ListLunsResponse:
@@ -3472,6 +4560,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListLuns._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_luns(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_transcoded_request(
                 http_options, request
@@ -3481,6 +4570,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListLuns._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListLuns",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListLuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListLuns._get_response(
@@ -3502,7 +4618,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = lun.ListLunsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_luns(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lun.ListLunsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_luns",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListLuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNetworks(
@@ -3539,7 +4677,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> network.ListNetworksResponse:
             r"""Call the list networks method over HTTP.
 
@@ -3550,8 +4688,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.network.ListNetworksResponse:
@@ -3563,6 +4703,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_networks(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_transcoded_request(
                 http_options, request
@@ -3572,6 +4713,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListNetworks",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListNetworks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListNetworks._get_response(
@@ -3593,7 +4761,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = network.ListNetworksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_networks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = network.ListNetworksResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_networks",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListNetworks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNetworkUsage(
@@ -3631,7 +4821,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> network.ListNetworkUsageResponse:
             r"""Call the list network usage method over HTTP.
 
@@ -3641,8 +4831,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.network.ListNetworkUsageResponse:
@@ -3652,6 +4844,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_network_usage(
                 request, metadata
             )
@@ -3663,6 +4856,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListNetworkUsage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListNetworkUsage",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListNetworkUsage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListNetworkUsage._get_response(
@@ -3684,7 +4904,31 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = network.ListNetworkUsageResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_network_usage(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = network.ListNetworkUsageResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_network_usage",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListNetworkUsage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNfsShares(
@@ -3722,7 +4966,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> nfs_share.ListNfsSharesResponse:
             r"""Call the list nfs shares method over HTTP.
 
@@ -3733,8 +4977,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.nfs_share.ListNfsSharesResponse:
@@ -3746,6 +4992,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_nfs_shares(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_transcoded_request(
                 http_options, request
@@ -3755,6 +5002,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListNfsShares._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListNfsShares",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListNfsShares",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListNfsShares._get_response(
@@ -3776,7 +5050,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = nfs_share.ListNfsSharesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_nfs_shares(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = nfs_share.ListNfsSharesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_nfs_shares",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListNfsShares",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListOSImages(
@@ -3813,7 +5109,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> osimage.ListOSImagesResponse:
             r"""Call the list os images method over HTTP.
 
@@ -3824,8 +5120,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.osimage.ListOSImagesResponse:
@@ -3837,6 +5135,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_os_images(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_transcoded_request(
                 http_options, request
@@ -3846,6 +5145,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListOSImages._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListOSImages",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListOSImages",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListOSImages._get_response(
@@ -3867,7 +5193,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = osimage.ListOSImagesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_os_images(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = osimage.ListOSImagesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_os_images",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListOSImages",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProvisioningQuotas(
@@ -3905,7 +5253,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> provisioning.ListProvisioningQuotasResponse:
             r"""Call the list provisioning quotas method over HTTP.
 
@@ -3916,8 +5264,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.provisioning.ListProvisioningQuotasResponse:
@@ -3929,6 +5279,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_provisioning_quotas(
                 request, metadata
             )
@@ -3940,6 +5291,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListProvisioningQuotas._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListProvisioningQuotas",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListProvisioningQuotas",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3963,7 +5341,31 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = provisioning.ListProvisioningQuotasResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_provisioning_quotas(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        provisioning.ListProvisioningQuotasResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_provisioning_quotas",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListProvisioningQuotas",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSSHKeys(
@@ -4000,7 +5402,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ssh_key.ListSSHKeysResponse:
             r"""Call the list ssh keys method over HTTP.
 
@@ -4011,8 +5413,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ssh_key.ListSSHKeysResponse:
@@ -4022,6 +5426,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_ssh_keys(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_transcoded_request(
                 http_options, request
@@ -4031,6 +5436,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListSSHKeys._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListSSHKeys",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListSSHKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListSSHKeys._get_response(
@@ -4052,7 +5484,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = ssh_key.ListSSHKeysResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_ssh_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ssh_key.ListSSHKeysResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_ssh_keys",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListSSHKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVolumes(
@@ -4089,7 +5543,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume.ListVolumesResponse:
             r"""Call the list volumes method over HTTP.
 
@@ -4100,8 +5554,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume.ListVolumesResponse:
@@ -4113,6 +5569,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_volumes(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_transcoded_request(
                 http_options, request
@@ -4122,6 +5579,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListVolumes",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListVolumes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListVolumes._get_response(
@@ -4143,7 +5627,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = volume.ListVolumesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_volumes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume.ListVolumesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_volumes",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListVolumes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVolumeSnapshots(
@@ -4181,7 +5687,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume_snapshot.ListVolumeSnapshotsResponse:
             r"""Call the list volume snapshots method over HTTP.
 
@@ -4192,8 +5698,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume_snapshot.ListVolumeSnapshotsResponse:
@@ -4205,6 +5713,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_volume_snapshots(
                 request, metadata
             )
@@ -4216,6 +5725,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListVolumeSnapshots._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListVolumeSnapshots",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListVolumeSnapshots",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4239,7 +5775,31 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = volume_snapshot.ListVolumeSnapshotsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_volume_snapshots(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        volume_snapshot.ListVolumeSnapshotsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.list_volume_snapshots",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListVolumeSnapshots",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RenameInstance(
@@ -4278,7 +5838,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> instance.Instance:
             r"""Call the rename instance method over HTTP.
 
@@ -4289,8 +5849,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.instance.Instance:
@@ -4300,6 +5862,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rename_instance(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_transcoded_request(
                 http_options, request
@@ -4313,6 +5876,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseRenameInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.RenameInstance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameInstance._get_response(
@@ -4335,7 +5925,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = instance.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rename_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = instance.Instance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.rename_instance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RenameNetwork(
@@ -4374,7 +5986,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> network.Network:
             r"""Call the rename network method over HTTP.
 
@@ -4385,8 +5997,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.network.Network:
@@ -4396,6 +6010,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rename_network(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_transcoded_request(
                 http_options, request
@@ -4409,6 +6024,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.RenameNetwork",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameNetwork._get_response(
@@ -4431,7 +6073,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = network.Network.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rename_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = network.Network.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.rename_network",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RenameNfsShare(
@@ -4470,7 +6134,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> nfs_share.NfsShare:
             r"""Call the rename nfs share method over HTTP.
 
@@ -4481,8 +6145,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.nfs_share.NfsShare:
@@ -4492,6 +6158,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rename_nfs_share(
                 request, metadata
             )
@@ -4507,6 +6174,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseRenameNfsShare._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.RenameNfsShare",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameNfsShare",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameNfsShare._get_response(
@@ -4529,7 +6223,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = nfs_share.NfsShare.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rename_nfs_share(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = nfs_share.NfsShare.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.rename_nfs_share",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameNfsShare",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RenameVolume(
@@ -4567,7 +6283,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume.Volume:
             r"""Call the rename volume method over HTTP.
 
@@ -4578,8 +6294,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume.Volume:
@@ -4589,6 +6307,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rename_volume(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_transcoded_request(
                 http_options, request
@@ -4602,6 +6321,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseRenameVolume._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.RenameVolume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._RenameVolume._get_response(
@@ -4624,7 +6370,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = volume.Volume.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rename_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume.Volume.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.rename_volume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RenameVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResetInstance(
@@ -4663,7 +6431,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the reset instance method over HTTP.
 
@@ -4673,8 +6441,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4687,6 +6457,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reset_instance(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_transcoded_request(
                 http_options, request
@@ -4700,6 +6471,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseResetInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ResetInstance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ResetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ResetInstance._get_response(
@@ -4720,7 +6518,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reset_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.reset_instance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ResetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResizeVolume(
@@ -4758,7 +6578,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the resize volume method over HTTP.
 
@@ -4768,8 +6588,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4782,6 +6604,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resize_volume(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_transcoded_request(
                 http_options, request
@@ -4795,6 +6618,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseResizeVolume._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ResizeVolume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ResizeVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ResizeVolume._get_response(
@@ -4815,7 +6665,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resize_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.resize_volume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ResizeVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestoreVolumeSnapshot(
@@ -4854,7 +6726,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restore volume snapshot method over HTTP.
 
@@ -4865,8 +6737,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4879,6 +6753,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restore_volume_snapshot(
                 request, metadata
             )
@@ -4894,6 +6769,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseRestoreVolumeSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.RestoreVolumeSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RestoreVolumeSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4916,7 +6818,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restore_volume_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.restore_volume_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "RestoreVolumeSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StartInstance(
@@ -4955,7 +6879,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the start instance method over HTTP.
 
@@ -4965,8 +6889,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4979,6 +6905,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_start_instance(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_transcoded_request(
                 http_options, request
@@ -4992,6 +6919,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseStartInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.StartInstance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "StartInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._StartInstance._get_response(
@@ -5012,7 +6966,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_start_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.start_instance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "StartInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopInstance(
@@ -5050,7 +7026,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the stop instance method over HTTP.
 
@@ -5060,8 +7036,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5074,6 +7052,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_instance(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_transcoded_request(
                 http_options, request
@@ -5087,6 +7066,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseStopInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.StopInstance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "StopInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._StopInstance._get_response(
@@ -5107,7 +7113,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.stop_instance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "StopInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SubmitProvisioningConfig(
@@ -5146,7 +7174,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> provisioning.SubmitProvisioningConfigResponse:
             r"""Call the submit provisioning
             config method over HTTP.
@@ -5157,8 +7185,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.provisioning.SubmitProvisioningConfigResponse:
@@ -5170,6 +7200,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_submit_provisioning_config(
                 request, metadata
             )
@@ -5185,6 +7216,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseSubmitProvisioningConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.SubmitProvisioningConfig",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "SubmitProvisioningConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5209,7 +7267,31 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = provisioning.SubmitProvisioningConfigResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_submit_provisioning_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        provisioning.SubmitProvisioningConfigResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.submit_provisioning_config",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "SubmitProvisioningConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInstance(
@@ -5248,7 +7330,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -5259,8 +7341,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5273,6 +7357,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_transcoded_request(
                 http_options, request
@@ -5286,6 +7371,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.UpdateInstance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateInstance._get_response(
@@ -5306,7 +7418,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.update_instance",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNetwork(
@@ -5345,7 +7479,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update network method over HTTP.
 
@@ -5356,8 +7490,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5370,6 +7506,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_network(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_transcoded_request(
                 http_options, request
@@ -5383,6 +7520,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.UpdateNetwork",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateNetwork._get_response(
@@ -5403,7 +7567,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.update_network",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNfsShare(
@@ -5442,7 +7628,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update nfs share method over HTTP.
 
@@ -5453,8 +7639,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5467,6 +7655,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_nfs_share(
                 request, metadata
             )
@@ -5482,6 +7671,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateNfsShare._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.UpdateNfsShare",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateNfsShare",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateNfsShare._get_response(
@@ -5502,7 +7718,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_nfs_share(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.update_nfs_share",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateNfsShare",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateProvisioningConfig(
@@ -5541,7 +7779,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> provisioning.ProvisioningConfig:
             r"""Call the update provisioning
             config method over HTTP.
@@ -5553,8 +7791,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.provisioning.ProvisioningConfig:
@@ -5564,6 +7804,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_provisioning_config(
                 request, metadata
             )
@@ -5579,6 +7820,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateProvisioningConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.UpdateProvisioningConfig",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateProvisioningConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5603,7 +7871,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             pb_resp = provisioning.ProvisioningConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_provisioning_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = provisioning.ProvisioningConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.update_provisioning_config",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateProvisioningConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateVolume(
@@ -5641,7 +7931,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update volume method over HTTP.
 
@@ -5651,8 +7941,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5665,6 +7957,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_volume(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_transcoded_request(
                 http_options, request
@@ -5678,6 +7971,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseUpdateVolume._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.UpdateVolume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._UpdateVolume._get_response(
@@ -5698,7 +8018,29 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.update_volume",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "UpdateVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -6105,7 +8447,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -6115,8 +8457,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -6125,6 +8469,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -6134,6 +8479,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._GetLocation._get_response(
@@ -6154,6 +8526,27 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6195,7 +8588,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -6205,8 +8598,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -6215,6 +8610,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             http_options = (
                 _BaseBareMetalSolutionRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -6224,6 +8620,33 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             query_params = _BaseBareMetalSolutionRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.baremetalsolution_v2.BareMetalSolutionClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BareMetalSolutionRestTransport._ListLocations._get_response(
@@ -6244,6 +8667,27 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.baremetalsolution_v2.BareMetalSolutionAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
