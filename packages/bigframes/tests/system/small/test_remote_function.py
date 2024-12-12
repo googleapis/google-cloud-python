@@ -840,6 +840,21 @@ def test_read_gbq_function_enforces_explicit_types(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_multiple_inputs_not_a_row_processor(session):
+    with pytest.raises(ValueError) as context:
+        # The remote function has two args, which cannot be row processed. Throw
+        # a ValueError for it.
+        session.read_gbq_function(
+            function_name="bqutil.fn.cw_regexp_instr_2",
+            is_row_processor=True,
+        )
+    assert str(context.value) == (
+        "A multi-input function cannot be a row processor. A row processor function "
+        "takes in a single input representing the row."
+    )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
 def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
     columns = [
         "bool_col",
@@ -864,6 +879,8 @@ def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
             dataset_id_permanent,
             name=get_rf_name(add_ints, is_row_processor=True),
         )(add_ints)
+        assert add_ints_remote.bigframes_remote_function  # type: ignore
+        assert add_ints_remote.bigframes_cloud_function  # type: ignore
 
     with pytest.warns(
         bigframes.exceptions.PreviewWarning, match="axis=1 scenario is in preview."
@@ -880,6 +897,19 @@ def test_df_apply_axis_1(session, scalars_dfs, dataset_id_permanent):
     # array of ints, ignore this mismatch by using check_exact=False.
     pd.testing.assert_series_equal(
         pd_result, bf_result, check_dtype=False, check_exact=False
+    )
+
+    # Read back the deployed BQ remote function using read_gbq_function.
+    func_ref = session.read_gbq_function(
+        function_name=add_ints_remote.bigframes_remote_function,  # type: ignore
+        is_row_processor=True,
+    )
+
+    assert func_ref.bigframes_remote_function == add_ints_remote.bigframes_remote_function  # type: ignore
+
+    bf_result_gbq = scalars_df[columns].apply(func_ref, axis=1).to_pandas()
+    pd.testing.assert_series_equal(
+        pd_result, bf_result_gbq, check_dtype=False, check_exact=False
     )
 
 
