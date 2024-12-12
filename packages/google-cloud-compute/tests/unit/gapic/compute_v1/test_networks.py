@@ -979,6 +979,7 @@ def test_add_peering_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.add_peering(request)
 
@@ -1037,6 +1038,7 @@ def test_add_peering_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.add_peering(**mock_args)
 
@@ -1183,6 +1185,7 @@ def test_add_peering_unary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.add_peering_unary(request)
 
@@ -1241,6 +1244,7 @@ def test_add_peering_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.add_peering_unary(**mock_args)
 
@@ -1384,6 +1388,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteNetworkRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete(request)
 
@@ -1438,6 +1443,7 @@ def test_delete_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete(**mock_args)
 
@@ -1578,6 +1584,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteNetworkReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_unary(request)
 
@@ -1632,6 +1639,7 @@ def test_delete_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_unary(**mock_args)
 
@@ -1766,6 +1774,7 @@ def test_get_rest_required_fields(request_type=compute.GetNetworkRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get(request)
 
@@ -1820,6 +1829,7 @@ def test_get_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get(**mock_args)
 
@@ -1963,6 +1973,7 @@ def test_get_effective_firewalls_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_effective_firewalls(request)
 
@@ -2017,6 +2028,7 @@ def test_get_effective_firewalls_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_effective_firewalls(**mock_args)
 
@@ -2154,6 +2166,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertNetworkRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert(request)
 
@@ -2208,6 +2221,7 @@ def test_insert_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.insert(**mock_args)
 
@@ -2344,6 +2358,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertNetworkReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert_unary(request)
 
@@ -2398,6 +2413,7 @@ def test_insert_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.insert_unary(**mock_args)
 
@@ -2537,6 +2553,7 @@ def test_list_rest_required_fields(request_type=compute.ListNetworksRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list(request)
 
@@ -2593,6 +2610,7 @@ def test_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list(**mock_args)
 
@@ -2805,6 +2823,7 @@ def test_list_peering_routes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_peering_routes(request)
 
@@ -2870,6 +2889,7 @@ def test_list_peering_routes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_peering_routes(**mock_args)
 
@@ -3074,6 +3094,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchNetworkRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.patch(request)
 
@@ -3130,6 +3151,7 @@ def test_patch_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.patch(**mock_args)
 
@@ -3272,6 +3294,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchNetworkReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.patch_unary(request)
 
@@ -3328,6 +3351,7 @@ def test_patch_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.patch_unary(**mock_args)
 
@@ -3472,6 +3496,7 @@ def test_remove_peering_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.remove_peering(request)
 
@@ -3530,6 +3555,7 @@ def test_remove_peering_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.remove_peering(**mock_args)
 
@@ -3676,6 +3702,7 @@ def test_remove_peering_unary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.remove_peering_unary(request)
 
@@ -3734,6 +3761,7 @@ def test_remove_peering_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.remove_peering_unary(**mock_args)
 
@@ -3884,6 +3912,7 @@ def test_switch_to_custom_mode_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.switch_to_custom_mode(request)
 
@@ -3938,6 +3967,7 @@ def test_switch_to_custom_mode_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.switch_to_custom_mode(**mock_args)
 
@@ -4085,6 +4115,7 @@ def test_switch_to_custom_mode_unary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.switch_to_custom_mode_unary(request)
 
@@ -4139,6 +4170,7 @@ def test_switch_to_custom_mode_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.switch_to_custom_mode_unary(**mock_args)
 
@@ -4282,6 +4314,7 @@ def test_update_peering_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_peering(request)
 
@@ -4340,6 +4373,7 @@ def test_update_peering_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_peering(**mock_args)
 
@@ -4486,6 +4520,7 @@ def test_update_peering_unary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_peering_unary(request)
 
@@ -4544,6 +4579,7 @@ def test_update_peering_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_peering_unary(**mock_args)
 
@@ -4678,6 +4714,7 @@ def test_add_peering_rest_bad_request(request_type=compute.AddPeeringNetworkRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.add_peering(request)
 
 
@@ -4830,6 +4867,7 @@ def test_add_peering_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.add_peering(request)
 
     # Establish that the response is the type that we expect.
@@ -4889,6 +4927,7 @@ def test_add_peering_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -4931,6 +4970,7 @@ def test_delete_rest_bad_request(request_type=compute.DeleteNetworkRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete(request)
 
 
@@ -4987,6 +5027,7 @@ def test_delete_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete(request)
 
     # Establish that the response is the type that we expect.
@@ -5044,6 +5085,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -5086,6 +5128,7 @@ def test_get_rest_bad_request(request_type=compute.GetNetworkRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get(request)
 
 
@@ -5122,6 +5165,7 @@ def test_get_rest_call_success(request_type):
             mtu=342,
             name="name_value",
             network_firewall_policy_enforcement_order="network_firewall_policy_enforcement_order_value",
+            network_profile="network_profile_value",
             self_link="self_link_value",
             self_link_with_id="self_link_with_id_value",
             subnetworks=["subnetworks_value"],
@@ -5136,6 +5180,7 @@ def test_get_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
@@ -5156,6 +5201,7 @@ def test_get_rest_call_success(request_type):
         response.network_firewall_policy_enforcement_order
         == "network_firewall_policy_enforcement_order_value"
     )
+    assert response.network_profile == "network_profile_value"
     assert response.self_link == "self_link_value"
     assert response.self_link_with_id == "self_link_with_id_value"
     assert response.subnetworks == ["subnetworks_value"]
@@ -5190,6 +5236,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Network.to_json(compute.Network())
         req.return_value.content = return_value
 
@@ -5234,6 +5281,7 @@ def test_get_effective_firewalls_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_effective_firewalls(request)
 
 
@@ -5267,6 +5315,7 @@ def test_get_effective_firewalls_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_effective_firewalls(request)
 
     # Establish that the response is the type that we expect.
@@ -5304,6 +5353,7 @@ def test_get_effective_firewalls_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.NetworksGetEffectiveFirewallsResponse.to_json(
             compute.NetworksGetEffectiveFirewallsResponse()
         )
@@ -5348,6 +5398,7 @@ def test_insert_rest_bad_request(request_type=compute.InsertNetworkRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.insert(request)
 
 
@@ -5379,6 +5430,7 @@ def test_insert_rest_call_success(request_type):
         "mtu": 342,
         "name": "name_value",
         "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
+        "network_profile": "network_profile_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -5395,7 +5447,12 @@ def test_insert_rest_call_success(request_type):
                 "state_details": "state_details_value",
             }
         ],
-        "routing_config": {"routing_mode": "routing_mode_value"},
+        "routing_config": {
+            "bgp_always_compare_med": True,
+            "bgp_best_path_selection_mode": "bgp_best_path_selection_mode_value",
+            "bgp_inter_region_cost": "bgp_inter_region_cost_value",
+            "routing_mode": "routing_mode_value",
+        },
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value1", "subnetworks_value2"],
@@ -5506,6 +5563,7 @@ def test_insert_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.insert(request)
 
     # Establish that the response is the type that we expect.
@@ -5563,6 +5621,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -5605,6 +5664,7 @@ def test_list_rest_bad_request(request_type=compute.ListNetworksRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list(request)
 
 
@@ -5643,6 +5703,7 @@ def test_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list(request)
 
     # Establish that the response is the type that we expect.
@@ -5682,6 +5743,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.NetworkList.to_json(compute.NetworkList())
         req.return_value.content = return_value
 
@@ -5726,6 +5788,7 @@ def test_list_peering_routes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_peering_routes(request)
 
 
@@ -5764,6 +5827,7 @@ def test_list_peering_routes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_peering_routes(request)
 
     # Establish that the response is the type that we expect.
@@ -5805,6 +5869,7 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.ExchangedPeeringRoutesList.to_json(
             compute.ExchangedPeeringRoutesList()
         )
@@ -5849,6 +5914,7 @@ def test_patch_rest_bad_request(request_type=compute.PatchNetworkRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.patch(request)
 
 
@@ -5880,6 +5946,7 @@ def test_patch_rest_call_success(request_type):
         "mtu": 342,
         "name": "name_value",
         "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
+        "network_profile": "network_profile_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -5896,7 +5963,12 @@ def test_patch_rest_call_success(request_type):
                 "state_details": "state_details_value",
             }
         ],
-        "routing_config": {"routing_mode": "routing_mode_value"},
+        "routing_config": {
+            "bgp_always_compare_med": True,
+            "bgp_best_path_selection_mode": "bgp_best_path_selection_mode_value",
+            "bgp_inter_region_cost": "bgp_inter_region_cost_value",
+            "routing_mode": "routing_mode_value",
+        },
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value1", "subnetworks_value2"],
@@ -6007,6 +6079,7 @@ def test_patch_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.patch(request)
 
     # Establish that the response is the type that we expect.
@@ -6064,6 +6137,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -6108,6 +6182,7 @@ def test_remove_peering_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.remove_peering(request)
 
 
@@ -6245,6 +6320,7 @@ def test_remove_peering_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.remove_peering(request)
 
     # Establish that the response is the type that we expect.
@@ -6304,6 +6380,7 @@ def test_remove_peering_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -6348,6 +6425,7 @@ def test_switch_to_custom_mode_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.switch_to_custom_mode(request)
 
 
@@ -6404,6 +6482,7 @@ def test_switch_to_custom_mode_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.switch_to_custom_mode(request)
 
     # Establish that the response is the type that we expect.
@@ -6463,6 +6542,7 @@ def test_switch_to_custom_mode_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -6507,6 +6587,7 @@ def test_update_peering_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_peering(request)
 
 
@@ -6659,6 +6740,7 @@ def test_update_peering_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_peering(request)
 
     # Establish that the response is the type that we expect.
@@ -6718,6 +6800,7 @@ def test_update_peering_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 

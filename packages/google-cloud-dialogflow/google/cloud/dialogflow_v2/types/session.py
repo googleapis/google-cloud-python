@@ -142,7 +142,7 @@ class DetectIntentRequest(proto.Message):
 
 
 class DetectIntentResponse(proto.Message):
-    r"""The message returned from the DetectIntent method.
+    r"""The message returned from the [DetectIntent][] method.
 
     Attributes:
         response_id (str):
@@ -377,17 +377,15 @@ class QueryResult(proto.Message):
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
             for a list of the currently supported language codes.
         speech_recognition_confidence (float):
-            The Speech recognition confidence between 0.0
-            and 1.0. A higher number indicates an estimated
-            greater likelihood that the recognized words are
-            correct. The default of 0.0 is a sentinel value
-            indicating that confidence was not set.
+            The Speech recognition confidence between 0.0 and 1.0. A
+            higher number indicates an estimated greater likelihood that
+            the recognized words are correct. The default of 0.0 is a
+            sentinel value indicating that confidence was not set.
 
-            This field is not guaranteed to be accurate or
-            set. In particular this field isn't set for
-            StreamingDetectIntent since the streaming
-            endpoint has separate confidence estimates per
-            portion of the audio in
+            This field is not guaranteed to be accurate or set. In
+            particular this field isn't set for
+            [StreamingDetectIntent][] since the streaming endpoint has
+            separate confidence estimates per portion of the audio in
             StreamingRecognitionResult.
         action (str):
             The action name from the matched intent.
@@ -551,8 +549,7 @@ class QueryResult(proto.Message):
 
 class StreamingDetectIntentRequest(proto.Message):
     r"""The top-level message sent by the client to the
-    [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]
-    method.
+    [StreamingDetectIntent][] method.
 
     Multiple request messages should be sent in order:
 
@@ -851,14 +848,15 @@ class CloudConversationDebuggingInfo(proto.Message):
 
 
 class StreamingDetectIntentResponse(proto.Message):
-    r"""The top-level message returned from the ``StreamingDetectIntent``
+    r"""The top-level message returned from the [StreamingDetectIntent][]
     method.
 
     Multiple response messages can be returned in order:
 
-    1. If the ``StreamingDetectIntentRequest.input_audio`` field was
-       set, the ``recognition_result`` field is populated for one or
-       more messages. See the
+    1. If the
+       [StreamingDetectIntentRequest.input_audio][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio]
+       field was set, the ``recognition_result`` field is populated for
+       one or more messages. See the
        [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
        message for details about the result message sequence.
 
@@ -894,8 +892,8 @@ class StreamingDetectIntentResponse(proto.Message):
             generate the output audio.
         debugging_info (google.cloud.dialogflow_v2.types.CloudConversationDebuggingInfo):
             Debugging info that would get populated when
-            ``StreamingDetectIntentRequest.enable_debugging_info`` is
-            set to true.
+            [StreamingDetectIntentRequest.enable_debugging_info][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.enable_debugging_info]
+            is set to true.
     """
 
     response_id: str = proto.Field(
@@ -1177,10 +1175,9 @@ class SentimentAnalysisResult(proto.Message):
     r"""The result of sentiment analysis. Sentiment analysis inspects user
     input and identifies the prevailing subjective opinion, especially
     to determine a user's attitude as positive, negative, or neutral.
-    For [Participants.DetectIntent][], it needs to be configured in
+    For [DetectIntent][], it needs to be configured in
     [DetectIntentRequest.query_params][google.cloud.dialogflow.v2.DetectIntentRequest.query_params].
-    For [Participants.StreamingDetectIntent][], it needs to be
-    configured in
+    For [StreamingDetectIntent][], it needs to be configured in
     [StreamingDetectIntentRequest.query_params][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params].
     And for
     [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent]

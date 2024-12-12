@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -149,8 +157,10 @@ class EntityTypesRestInterceptor:
     def pre_batch_create_entities(
         self,
         request: entity_type.BatchCreateEntitiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.BatchCreateEntitiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.BatchCreateEntitiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_create_entities
 
         Override in a subclass to manipulate the request or metadata
@@ -172,8 +182,10 @@ class EntityTypesRestInterceptor:
     def pre_batch_delete_entities(
         self,
         request: entity_type.BatchDeleteEntitiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.BatchDeleteEntitiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.BatchDeleteEntitiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_delete_entities
 
         Override in a subclass to manipulate the request or metadata
@@ -195,8 +207,11 @@ class EntityTypesRestInterceptor:
     def pre_batch_delete_entity_types(
         self,
         request: entity_type.BatchDeleteEntityTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.BatchDeleteEntityTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.BatchDeleteEntityTypesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_delete_entity_types
 
         Override in a subclass to manipulate the request or metadata
@@ -218,8 +233,10 @@ class EntityTypesRestInterceptor:
     def pre_batch_update_entities(
         self,
         request: entity_type.BatchUpdateEntitiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.BatchUpdateEntitiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.BatchUpdateEntitiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_update_entities
 
         Override in a subclass to manipulate the request or metadata
@@ -241,8 +258,11 @@ class EntityTypesRestInterceptor:
     def pre_batch_update_entity_types(
         self,
         request: entity_type.BatchUpdateEntityTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.BatchUpdateEntityTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.BatchUpdateEntityTypesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_update_entity_types
 
         Override in a subclass to manipulate the request or metadata
@@ -264,8 +284,10 @@ class EntityTypesRestInterceptor:
     def pre_create_entity_type(
         self,
         request: gcd_entity_type.CreateEntityTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_entity_type.CreateEntityTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_entity_type.CreateEntityTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_entity_type
 
         Override in a subclass to manipulate the request or metadata
@@ -287,8 +309,10 @@ class EntityTypesRestInterceptor:
     def pre_delete_entity_type(
         self,
         request: entity_type.DeleteEntityTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.DeleteEntityTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.DeleteEntityTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_entity_type
 
         Override in a subclass to manipulate the request or metadata
@@ -299,8 +323,10 @@ class EntityTypesRestInterceptor:
     def pre_get_entity_type(
         self,
         request: entity_type.GetEntityTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.GetEntityTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.GetEntityTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_entity_type
 
         Override in a subclass to manipulate the request or metadata
@@ -322,8 +348,10 @@ class EntityTypesRestInterceptor:
     def pre_list_entity_types(
         self,
         request: entity_type.ListEntityTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[entity_type.ListEntityTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.ListEntityTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_entity_types
 
         Override in a subclass to manipulate the request or metadata
@@ -345,8 +373,10 @@ class EntityTypesRestInterceptor:
     def pre_update_entity_type(
         self,
         request: gcd_entity_type.UpdateEntityTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_entity_type.UpdateEntityTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_entity_type.UpdateEntityTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_entity_type
 
         Override in a subclass to manipulate the request or metadata
@@ -368,8 +398,10 @@ class EntityTypesRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -391,8 +423,10 @@ class EntityTypesRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -414,8 +448,10 @@ class EntityTypesRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -435,8 +471,10 @@ class EntityTypesRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -458,8 +496,10 @@ class EntityTypesRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -660,7 +700,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch create entities method over HTTP.
 
@@ -671,8 +711,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -685,6 +727,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseBatchCreateEntities._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_entities(
                 request, metadata
             )
@@ -700,6 +743,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseBatchCreateEntities._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.BatchCreateEntities",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchCreateEntities",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._BatchCreateEntities._get_response(
@@ -720,7 +790,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_entities(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.batch_create_entities",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchCreateEntities",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchDeleteEntities(
@@ -758,7 +850,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch delete entities method over HTTP.
 
@@ -769,8 +861,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -783,6 +877,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseBatchDeleteEntities._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_delete_entities(
                 request, metadata
             )
@@ -798,6 +893,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseBatchDeleteEntities._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.BatchDeleteEntities",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchDeleteEntities",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._BatchDeleteEntities._get_response(
@@ -818,7 +940,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_delete_entities(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.batch_delete_entities",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchDeleteEntities",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchDeleteEntityTypes(
@@ -856,7 +1000,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch delete entity types method over HTTP.
 
@@ -867,8 +1011,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -881,6 +1027,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseBatchDeleteEntityTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_delete_entity_types(
                 request, metadata
             )
@@ -896,6 +1043,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseBatchDeleteEntityTypes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.BatchDeleteEntityTypes",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchDeleteEntityTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._BatchDeleteEntityTypes._get_response(
@@ -916,7 +1090,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_delete_entity_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.batch_delete_entity_types",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchDeleteEntityTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchUpdateEntities(
@@ -954,7 +1150,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch update entities method over HTTP.
 
@@ -965,8 +1161,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -979,6 +1177,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseBatchUpdateEntities._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_update_entities(
                 request, metadata
             )
@@ -994,6 +1193,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseBatchUpdateEntities._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.BatchUpdateEntities",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchUpdateEntities",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._BatchUpdateEntities._get_response(
@@ -1014,7 +1240,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_entities(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.batch_update_entities",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchUpdateEntities",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchUpdateEntityTypes(
@@ -1052,7 +1300,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch update entity types method over HTTP.
 
@@ -1063,8 +1311,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1077,6 +1327,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseBatchUpdateEntityTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_update_entity_types(
                 request, metadata
             )
@@ -1092,6 +1343,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseBatchUpdateEntityTypes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.BatchUpdateEntityTypes",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchUpdateEntityTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._BatchUpdateEntityTypes._get_response(
@@ -1112,7 +1390,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_entity_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.batch_update_entity_types",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "BatchUpdateEntityTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEntityType(
@@ -1150,7 +1450,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_entity_type.EntityType:
             r"""Call the create entity type method over HTTP.
 
@@ -1161,8 +1461,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_entity_type.EntityType:
@@ -1187,6 +1489,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseCreateEntityType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_entity_type(
                 request, metadata
             )
@@ -1202,6 +1505,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseCreateEntityType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.CreateEntityType",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "CreateEntityType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._CreateEntityType._get_response(
@@ -1224,7 +1554,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             pb_resp = gcd_entity_type.EntityType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_entity_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_entity_type.EntityType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.create_entity_type",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "CreateEntityType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEntityType(
@@ -1261,7 +1613,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete entity type method over HTTP.
 
@@ -1272,13 +1624,16 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEntityTypesRestTransport._BaseDeleteEntityType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_entity_type(
                 request, metadata
             )
@@ -1290,6 +1645,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseDeleteEntityType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.DeleteEntityType",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "DeleteEntityType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._DeleteEntityType._get_response(
@@ -1340,7 +1722,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_type.EntityType:
             r"""Call the get entity type method over HTTP.
 
@@ -1351,8 +1733,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.entity_type.EntityType:
@@ -1377,6 +1761,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseGetEntityType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_entity_type(request, metadata)
             transcoded_request = _BaseEntityTypesRestTransport._BaseGetEntityType._get_transcoded_request(
                 http_options, request
@@ -1388,6 +1773,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.GetEntityType",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "GetEntityType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._GetEntityType._get_response(
@@ -1409,7 +1821,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             pb_resp = entity_type.EntityType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_entity_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = entity_type.EntityType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.get_entity_type",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "GetEntityType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEntityTypes(
@@ -1446,7 +1880,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_type.ListEntityTypesResponse:
             r"""Call the list entity types method over HTTP.
 
@@ -1457,8 +1891,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.entity_type.ListEntityTypesResponse:
@@ -1470,6 +1906,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseListEntityTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_entity_types(
                 request, metadata
             )
@@ -1481,6 +1918,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseListEntityTypes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.ListEntityTypes",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "ListEntityTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._ListEntityTypes._get_response(
@@ -1502,7 +1966,31 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             pb_resp = entity_type.ListEntityTypesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_entity_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = entity_type.ListEntityTypesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.list_entity_types",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "ListEntityTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEntityType(
@@ -1540,7 +2028,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_entity_type.EntityType:
             r"""Call the update entity type method over HTTP.
 
@@ -1551,8 +2039,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_entity_type.EntityType:
@@ -1577,6 +2067,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseUpdateEntityType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_entity_type(
                 request, metadata
             )
@@ -1592,6 +2083,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseUpdateEntityType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.UpdateEntityType",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "UpdateEntityType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._UpdateEntityType._get_response(
@@ -1614,7 +2132,29 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             pb_resp = gcd_entity_type.EntityType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_entity_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_entity_type.EntityType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesClient.update_entity_type",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "UpdateEntityType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1745,7 +2285,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1755,8 +2295,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1765,6 +2307,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseEntityTypesRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1778,6 +2321,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._GetLocation._get_response(
@@ -1798,6 +2368,27 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1838,7 +2429,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1848,8 +2439,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1858,6 +2451,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseEntityTypesRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1869,6 +2463,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._ListLocations._get_response(
@@ -1889,6 +2510,27 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1929,7 +2571,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1939,13 +2581,16 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEntityTypesRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1957,6 +2602,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._CancelOperation._get_response(
@@ -2013,7 +2685,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2023,8 +2695,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2033,6 +2707,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseEntityTypesRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2046,6 +2721,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._GetOperation._get_response(
@@ -2066,6 +2768,27 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2106,7 +2829,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2116,8 +2839,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2126,6 +2851,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             http_options = (
                 _BaseEntityTypesRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseEntityTypesRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2135,6 +2861,33 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             query_params = _BaseEntityTypesRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.EntityTypesClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntityTypesRestTransport._ListOperations._get_response(
@@ -2155,6 +2908,27 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.EntityTypesAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.EntityTypes",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -39,8 +39,12 @@ async def sample_create_reaction():
     client = chat_v1.ChatServiceAsyncClient()
 
     # Initialize request argument(s)
+    reaction = chat_v1.Reaction()
+    reaction.emoji.unicode = "unicode_value"
+
     request = chat_v1.CreateReactionRequest(
         parent="parent_value",
+        reaction=reaction,
     )
 
     # Make the request
