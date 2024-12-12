@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.13.1...google-cloud-service-control-v1.14.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.13.0...google-cloud-service-control-v1.13.1) (2024-10-31)
 
 

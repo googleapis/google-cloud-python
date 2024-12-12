@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.8...google-cloud-servicehealth-v0.1.9) (2024-12-12)
+
+
+### Features
+
+* [google-cloud-servicehealth] A new field `id` is added to message `.google.cloud.servicehealth.v1.Product` ([#13307](https://github.com/googleapis/google-cloud-python/issues/13307)) ([b84e0a9](https://github.com/googleapis/google-cloud-python/commit/b84e0a95eb06877d431090bf29d13803b241f975))
+* Add support for opt-in debug logging ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.7...google-cloud-servicehealth-v0.1.8) (2024-11-11)
 
 
