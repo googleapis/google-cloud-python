@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -114,8 +122,11 @@ class FirewallRestInterceptor:
     def pre_batch_update_ingress_rules(
         self,
         request: appengine.BatchUpdateIngressRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.BatchUpdateIngressRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.BatchUpdateIngressRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_update_ingress_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -137,8 +148,10 @@ class FirewallRestInterceptor:
     def pre_create_ingress_rule(
         self,
         request: appengine.CreateIngressRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.CreateIngressRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.CreateIngressRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_ingress_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -160,8 +173,10 @@ class FirewallRestInterceptor:
     def pre_delete_ingress_rule(
         self,
         request: appengine.DeleteIngressRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.DeleteIngressRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.DeleteIngressRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_ingress_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -172,8 +187,10 @@ class FirewallRestInterceptor:
     def pre_get_ingress_rule(
         self,
         request: appengine.GetIngressRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.GetIngressRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.GetIngressRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_ingress_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -195,8 +212,10 @@ class FirewallRestInterceptor:
     def pre_list_ingress_rules(
         self,
         request: appengine.ListIngressRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.ListIngressRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.ListIngressRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_ingress_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -218,8 +237,10 @@ class FirewallRestInterceptor:
     def pre_update_ingress_rule(
         self,
         request: appengine.UpdateIngressRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[appengine.UpdateIngressRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        appengine.UpdateIngressRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_ingress_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -371,7 +392,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> appengine.BatchUpdateIngressRulesResponse:
             r"""Call the batch update ingress
             rules method over HTTP.
@@ -383,8 +404,10 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.appengine.BatchUpdateIngressRulesResponse:
@@ -394,6 +417,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             http_options = (
                 _BaseFirewallRestTransport._BaseBatchUpdateIngressRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_update_ingress_rules(
                 request, metadata
             )
@@ -409,6 +433,33 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             query_params = _BaseFirewallRestTransport._BaseBatchUpdateIngressRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.FirewallClient.BatchUpdateIngressRules",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "BatchUpdateIngressRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallRestTransport._BatchUpdateIngressRules._get_response(
@@ -431,7 +482,31 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             pb_resp = appengine.BatchUpdateIngressRulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_ingress_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        appengine.BatchUpdateIngressRulesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.FirewallClient.batch_update_ingress_rules",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "BatchUpdateIngressRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateIngressRule(
@@ -469,7 +544,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> firewall.FirewallRule:
             r"""Call the create ingress rule method over HTTP.
 
@@ -479,8 +554,10 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.firewall.FirewallRule:
@@ -494,6 +571,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             http_options = (
                 _BaseFirewallRestTransport._BaseCreateIngressRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_ingress_rule(
                 request, metadata
             )
@@ -509,6 +587,33 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             query_params = _BaseFirewallRestTransport._BaseCreateIngressRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.FirewallClient.CreateIngressRule",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "CreateIngressRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallRestTransport._CreateIngressRule._get_response(
@@ -531,7 +636,29 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             pb_resp = firewall.FirewallRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_ingress_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = firewall.FirewallRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.FirewallClient.create_ingress_rule",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "CreateIngressRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteIngressRule(
@@ -568,7 +695,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete ingress rule method over HTTP.
 
@@ -578,13 +705,16 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseFirewallRestTransport._BaseDeleteIngressRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_ingress_rule(
                 request, metadata
             )
@@ -596,6 +726,33 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             query_params = _BaseFirewallRestTransport._BaseDeleteIngressRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.FirewallClient.DeleteIngressRule",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "DeleteIngressRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallRestTransport._DeleteIngressRule._get_response(
@@ -646,7 +803,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> firewall.FirewallRule:
             r"""Call the get ingress rule method over HTTP.
 
@@ -656,8 +813,10 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.firewall.FirewallRule:
@@ -671,6 +830,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             http_options = (
                 _BaseFirewallRestTransport._BaseGetIngressRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_ingress_rule(
                 request, metadata
             )
@@ -686,6 +846,33 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.FirewallClient.GetIngressRule",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "GetIngressRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallRestTransport._GetIngressRule._get_response(
@@ -707,7 +894,29 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             pb_resp = firewall.FirewallRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_ingress_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = firewall.FirewallRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.FirewallClient.get_ingress_rule",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "GetIngressRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListIngressRules(
@@ -744,7 +953,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> appengine.ListIngressRulesResponse:
             r"""Call the list ingress rules method over HTTP.
 
@@ -754,8 +963,10 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.appengine.ListIngressRulesResponse:
@@ -765,6 +976,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             http_options = (
                 _BaseFirewallRestTransport._BaseListIngressRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_ingress_rules(
                 request, metadata
             )
@@ -778,6 +990,33 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.FirewallClient.ListIngressRules",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "ListIngressRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallRestTransport._ListIngressRules._get_response(
@@ -799,7 +1038,31 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             pb_resp = appengine.ListIngressRulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_ingress_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = appengine.ListIngressRulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.FirewallClient.list_ingress_rules",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "ListIngressRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateIngressRule(
@@ -837,7 +1100,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> firewall.FirewallRule:
             r"""Call the update ingress rule method over HTTP.
 
@@ -847,8 +1110,10 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.firewall.FirewallRule:
@@ -862,6 +1127,7 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             http_options = (
                 _BaseFirewallRestTransport._BaseUpdateIngressRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_ingress_rule(
                 request, metadata
             )
@@ -877,6 +1143,33 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             query_params = _BaseFirewallRestTransport._BaseUpdateIngressRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.appengine_v1.FirewallClient.UpdateIngressRule",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "UpdateIngressRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallRestTransport._UpdateIngressRule._get_response(
@@ -899,7 +1192,29 @@ class FirewallRestTransport(_BaseFirewallRestTransport):
             pb_resp = firewall.FirewallRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_ingress_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = firewall.FirewallRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.appengine_v1.FirewallClient.update_ingress_rule",
+                    extra={
+                        "serviceName": "google.appengine.v1.Firewall",
+                        "rpcName": "UpdateIngressRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

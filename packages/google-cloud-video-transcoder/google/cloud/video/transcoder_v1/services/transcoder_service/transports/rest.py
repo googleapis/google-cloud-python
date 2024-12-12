@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -124,8 +132,10 @@ class TranscoderServiceRestInterceptor:
     """
 
     def pre_create_job(
-        self, request: services.CreateJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[services.CreateJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: services.CreateJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[services.CreateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job
 
         Override in a subclass to manipulate the request or metadata
@@ -145,8 +155,10 @@ class TranscoderServiceRestInterceptor:
     def pre_create_job_template(
         self,
         request: services.CreateJobTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[services.CreateJobTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        services.CreateJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_job_template
 
         Override in a subclass to manipulate the request or metadata
@@ -166,8 +178,10 @@ class TranscoderServiceRestInterceptor:
         return response
 
     def pre_delete_job(
-        self, request: services.DeleteJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[services.DeleteJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: services.DeleteJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[services.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job
 
         Override in a subclass to manipulate the request or metadata
@@ -178,8 +192,10 @@ class TranscoderServiceRestInterceptor:
     def pre_delete_job_template(
         self,
         request: services.DeleteJobTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[services.DeleteJobTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        services.DeleteJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_job_template
 
         Override in a subclass to manipulate the request or metadata
@@ -188,8 +204,10 @@ class TranscoderServiceRestInterceptor:
         return request, metadata
 
     def pre_get_job(
-        self, request: services.GetJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[services.GetJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: services.GetJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[services.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
         Override in a subclass to manipulate the request or metadata
@@ -209,8 +227,8 @@ class TranscoderServiceRestInterceptor:
     def pre_get_job_template(
         self,
         request: services.GetJobTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[services.GetJobTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[services.GetJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_template
 
         Override in a subclass to manipulate the request or metadata
@@ -230,8 +248,10 @@ class TranscoderServiceRestInterceptor:
         return response
 
     def pre_list_jobs(
-        self, request: services.ListJobsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[services.ListJobsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: services.ListJobsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[services.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -253,8 +273,10 @@ class TranscoderServiceRestInterceptor:
     def pre_list_job_templates(
         self,
         request: services.ListJobTemplatesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[services.ListJobTemplatesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        services.ListJobTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_job_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -401,7 +423,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Job:
             r"""Call the create job method over HTTP.
 
@@ -411,8 +433,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Job:
@@ -422,6 +446,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseCreateJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_job(request, metadata)
             transcoded_request = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_transcoded_request(
                 http_options, request
@@ -435,6 +460,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             query_params = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.CreateJob",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "CreateJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._CreateJob._get_response(
@@ -457,7 +509,29 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             pb_resp = resources.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.transcoder_v1.TranscoderServiceClient.create_job",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "CreateJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateJobTemplate(
@@ -496,7 +570,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.JobTemplate:
             r"""Call the create job template method over HTTP.
 
@@ -507,8 +581,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.JobTemplate:
@@ -518,6 +594,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_job_template(
                 request, metadata
             )
@@ -533,6 +610,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             query_params = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.CreateJobTemplate",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "CreateJobTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._CreateJobTemplate._get_response(
@@ -555,7 +659,29 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             pb_resp = resources.JobTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_job_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.JobTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.transcoder_v1.TranscoderServiceClient.create_job_template",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "CreateJobTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteJob(
@@ -592,7 +718,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete job method over HTTP.
 
@@ -602,13 +728,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
             transcoded_request = _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_transcoded_request(
                 http_options, request
@@ -618,6 +747,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             query_params = _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.DeleteJob",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "DeleteJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._DeleteJob._get_response(
@@ -669,7 +825,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete job template method over HTTP.
 
@@ -680,13 +836,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_job_template(
                 request, metadata
             )
@@ -698,6 +857,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             query_params = _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.DeleteJobTemplate",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "DeleteJobTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._DeleteJobTemplate._get_response(
@@ -748,7 +934,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Job:
             r"""Call the get job method over HTTP.
 
@@ -758,8 +944,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Job:
@@ -769,6 +957,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseGetJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job(request, metadata)
             transcoded_request = (
                 _BaseTranscoderServiceRestTransport._BaseGetJob._get_transcoded_request(
@@ -782,6 +971,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.GetJob",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "GetJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._GetJob._get_response(
@@ -803,7 +1019,29 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             pb_resp = resources.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.transcoder_v1.TranscoderServiceClient.get_job",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "GetJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetJobTemplate(
@@ -841,7 +1079,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.JobTemplate:
             r"""Call the get job template method over HTTP.
 
@@ -852,8 +1090,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.JobTemplate:
@@ -863,6 +1103,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job_template(
                 request, metadata
             )
@@ -874,6 +1115,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             query_params = _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.GetJobTemplate",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "GetJobTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._GetJobTemplate._get_response(
@@ -895,7 +1163,29 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             pb_resp = resources.JobTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.JobTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.transcoder_v1.TranscoderServiceClient.get_job_template",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "GetJobTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListJobs(
@@ -932,7 +1222,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> services.ListJobsResponse:
             r"""Call the list jobs method over HTTP.
 
@@ -944,8 +1234,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.services.ListJobsResponse:
@@ -955,6 +1247,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseListJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
             transcoded_request = _BaseTranscoderServiceRestTransport._BaseListJobs._get_transcoded_request(
                 http_options, request
@@ -964,6 +1257,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             query_params = _BaseTranscoderServiceRestTransport._BaseListJobs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.ListJobs",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "ListJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._ListJobs._get_response(
@@ -985,7 +1305,29 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             pb_resp = services.ListJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = services.ListJobsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.transcoder_v1.TranscoderServiceClient.list_jobs",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "ListJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListJobTemplates(
@@ -1023,7 +1365,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> services.ListJobTemplatesResponse:
             r"""Call the list job templates method over HTTP.
 
@@ -1034,8 +1376,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.services.ListJobTemplatesResponse:
@@ -1047,6 +1391,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             http_options = (
                 _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_job_templates(
                 request, metadata
             )
@@ -1058,6 +1403,33 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             query_params = _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.video.transcoder_v1.TranscoderServiceClient.ListJobTemplates",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "ListJobTemplates",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranscoderServiceRestTransport._ListJobTemplates._get_response(
@@ -1079,7 +1451,31 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             pb_resp = services.ListJobTemplatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_job_templates(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = services.ListJobTemplatesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.video.transcoder_v1.TranscoderServiceClient.list_job_templates",
+                    extra={
+                        "serviceName": "google.cloud.video.transcoder.v1.TranscoderService",
+                        "rpcName": "ListJobTemplates",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

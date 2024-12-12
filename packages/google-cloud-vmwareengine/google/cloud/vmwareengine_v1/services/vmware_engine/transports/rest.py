@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -665,8 +673,10 @@ class VmwareEngineRestInterceptor:
     def pre_create_cluster(
         self,
         request: vmwareengine.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -688,8 +698,11 @@ class VmwareEngineRestInterceptor:
     def pre_create_external_access_rule(
         self,
         request: vmwareengine.CreateExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreateExternalAccessRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreateExternalAccessRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -711,8 +724,11 @@ class VmwareEngineRestInterceptor:
     def pre_create_external_address(
         self,
         request: vmwareengine.CreateExternalAddressRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreateExternalAddressRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreateExternalAddressRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -734,8 +750,11 @@ class VmwareEngineRestInterceptor:
     def pre_create_hcx_activation_key(
         self,
         request: vmwareengine.CreateHcxActivationKeyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreateHcxActivationKeyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreateHcxActivationKeyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_hcx_activation_key
 
         Override in a subclass to manipulate the request or metadata
@@ -757,8 +776,10 @@ class VmwareEngineRestInterceptor:
     def pre_create_logging_server(
         self,
         request: vmwareengine.CreateLoggingServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreateLoggingServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreateLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -780,9 +801,10 @@ class VmwareEngineRestInterceptor:
     def pre_create_management_dns_zone_binding(
         self,
         request: vmwareengine.CreateManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.CreateManagementDnsZoneBindingRequest, Sequence[Tuple[str, str]]
+        vmwareengine.CreateManagementDnsZoneBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_management_dns_zone_binding
 
@@ -805,8 +827,11 @@ class VmwareEngineRestInterceptor:
     def pre_create_network_peering(
         self,
         request: vmwareengine.CreateNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreateNetworkPeeringRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreateNetworkPeeringRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -828,8 +853,10 @@ class VmwareEngineRestInterceptor:
     def pre_create_network_policy(
         self,
         request: vmwareengine.CreateNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreateNetworkPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreateNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -851,8 +878,10 @@ class VmwareEngineRestInterceptor:
     def pre_create_private_cloud(
         self,
         request: vmwareengine.CreatePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreatePrivateCloudRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreatePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -874,8 +903,11 @@ class VmwareEngineRestInterceptor:
     def pre_create_private_connection(
         self,
         request: vmwareengine.CreatePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.CreatePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.CreatePrivateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -897,9 +929,10 @@ class VmwareEngineRestInterceptor:
     def pre_create_vmware_engine_network(
         self,
         request: vmwareengine.CreateVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.CreateVmwareEngineNetworkRequest, Sequence[Tuple[str, str]]
+        vmwareengine.CreateVmwareEngineNetworkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_vmware_engine_network
 
@@ -922,8 +955,10 @@ class VmwareEngineRestInterceptor:
     def pre_delete_cluster(
         self,
         request: vmwareengine.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeleteClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -945,8 +980,11 @@ class VmwareEngineRestInterceptor:
     def pre_delete_external_access_rule(
         self,
         request: vmwareengine.DeleteExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeleteExternalAccessRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeleteExternalAccessRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -968,8 +1006,11 @@ class VmwareEngineRestInterceptor:
     def pre_delete_external_address(
         self,
         request: vmwareengine.DeleteExternalAddressRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeleteExternalAddressRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeleteExternalAddressRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -991,8 +1032,10 @@ class VmwareEngineRestInterceptor:
     def pre_delete_logging_server(
         self,
         request: vmwareengine.DeleteLoggingServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeleteLoggingServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeleteLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -1014,9 +1057,10 @@ class VmwareEngineRestInterceptor:
     def pre_delete_management_dns_zone_binding(
         self,
         request: vmwareengine.DeleteManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.DeleteManagementDnsZoneBindingRequest, Sequence[Tuple[str, str]]
+        vmwareengine.DeleteManagementDnsZoneBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_management_dns_zone_binding
 
@@ -1039,8 +1083,11 @@ class VmwareEngineRestInterceptor:
     def pre_delete_network_peering(
         self,
         request: vmwareengine.DeleteNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeleteNetworkPeeringRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeleteNetworkPeeringRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -1062,8 +1109,10 @@ class VmwareEngineRestInterceptor:
     def pre_delete_network_policy(
         self,
         request: vmwareengine.DeleteNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeleteNetworkPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeleteNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1085,8 +1134,10 @@ class VmwareEngineRestInterceptor:
     def pre_delete_private_cloud(
         self,
         request: vmwareengine.DeletePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeletePrivateCloudRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeletePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -1108,8 +1159,11 @@ class VmwareEngineRestInterceptor:
     def pre_delete_private_connection(
         self,
         request: vmwareengine.DeletePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.DeletePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.DeletePrivateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1131,9 +1185,10 @@ class VmwareEngineRestInterceptor:
     def pre_delete_vmware_engine_network(
         self,
         request: vmwareengine.DeleteVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.DeleteVmwareEngineNetworkRequest, Sequence[Tuple[str, str]]
+        vmwareengine.DeleteVmwareEngineNetworkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_vmware_engine_network
 
@@ -1156,10 +1211,10 @@ class VmwareEngineRestInterceptor:
     def pre_fetch_network_policy_external_addresses(
         self,
         request: vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for fetch_network_policy_external_addresses
 
@@ -1182,8 +1237,8 @@ class VmwareEngineRestInterceptor:
     def pre_get_cluster(
         self,
         request: vmwareengine.GetClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1205,8 +1260,11 @@ class VmwareEngineRestInterceptor:
     def pre_get_dns_bind_permission(
         self,
         request: vmwareengine.GetDnsBindPermissionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetDnsBindPermissionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetDnsBindPermissionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_dns_bind_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -1228,8 +1286,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_dns_forwarding(
         self,
         request: vmwareengine.GetDnsForwardingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetDnsForwardingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetDnsForwardingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_dns_forwarding
 
         Override in a subclass to manipulate the request or metadata
@@ -1251,8 +1311,11 @@ class VmwareEngineRestInterceptor:
     def pre_get_external_access_rule(
         self,
         request: vmwareengine.GetExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetExternalAccessRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetExternalAccessRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1274,8 +1337,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_external_address(
         self,
         request: vmwareengine.GetExternalAddressRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetExternalAddressRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetExternalAddressRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -1297,8 +1362,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_hcx_activation_key(
         self,
         request: vmwareengine.GetHcxActivationKeyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetHcxActivationKeyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetHcxActivationKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_hcx_activation_key
 
         Override in a subclass to manipulate the request or metadata
@@ -1320,8 +1387,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_logging_server(
         self,
         request: vmwareengine.GetLoggingServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetLoggingServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -1343,9 +1412,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_management_dns_zone_binding(
         self,
         request: vmwareengine.GetManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.GetManagementDnsZoneBindingRequest, Sequence[Tuple[str, str]]
+        vmwareengine.GetManagementDnsZoneBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_management_dns_zone_binding
 
@@ -1368,8 +1438,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_network_peering(
         self,
         request: vmwareengine.GetNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetNetworkPeeringRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetNetworkPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -1391,8 +1463,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_network_policy(
         self,
         request: vmwareengine.GetNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetNetworkPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1412,8 +1486,10 @@ class VmwareEngineRestInterceptor:
         return response
 
     def pre_get_node(
-        self, request: vmwareengine.GetNodeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[vmwareengine.GetNodeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: vmwareengine.GetNodeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine.GetNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_node
 
         Override in a subclass to manipulate the request or metadata
@@ -1435,8 +1511,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_node_type(
         self,
         request: vmwareengine.GetNodeTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetNodeTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetNodeTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_node_type
 
         Override in a subclass to manipulate the request or metadata
@@ -1458,8 +1536,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_private_cloud(
         self,
         request: vmwareengine.GetPrivateCloudRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetPrivateCloudRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetPrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -1481,8 +1561,11 @@ class VmwareEngineRestInterceptor:
     def pre_get_private_connection(
         self,
         request: vmwareengine.GetPrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetPrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetPrivateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1504,8 +1587,8 @@ class VmwareEngineRestInterceptor:
     def pre_get_subnet(
         self,
         request: vmwareengine.GetSubnetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetSubnetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine.GetSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -1527,8 +1610,11 @@ class VmwareEngineRestInterceptor:
     def pre_get_vmware_engine_network(
         self,
         request: vmwareengine.GetVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GetVmwareEngineNetworkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GetVmwareEngineNetworkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_vmware_engine_network
 
         Override in a subclass to manipulate the request or metadata
@@ -1550,8 +1636,11 @@ class VmwareEngineRestInterceptor:
     def pre_grant_dns_bind_permission(
         self,
         request: vmwareengine.GrantDnsBindPermissionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.GrantDnsBindPermissionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.GrantDnsBindPermissionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for grant_dns_bind_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -1573,8 +1662,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_clusters(
         self,
         request: vmwareengine.ListClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -1596,8 +1687,11 @@ class VmwareEngineRestInterceptor:
     def pre_list_external_access_rules(
         self,
         request: vmwareengine.ListExternalAccessRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListExternalAccessRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListExternalAccessRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_external_access_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -1619,8 +1713,11 @@ class VmwareEngineRestInterceptor:
     def pre_list_external_addresses(
         self,
         request: vmwareengine.ListExternalAddressesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListExternalAddressesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListExternalAddressesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_external_addresses
 
         Override in a subclass to manipulate the request or metadata
@@ -1642,8 +1739,11 @@ class VmwareEngineRestInterceptor:
     def pre_list_hcx_activation_keys(
         self,
         request: vmwareengine.ListHcxActivationKeysRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListHcxActivationKeysRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListHcxActivationKeysRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_hcx_activation_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -1665,8 +1765,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_logging_servers(
         self,
         request: vmwareengine.ListLoggingServersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListLoggingServersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListLoggingServersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_logging_servers
 
         Override in a subclass to manipulate the request or metadata
@@ -1688,9 +1790,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_management_dns_zone_bindings(
         self,
         request: vmwareengine.ListManagementDnsZoneBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.ListManagementDnsZoneBindingsRequest, Sequence[Tuple[str, str]]
+        vmwareengine.ListManagementDnsZoneBindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_management_dns_zone_bindings
 
@@ -1713,8 +1816,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_network_peerings(
         self,
         request: vmwareengine.ListNetworkPeeringsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListNetworkPeeringsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListNetworkPeeringsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_network_peerings
 
         Override in a subclass to manipulate the request or metadata
@@ -1736,8 +1841,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_network_policies(
         self,
         request: vmwareengine.ListNetworkPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListNetworkPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListNetworkPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_network_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -1759,8 +1866,8 @@ class VmwareEngineRestInterceptor:
     def pre_list_nodes(
         self,
         request: vmwareengine.ListNodesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListNodesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine.ListNodesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_nodes
 
         Override in a subclass to manipulate the request or metadata
@@ -1782,8 +1889,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_node_types(
         self,
         request: vmwareengine.ListNodeTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListNodeTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListNodeTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_node_types
 
         Override in a subclass to manipulate the request or metadata
@@ -1805,8 +1914,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_peering_routes(
         self,
         request: vmwareengine.ListPeeringRoutesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListPeeringRoutesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListPeeringRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_peering_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -1828,8 +1939,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_private_clouds(
         self,
         request: vmwareengine.ListPrivateCloudsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListPrivateCloudsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListPrivateCloudsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_private_clouds
 
         Override in a subclass to manipulate the request or metadata
@@ -1851,10 +1964,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_private_connection_peering_routes(
         self,
         request: vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_private_connection_peering_routes
 
@@ -1877,8 +1990,11 @@ class VmwareEngineRestInterceptor:
     def pre_list_private_connections(
         self,
         request: vmwareengine.ListPrivateConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListPrivateConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListPrivateConnectionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_private_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -1900,8 +2016,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_subnets(
         self,
         request: vmwareengine.ListSubnetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListSubnetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListSubnetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_subnets
 
         Override in a subclass to manipulate the request or metadata
@@ -1923,8 +2041,11 @@ class VmwareEngineRestInterceptor:
     def pre_list_vmware_engine_networks(
         self,
         request: vmwareengine.ListVmwareEngineNetworksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ListVmwareEngineNetworksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListVmwareEngineNetworksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_vmware_engine_networks
 
         Override in a subclass to manipulate the request or metadata
@@ -1946,9 +2067,10 @@ class VmwareEngineRestInterceptor:
     def pre_repair_management_dns_zone_binding(
         self,
         request: vmwareengine.RepairManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.RepairManagementDnsZoneBindingRequest, Sequence[Tuple[str, str]]
+        vmwareengine.RepairManagementDnsZoneBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for repair_management_dns_zone_binding
 
@@ -1971,8 +2093,10 @@ class VmwareEngineRestInterceptor:
     def pre_reset_nsx_credentials(
         self,
         request: vmwareengine.ResetNsxCredentialsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ResetNsxCredentialsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ResetNsxCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for reset_nsx_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -1994,8 +2118,11 @@ class VmwareEngineRestInterceptor:
     def pre_reset_vcenter_credentials(
         self,
         request: vmwareengine.ResetVcenterCredentialsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ResetVcenterCredentialsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ResetVcenterCredentialsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for reset_vcenter_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -2017,8 +2144,11 @@ class VmwareEngineRestInterceptor:
     def pre_revoke_dns_bind_permission(
         self,
         request: vmwareengine.RevokeDnsBindPermissionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.RevokeDnsBindPermissionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.RevokeDnsBindPermissionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for revoke_dns_bind_permission
 
         Override in a subclass to manipulate the request or metadata
@@ -2040,8 +2170,10 @@ class VmwareEngineRestInterceptor:
     def pre_show_nsx_credentials(
         self,
         request: vmwareengine.ShowNsxCredentialsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ShowNsxCredentialsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ShowNsxCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for show_nsx_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -2063,8 +2195,11 @@ class VmwareEngineRestInterceptor:
     def pre_show_vcenter_credentials(
         self,
         request: vmwareengine.ShowVcenterCredentialsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.ShowVcenterCredentialsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ShowVcenterCredentialsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for show_vcenter_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -2086,8 +2221,11 @@ class VmwareEngineRestInterceptor:
     def pre_undelete_private_cloud(
         self,
         request: vmwareengine.UndeletePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UndeletePrivateCloudRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UndeletePrivateCloudRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for undelete_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -2109,8 +2247,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_cluster(
         self,
         request: vmwareengine.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -2132,8 +2272,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_dns_forwarding(
         self,
         request: vmwareengine.UpdateDnsForwardingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateDnsForwardingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateDnsForwardingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_dns_forwarding
 
         Override in a subclass to manipulate the request or metadata
@@ -2155,8 +2297,11 @@ class VmwareEngineRestInterceptor:
     def pre_update_external_access_rule(
         self,
         request: vmwareengine.UpdateExternalAccessRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateExternalAccessRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateExternalAccessRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_external_access_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -2178,8 +2323,11 @@ class VmwareEngineRestInterceptor:
     def pre_update_external_address(
         self,
         request: vmwareengine.UpdateExternalAddressRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateExternalAddressRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateExternalAddressRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_external_address
 
         Override in a subclass to manipulate the request or metadata
@@ -2201,8 +2349,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_logging_server(
         self,
         request: vmwareengine.UpdateLoggingServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateLoggingServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateLoggingServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_logging_server
 
         Override in a subclass to manipulate the request or metadata
@@ -2224,9 +2374,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_management_dns_zone_binding(
         self,
         request: vmwareengine.UpdateManagementDnsZoneBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.UpdateManagementDnsZoneBindingRequest, Sequence[Tuple[str, str]]
+        vmwareengine.UpdateManagementDnsZoneBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_management_dns_zone_binding
 
@@ -2249,8 +2400,11 @@ class VmwareEngineRestInterceptor:
     def pre_update_network_peering(
         self,
         request: vmwareengine.UpdateNetworkPeeringRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateNetworkPeeringRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateNetworkPeeringRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_network_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -2272,8 +2426,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_network_policy(
         self,
         request: vmwareengine.UpdateNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateNetworkPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2295,8 +2451,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_private_cloud(
         self,
         request: vmwareengine.UpdatePrivateCloudRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdatePrivateCloudRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdatePrivateCloudRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_private_cloud
 
         Override in a subclass to manipulate the request or metadata
@@ -2318,8 +2476,11 @@ class VmwareEngineRestInterceptor:
     def pre_update_private_connection(
         self,
         request: vmwareengine.UpdatePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdatePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdatePrivateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -2341,8 +2502,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_subnet(
         self,
         request: vmwareengine.UpdateSubnetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[vmwareengine.UpdateSubnetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.UpdateSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -2364,9 +2527,10 @@ class VmwareEngineRestInterceptor:
     def pre_update_vmware_engine_network(
         self,
         request: vmwareengine.UpdateVmwareEngineNetworkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        vmwareengine.UpdateVmwareEngineNetworkRequest, Sequence[Tuple[str, str]]
+        vmwareengine.UpdateVmwareEngineNetworkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_vmware_engine_network
 
@@ -2389,8 +2553,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2412,8 +2578,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2435,8 +2603,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2456,8 +2626,10 @@ class VmwareEngineRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2477,8 +2649,11 @@ class VmwareEngineRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -2500,8 +2675,10 @@ class VmwareEngineRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2521,8 +2698,10 @@ class VmwareEngineRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2544,8 +2723,10 @@ class VmwareEngineRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2733,7 +2914,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create cluster method over HTTP.
 
@@ -2744,8 +2925,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2758,6 +2941,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_transcoded_request(
                 http_options, request
@@ -2771,6 +2955,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateCluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreateCluster._get_response(
@@ -2791,7 +3002,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_cluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateExternalAccessRule(
@@ -2830,7 +3063,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create external access
             rule method over HTTP.
@@ -2842,8 +3075,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2856,6 +3091,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_external_access_rule(
                 request, metadata
             )
@@ -2871,6 +3107,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAccessRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateExternalAccessRule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateExternalAccessRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2893,7 +3156,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_external_access_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_external_access_rule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateExternalAccessRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateExternalAddress(
@@ -2931,7 +3216,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create external address method over HTTP.
 
@@ -2942,8 +3227,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2956,6 +3243,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_external_address(
                 request, metadata
             )
@@ -2971,6 +3259,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateExternalAddress._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateExternalAddress",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateExternalAddress",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreateExternalAddress._get_response(
@@ -2991,7 +3306,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_external_address(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_external_address",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateExternalAddress",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateHcxActivationKey(
@@ -3029,7 +3366,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create hcx activation key method over HTTP.
 
@@ -3040,8 +3377,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3054,6 +3393,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_hcx_activation_key(
                 request, metadata
             )
@@ -3069,6 +3409,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateHcxActivationKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateHcxActivationKey",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateHcxActivationKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreateHcxActivationKey._get_response(
@@ -3089,7 +3456,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_hcx_activation_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_hcx_activation_key",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateHcxActivationKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateLoggingServer(
@@ -3127,7 +3516,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create logging server method over HTTP.
 
@@ -3138,8 +3527,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3152,6 +3543,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_logging_server(
                 request, metadata
             )
@@ -3167,6 +3559,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateLoggingServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateLoggingServer",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateLoggingServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreateLoggingServer._get_response(
@@ -3187,7 +3606,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_logging_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_logging_server",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateLoggingServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateManagementDnsZoneBinding(
@@ -3226,7 +3667,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create management dns
             zone binding method over HTTP.
@@ -3238,8 +3679,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -3252,6 +3695,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -3270,6 +3714,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateManagementDnsZoneBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateManagementDnsZoneBinding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateManagementDnsZoneBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3292,7 +3763,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_management_dns_zone_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_management_dns_zone_binding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateManagementDnsZoneBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNetworkPeering(
@@ -3330,7 +3823,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create network peering method over HTTP.
 
@@ -3341,8 +3834,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3355,6 +3850,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_network_peering(
                 request, metadata
             )
@@ -3370,6 +3866,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPeering._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateNetworkPeering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateNetworkPeering",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreateNetworkPeering._get_response(
@@ -3390,7 +3913,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_network_peering(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_network_peering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateNetworkPeering",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNetworkPolicy(
@@ -3428,7 +3973,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create network policy method over HTTP.
 
@@ -3439,8 +3984,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3453,6 +4000,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_network_policy(
                 request, metadata
             )
@@ -3468,6 +4016,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateNetworkPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateNetworkPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateNetworkPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreateNetworkPolicy._get_response(
@@ -3488,7 +4063,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_network_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_network_policy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateNetworkPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePrivateCloud(
@@ -3526,7 +4123,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create private cloud method over HTTP.
 
@@ -3537,8 +4134,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3551,6 +4150,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_private_cloud(
                 request, metadata
             )
@@ -3566,6 +4166,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateCloud._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreatePrivateCloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreatePrivateCloud",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreatePrivateCloud._get_response(
@@ -3586,7 +4213,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_private_cloud(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_private_cloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreatePrivateCloud",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePrivateConnection(
@@ -3625,7 +4274,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create private connection method over HTTP.
 
@@ -3636,8 +4285,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3650,6 +4301,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_private_connection(
                 request, metadata
             )
@@ -3665,6 +4317,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreatePrivateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreatePrivateConnection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreatePrivateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._CreatePrivateConnection._get_response(
@@ -3685,7 +4364,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_private_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_private_connection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreatePrivateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateVmwareEngineNetwork(
@@ -3724,7 +4425,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create vmware engine
             network method over HTTP.
@@ -3736,8 +4437,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -3750,6 +4453,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_vmware_engine_network(
                 request, metadata
             )
@@ -3765,6 +4469,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseCreateVmwareEngineNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.CreateVmwareEngineNetwork",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateVmwareEngineNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3787,7 +4518,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_vmware_engine_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.create_vmware_engine_network",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "CreateVmwareEngineNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCluster(
@@ -3824,7 +4577,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete cluster method over HTTP.
 
@@ -3835,8 +4588,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3849,6 +4604,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_transcoded_request(
                 http_options, request
@@ -3858,6 +4614,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteCluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteCluster._get_response(
@@ -3877,7 +4660,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_cluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteExternalAccessRule(
@@ -3915,7 +4720,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete external access
             rule method over HTTP.
@@ -3927,8 +4732,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -3941,6 +4748,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_external_access_rule(
                 request, metadata
             )
@@ -3952,6 +4760,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAccessRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteExternalAccessRule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteExternalAccessRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3973,7 +4808,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_external_access_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_external_access_rule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteExternalAccessRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteExternalAddress(
@@ -4010,7 +4867,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete external address method over HTTP.
 
@@ -4021,8 +4878,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4035,6 +4894,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_external_address(
                 request, metadata
             )
@@ -4046,6 +4906,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteExternalAddress._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteExternalAddress",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteExternalAddress",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteExternalAddress._get_response(
@@ -4065,7 +4952,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_external_address(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_external_address",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteExternalAddress",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteLoggingServer(
@@ -4102,7 +5011,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete logging server method over HTTP.
 
@@ -4113,8 +5022,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4127,6 +5038,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_logging_server(
                 request, metadata
             )
@@ -4138,6 +5050,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteLoggingServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteLoggingServer",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteLoggingServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteLoggingServer._get_response(
@@ -4157,7 +5096,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_logging_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_logging_server",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteLoggingServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteManagementDnsZoneBinding(
@@ -4195,7 +5156,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete management dns
             zone binding method over HTTP.
@@ -4207,8 +5168,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -4221,6 +5184,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -4235,6 +5199,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteManagementDnsZoneBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteManagementDnsZoneBinding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteManagementDnsZoneBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4256,7 +5247,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_management_dns_zone_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_management_dns_zone_binding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteManagementDnsZoneBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNetworkPeering(
@@ -4293,7 +5306,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete network peering method over HTTP.
 
@@ -4304,8 +5317,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4318,6 +5333,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_network_peering(
                 request, metadata
             )
@@ -4329,6 +5345,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPeering._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteNetworkPeering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteNetworkPeering",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteNetworkPeering._get_response(
@@ -4348,7 +5391,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_network_peering(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_network_peering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteNetworkPeering",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNetworkPolicy(
@@ -4385,7 +5450,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete network policy method over HTTP.
 
@@ -4396,8 +5461,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4410,6 +5477,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_network_policy(
                 request, metadata
             )
@@ -4421,6 +5489,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteNetworkPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteNetworkPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteNetworkPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteNetworkPolicy._get_response(
@@ -4440,7 +5535,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_network_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_network_policy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteNetworkPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePrivateCloud(
@@ -4477,7 +5594,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete private cloud method over HTTP.
 
@@ -4488,8 +5605,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4502,6 +5621,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_private_cloud(
                 request, metadata
             )
@@ -4513,6 +5633,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateCloud._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeletePrivateCloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeletePrivateCloud",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeletePrivateCloud._get_response(
@@ -4532,7 +5679,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_private_cloud(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_private_cloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeletePrivateCloud",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePrivateConnection(
@@ -4570,7 +5739,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete private connection method over HTTP.
 
@@ -4581,8 +5750,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4595,6 +5766,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_private_connection(
                 request, metadata
             )
@@ -4606,6 +5778,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeletePrivateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeletePrivateConnection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeletePrivateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeletePrivateConnection._get_response(
@@ -4625,7 +5824,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_private_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_private_connection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeletePrivateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteVmwareEngineNetwork(
@@ -4663,7 +5884,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete vmware engine
             network method over HTTP.
@@ -4675,8 +5896,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -4689,6 +5912,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_vmware_engine_network(
                 request, metadata
             )
@@ -4700,6 +5924,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteVmwareEngineNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteVmwareEngineNetwork",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteVmwareEngineNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4721,7 +5972,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_vmware_engine_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.delete_vmware_engine_network",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteVmwareEngineNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchNetworkPolicyExternalAddresses(
@@ -4759,7 +6032,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.FetchNetworkPolicyExternalAddressesResponse:
             r"""Call the fetch network policy
             external addresses method over HTTP.
@@ -4771,8 +6044,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.vmwareengine.FetchNetworkPolicyExternalAddressesResponse:
@@ -4784,6 +6059,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -4798,6 +6074,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseFetchNetworkPolicyExternalAddresses._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.FetchNetworkPolicyExternalAddresses",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "FetchNetworkPolicyExternalAddresses",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._FetchNetworkPolicyExternalAddresses._get_response(
@@ -4819,7 +6122,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_network_policy_external_addresses(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.fetch_network_policy_external_addresses",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "FetchNetworkPolicyExternalAddresses",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCluster(
@@ -4856,7 +6183,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.Cluster:
             r"""Call the get cluster method over HTTP.
 
@@ -4867,8 +6194,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.Cluster:
@@ -4878,6 +6207,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
             transcoded_request = (
                 _BaseVmwareEngineRestTransport._BaseGetCluster._get_transcoded_request(
@@ -4891,6 +6221,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetCluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetCluster._get_response(
@@ -4912,7 +6269,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.Cluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.Cluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_cluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDnsBindPermission(
@@ -4949,7 +6328,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.DnsBindPermission:
             r"""Call the get dns bind permission method over HTTP.
 
@@ -4960,8 +6339,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.DnsBindPermission:
@@ -4976,6 +6357,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dns_bind_permission(
                 request, metadata
             )
@@ -4987,6 +6369,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetDnsBindPermission._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetDnsBindPermission",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetDnsBindPermission",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetDnsBindPermission._get_response(
@@ -5008,7 +6417,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.DnsBindPermission.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dns_bind_permission(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.DnsBindPermission.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_dns_bind_permission",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetDnsBindPermission",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDnsForwarding(
@@ -5045,7 +6478,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.DnsForwarding:
             r"""Call the get dns forwarding method over HTTP.
 
@@ -5056,8 +6489,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.DnsForwarding:
@@ -5072,6 +6507,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dns_forwarding(
                 request, metadata
             )
@@ -5083,6 +6519,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetDnsForwarding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetDnsForwarding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetDnsForwarding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetDnsForwarding._get_response(
@@ -5104,7 +6567,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.DnsForwarding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dns_forwarding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.DnsForwarding.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_dns_forwarding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetDnsForwarding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetExternalAccessRule(
@@ -5141,7 +6628,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.ExternalAccessRule:
             r"""Call the get external access rule method over HTTP.
 
@@ -5152,8 +6639,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.ExternalAccessRule:
@@ -5165,6 +6654,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_external_access_rule(
                 request, metadata
             )
@@ -5176,6 +6666,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAccessRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetExternalAccessRule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetExternalAccessRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetExternalAccessRule._get_response(
@@ -5197,7 +6714,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.ExternalAccessRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_external_access_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine_resources.ExternalAccessRule.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_external_access_rule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetExternalAccessRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetExternalAddress(
@@ -5234,7 +6775,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.ExternalAddress:
             r"""Call the get external address method over HTTP.
 
@@ -5245,8 +6786,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.ExternalAddress:
@@ -5259,6 +6802,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_external_address(
                 request, metadata
             )
@@ -5270,6 +6814,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetExternalAddress._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetExternalAddress",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetExternalAddress",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetExternalAddress._get_response(
@@ -5291,7 +6862,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.ExternalAddress.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_external_address(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.ExternalAddress.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_external_address",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetExternalAddress",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHcxActivationKey(
@@ -5328,7 +6923,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.HcxActivationKey:
             r"""Call the get hcx activation key method over HTTP.
 
@@ -5339,8 +6934,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.HcxActivationKey:
@@ -5357,6 +6954,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_hcx_activation_key(
                 request, metadata
             )
@@ -5368,6 +6966,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetHcxActivationKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetHcxActivationKey",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetHcxActivationKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetHcxActivationKey._get_response(
@@ -5389,7 +7014,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.HcxActivationKey.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_hcx_activation_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.HcxActivationKey.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_hcx_activation_key",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetHcxActivationKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetLoggingServer(
@@ -5426,7 +7075,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.LoggingServer:
             r"""Call the get logging server method over HTTP.
 
@@ -5437,8 +7086,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.LoggingServer:
@@ -5450,6 +7101,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_logging_server(
                 request, metadata
             )
@@ -5461,6 +7113,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetLoggingServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetLoggingServer",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetLoggingServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetLoggingServer._get_response(
@@ -5482,7 +7161,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.LoggingServer.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_logging_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.LoggingServer.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_logging_server",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetLoggingServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetManagementDnsZoneBinding(
@@ -5520,7 +7223,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.ManagementDnsZoneBinding:
             r"""Call the get management dns zone
             binding method over HTTP.
@@ -5532,8 +7235,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.vmwareengine_resources.ManagementDnsZoneBinding:
@@ -5552,6 +7257,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_management_dns_zone_binding(
                 request, metadata
             )
@@ -5563,6 +7269,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetManagementDnsZoneBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetManagementDnsZoneBinding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetManagementDnsZoneBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5586,7 +7319,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.ManagementDnsZoneBinding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_management_dns_zone_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine_resources.ManagementDnsZoneBinding.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_management_dns_zone_binding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetManagementDnsZoneBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNetworkPeering(
@@ -5623,7 +7382,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.NetworkPeering:
             r"""Call the get network peering method over HTTP.
 
@@ -5634,8 +7393,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.NetworkPeering:
@@ -5645,6 +7406,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_network_peering(
                 request, metadata
             )
@@ -5656,6 +7418,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPeering._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetNetworkPeering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNetworkPeering",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetNetworkPeering._get_response(
@@ -5677,7 +7466,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.NetworkPeering.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_network_peering(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.NetworkPeering.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_network_peering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNetworkPeering",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNetworkPolicy(
@@ -5714,7 +7527,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.NetworkPolicy:
             r"""Call the get network policy method over HTTP.
 
@@ -5725,8 +7538,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.NetworkPolicy:
@@ -5747,6 +7562,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_network_policy(
                 request, metadata
             )
@@ -5758,6 +7574,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetNetworkPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetNetworkPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNetworkPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetNetworkPolicy._get_response(
@@ -5779,7 +7622,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.NetworkPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_network_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.NetworkPolicy.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_network_policy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNetworkPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNode(_BaseVmwareEngineRestTransport._BaseGetNode, VmwareEngineRestStub):
@@ -5814,7 +7681,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.Node:
             r"""Call the get node method over HTTP.
 
@@ -5825,8 +7692,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.Node:
@@ -5836,6 +7705,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetNode._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_node(request, metadata)
             transcoded_request = (
                 _BaseVmwareEngineRestTransport._BaseGetNode._get_transcoded_request(
@@ -5849,6 +7719,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetNode",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNode",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetNode._get_response(
@@ -5870,7 +7767,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.Node.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_node(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.Node.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_node",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNode",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNodeType(
@@ -5907,7 +7826,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.NodeType:
             r"""Call the get node type method over HTTP.
 
@@ -5918,8 +7837,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.NodeType:
@@ -5929,6 +7850,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetNodeType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_node_type(request, metadata)
             transcoded_request = (
                 _BaseVmwareEngineRestTransport._BaseGetNodeType._get_transcoded_request(
@@ -5942,6 +7864,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetNodeType",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNodeType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetNodeType._get_response(
@@ -5963,7 +7912,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.NodeType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_node_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.NodeType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_node_type",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetNodeType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPrivateCloud(
@@ -6000,7 +7971,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.PrivateCloud:
             r"""Call the get private cloud method over HTTP.
 
@@ -6011,8 +7982,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.PrivateCloud:
@@ -6025,6 +7998,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_private_cloud(
                 request, metadata
             )
@@ -6036,6 +8010,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateCloud._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetPrivateCloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetPrivateCloud",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetPrivateCloud._get_response(
@@ -6057,7 +8058,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.PrivateCloud.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_private_cloud(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.PrivateCloud.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_private_cloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetPrivateCloud",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPrivateConnection(
@@ -6094,7 +8119,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.PrivateConnection:
             r"""Call the get private connection method over HTTP.
 
@@ -6105,8 +8130,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.PrivateConnection:
@@ -6119,6 +8146,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_private_connection(
                 request, metadata
             )
@@ -6130,6 +8158,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetPrivateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetPrivateConnection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetPrivateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetPrivateConnection._get_response(
@@ -6151,7 +8206,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.PrivateConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_private_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.PrivateConnection.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_private_connection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetPrivateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSubnet(
@@ -6188,7 +8267,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.Subnet:
             r"""Call the get subnet method over HTTP.
 
@@ -6199,8 +8278,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.Subnet:
@@ -6213,6 +8294,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetSubnet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_subnet(request, metadata)
             transcoded_request = (
                 _BaseVmwareEngineRestTransport._BaseGetSubnet._get_transcoded_request(
@@ -6226,6 +8308,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetSubnet",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetSubnet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetSubnet._get_response(
@@ -6247,7 +8356,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.Subnet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_subnet(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.Subnet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_subnet",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetSubnet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVmwareEngineNetwork(
@@ -6284,7 +8415,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.VmwareEngineNetwork:
             r"""Call the get vmware engine network method over HTTP.
 
@@ -6295,8 +8426,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.VmwareEngineNetwork:
@@ -6309,6 +8442,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_vmware_engine_network(
                 request, metadata
             )
@@ -6320,6 +8454,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGetVmwareEngineNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetVmwareEngineNetwork",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetVmwareEngineNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetVmwareEngineNetwork._get_response(
@@ -6341,7 +8502,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.VmwareEngineNetwork.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_vmware_engine_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine_resources.VmwareEngineNetwork.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.get_vmware_engine_network",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetVmwareEngineNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GrantDnsBindPermission(
@@ -6379,7 +8564,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the grant dns bind permission method over HTTP.
 
@@ -6390,8 +8575,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6404,6 +8591,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_grant_dns_bind_permission(
                 request, metadata
             )
@@ -6419,6 +8607,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseGrantDnsBindPermission._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GrantDnsBindPermission",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GrantDnsBindPermission",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GrantDnsBindPermission._get_response(
@@ -6439,7 +8654,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_grant_dns_bind_permission(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.grant_dns_bind_permission",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GrantDnsBindPermission",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClusters(
@@ -6476,7 +8713,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListClustersResponse:
             r"""Call the list clusters method over HTTP.
 
@@ -6487,8 +8724,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListClustersResponse:
@@ -6500,6 +8739,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseListClusters._get_transcoded_request(
                 http_options, request
@@ -6511,6 +8751,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListClusters",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListClusters._get_response(
@@ -6532,7 +8799,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListClustersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_clusters",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListExternalAccessRules(
@@ -6570,7 +8861,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListExternalAccessRulesResponse:
             r"""Call the list external access
             rules method over HTTP.
@@ -6582,8 +8873,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.vmwareengine.ListExternalAccessRulesResponse:
@@ -6595,6 +8888,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_external_access_rules(
                 request, metadata
             )
@@ -6606,6 +8900,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListExternalAccessRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListExternalAccessRules",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListExternalAccessRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListExternalAccessRules._get_response(
@@ -6627,7 +8948,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListExternalAccessRulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_external_access_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine.ListExternalAccessRulesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_external_access_rules",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListExternalAccessRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListExternalAddresses(
@@ -6664,7 +9009,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListExternalAddressesResponse:
             r"""Call the list external addresses method over HTTP.
 
@@ -6675,8 +9020,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListExternalAddressesResponse:
@@ -6688,6 +9035,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_external_addresses(
                 request, metadata
             )
@@ -6699,6 +9047,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListExternalAddresses._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListExternalAddresses",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListExternalAddresses",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListExternalAddresses._get_response(
@@ -6720,7 +9095,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListExternalAddressesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_external_addresses(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine.ListExternalAddressesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_external_addresses",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListExternalAddresses",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListHcxActivationKeys(
@@ -6757,7 +9156,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListHcxActivationKeysResponse:
             r"""Call the list hcx activation keys method over HTTP.
 
@@ -6768,8 +9167,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListHcxActivationKeysResponse:
@@ -6781,6 +9182,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_hcx_activation_keys(
                 request, metadata
             )
@@ -6792,6 +9194,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListHcxActivationKeys._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListHcxActivationKeys",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListHcxActivationKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListHcxActivationKeys._get_response(
@@ -6813,7 +9242,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListHcxActivationKeysResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_hcx_activation_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine.ListHcxActivationKeysResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_hcx_activation_keys",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListHcxActivationKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListLoggingServers(
@@ -6850,7 +9303,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListLoggingServersResponse:
             r"""Call the list logging servers method over HTTP.
 
@@ -6861,8 +9314,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListLoggingServersResponse:
@@ -6874,6 +9329,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_logging_servers(
                 request, metadata
             )
@@ -6885,6 +9341,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListLoggingServers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListLoggingServers",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListLoggingServers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListLoggingServers._get_response(
@@ -6906,7 +9389,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListLoggingServersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_logging_servers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListLoggingServersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_logging_servers",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListLoggingServers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListManagementDnsZoneBindings(
@@ -6944,7 +9451,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListManagementDnsZoneBindingsResponse:
             r"""Call the list management dns zone
             bindings method over HTTP.
@@ -6956,8 +9463,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.vmwareengine.ListManagementDnsZoneBindingsResponse:
@@ -6969,6 +9478,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_management_dns_zone_bindings(
                 request, metadata
             )
@@ -6980,6 +9490,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListManagementDnsZoneBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListManagementDnsZoneBindings",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListManagementDnsZoneBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7003,7 +9540,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListManagementDnsZoneBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_management_dns_zone_bindings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine.ListManagementDnsZoneBindingsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_management_dns_zone_bindings",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListManagementDnsZoneBindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNetworkPeerings(
@@ -7040,7 +9603,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListNetworkPeeringsResponse:
             r"""Call the list network peerings method over HTTP.
 
@@ -7051,8 +9614,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListNetworkPeeringsResponse:
@@ -7064,6 +9629,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_network_peerings(
                 request, metadata
             )
@@ -7075,6 +9641,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPeerings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListNetworkPeerings",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNetworkPeerings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListNetworkPeerings._get_response(
@@ -7096,7 +9689,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListNetworkPeeringsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_network_peerings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListNetworkPeeringsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_network_peerings",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNetworkPeerings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNetworkPolicies(
@@ -7133,7 +9750,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListNetworkPoliciesResponse:
             r"""Call the list network policies method over HTTP.
 
@@ -7144,8 +9761,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListNetworkPoliciesResponse:
@@ -7157,6 +9776,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_network_policies(
                 request, metadata
             )
@@ -7168,6 +9788,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListNetworkPolicies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListNetworkPolicies",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNetworkPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListNetworkPolicies._get_response(
@@ -7189,7 +9836,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListNetworkPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_network_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListNetworkPoliciesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_network_policies",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNetworkPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNodes(
@@ -7226,7 +9897,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListNodesResponse:
             r"""Call the list nodes method over HTTP.
 
@@ -7237,8 +9908,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListNodesResponse:
@@ -7250,6 +9923,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListNodes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_nodes(request, metadata)
             transcoded_request = (
                 _BaseVmwareEngineRestTransport._BaseListNodes._get_transcoded_request(
@@ -7263,6 +9937,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListNodes",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNodes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListNodes._get_response(
@@ -7284,7 +9985,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListNodesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_nodes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListNodesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_nodes",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNodes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNodeTypes(
@@ -7321,7 +10044,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListNodeTypesResponse:
             r"""Call the list node types method over HTTP.
 
@@ -7332,8 +10055,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListNodeTypesResponse:
@@ -7345,6 +10070,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_node_types(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_transcoded_request(
                 http_options, request
@@ -7354,6 +10080,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListNodeTypes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListNodeTypes",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNodeTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListNodeTypes._get_response(
@@ -7375,7 +10128,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListNodeTypesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_node_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListNodeTypesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_node_types",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListNodeTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPeeringRoutes(
@@ -7412,7 +10189,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListPeeringRoutesResponse:
             r"""Call the list peering routes method over HTTP.
 
@@ -7423,8 +10200,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListPeeringRoutesResponse:
@@ -7436,6 +10215,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_peering_routes(
                 request, metadata
             )
@@ -7447,6 +10227,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListPeeringRoutes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListPeeringRoutes",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPeeringRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListPeeringRoutes._get_response(
@@ -7468,7 +10275,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListPeeringRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_peering_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListPeeringRoutesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_peering_routes",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPeeringRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPrivateClouds(
@@ -7505,7 +10336,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListPrivateCloudsResponse:
             r"""Call the list private clouds method over HTTP.
 
@@ -7516,8 +10347,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListPrivateCloudsResponse:
@@ -7529,6 +10362,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_private_clouds(
                 request, metadata
             )
@@ -7540,6 +10374,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListPrivateClouds._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListPrivateClouds",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPrivateClouds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListPrivateClouds._get_response(
@@ -7561,7 +10422,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListPrivateCloudsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_private_clouds(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListPrivateCloudsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_private_clouds",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPrivateClouds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPrivateConnectionPeeringRoutes(
@@ -7599,7 +10484,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListPrivateConnectionPeeringRoutesResponse:
             r"""Call the list private connection
             peering routes method over HTTP.
@@ -7611,8 +10496,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.vmwareengine.ListPrivateConnectionPeeringRoutesResponse:
@@ -7624,6 +10511,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -7638,6 +10526,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnectionPeeringRoutes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListPrivateConnectionPeeringRoutes",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPrivateConnectionPeeringRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListPrivateConnectionPeeringRoutes._get_response(
@@ -7659,7 +10574,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListPrivateConnectionPeeringRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_private_connection_peering_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine.ListPrivateConnectionPeeringRoutesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_private_connection_peering_routes",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPrivateConnectionPeeringRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPrivateConnections(
@@ -7696,7 +10637,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListPrivateConnectionsResponse:
             r"""Call the list private connections method over HTTP.
 
@@ -7707,8 +10648,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListPrivateConnectionsResponse:
@@ -7720,6 +10663,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_private_connections(
                 request, metadata
             )
@@ -7731,6 +10675,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListPrivateConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListPrivateConnections",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPrivateConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListPrivateConnections._get_response(
@@ -7752,7 +10723,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListPrivateConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_private_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine.ListPrivateConnectionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_private_connections",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListPrivateConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSubnets(
@@ -7789,7 +10784,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListSubnetsResponse:
             r"""Call the list subnets method over HTTP.
 
@@ -7800,8 +10795,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine.ListSubnetsResponse:
@@ -7813,6 +10810,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListSubnets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_subnets(request, metadata)
             transcoded_request = (
                 _BaseVmwareEngineRestTransport._BaseListSubnets._get_transcoded_request(
@@ -7826,6 +10824,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListSubnets",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListSubnets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListSubnets._get_response(
@@ -7847,7 +10872,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListSubnetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_subnets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine.ListSubnetsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_subnets",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListSubnets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVmwareEngineNetworks(
@@ -7885,7 +10934,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine.ListVmwareEngineNetworksResponse:
             r"""Call the list vmware engine
             networks method over HTTP.
@@ -7897,8 +10946,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.vmwareengine.ListVmwareEngineNetworksResponse:
@@ -7910,6 +10961,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_vmware_engine_networks(
                 request, metadata
             )
@@ -7921,6 +10973,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListVmwareEngineNetworks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListVmwareEngineNetworks",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListVmwareEngineNetworks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7944,7 +11023,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine.ListVmwareEngineNetworksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_vmware_engine_networks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        vmwareengine.ListVmwareEngineNetworksResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.list_vmware_engine_networks",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListVmwareEngineNetworks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RepairManagementDnsZoneBinding(
@@ -7983,7 +11086,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the repair management dns
             zone binding method over HTTP.
@@ -7995,8 +11098,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -8009,6 +11114,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -8027,6 +11133,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseRepairManagementDnsZoneBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.RepairManagementDnsZoneBinding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "RepairManagementDnsZoneBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8049,7 +11182,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_repair_management_dns_zone_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.repair_management_dns_zone_binding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "RepairManagementDnsZoneBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResetNsxCredentials(
@@ -8087,7 +11242,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the reset nsx credentials method over HTTP.
 
@@ -8098,8 +11253,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8112,6 +11269,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reset_nsx_credentials(
                 request, metadata
             )
@@ -8127,6 +11285,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseResetNsxCredentials._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ResetNsxCredentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ResetNsxCredentials",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ResetNsxCredentials._get_response(
@@ -8147,7 +11332,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reset_nsx_credentials(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.reset_nsx_credentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ResetNsxCredentials",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResetVcenterCredentials(
@@ -8186,7 +11393,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the reset vcenter credentials method over HTTP.
 
@@ -8197,8 +11404,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8211,6 +11420,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reset_vcenter_credentials(
                 request, metadata
             )
@@ -8226,6 +11436,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseResetVcenterCredentials._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ResetVcenterCredentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ResetVcenterCredentials",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ResetVcenterCredentials._get_response(
@@ -8246,7 +11483,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reset_vcenter_credentials(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.reset_vcenter_credentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ResetVcenterCredentials",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RevokeDnsBindPermission(
@@ -8285,7 +11544,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the revoke dns bind
             permission method over HTTP.
@@ -8297,8 +11556,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -8311,6 +11572,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_revoke_dns_bind_permission(
                 request, metadata
             )
@@ -8326,6 +11588,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseRevokeDnsBindPermission._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.RevokeDnsBindPermission",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "RevokeDnsBindPermission",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._RevokeDnsBindPermission._get_response(
@@ -8346,7 +11635,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_revoke_dns_bind_permission(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.revoke_dns_bind_permission",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "RevokeDnsBindPermission",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ShowNsxCredentials(
@@ -8383,7 +11694,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.Credentials:
             r"""Call the show nsx credentials method over HTTP.
 
@@ -8394,8 +11705,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.Credentials:
@@ -8405,6 +11718,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_show_nsx_credentials(
                 request, metadata
             )
@@ -8416,6 +11730,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseShowNsxCredentials._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ShowNsxCredentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ShowNsxCredentials",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ShowNsxCredentials._get_response(
@@ -8437,7 +11778,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.Credentials.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_show_nsx_credentials(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.Credentials.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.show_nsx_credentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ShowNsxCredentials",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ShowVcenterCredentials(
@@ -8474,7 +11839,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> vmwareengine_resources.Credentials:
             r"""Call the show vcenter credentials method over HTTP.
 
@@ -8485,8 +11850,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.vmwareengine_resources.Credentials:
@@ -8496,6 +11863,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_show_vcenter_credentials(
                 request, metadata
             )
@@ -8507,6 +11875,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseShowVcenterCredentials._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ShowVcenterCredentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ShowVcenterCredentials",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ShowVcenterCredentials._get_response(
@@ -8528,7 +11923,31 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             pb_resp = vmwareengine_resources.Credentials.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_show_vcenter_credentials(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = vmwareengine_resources.Credentials.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.show_vcenter_credentials",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ShowVcenterCredentials",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeletePrivateCloud(
@@ -8566,7 +11985,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete private cloud method over HTTP.
 
@@ -8577,8 +11996,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8591,6 +12012,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_private_cloud(
                 request, metadata
             )
@@ -8606,6 +12028,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUndeletePrivateCloud._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UndeletePrivateCloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UndeletePrivateCloud",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UndeletePrivateCloud._get_response(
@@ -8626,7 +12075,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_private_cloud(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.undelete_private_cloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UndeletePrivateCloud",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCluster(
@@ -8664,7 +12135,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update cluster method over HTTP.
 
@@ -8675,8 +12146,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8689,6 +12162,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_transcoded_request(
                 http_options, request
@@ -8702,6 +12176,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateCluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateCluster._get_response(
@@ -8722,7 +12223,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_cluster",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDnsForwarding(
@@ -8760,7 +12283,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update dns forwarding method over HTTP.
 
@@ -8771,8 +12294,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8785,6 +12310,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_dns_forwarding(
                 request, metadata
             )
@@ -8800,6 +12326,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateDnsForwarding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateDnsForwarding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateDnsForwarding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateDnsForwarding._get_response(
@@ -8820,7 +12373,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_dns_forwarding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_dns_forwarding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateDnsForwarding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateExternalAccessRule(
@@ -8859,7 +12434,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update external access
             rule method over HTTP.
@@ -8871,8 +12446,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -8885,6 +12462,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_external_access_rule(
                 request, metadata
             )
@@ -8900,6 +12478,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAccessRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateExternalAccessRule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateExternalAccessRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8922,7 +12527,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_external_access_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_external_access_rule",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateExternalAccessRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateExternalAddress(
@@ -8960,7 +12587,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update external address method over HTTP.
 
@@ -8971,8 +12598,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8985,6 +12614,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_external_address(
                 request, metadata
             )
@@ -9000,6 +12630,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateExternalAddress._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateExternalAddress",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateExternalAddress",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateExternalAddress._get_response(
@@ -9020,7 +12677,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_external_address(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_external_address",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateExternalAddress",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateLoggingServer(
@@ -9058,7 +12737,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update logging server method over HTTP.
 
@@ -9069,8 +12748,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -9083,6 +12764,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_logging_server(
                 request, metadata
             )
@@ -9098,6 +12780,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateLoggingServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateLoggingServer",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateLoggingServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateLoggingServer._get_response(
@@ -9118,7 +12827,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_logging_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_logging_server",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateLoggingServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateManagementDnsZoneBinding(
@@ -9157,7 +12888,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update management dns
             zone binding method over HTTP.
@@ -9169,8 +12900,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -9183,6 +12916,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -9201,6 +12935,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateManagementDnsZoneBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateManagementDnsZoneBinding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateManagementDnsZoneBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9223,7 +12984,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_management_dns_zone_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_management_dns_zone_binding",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateManagementDnsZoneBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNetworkPeering(
@@ -9261,7 +13044,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update network peering method over HTTP.
 
@@ -9272,8 +13055,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -9286,6 +13071,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_network_peering(
                 request, metadata
             )
@@ -9301,6 +13087,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPeering._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateNetworkPeering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateNetworkPeering",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateNetworkPeering._get_response(
@@ -9321,7 +13134,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_network_peering(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_network_peering",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateNetworkPeering",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNetworkPolicy(
@@ -9359,7 +13194,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update network policy method over HTTP.
 
@@ -9370,8 +13205,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -9384,6 +13221,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_network_policy(
                 request, metadata
             )
@@ -9399,6 +13237,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateNetworkPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateNetworkPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateNetworkPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateNetworkPolicy._get_response(
@@ -9419,7 +13284,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_network_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_network_policy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateNetworkPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePrivateCloud(
@@ -9457,7 +13344,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update private cloud method over HTTP.
 
@@ -9468,8 +13355,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -9482,6 +13371,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_private_cloud(
                 request, metadata
             )
@@ -9497,6 +13387,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateCloud._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdatePrivateCloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdatePrivateCloud",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdatePrivateCloud._get_response(
@@ -9517,7 +13434,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_private_cloud(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_private_cloud",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdatePrivateCloud",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePrivateConnection(
@@ -9556,7 +13495,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update private connection method over HTTP.
 
@@ -9567,8 +13506,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -9581,6 +13522,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_private_connection(
                 request, metadata
             )
@@ -9596,6 +13538,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdatePrivateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdatePrivateConnection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdatePrivateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdatePrivateConnection._get_response(
@@ -9616,7 +13585,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_private_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_private_connection",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdatePrivateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSubnet(
@@ -9654,7 +13645,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update subnet method over HTTP.
 
@@ -9665,8 +13656,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -9679,6 +13672,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_subnet(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseUpdateSubnet._get_transcoded_request(
                 http_options, request
@@ -9696,6 +13690,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateSubnet",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateSubnet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._UpdateSubnet._get_response(
@@ -9716,7 +13737,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_subnet(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_subnet",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateSubnet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateVmwareEngineNetwork(
@@ -9755,7 +13798,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update vmware engine
             network method over HTTP.
@@ -9767,8 +13810,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -9781,6 +13826,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_vmware_engine_network(
                 request, metadata
             )
@@ -9796,6 +13842,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseUpdateVmwareEngineNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.UpdateVmwareEngineNetwork",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateVmwareEngineNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9818,7 +13891,29 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_vmware_engine_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineClient.update_vmware_engine_network",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "UpdateVmwareEngineNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -10566,7 +14661,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -10576,8 +14671,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -10586,6 +14683,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseVmwareEngineRestTransport._BaseGetLocation._get_transcoded_request(
@@ -10599,6 +14697,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetLocation._get_response(
@@ -10619,6 +14744,27 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -10659,7 +14805,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -10669,8 +14815,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -10679,6 +14827,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -10688,6 +14837,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListLocations._get_response(
@@ -10708,6 +14884,27 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -10748,7 +14945,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -10758,8 +14955,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -10768,6 +14967,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -10779,6 +14979,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetIamPolicy._get_response(
@@ -10799,6 +15026,27 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -10840,7 +15088,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -10850,8 +15098,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -10860,6 +15110,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -10877,6 +15128,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._SetIamPolicy._get_response(
@@ -10898,6 +15176,27 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -10939,7 +15238,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -10949,8 +15248,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -10959,6 +15260,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -10974,6 +15276,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._TestIamPermissions._get_response(
@@ -10995,6 +15324,27 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -11035,7 +15385,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -11045,13 +15395,16 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -11063,6 +15416,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._DeleteOperation._get_response(
@@ -11119,7 +15499,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -11129,8 +15509,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -11139,6 +15521,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -11150,6 +15533,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._GetOperation._get_response(
@@ -11170,6 +15580,27 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -11210,7 +15641,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -11220,8 +15651,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -11230,6 +15663,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             http_options = (
                 _BaseVmwareEngineRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseVmwareEngineRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -11239,6 +15673,33 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             query_params = _BaseVmwareEngineRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vmwareengine_v1.VmwareEngineClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VmwareEngineRestTransport._ListOperations._get_response(
@@ -11259,6 +15720,27 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vmwareengine_v1.VmwareEngineAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

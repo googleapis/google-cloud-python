@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -45,6 +45,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -253,8 +261,10 @@ class StreamsServiceRestInterceptor:
     def pre_create_cluster(
         self,
         request: streams_service.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.CreateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -276,8 +286,10 @@ class StreamsServiceRestInterceptor:
     def pre_create_event(
         self,
         request: streams_service.CreateEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.CreateEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.CreateEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_event
 
         Override in a subclass to manipulate the request or metadata
@@ -299,8 +311,10 @@ class StreamsServiceRestInterceptor:
     def pre_create_series(
         self,
         request: streams_service.CreateSeriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.CreateSeriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.CreateSeriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_series
 
         Override in a subclass to manipulate the request or metadata
@@ -322,8 +336,10 @@ class StreamsServiceRestInterceptor:
     def pre_create_stream(
         self,
         request: streams_service.CreateStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.CreateStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.CreateStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -345,8 +361,10 @@ class StreamsServiceRestInterceptor:
     def pre_delete_cluster(
         self,
         request: streams_service.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.DeleteClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -368,8 +386,10 @@ class StreamsServiceRestInterceptor:
     def pre_delete_event(
         self,
         request: streams_service.DeleteEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.DeleteEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.DeleteEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_event
 
         Override in a subclass to manipulate the request or metadata
@@ -391,8 +411,10 @@ class StreamsServiceRestInterceptor:
     def pre_delete_series(
         self,
         request: streams_service.DeleteSeriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.DeleteSeriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.DeleteSeriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_series
 
         Override in a subclass to manipulate the request or metadata
@@ -414,8 +436,10 @@ class StreamsServiceRestInterceptor:
     def pre_delete_stream(
         self,
         request: streams_service.DeleteStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.DeleteStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.DeleteStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -437,9 +461,10 @@ class StreamsServiceRestInterceptor:
     def pre_generate_stream_hls_token(
         self,
         request: streams_service.GenerateStreamHlsTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        streams_service.GenerateStreamHlsTokenRequest, Sequence[Tuple[str, str]]
+        streams_service.GenerateStreamHlsTokenRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for generate_stream_hls_token
 
@@ -462,8 +487,10 @@ class StreamsServiceRestInterceptor:
     def pre_get_cluster(
         self,
         request: streams_service.GetClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.GetClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -483,8 +510,10 @@ class StreamsServiceRestInterceptor:
     def pre_get_event(
         self,
         request: streams_service.GetEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.GetEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.GetEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_event
 
         Override in a subclass to manipulate the request or metadata
@@ -506,8 +535,10 @@ class StreamsServiceRestInterceptor:
     def pre_get_series(
         self,
         request: streams_service.GetSeriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.GetSeriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.GetSeriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_series
 
         Override in a subclass to manipulate the request or metadata
@@ -529,8 +560,10 @@ class StreamsServiceRestInterceptor:
     def pre_get_stream(
         self,
         request: streams_service.GetStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.GetStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.GetStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -552,8 +585,10 @@ class StreamsServiceRestInterceptor:
     def pre_list_clusters(
         self,
         request: streams_service.ListClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.ListClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -575,8 +610,10 @@ class StreamsServiceRestInterceptor:
     def pre_list_events(
         self,
         request: streams_service.ListEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.ListEventsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_events
 
         Override in a subclass to manipulate the request or metadata
@@ -598,8 +635,10 @@ class StreamsServiceRestInterceptor:
     def pre_list_series(
         self,
         request: streams_service.ListSeriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.ListSeriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListSeriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_series
 
         Override in a subclass to manipulate the request or metadata
@@ -621,8 +660,10 @@ class StreamsServiceRestInterceptor:
     def pre_list_streams(
         self,
         request: streams_service.ListStreamsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.ListStreamsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListStreamsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_streams
 
         Override in a subclass to manipulate the request or metadata
@@ -644,8 +685,11 @@ class StreamsServiceRestInterceptor:
     def pre_materialize_channel(
         self,
         request: streams_service.MaterializeChannelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.MaterializeChannelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.MaterializeChannelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for materialize_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -667,8 +711,10 @@ class StreamsServiceRestInterceptor:
     def pre_update_cluster(
         self,
         request: streams_service.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.UpdateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -690,8 +736,10 @@ class StreamsServiceRestInterceptor:
     def pre_update_event(
         self,
         request: streams_service.UpdateEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.UpdateEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.UpdateEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_event
 
         Override in a subclass to manipulate the request or metadata
@@ -713,8 +761,10 @@ class StreamsServiceRestInterceptor:
     def pre_update_series(
         self,
         request: streams_service.UpdateSeriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.UpdateSeriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.UpdateSeriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_series
 
         Override in a subclass to manipulate the request or metadata
@@ -736,8 +786,10 @@ class StreamsServiceRestInterceptor:
     def pre_update_stream(
         self,
         request: streams_service.UpdateStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[streams_service.UpdateStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.UpdateStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -759,8 +811,10 @@ class StreamsServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -782,8 +836,10 @@ class StreamsServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -805,8 +861,10 @@ class StreamsServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -826,8 +884,10 @@ class StreamsServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -847,8 +907,11 @@ class StreamsServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -870,8 +933,10 @@ class StreamsServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -891,8 +956,10 @@ class StreamsServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -912,8 +979,10 @@ class StreamsServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -935,8 +1004,10 @@ class StreamsServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1143,7 +1214,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create cluster method over HTTP.
 
@@ -1153,8 +1224,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1167,6 +1240,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseCreateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseCreateCluster._get_transcoded_request(
                 http_options, request
@@ -1180,6 +1254,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseCreateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.CreateCluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._CreateCluster._get_response(
@@ -1200,7 +1301,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.create_cluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEvent(
@@ -1238,7 +1361,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create event method over HTTP.
 
@@ -1248,8 +1371,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1262,6 +1387,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseCreateEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_event(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseCreateEvent._get_transcoded_request(
                 http_options, request
@@ -1275,6 +1401,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseCreateEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.CreateEvent",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._CreateEvent._get_response(
@@ -1295,7 +1448,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.create_event",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSeries(
@@ -1333,7 +1508,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create series method over HTTP.
 
@@ -1343,8 +1518,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1357,6 +1534,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseCreateSeries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_series(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseCreateSeries._get_transcoded_request(
                 http_options, request
@@ -1370,6 +1548,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseCreateSeries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.CreateSeries",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateSeries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._CreateSeries._get_response(
@@ -1390,7 +1595,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_series(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.create_series",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateSeries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateStream(
@@ -1428,7 +1655,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create stream method over HTTP.
 
@@ -1438,8 +1665,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1452,6 +1681,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseCreateStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_stream(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseCreateStream._get_transcoded_request(
                 http_options, request
@@ -1465,6 +1695,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseCreateStream._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.CreateStream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._CreateStream._get_response(
@@ -1485,7 +1742,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.create_stream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CreateStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCluster(
@@ -1522,7 +1801,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete cluster method over HTTP.
 
@@ -1532,8 +1811,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1546,6 +1827,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseDeleteCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseDeleteCluster._get_transcoded_request(
                 http_options, request
@@ -1555,6 +1837,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseDeleteCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.DeleteCluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._DeleteCluster._get_response(
@@ -1574,7 +1883,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.delete_cluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEvent(
@@ -1611,7 +1942,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete event method over HTTP.
 
@@ -1621,8 +1952,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1635,6 +1968,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseDeleteEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_event(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseDeleteEvent._get_transcoded_request(
                 http_options, request
@@ -1644,6 +1978,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseDeleteEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.DeleteEvent",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._DeleteEvent._get_response(
@@ -1663,7 +2024,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.delete_event",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSeries(
@@ -1700,7 +2083,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete series method over HTTP.
 
@@ -1710,8 +2093,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1724,6 +2109,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseDeleteSeries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_series(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseDeleteSeries._get_transcoded_request(
                 http_options, request
@@ -1733,6 +2119,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseDeleteSeries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.DeleteSeries",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteSeries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._DeleteSeries._get_response(
@@ -1752,7 +2165,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_series(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.delete_series",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteSeries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteStream(
@@ -1789,7 +2224,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete stream method over HTTP.
 
@@ -1799,8 +2234,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1813,6 +2250,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseDeleteStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_stream(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseDeleteStream._get_transcoded_request(
                 http_options, request
@@ -1822,6 +2260,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseDeleteStream._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.DeleteStream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._DeleteStream._get_response(
@@ -1841,7 +2306,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.delete_stream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateStreamHlsToken(
@@ -1880,7 +2367,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_service.GenerateStreamHlsTokenResponse:
             r"""Call the generate stream hls token method over HTTP.
 
@@ -1891,8 +2378,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_service.GenerateStreamHlsTokenResponse:
@@ -1904,6 +2393,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGenerateStreamHlsToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_stream_hls_token(
                 request, metadata
             )
@@ -1919,6 +2409,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseGenerateStreamHlsToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GenerateStreamHlsToken",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GenerateStreamHlsToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1943,7 +2460,31 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_service.GenerateStreamHlsTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_stream_hls_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        streams_service.GenerateStreamHlsTokenResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.generate_stream_hls_token",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GenerateStreamHlsToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCluster(
@@ -1980,7 +2521,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common.Cluster:
             r"""Call the get cluster method over HTTP.
 
@@ -1990,8 +2531,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.Cluster:
@@ -2003,6 +2546,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGetCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseGetCluster._get_transcoded_request(
                 http_options, request
@@ -2014,6 +2558,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GetCluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._GetCluster._get_response(
@@ -2035,7 +2606,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = common.Cluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common.Cluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.get_cluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEvent(
@@ -2072,7 +2665,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_resources.Event:
             r"""Call the get event method over HTTP.
 
@@ -2082,8 +2675,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_resources.Event:
@@ -2093,6 +2688,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGetEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_event(request, metadata)
             transcoded_request = (
                 _BaseStreamsServiceRestTransport._BaseGetEvent._get_transcoded_request(
@@ -2106,6 +2702,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GetEvent",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._GetEvent._get_response(
@@ -2127,7 +2750,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_resources.Event.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = streams_resources.Event.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.get_event",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSeries(
@@ -2164,7 +2809,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_resources.Series:
             r"""Call the get series method over HTTP.
 
@@ -2174,8 +2819,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_resources.Series:
@@ -2185,6 +2832,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGetSeries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_series(request, metadata)
             transcoded_request = (
                 _BaseStreamsServiceRestTransport._BaseGetSeries._get_transcoded_request(
@@ -2198,6 +2846,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GetSeries",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetSeries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._GetSeries._get_response(
@@ -2219,7 +2894,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_resources.Series.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_series(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = streams_resources.Series.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.get_series",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetSeries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetStream(
@@ -2256,7 +2953,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_resources.Stream:
             r"""Call the get stream method over HTTP.
 
@@ -2266,8 +2963,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_resources.Stream:
@@ -2283,6 +2982,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGetStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_stream(request, metadata)
             transcoded_request = (
                 _BaseStreamsServiceRestTransport._BaseGetStream._get_transcoded_request(
@@ -2296,6 +2996,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GetStream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._GetStream._get_response(
@@ -2317,7 +3044,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_resources.Stream.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = streams_resources.Stream.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.get_stream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClusters(
@@ -2354,7 +3103,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_service.ListClustersResponse:
             r"""Call the list clusters method over HTTP.
 
@@ -2365,8 +3114,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_service.ListClustersResponse:
@@ -2378,6 +3129,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseListClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseListClusters._get_transcoded_request(
                 http_options, request
@@ -2387,6 +3139,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseListClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.ListClusters",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._ListClusters._get_response(
@@ -2408,7 +3187,31 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_service.ListClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = streams_service.ListClustersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.list_clusters",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEvents(
@@ -2445,7 +3248,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_service.ListEventsResponse:
             r"""Call the list events method over HTTP.
 
@@ -2456,8 +3259,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_service.ListEventsResponse:
@@ -2469,6 +3274,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseListEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_events(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseListEvents._get_transcoded_request(
                 http_options, request
@@ -2480,6 +3286,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.ListEvents",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._ListEvents._get_response(
@@ -2501,7 +3334,31 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_service.ListEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = streams_service.ListEventsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.list_events",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSeries(
@@ -2538,7 +3395,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_service.ListSeriesResponse:
             r"""Call the list series method over HTTP.
 
@@ -2549,8 +3406,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_service.ListSeriesResponse:
@@ -2562,6 +3421,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseListSeries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_series(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseListSeries._get_transcoded_request(
                 http_options, request
@@ -2573,6 +3433,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.ListSeries",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListSeries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._ListSeries._get_response(
@@ -2594,7 +3481,31 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_service.ListSeriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_series(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = streams_service.ListSeriesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.list_series",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListSeries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListStreams(
@@ -2631,7 +3542,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> streams_service.ListStreamsResponse:
             r"""Call the list streams method over HTTP.
 
@@ -2642,8 +3553,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.streams_service.ListStreamsResponse:
@@ -2655,6 +3568,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseListStreams._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_streams(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseListStreams._get_transcoded_request(
                 http_options, request
@@ -2664,6 +3578,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseListStreams._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.ListStreams",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListStreams",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._ListStreams._get_response(
@@ -2685,7 +3626,31 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             pb_resp = streams_service.ListStreamsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_streams(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = streams_service.ListStreamsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.list_streams",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListStreams",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MaterializeChannel(
@@ -2723,7 +3688,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the materialize channel method over HTTP.
 
@@ -2733,8 +3698,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2747,6 +3714,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseMaterializeChannel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_materialize_channel(
                 request, metadata
             )
@@ -2762,6 +3730,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseMaterializeChannel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.MaterializeChannel",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "MaterializeChannel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._MaterializeChannel._get_response(
@@ -2782,7 +3777,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_materialize_channel(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.materialize_channel",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "MaterializeChannel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCluster(
@@ -2820,7 +3837,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update cluster method over HTTP.
 
@@ -2830,8 +3847,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2844,6 +3863,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseUpdateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseUpdateCluster._get_transcoded_request(
                 http_options, request
@@ -2857,6 +3877,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseUpdateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.UpdateCluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._UpdateCluster._get_response(
@@ -2877,7 +3924,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.update_cluster",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEvent(
@@ -2915,7 +3984,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update event method over HTTP.
 
@@ -2925,8 +3994,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2939,6 +4010,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseUpdateEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_event(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseUpdateEvent._get_transcoded_request(
                 http_options, request
@@ -2952,6 +4024,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseUpdateEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.UpdateEvent",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._UpdateEvent._get_response(
@@ -2972,7 +4071,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.update_event",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSeries(
@@ -3010,7 +4131,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update series method over HTTP.
 
@@ -3020,8 +4141,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3034,6 +4157,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseUpdateSeries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_series(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseUpdateSeries._get_transcoded_request(
                 http_options, request
@@ -3047,6 +4171,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseUpdateSeries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.UpdateSeries",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateSeries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._UpdateSeries._get_response(
@@ -3067,7 +4218,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_series(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.update_series",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateSeries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateStream(
@@ -3105,7 +4278,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update stream method over HTTP.
 
@@ -3115,8 +4288,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3129,6 +4304,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseUpdateStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_stream(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseUpdateStream._get_transcoded_request(
                 http_options, request
@@ -3142,6 +4318,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseUpdateStream._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.UpdateStream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._UpdateStream._get_response(
@@ -3162,7 +4365,29 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceClient.update_stream",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "UpdateStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3392,7 +4617,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3402,8 +4627,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3412,6 +4639,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -3421,6 +4649,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._GetLocation._get_response(
@@ -3441,6 +4696,27 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3481,7 +4757,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3491,8 +4767,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3501,6 +4779,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3510,6 +4789,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._ListLocations._get_response(
@@ -3530,6 +4836,27 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3570,7 +4897,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -3580,8 +4907,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -3590,6 +4919,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3599,6 +4929,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._GetIamPolicy._get_response(
@@ -3619,6 +4976,27 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3660,7 +5038,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -3670,8 +5048,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -3680,6 +5060,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3693,6 +5074,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._SetIamPolicy._get_response(
@@ -3714,6 +5122,27 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3755,7 +5184,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -3765,8 +5194,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -3775,6 +5206,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -3790,6 +5222,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._TestIamPermissions._get_response(
@@ -3811,6 +5270,27 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3852,7 +5332,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3862,13 +5342,16 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3884,6 +5367,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._CancelOperation._get_response(
@@ -3941,7 +5451,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3951,13 +5461,16 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3969,6 +5482,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._DeleteOperation._get_response(
@@ -4025,7 +5565,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4035,8 +5575,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4045,6 +5587,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -4054,6 +5597,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._GetOperation._get_response(
@@ -4074,6 +5644,27 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4114,7 +5705,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4124,8 +5715,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4134,6 +5727,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             http_options = (
                 _BaseStreamsServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseStreamsServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4143,6 +5737,33 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             query_params = _BaseStreamsServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.StreamsServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StreamsServiceRestTransport._ListOperations._get_response(
@@ -4163,6 +5784,27 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.StreamsServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

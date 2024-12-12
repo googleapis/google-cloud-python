@@ -1036,6 +1036,7 @@ def test_get_custom_field_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_custom_field(request)
 
@@ -1081,6 +1082,7 @@ def test_get_custom_field_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_custom_field(**mock_args)
 
@@ -1226,6 +1228,7 @@ def test_list_custom_fields_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_custom_fields(request)
 
@@ -1282,6 +1285,7 @@ def test_list_custom_fields_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_custom_fields(**mock_args)
 
@@ -1475,6 +1479,7 @@ def test_get_custom_field_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_custom_field(request)
 
 
@@ -1517,6 +1522,7 @@ def test_get_custom_field_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_custom_field(request)
 
     # Establish that the response is the type that we expect.
@@ -1576,6 +1582,7 @@ def test_get_custom_field_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = custom_field_messages.CustomField.to_json(
             custom_field_messages.CustomField()
         )
@@ -1622,6 +1629,7 @@ def test_list_custom_fields_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_custom_fields(request)
 
 
@@ -1658,6 +1666,7 @@ def test_list_custom_fields_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_custom_fields(request)
 
     # Establish that the response is the type that we expect.
@@ -1699,6 +1708,7 @@ def test_list_custom_fields_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = custom_field_service.ListCustomFieldsResponse.to_json(
             custom_field_service.ListCustomFieldsResponse()
         )
@@ -1747,6 +1757,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -1777,6 +1788,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

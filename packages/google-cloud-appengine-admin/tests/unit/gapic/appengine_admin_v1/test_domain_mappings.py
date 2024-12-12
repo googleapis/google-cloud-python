@@ -3256,6 +3256,7 @@ def test_list_domain_mappings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_domain_mappings(request)
 
 
@@ -3291,6 +3292,7 @@ def test_list_domain_mappings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_domain_mappings(request)
 
     # Establish that the response is the type that we expect.
@@ -3331,6 +3333,7 @@ def test_list_domain_mappings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = appengine.ListDomainMappingsResponse.to_json(
             appengine.ListDomainMappingsResponse()
         )
@@ -3377,6 +3380,7 @@ def test_get_domain_mapping_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_domain_mapping(request)
 
 
@@ -3413,6 +3417,7 @@ def test_get_domain_mapping_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_domain_mapping(request)
 
     # Establish that the response is the type that we expect.
@@ -3454,6 +3459,7 @@ def test_get_domain_mapping_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domain_mapping.DomainMapping.to_json(
             domain_mapping.DomainMapping()
         )
@@ -3500,6 +3506,7 @@ def test_create_domain_mapping_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_domain_mapping(request)
 
 
@@ -3609,6 +3616,7 @@ def test_create_domain_mapping_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_domain_mapping(request)
 
     # Establish that the response is the type that we expect.
@@ -3650,6 +3658,7 @@ def test_create_domain_mapping_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -3694,6 +3703,7 @@ def test_update_domain_mapping_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_domain_mapping(request)
 
 
@@ -3803,6 +3813,7 @@ def test_update_domain_mapping_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_domain_mapping(request)
 
     # Establish that the response is the type that we expect.
@@ -3844,6 +3855,7 @@ def test_update_domain_mapping_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -3888,6 +3900,7 @@ def test_delete_domain_mapping_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_domain_mapping(request)
 
 
@@ -3918,6 +3931,7 @@ def test_delete_domain_mapping_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_domain_mapping(request)
 
     # Establish that the response is the type that we expect.
@@ -3959,6 +3973,7 @@ def test_delete_domain_mapping_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 

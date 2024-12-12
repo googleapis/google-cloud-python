@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -247,8 +255,10 @@ class SpeechRestInterceptor:
     def pre_batch_recognize(
         self,
         request: cloud_speech.BatchRecognizeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.BatchRecognizeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.BatchRecognizeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_recognize
 
         Override in a subclass to manipulate the request or metadata
@@ -270,8 +280,10 @@ class SpeechRestInterceptor:
     def pre_create_custom_class(
         self,
         request: cloud_speech.CreateCustomClassRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.CreateCustomClassRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.CreateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -293,8 +305,10 @@ class SpeechRestInterceptor:
     def pre_create_phrase_set(
         self,
         request: cloud_speech.CreatePhraseSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.CreatePhraseSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.CreatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -316,8 +330,10 @@ class SpeechRestInterceptor:
     def pre_create_recognizer(
         self,
         request: cloud_speech.CreateRecognizerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.CreateRecognizerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.CreateRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -339,8 +355,10 @@ class SpeechRestInterceptor:
     def pre_delete_custom_class(
         self,
         request: cloud_speech.DeleteCustomClassRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.DeleteCustomClassRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.DeleteCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -362,8 +380,10 @@ class SpeechRestInterceptor:
     def pre_delete_phrase_set(
         self,
         request: cloud_speech.DeletePhraseSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.DeletePhraseSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.DeletePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -385,8 +405,10 @@ class SpeechRestInterceptor:
     def pre_delete_recognizer(
         self,
         request: cloud_speech.DeleteRecognizerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.DeleteRecognizerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.DeleteRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -408,8 +430,8 @@ class SpeechRestInterceptor:
     def pre_get_config(
         self,
         request: cloud_speech.GetConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.GetConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.GetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_config
 
         Override in a subclass to manipulate the request or metadata
@@ -429,8 +451,10 @@ class SpeechRestInterceptor:
     def pre_get_custom_class(
         self,
         request: cloud_speech.GetCustomClassRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.GetCustomClassRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.GetCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -452,8 +476,10 @@ class SpeechRestInterceptor:
     def pre_get_phrase_set(
         self,
         request: cloud_speech.GetPhraseSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.GetPhraseSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.GetPhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -475,8 +501,10 @@ class SpeechRestInterceptor:
     def pre_get_recognizer(
         self,
         request: cloud_speech.GetRecognizerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.GetRecognizerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.GetRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -498,8 +526,10 @@ class SpeechRestInterceptor:
     def pre_list_custom_classes(
         self,
         request: cloud_speech.ListCustomClassesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.ListCustomClassesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.ListCustomClassesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_custom_classes
 
         Override in a subclass to manipulate the request or metadata
@@ -521,8 +551,10 @@ class SpeechRestInterceptor:
     def pre_list_phrase_sets(
         self,
         request: cloud_speech.ListPhraseSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.ListPhraseSetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.ListPhraseSetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_phrase_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -544,8 +576,10 @@ class SpeechRestInterceptor:
     def pre_list_recognizers(
         self,
         request: cloud_speech.ListRecognizersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.ListRecognizersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.ListRecognizersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_recognizers
 
         Override in a subclass to manipulate the request or metadata
@@ -567,8 +601,8 @@ class SpeechRestInterceptor:
     def pre_recognize(
         self,
         request: cloud_speech.RecognizeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.RecognizeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.RecognizeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for recognize
 
         Override in a subclass to manipulate the request or metadata
@@ -590,8 +624,10 @@ class SpeechRestInterceptor:
     def pre_undelete_custom_class(
         self,
         request: cloud_speech.UndeleteCustomClassRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.UndeleteCustomClassRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.UndeleteCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for undelete_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -613,8 +649,10 @@ class SpeechRestInterceptor:
     def pre_undelete_phrase_set(
         self,
         request: cloud_speech.UndeletePhraseSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.UndeletePhraseSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.UndeletePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for undelete_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -636,8 +674,10 @@ class SpeechRestInterceptor:
     def pre_undelete_recognizer(
         self,
         request: cloud_speech.UndeleteRecognizerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.UndeleteRecognizerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.UndeleteRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for undelete_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -659,8 +699,10 @@ class SpeechRestInterceptor:
     def pre_update_config(
         self,
         request: cloud_speech.UpdateConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.UpdateConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.UpdateConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_config
 
         Override in a subclass to manipulate the request or metadata
@@ -680,8 +722,10 @@ class SpeechRestInterceptor:
     def pre_update_custom_class(
         self,
         request: cloud_speech.UpdateCustomClassRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.UpdateCustomClassRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.UpdateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -703,8 +747,10 @@ class SpeechRestInterceptor:
     def pre_update_phrase_set(
         self,
         request: cloud_speech.UpdatePhraseSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.UpdatePhraseSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.UpdatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -726,8 +772,10 @@ class SpeechRestInterceptor:
     def pre_update_recognizer(
         self,
         request: cloud_speech.UpdateRecognizerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_speech.UpdateRecognizerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.UpdateRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -749,8 +797,10 @@ class SpeechRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -772,8 +822,10 @@ class SpeechRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -795,8 +847,10 @@ class SpeechRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -816,8 +870,10 @@ class SpeechRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -837,8 +893,10 @@ class SpeechRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -860,8 +918,10 @@ class SpeechRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1054,7 +1114,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch recognize method over HTTP.
 
@@ -1066,8 +1126,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1080,6 +1142,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseBatchRecognize._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_recognize(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseBatchRecognize._get_transcoded_request(
@@ -1097,6 +1160,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.BatchRecognize",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "BatchRecognize",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._BatchRecognize._get_response(
@@ -1117,7 +1207,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_recognize(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.batch_recognize",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "BatchRecognize",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCustomClass(
@@ -1155,7 +1267,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create custom class method over HTTP.
 
@@ -1167,8 +1279,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1181,6 +1295,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseCreateCustomClass._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_custom_class(
                 request, metadata
             )
@@ -1203,6 +1318,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.CreateCustomClass",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "CreateCustomClass",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._CreateCustomClass._get_response(
                 self._host,
@@ -1222,7 +1364,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_custom_class(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.create_custom_class",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "CreateCustomClass",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePhraseSet(
@@ -1260,7 +1424,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create phrase set method over HTTP.
 
@@ -1272,8 +1436,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1286,6 +1452,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseCreatePhraseSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_phrase_set(
                 request, metadata
             )
@@ -1306,6 +1473,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.CreatePhraseSet",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "CreatePhraseSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._CreatePhraseSet._get_response(
                 self._host,
@@ -1325,7 +1519,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_phrase_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.create_phrase_set",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "CreatePhraseSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRecognizer(
@@ -1363,7 +1579,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create recognizer method over HTTP.
 
@@ -1375,8 +1591,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1389,6 +1607,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseCreateRecognizer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_recognizer(
                 request, metadata
             )
@@ -1411,6 +1630,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.CreateRecognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "CreateRecognizer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._CreateRecognizer._get_response(
                 self._host,
@@ -1430,7 +1676,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_recognizer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.create_recognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "CreateRecognizer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCustomClass(
@@ -1467,7 +1735,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete custom class method over HTTP.
 
@@ -1479,8 +1747,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1493,6 +1763,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseDeleteCustomClass._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_custom_class(
                 request, metadata
             )
@@ -1508,6 +1779,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.DeleteCustomClass",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "DeleteCustomClass",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._DeleteCustomClass._get_response(
@@ -1527,7 +1825,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_custom_class(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.delete_custom_class",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "DeleteCustomClass",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePhraseSet(
@@ -1564,7 +1884,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete phrase set method over HTTP.
 
@@ -1576,8 +1896,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1590,6 +1912,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseDeletePhraseSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_phrase_set(
                 request, metadata
             )
@@ -1605,6 +1928,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.DeletePhraseSet",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "DeletePhraseSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._DeletePhraseSet._get_response(
@@ -1624,7 +1974,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_phrase_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.delete_phrase_set",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "DeletePhraseSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRecognizer(
@@ -1661,7 +2033,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete recognizer method over HTTP.
 
@@ -1673,8 +2045,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1687,6 +2061,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseDeleteRecognizer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_recognizer(
                 request, metadata
             )
@@ -1702,6 +2077,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.DeleteRecognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "DeleteRecognizer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._DeleteRecognizer._get_response(
@@ -1721,7 +2123,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_recognizer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.delete_recognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "DeleteRecognizer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConfig(_BaseSpeechRestTransport._BaseGetConfig, SpeechRestStub):
@@ -1756,7 +2180,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.Config:
             r"""Call the get config method over HTTP.
 
@@ -1768,8 +2192,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.Config:
@@ -1781,6 +2207,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             """
 
             http_options = _BaseSpeechRestTransport._BaseGetConfig._get_http_options()
+
             request, metadata = self._interceptor.pre_get_config(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseGetConfig._get_transcoded_request(
@@ -1794,6 +2221,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.GetConfig",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._GetConfig._get_response(
@@ -1815,7 +2269,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.Config.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.Config.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.get_config",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCustomClass(_BaseSpeechRestTransport._BaseGetCustomClass, SpeechRestStub):
@@ -1850,7 +2326,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.CustomClass:
             r"""Call the get custom class method over HTTP.
 
@@ -1862,8 +2338,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.CustomClass:
@@ -1879,6 +2357,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseGetCustomClass._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_custom_class(
                 request, metadata
             )
@@ -1894,6 +2373,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.GetCustomClass",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetCustomClass",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._GetCustomClass._get_response(
@@ -1915,7 +2421,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.CustomClass.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_custom_class(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.CustomClass.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.get_custom_class",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetCustomClass",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPhraseSet(_BaseSpeechRestTransport._BaseGetPhraseSet, SpeechRestStub):
@@ -1950,7 +2478,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.PhraseSet:
             r"""Call the get phrase set method over HTTP.
 
@@ -1962,8 +2490,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.PhraseSet:
@@ -1978,6 +2508,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseGetPhraseSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_phrase_set(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseGetPhraseSet._get_transcoded_request(
@@ -1991,6 +2522,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.GetPhraseSet",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetPhraseSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._GetPhraseSet._get_response(
@@ -2012,7 +2570,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.PhraseSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_phrase_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.PhraseSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.get_phrase_set",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetPhraseSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRecognizer(_BaseSpeechRestTransport._BaseGetRecognizer, SpeechRestStub):
@@ -2047,7 +2627,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.Recognizer:
             r"""Call the get recognizer method over HTTP.
 
@@ -2059,8 +2639,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.Recognizer:
@@ -2072,6 +2654,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseGetRecognizer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_recognizer(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseGetRecognizer._get_transcoded_request(
@@ -2085,6 +2668,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.GetRecognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetRecognizer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._GetRecognizer._get_response(
@@ -2106,7 +2716,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.Recognizer.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_recognizer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.Recognizer.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.get_recognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetRecognizer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCustomClasses(
@@ -2143,7 +2775,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.ListCustomClassesResponse:
             r"""Call the list custom classes method over HTTP.
 
@@ -2155,8 +2787,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.ListCustomClassesResponse:
@@ -2169,6 +2803,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseListCustomClasses._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_custom_classes(
                 request, metadata
             )
@@ -2184,6 +2819,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.ListCustomClasses",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListCustomClasses",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._ListCustomClasses._get_response(
@@ -2205,7 +2867,31 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.ListCustomClassesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_custom_classes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.ListCustomClassesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.list_custom_classes",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListCustomClasses",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPhraseSets(_BaseSpeechRestTransport._BaseListPhraseSets, SpeechRestStub):
@@ -2240,7 +2926,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.ListPhraseSetsResponse:
             r"""Call the list phrase sets method over HTTP.
 
@@ -2252,8 +2938,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.ListPhraseSetsResponse:
@@ -2266,6 +2954,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseListPhraseSets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_phrase_sets(
                 request, metadata
             )
@@ -2281,6 +2970,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.ListPhraseSets",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListPhraseSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._ListPhraseSets._get_response(
@@ -2302,7 +3018,31 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.ListPhraseSetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_phrase_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.ListPhraseSetsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.list_phrase_sets",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListPhraseSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRecognizers(
@@ -2339,7 +3079,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.ListRecognizersResponse:
             r"""Call the list recognizers method over HTTP.
 
@@ -2351,8 +3091,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.ListRecognizersResponse:
@@ -2365,6 +3107,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseListRecognizers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_recognizers(
                 request, metadata
             )
@@ -2380,6 +3123,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.ListRecognizers",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListRecognizers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._ListRecognizers._get_response(
@@ -2401,7 +3171,31 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.ListRecognizersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_recognizers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.ListRecognizersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.list_recognizers",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListRecognizers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Recognize(_BaseSpeechRestTransport._BaseRecognize, SpeechRestStub):
@@ -2437,7 +3231,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.RecognizeResponse:
             r"""Call the recognize method over HTTP.
 
@@ -2453,8 +3247,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.RecognizeResponse:
@@ -2465,6 +3261,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             """
 
             http_options = _BaseSpeechRestTransport._BaseRecognize._get_http_options()
+
             request, metadata = self._interceptor.pre_recognize(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseRecognize._get_transcoded_request(
@@ -2482,6 +3279,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.Recognize",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "Recognize",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._Recognize._get_response(
@@ -2504,7 +3328,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.RecognizeResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_recognize(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.RecognizeResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.recognize",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "Recognize",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StreamingRecognize(
@@ -2519,7 +3365,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             raise NotImplementedError(
                 "Method StreamingRecognize is not available over REST transport"
@@ -2560,7 +3406,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete custom class method over HTTP.
 
@@ -2572,8 +3418,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2586,6 +3434,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_custom_class(
                 request, metadata
             )
@@ -2601,6 +3450,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             query_params = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.UndeleteCustomClass",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UndeleteCustomClass",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._UndeleteCustomClass._get_response(
@@ -2621,7 +3497,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_custom_class(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.undelete_custom_class",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UndeleteCustomClass",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeletePhraseSet(
@@ -2659,7 +3557,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete phrase set method over HTTP.
 
@@ -2671,8 +3569,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2685,6 +3585,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_phrase_set(
                 request, metadata
             )
@@ -2707,6 +3608,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.UndeletePhraseSet",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UndeletePhraseSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._UndeletePhraseSet._get_response(
                 self._host,
@@ -2726,7 +3654,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_phrase_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.undelete_phrase_set",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UndeletePhraseSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeleteRecognizer(
@@ -2764,7 +3714,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete recognizer method over HTTP.
 
@@ -2776,8 +3726,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2790,6 +3742,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_recognizer(
                 request, metadata
             )
@@ -2810,6 +3763,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.UndeleteRecognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UndeleteRecognizer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._UndeleteRecognizer._get_response(
                 self._host,
@@ -2829,7 +3809,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_recognizer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.undelete_recognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UndeleteRecognizer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConfig(_BaseSpeechRestTransport._BaseUpdateConfig, SpeechRestStub):
@@ -2865,7 +3867,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_speech.Config:
             r"""Call the update config method over HTTP.
 
@@ -2877,8 +3879,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_speech.Config:
@@ -2892,6 +3896,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseUpdateConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_config(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseUpdateConfig._get_transcoded_request(
@@ -2909,6 +3914,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.UpdateConfig",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdateConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._UpdateConfig._get_response(
@@ -2931,7 +3963,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             pb_resp = cloud_speech.Config.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_speech.Config.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.update_config",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdateConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCustomClass(
@@ -2969,7 +4023,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update custom class method over HTTP.
 
@@ -2981,8 +4035,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2995,6 +4051,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseUpdateCustomClass._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_custom_class(
                 request, metadata
             )
@@ -3017,6 +4074,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.UpdateCustomClass",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdateCustomClass",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._UpdateCustomClass._get_response(
                 self._host,
@@ -3036,7 +4120,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_custom_class(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.update_custom_class",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdateCustomClass",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePhraseSet(
@@ -3074,7 +4180,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update phrase set method over HTTP.
 
@@ -3086,8 +4192,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3100,6 +4208,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_phrase_set(
                 request, metadata
             )
@@ -3120,6 +4229,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.UpdatePhraseSet",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdatePhraseSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._UpdatePhraseSet._get_response(
                 self._host,
@@ -3139,7 +4275,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_phrase_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.update_phrase_set",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdatePhraseSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRecognizer(
@@ -3177,7 +4335,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update recognizer method over HTTP.
 
@@ -3189,8 +4347,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3203,6 +4363,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseUpdateRecognizer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_recognizer(
                 request, metadata
             )
@@ -3225,6 +4386,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.UpdateRecognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdateRecognizer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = SpeechRestTransport._UpdateRecognizer._get_response(
                 self._host,
@@ -3244,7 +4432,29 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_recognizer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechClient.update_recognizer",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "UpdateRecognizer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3476,7 +4686,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3486,14 +4696,17 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
             """
 
             http_options = _BaseSpeechRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseGetLocation._get_transcoded_request(
@@ -3507,6 +4720,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._GetLocation._get_response(
@@ -3527,6 +4767,27 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3565,7 +4826,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3575,8 +4836,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3585,6 +4848,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseListLocations._get_transcoded_request(
@@ -3598,6 +4862,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._ListLocations._get_response(
@@ -3618,6 +4909,27 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3659,7 +4971,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3669,13 +4981,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSpeechRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3695,6 +5010,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._CancelOperation._get_response(
@@ -3752,7 +5094,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3762,13 +5104,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSpeechRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3784,6 +5129,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._DeleteOperation._get_response(
@@ -3838,7 +5210,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3848,8 +5220,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3858,6 +5232,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3871,6 +5246,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._GetOperation._get_response(
@@ -3891,6 +5293,27 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3929,7 +5352,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3939,8 +5362,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3949,6 +5374,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = (
                 _BaseSpeechRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseSpeechRestTransport._BaseListOperations._get_transcoded_request(
@@ -3962,6 +5388,33 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.speech_v2.SpeechClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SpeechRestTransport._ListOperations._get_response(
@@ -3982,6 +5435,27 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.speech_v2.SpeechAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.speech.v2.Speech",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

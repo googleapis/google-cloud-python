@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -211,8 +219,8 @@ class CloudBuildRestInterceptor:
     def pre_approve_build(
         self,
         request: cloudbuild.ApproveBuildRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.ApproveBuildRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudbuild.ApproveBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for approve_build
 
         Override in a subclass to manipulate the request or metadata
@@ -234,8 +242,8 @@ class CloudBuildRestInterceptor:
     def pre_cancel_build(
         self,
         request: cloudbuild.CancelBuildRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.CancelBuildRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudbuild.CancelBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_build
 
         Override in a subclass to manipulate the request or metadata
@@ -255,8 +263,8 @@ class CloudBuildRestInterceptor:
     def pre_create_build(
         self,
         request: cloudbuild.CreateBuildRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.CreateBuildRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudbuild.CreateBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_build
 
         Override in a subclass to manipulate the request or metadata
@@ -278,8 +286,10 @@ class CloudBuildRestInterceptor:
     def pre_create_build_trigger(
         self,
         request: cloudbuild.CreateBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.CreateBuildTriggerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.CreateBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -301,8 +311,10 @@ class CloudBuildRestInterceptor:
     def pre_create_worker_pool(
         self,
         request: cloudbuild.CreateWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.CreateWorkerPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.CreateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -324,8 +336,10 @@ class CloudBuildRestInterceptor:
     def pre_delete_build_trigger(
         self,
         request: cloudbuild.DeleteBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.DeleteBuildTriggerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.DeleteBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -336,8 +350,10 @@ class CloudBuildRestInterceptor:
     def pre_delete_worker_pool(
         self,
         request: cloudbuild.DeleteWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.DeleteWorkerPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.DeleteWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -357,8 +373,10 @@ class CloudBuildRestInterceptor:
         return response
 
     def pre_get_build(
-        self, request: cloudbuild.GetBuildRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[cloudbuild.GetBuildRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: cloudbuild.GetBuildRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudbuild.GetBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_build
 
         Override in a subclass to manipulate the request or metadata
@@ -378,8 +396,10 @@ class CloudBuildRestInterceptor:
     def pre_get_build_trigger(
         self,
         request: cloudbuild.GetBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.GetBuildTriggerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.GetBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -401,8 +421,10 @@ class CloudBuildRestInterceptor:
     def pre_get_worker_pool(
         self,
         request: cloudbuild.GetWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.GetWorkerPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.GetWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -422,8 +444,10 @@ class CloudBuildRestInterceptor:
         return response
 
     def pre_list_builds(
-        self, request: cloudbuild.ListBuildsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[cloudbuild.ListBuildsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: cloudbuild.ListBuildsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudbuild.ListBuildsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_builds
 
         Override in a subclass to manipulate the request or metadata
@@ -445,8 +469,10 @@ class CloudBuildRestInterceptor:
     def pre_list_build_triggers(
         self,
         request: cloudbuild.ListBuildTriggersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.ListBuildTriggersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.ListBuildTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_build_triggers
 
         Override in a subclass to manipulate the request or metadata
@@ -468,8 +494,10 @@ class CloudBuildRestInterceptor:
     def pre_list_worker_pools(
         self,
         request: cloudbuild.ListWorkerPoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.ListWorkerPoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.ListWorkerPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_worker_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -491,8 +519,10 @@ class CloudBuildRestInterceptor:
     def pre_receive_trigger_webhook(
         self,
         request: cloudbuild.ReceiveTriggerWebhookRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.ReceiveTriggerWebhookRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.ReceiveTriggerWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for receive_trigger_webhook
 
         Override in a subclass to manipulate the request or metadata
@@ -512,8 +542,10 @@ class CloudBuildRestInterceptor:
         return response
 
     def pre_retry_build(
-        self, request: cloudbuild.RetryBuildRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[cloudbuild.RetryBuildRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: cloudbuild.RetryBuildRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudbuild.RetryBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retry_build
 
         Override in a subclass to manipulate the request or metadata
@@ -535,8 +567,10 @@ class CloudBuildRestInterceptor:
     def pre_run_build_trigger(
         self,
         request: cloudbuild.RunBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.RunBuildTriggerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.RunBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for run_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -558,8 +592,10 @@ class CloudBuildRestInterceptor:
     def pre_update_build_trigger(
         self,
         request: cloudbuild.UpdateBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.UpdateBuildTriggerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.UpdateBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -581,8 +617,10 @@ class CloudBuildRestInterceptor:
     def pre_update_worker_pool(
         self,
         request: cloudbuild.UpdateWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudbuild.UpdateWorkerPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudbuild.UpdateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -781,7 +819,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the approve build method over HTTP.
 
@@ -792,8 +830,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -806,6 +846,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseApproveBuild._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_approve_build(request, metadata)
             transcoded_request = (
                 _BaseCloudBuildRestTransport._BaseApproveBuild._get_transcoded_request(
@@ -826,6 +867,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.ApproveBuild",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ApproveBuild",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = CloudBuildRestTransport._ApproveBuild._get_response(
                 self._host,
@@ -845,7 +913,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_approve_build(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.approve_build",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ApproveBuild",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CancelBuild(
@@ -883,7 +973,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.Build:
             r"""Call the cancel build method over HTTP.
 
@@ -893,8 +983,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.Build:
@@ -928,6 +1020,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseCancelBuild._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_build(request, metadata)
             transcoded_request = (
                 _BaseCloudBuildRestTransport._BaseCancelBuild._get_transcoded_request(
@@ -945,6 +1038,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.CancelBuild",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CancelBuild",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._CancelBuild._get_response(
@@ -967,7 +1087,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.Build.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_cancel_build(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.Build.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.cancel_build",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CancelBuild",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBuild(
@@ -1005,7 +1147,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create build method over HTTP.
 
@@ -1015,8 +1157,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1029,6 +1173,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseCreateBuild._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_build(request, metadata)
             transcoded_request = (
                 _BaseCloudBuildRestTransport._BaseCreateBuild._get_transcoded_request(
@@ -1046,6 +1191,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.CreateBuild",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CreateBuild",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._CreateBuild._get_response(
@@ -1066,7 +1238,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_build(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.create_build",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CreateBuild",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBuildTrigger(
@@ -1104,7 +1298,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.BuildTrigger:
             r"""Call the create build trigger method over HTTP.
 
@@ -1114,8 +1308,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.BuildTrigger:
@@ -1128,6 +1324,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_build_trigger(
                 request, metadata
             )
@@ -1143,6 +1340,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.CreateBuildTrigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CreateBuildTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._CreateBuildTrigger._get_response(
@@ -1165,7 +1389,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.BuildTrigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_build_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.BuildTrigger.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.create_build_trigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CreateBuildTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateWorkerPool(
@@ -1203,7 +1449,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create worker pool method over HTTP.
 
@@ -1213,8 +1459,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1227,6 +1475,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_worker_pool(
                 request, metadata
             )
@@ -1242,6 +1491,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.CreateWorkerPool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CreateWorkerPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._CreateWorkerPool._get_response(
@@ -1262,7 +1538,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_worker_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.create_worker_pool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "CreateWorkerPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBuildTrigger(
@@ -1299,7 +1597,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete build trigger method over HTTP.
 
@@ -1309,13 +1607,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_build_trigger(
                 request, metadata
             )
@@ -1327,6 +1628,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.DeleteBuildTrigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "DeleteBuildTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._DeleteBuildTrigger._get_response(
@@ -1377,7 +1705,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete worker pool method over HTTP.
 
@@ -1387,8 +1715,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1401,6 +1731,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_worker_pool(
                 request, metadata
             )
@@ -1412,6 +1743,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.DeleteWorkerPool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "DeleteWorkerPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._DeleteWorkerPool._get_response(
@@ -1431,7 +1789,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_worker_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.delete_worker_pool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "DeleteWorkerPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBuild(_BaseCloudBuildRestTransport._BaseGetBuild, CloudBuildRestStub):
@@ -1466,7 +1846,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.Build:
             r"""Call the get build method over HTTP.
 
@@ -1476,8 +1856,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.Build:
@@ -1511,6 +1893,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseGetBuild._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_build(request, metadata)
             transcoded_request = (
                 _BaseCloudBuildRestTransport._BaseGetBuild._get_transcoded_request(
@@ -1524,6 +1907,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.GetBuild",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "GetBuild",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._GetBuild._get_response(
@@ -1545,7 +1955,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.Build.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_build(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.Build.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.get_build",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "GetBuild",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBuildTrigger(
@@ -1582,7 +2014,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.BuildTrigger:
             r"""Call the get build trigger method over HTTP.
 
@@ -1592,8 +2024,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.BuildTrigger:
@@ -1606,6 +2040,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_build_trigger(
                 request, metadata
             )
@@ -1617,6 +2052,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.GetBuildTrigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "GetBuildTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._GetBuildTrigger._get_response(
@@ -1638,7 +2100,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.BuildTrigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_build_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.BuildTrigger.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.get_build_trigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "GetBuildTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetWorkerPool(
@@ -1675,7 +2159,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.WorkerPool:
             r"""Call the get worker pool method over HTTP.
 
@@ -1685,8 +2169,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.WorkerPool:
@@ -1711,6 +2197,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_worker_pool(request, metadata)
             transcoded_request = (
                 _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_transcoded_request(
@@ -1724,6 +2211,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.GetWorkerPool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "GetWorkerPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._GetWorkerPool._get_response(
@@ -1745,7 +2259,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.WorkerPool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_worker_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.WorkerPool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.get_worker_pool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "GetWorkerPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBuilds(_BaseCloudBuildRestTransport._BaseListBuilds, CloudBuildRestStub):
@@ -1780,7 +2316,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.ListBuildsResponse:
             r"""Call the list builds method over HTTP.
 
@@ -1790,8 +2326,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.ListBuildsResponse:
@@ -1801,6 +2339,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseListBuilds._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_builds(request, metadata)
             transcoded_request = (
                 _BaseCloudBuildRestTransport._BaseListBuilds._get_transcoded_request(
@@ -1814,6 +2353,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.ListBuilds",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ListBuilds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._ListBuilds._get_response(
@@ -1835,7 +2401,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.ListBuildsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_builds(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.ListBuildsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.list_builds",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ListBuilds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBuildTriggers(
@@ -1872,7 +2460,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.ListBuildTriggersResponse:
             r"""Call the list build triggers method over HTTP.
 
@@ -1882,8 +2470,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.ListBuildTriggersResponse:
@@ -1893,6 +2483,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_build_triggers(
                 request, metadata
             )
@@ -1904,6 +2495,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.ListBuildTriggers",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ListBuildTriggers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._ListBuildTriggers._get_response(
@@ -1925,7 +2543,31 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.ListBuildTriggersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_build_triggers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.ListBuildTriggersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.list_build_triggers",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ListBuildTriggers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkerPools(
@@ -1962,7 +2604,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.ListWorkerPoolsResponse:
             r"""Call the list worker pools method over HTTP.
 
@@ -1972,8 +2614,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.ListWorkerPoolsResponse:
@@ -1983,6 +2627,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseListWorkerPools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_worker_pools(
                 request, metadata
             )
@@ -1994,6 +2639,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseListWorkerPools._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.ListWorkerPools",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ListWorkerPools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._ListWorkerPools._get_response(
@@ -2015,7 +2687,31 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.ListWorkerPoolsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_worker_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.ListWorkerPoolsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.list_worker_pools",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ListWorkerPools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReceiveTriggerWebhook(
@@ -2053,7 +2749,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.ReceiveTriggerWebhookResponse:
             r"""Call the receive trigger webhook method over HTTP.
 
@@ -2065,8 +2761,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.ReceiveTriggerWebhookResponse:
@@ -2078,6 +2776,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_receive_trigger_webhook(
                 request, metadata
             )
@@ -2093,6 +2792,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.ReceiveTriggerWebhook",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ReceiveTriggerWebhook",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._ReceiveTriggerWebhook._get_response(
@@ -2115,7 +2841,31 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.ReceiveTriggerWebhookResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_receive_trigger_webhook(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.ReceiveTriggerWebhookResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.receive_trigger_webhook",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "ReceiveTriggerWebhook",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RetryBuild(_BaseCloudBuildRestTransport._BaseRetryBuild, CloudBuildRestStub):
@@ -2151,7 +2901,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the retry build method over HTTP.
 
@@ -2161,8 +2911,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2175,6 +2927,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseRetryBuild._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_retry_build(request, metadata)
             transcoded_request = (
                 _BaseCloudBuildRestTransport._BaseRetryBuild._get_transcoded_request(
@@ -2192,6 +2945,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.RetryBuild",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "RetryBuild",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._RetryBuild._get_response(
@@ -2212,7 +2992,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_retry_build(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.retry_build",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "RetryBuild",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunBuildTrigger(
@@ -2250,7 +3052,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the run build trigger method over HTTP.
 
@@ -2261,8 +3063,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2275,6 +3079,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_build_trigger(
                 request, metadata
             )
@@ -2290,6 +3095,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.RunBuildTrigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "RunBuildTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._RunBuildTrigger._get_response(
@@ -2310,7 +3142,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_build_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.run_build_trigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "RunBuildTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBuildTrigger(
@@ -2348,7 +3202,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudbuild.BuildTrigger:
             r"""Call the update build trigger method over HTTP.
 
@@ -2358,8 +3212,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudbuild.BuildTrigger:
@@ -2372,6 +3228,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_build_trigger(
                 request, metadata
             )
@@ -2387,6 +3244,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.UpdateBuildTrigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "UpdateBuildTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._UpdateBuildTrigger._get_response(
@@ -2409,7 +3293,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             pb_resp = cloudbuild.BuildTrigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_build_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudbuild.BuildTrigger.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.update_build_trigger",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "UpdateBuildTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateWorkerPool(
@@ -2447,7 +3353,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update worker pool method over HTTP.
 
@@ -2457,8 +3363,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2471,6 +3379,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             http_options = (
                 _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_worker_pool(
                 request, metadata
             )
@@ -2486,6 +3395,33 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             query_params = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v1.CloudBuildClient.UpdateWorkerPool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "UpdateWorkerPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudBuildRestTransport._UpdateWorkerPool._get_response(
@@ -2506,7 +3442,29 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_worker_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v1.CloudBuildClient.update_worker_pool",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                        "rpcName": "UpdateWorkerPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

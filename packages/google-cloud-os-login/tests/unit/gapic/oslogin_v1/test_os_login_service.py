@@ -3623,6 +3623,7 @@ def test_create_ssh_public_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_ssh_public_key(request)
 
@@ -3677,6 +3678,7 @@ def test_create_ssh_public_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_ssh_public_key(**mock_args)
 
@@ -3808,6 +3810,7 @@ def test_delete_posix_account_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_posix_account(request)
 
@@ -3851,6 +3854,7 @@ def test_delete_posix_account_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_posix_account(**mock_args)
 
@@ -3982,6 +3986,7 @@ def test_delete_ssh_public_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_ssh_public_key(request)
 
@@ -4025,6 +4030,7 @@ def test_delete_ssh_public_key_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_ssh_public_key(**mock_args)
 
@@ -4163,6 +4169,7 @@ def test_get_login_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_login_profile(request)
 
@@ -4216,6 +4223,7 @@ def test_get_login_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_login_profile(**mock_args)
 
@@ -4349,6 +4357,7 @@ def test_get_ssh_public_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_ssh_public_key(request)
 
@@ -4394,6 +4403,7 @@ def test_get_ssh_public_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_ssh_public_key(**mock_args)
 
@@ -4536,6 +4546,7 @@ def test_import_ssh_public_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.import_ssh_public_key(request)
 
@@ -4591,6 +4602,7 @@ def test_import_ssh_public_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.import_ssh_public_key(**mock_args)
 
@@ -4731,6 +4743,7 @@ def test_update_ssh_public_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_ssh_public_key(request)
 
@@ -4786,6 +4799,7 @@ def test_update_ssh_public_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_ssh_public_key(**mock_args)
 
@@ -5328,6 +5342,7 @@ def test_create_ssh_public_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_ssh_public_key(request)
 
 
@@ -5439,6 +5454,7 @@ def test_create_ssh_public_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_ssh_public_key(request)
 
     # Establish that the response is the type that we expect.
@@ -5482,6 +5498,7 @@ def test_create_ssh_public_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = common.SshPublicKey.to_json(common.SshPublicKey())
         req.return_value.content = return_value
 
@@ -5526,6 +5543,7 @@ def test_delete_posix_account_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_posix_account(request)
 
 
@@ -5556,6 +5574,7 @@ def test_delete_posix_account_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_posix_account(request)
 
     # Establish that the response is the type that we expect.
@@ -5592,6 +5611,7 @@ def test_delete_posix_account_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = oslogin.DeletePosixAccountRequest()
         metadata = [
@@ -5632,6 +5652,7 @@ def test_delete_ssh_public_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_ssh_public_key(request)
 
 
@@ -5662,6 +5683,7 @@ def test_delete_ssh_public_key_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_ssh_public_key(request)
 
     # Establish that the response is the type that we expect.
@@ -5698,6 +5720,7 @@ def test_delete_ssh_public_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = oslogin.DeleteSshPublicKeyRequest()
         metadata = [
@@ -5738,6 +5761,7 @@ def test_get_login_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_login_profile(request)
 
 
@@ -5773,6 +5797,7 @@ def test_get_login_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_login_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -5811,6 +5836,7 @@ def test_get_login_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = oslogin.LoginProfile.to_json(oslogin.LoginProfile())
         req.return_value.content = return_value
 
@@ -5855,6 +5881,7 @@ def test_get_ssh_public_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_ssh_public_key(request)
 
 
@@ -5893,6 +5920,7 @@ def test_get_ssh_public_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_ssh_public_key(request)
 
     # Establish that the response is the type that we expect.
@@ -5934,6 +5962,7 @@ def test_get_ssh_public_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = common.SshPublicKey.to_json(common.SshPublicKey())
         req.return_value.content = return_value
 
@@ -5978,6 +6007,7 @@ def test_import_ssh_public_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.import_ssh_public_key(request)
 
 
@@ -6086,6 +6116,7 @@ def test_import_ssh_public_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.import_ssh_public_key(request)
 
     # Establish that the response is the type that we expect.
@@ -6126,6 +6157,7 @@ def test_import_ssh_public_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = oslogin.ImportSshPublicKeyResponse.to_json(
             oslogin.ImportSshPublicKeyResponse()
         )
@@ -6172,6 +6204,7 @@ def test_update_ssh_public_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_ssh_public_key(request)
 
 
@@ -6283,6 +6316,7 @@ def test_update_ssh_public_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_ssh_public_key(request)
 
     # Establish that the response is the type that we expect.
@@ -6326,6 +6360,7 @@ def test_update_ssh_public_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = common.SshPublicKey.to_json(common.SshPublicKey())
         req.return_value.content = return_value
 

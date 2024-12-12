@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -25,13 +28,92 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.resourcemanager_v3.types import projects
 
 from .base import DEFAULT_CLIENT_INFO, ProjectsTransport
 from .grpc import ProjectsGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
@@ -230,10 +312,13 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -256,7 +341,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -285,7 +370,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_project" not in self._stubs:
-            self._stubs["get_project"] = self.grpc_channel.unary_unary(
+            self._stubs["get_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/GetProject",
                 request_serializer=projects.GetProjectRequest.serialize,
                 response_deserializer=projects.Project.deserialize,
@@ -319,7 +404,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_projects" not in self._stubs:
-            self._stubs["list_projects"] = self.grpc_channel.unary_unary(
+            self._stubs["list_projects"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/ListProjects",
                 request_serializer=projects.ListProjectsRequest.serialize,
                 response_deserializer=projects.ListProjectsResponse.deserialize,
@@ -359,7 +444,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_projects" not in self._stubs:
-            self._stubs["search_projects"] = self.grpc_channel.unary_unary(
+            self._stubs["search_projects"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/SearchProjects",
                 request_serializer=projects.SearchProjectsRequest.serialize,
                 response_deserializer=projects.SearchProjectsResponse.deserialize,
@@ -390,7 +475,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_project" not in self._stubs:
-            self._stubs["create_project"] = self.grpc_channel.unary_unary(
+            self._stubs["create_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/CreateProject",
                 request_serializer=projects.CreateProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -422,7 +507,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_project" not in self._stubs:
-            self._stubs["update_project"] = self.grpc_channel.unary_unary(
+            self._stubs["update_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/UpdateProject",
                 request_serializer=projects.UpdateProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -463,7 +548,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "move_project" not in self._stubs:
-            self._stubs["move_project"] = self.grpc_channel.unary_unary(
+            self._stubs["move_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/MoveProject",
                 request_serializer=projects.MoveProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -523,7 +608,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_project" not in self._stubs:
-            self._stubs["delete_project"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/DeleteProject",
                 request_serializer=projects.DeleteProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -558,7 +643,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undelete_project" not in self._stubs:
-            self._stubs["undelete_project"] = self.grpc_channel.unary_unary(
+            self._stubs["undelete_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/UndeleteProject",
                 request_serializer=projects.UndeleteProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -587,7 +672,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -660,7 +745,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -691,7 +776,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.cloud.resourcemanager.v3.Projects/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
@@ -796,7 +881,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -812,7 +897,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,

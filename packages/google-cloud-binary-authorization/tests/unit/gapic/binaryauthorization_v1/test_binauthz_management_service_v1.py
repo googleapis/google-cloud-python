@@ -3718,6 +3718,7 @@ def test_get_policy_rest_required_fields(request_type=service.GetPolicyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_policy(request)
 
@@ -3763,6 +3764,7 @@ def test_get_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_policy(**mock_args)
 
@@ -3886,6 +3888,7 @@ def test_update_policy_rest_required_fields(request_type=service.UpdatePolicyReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_policy(request)
 
@@ -3931,6 +3934,7 @@ def test_update_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_policy(**mock_args)
 
@@ -4070,6 +4074,7 @@ def test_create_attestor_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_attestor(request)
 
@@ -4132,6 +4137,7 @@ def test_create_attestor_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_attestor(**mock_args)
 
@@ -4261,6 +4267,7 @@ def test_get_attestor_rest_required_fields(request_type=service.GetAttestorReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_attestor(request)
 
@@ -4306,6 +4313,7 @@ def test_get_attestor_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_attestor(**mock_args)
 
@@ -4431,6 +4439,7 @@ def test_update_attestor_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_attestor(request)
 
@@ -4476,6 +4485,7 @@ def test_update_attestor_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_attestor(**mock_args)
 
@@ -4611,6 +4621,7 @@ def test_list_attestors_rest_required_fields(request_type=service.ListAttestorsR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_attestors(request)
 
@@ -4664,6 +4675,7 @@ def test_list_attestors_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_attestors(**mock_args)
 
@@ -4851,6 +4863,7 @@ def test_delete_attestor_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_attestor(request)
 
@@ -4894,6 +4907,7 @@ def test_delete_attestor_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_attestor(**mock_args)
 
@@ -5406,6 +5420,7 @@ def test_get_policy_rest_bad_request(request_type=service.GetPolicyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_policy(request)
 
 
@@ -5443,6 +5458,7 @@ def test_get_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -5486,6 +5502,7 @@ def test_get_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Policy.to_json(resources.Policy())
         req.return_value.content = return_value
 
@@ -5528,6 +5545,7 @@ def test_update_policy_rest_bad_request(request_type=service.UpdatePolicyRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_policy(request)
 
 
@@ -5651,6 +5669,7 @@ def test_update_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -5694,6 +5713,7 @@ def test_update_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Policy.to_json(resources.Policy())
         req.return_value.content = return_value
 
@@ -5736,6 +5756,7 @@ def test_create_attestor_rest_bad_request(request_type=service.CreateAttestorReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_attestor(request)
 
 
@@ -5859,6 +5880,7 @@ def test_create_attestor_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_attestor(request)
 
     # Establish that the response is the type that we expect.
@@ -5898,6 +5920,7 @@ def test_create_attestor_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Attestor.to_json(resources.Attestor())
         req.return_value.content = return_value
 
@@ -5940,6 +5963,7 @@ def test_get_attestor_rest_bad_request(request_type=service.GetAttestorRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_attestor(request)
 
 
@@ -5976,6 +6000,7 @@ def test_get_attestor_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_attestor(request)
 
     # Establish that the response is the type that we expect.
@@ -6015,6 +6040,7 @@ def test_get_attestor_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Attestor.to_json(resources.Attestor())
         req.return_value.content = return_value
 
@@ -6057,6 +6083,7 @@ def test_update_attestor_rest_bad_request(request_type=service.UpdateAttestorReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_attestor(request)
 
 
@@ -6180,6 +6207,7 @@ def test_update_attestor_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_attestor(request)
 
     # Establish that the response is the type that we expect.
@@ -6219,6 +6247,7 @@ def test_update_attestor_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Attestor.to_json(resources.Attestor())
         req.return_value.content = return_value
 
@@ -6261,6 +6290,7 @@ def test_list_attestors_rest_bad_request(request_type=service.ListAttestorsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_attestors(request)
 
 
@@ -6296,6 +6326,7 @@ def test_list_attestors_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_attestors(request)
 
     # Establish that the response is the type that we expect.
@@ -6334,6 +6365,7 @@ def test_list_attestors_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListAttestorsResponse.to_json(
             service.ListAttestorsResponse()
         )
@@ -6378,6 +6410,7 @@ def test_delete_attestor_rest_bad_request(request_type=service.DeleteAttestorReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_attestor(request)
 
 
@@ -6408,6 +6441,7 @@ def test_delete_attestor_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_attestor(request)
 
     # Establish that the response is the type that we expect.
@@ -6442,6 +6476,7 @@ def test_delete_attestor_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = service.DeleteAttestorRequest()
         metadata = [

@@ -3017,6 +3017,7 @@ def test_create_tenant_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_tenant(request)
 
@@ -3071,6 +3072,7 @@ def test_create_tenant_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_tenant(**mock_args)
 
@@ -3199,6 +3201,7 @@ def test_get_tenant_rest_required_fields(request_type=tenant_service.GetTenantRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_tenant(request)
 
@@ -3244,6 +3247,7 @@ def test_get_tenant_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_tenant(**mock_args)
 
@@ -3369,6 +3373,7 @@ def test_update_tenant_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_tenant(request)
 
@@ -3414,6 +3419,7 @@ def test_update_tenant_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_tenant(**mock_args)
 
@@ -3541,6 +3547,7 @@ def test_delete_tenant_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_tenant(request)
 
@@ -3584,6 +3591,7 @@ def test_delete_tenant_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_tenant(**mock_args)
 
@@ -3720,6 +3728,7 @@ def test_list_tenants_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_tenants(request)
 
@@ -3773,6 +3782,7 @@ def test_list_tenants_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_tenants(**mock_args)
 
@@ -4262,6 +4272,7 @@ def test_create_tenant_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_tenant(request)
 
 
@@ -4302,6 +4313,7 @@ def test_create_tenant_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_tenant(request)
 
     # Establish that the response is the type that we expect.
@@ -4347,6 +4359,7 @@ def test_create_tenant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gct_tenant.Tenant.to_json(gct_tenant.Tenant())
         req.return_value.content = return_value
 
@@ -4389,6 +4402,7 @@ def test_get_tenant_rest_bad_request(request_type=tenant_service.GetTenantReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_tenant(request)
 
 
@@ -4429,6 +4443,7 @@ def test_get_tenant_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_tenant(request)
 
     # Establish that the response is the type that we expect.
@@ -4474,6 +4489,7 @@ def test_get_tenant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tenant.Tenant.to_json(tenant.Tenant())
         req.return_value.content = return_value
 
@@ -4518,6 +4534,7 @@ def test_update_tenant_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_tenant(request)
 
 
@@ -4558,6 +4575,7 @@ def test_update_tenant_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_tenant(request)
 
     # Establish that the response is the type that we expect.
@@ -4603,6 +4621,7 @@ def test_update_tenant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gct_tenant.Tenant.to_json(gct_tenant.Tenant())
         req.return_value.content = return_value
 
@@ -4647,6 +4666,7 @@ def test_delete_tenant_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_tenant(request)
 
 
@@ -4677,6 +4697,7 @@ def test_delete_tenant_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_tenant(request)
 
     # Establish that the response is the type that we expect.
@@ -4713,6 +4734,7 @@ def test_delete_tenant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = tenant_service.DeleteTenantRequest()
         metadata = [
@@ -4751,6 +4773,7 @@ def test_list_tenants_rest_bad_request(request_type=tenant_service.ListTenantsRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_tenants(request)
 
 
@@ -4786,6 +4809,7 @@ def test_list_tenants_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_tenants(request)
 
     # Establish that the response is the type that we expect.
@@ -4826,6 +4850,7 @@ def test_list_tenants_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tenant_service.ListTenantsResponse.to_json(
             tenant_service.ListTenantsResponse()
         )
@@ -4874,6 +4899,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -4904,6 +4930,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

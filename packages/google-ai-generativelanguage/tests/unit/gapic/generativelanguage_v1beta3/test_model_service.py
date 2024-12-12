@@ -3845,6 +3845,7 @@ def test_get_model_rest_required_fields(request_type=model_service.GetModelReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_model(request)
 
@@ -3890,6 +3891,7 @@ def test_get_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_model(**mock_args)
 
@@ -3982,6 +3984,7 @@ def test_list_models_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_models(**mock_args)
 
@@ -4173,6 +4176,7 @@ def test_get_tuned_model_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_tuned_model(request)
 
@@ -4218,6 +4222,7 @@ def test_get_tuned_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_tuned_model(**mock_args)
 
@@ -4312,6 +4317,7 @@ def test_list_tuned_models_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_tuned_models(**mock_args)
 
@@ -4508,6 +4514,7 @@ def test_create_tuned_model_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_tuned_model(request)
 
@@ -4556,6 +4563,7 @@ def test_create_tuned_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_tuned_model(**mock_args)
 
@@ -4692,6 +4700,7 @@ def test_update_tuned_model_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_tuned_model(request)
 
@@ -4750,6 +4759,7 @@ def test_update_tuned_model_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_tuned_model(**mock_args)
 
@@ -4886,6 +4896,7 @@ def test_delete_tuned_model_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_tuned_model(request)
 
@@ -4929,6 +4940,7 @@ def test_delete_tuned_model_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_tuned_model(**mock_args)
 
@@ -5470,6 +5482,7 @@ def test_get_model_rest_bad_request(request_type=model_service.GetModelRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_model(request)
 
 
@@ -5515,6 +5528,7 @@ def test_get_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_model(request)
 
     # Establish that the response is the type that we expect.
@@ -5565,6 +5579,7 @@ def test_get_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = model.Model.to_json(model.Model())
         req.return_value.content = return_value
 
@@ -5607,6 +5622,7 @@ def test_list_models_rest_bad_request(request_type=model_service.ListModelsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_models(request)
 
 
@@ -5642,6 +5658,7 @@ def test_list_models_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_models(request)
 
     # Establish that the response is the type that we expect.
@@ -5682,6 +5699,7 @@ def test_list_models_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = model_service.ListModelsResponse.to_json(
             model_service.ListModelsResponse()
         )
@@ -5728,6 +5746,7 @@ def test_get_tuned_model_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_tuned_model(request)
 
 
@@ -5770,6 +5789,7 @@ def test_get_tuned_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_tuned_model(request)
 
     # Establish that the response is the type that we expect.
@@ -5816,6 +5836,7 @@ def test_get_tuned_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tuned_model.TunedModel.to_json(tuned_model.TunedModel())
         req.return_value.content = return_value
 
@@ -5860,6 +5881,7 @@ def test_list_tuned_models_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_tuned_models(request)
 
 
@@ -5895,6 +5917,7 @@ def test_list_tuned_models_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_tuned_models(request)
 
     # Establish that the response is the type that we expect.
@@ -5935,6 +5958,7 @@ def test_list_tuned_models_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = model_service.ListTunedModelsResponse.to_json(
             model_service.ListTunedModelsResponse()
         )
@@ -5981,6 +6005,7 @@ def test_create_tuned_model_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_tuned_model(request)
 
 
@@ -6113,6 +6138,7 @@ def test_create_tuned_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_tuned_model(request)
 
     # Establish that the response is the type that we expect.
@@ -6154,6 +6180,7 @@ def test_create_tuned_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -6198,6 +6225,7 @@ def test_update_tuned_model_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_tuned_model(request)
 
 
@@ -6342,6 +6370,7 @@ def test_update_tuned_model_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_tuned_model(request)
 
     # Establish that the response is the type that we expect.
@@ -6388,6 +6417,7 @@ def test_update_tuned_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gag_tuned_model.TunedModel.to_json(gag_tuned_model.TunedModel())
         req.return_value.content = return_value
 
@@ -6432,6 +6462,7 @@ def test_delete_tuned_model_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_tuned_model(request)
 
 
@@ -6462,6 +6493,7 @@ def test_delete_tuned_model_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_tuned_model(request)
 
     # Establish that the response is the type that we expect.
@@ -6498,6 +6530,7 @@ def test_delete_tuned_model_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = model_service.DeleteTunedModelRequest()
         metadata = [

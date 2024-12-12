@@ -7004,6 +7004,7 @@ def test_create_build_rest_required_fields(request_type=cloudbuild.CreateBuildRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_build(request)
 
@@ -7056,6 +7057,7 @@ def test_create_build_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_build(**mock_args)
 
@@ -7190,6 +7192,7 @@ def test_get_build_rest_required_fields(request_type=cloudbuild.GetBuildRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_build(request)
 
@@ -7244,6 +7247,7 @@ def test_get_build_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_build(**mock_args)
 
@@ -7381,6 +7385,7 @@ def test_list_builds_rest_required_fields(request_type=cloudbuild.ListBuildsRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_builds(request)
 
@@ -7437,6 +7442,7 @@ def test_list_builds_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_builds(**mock_args)
 
@@ -7631,6 +7637,7 @@ def test_cancel_build_rest_required_fields(request_type=cloudbuild.CancelBuildRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.cancel_build(request)
 
@@ -7685,6 +7692,7 @@ def test_cancel_build_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.cancel_build(**mock_args)
 
@@ -7820,6 +7828,7 @@ def test_retry_build_rest_required_fields(request_type=cloudbuild.RetryBuildRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.retry_build(request)
 
@@ -7872,6 +7881,7 @@ def test_retry_build_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.retry_build(**mock_args)
 
@@ -8005,6 +8015,7 @@ def test_approve_build_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.approve_build(request)
 
@@ -8051,6 +8062,7 @@ def test_approve_build_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.approve_build(**mock_args)
 
@@ -8190,6 +8202,7 @@ def test_create_build_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_build_trigger(request)
 
@@ -8244,6 +8257,7 @@ def test_create_build_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_build_trigger(**mock_args)
 
@@ -8382,6 +8396,7 @@ def test_get_build_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_build_trigger(request)
 
@@ -8436,6 +8451,7 @@ def test_get_build_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_build_trigger(**mock_args)
 
@@ -8580,6 +8596,7 @@ def test_list_build_triggers_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_build_triggers(request)
 
@@ -8634,6 +8651,7 @@ def test_list_build_triggers_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_build_triggers(**mock_args)
 
@@ -8833,6 +8851,7 @@ def test_delete_build_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_build_trigger(request)
 
@@ -8885,6 +8904,7 @@ def test_delete_build_trigger_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_build_trigger(**mock_args)
 
@@ -9028,6 +9048,7 @@ def test_update_build_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_build_trigger(request)
 
@@ -9084,6 +9105,7 @@ def test_update_build_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_build_trigger(**mock_args)
 
@@ -9227,6 +9249,7 @@ def test_run_build_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.run_build_trigger(request)
 
@@ -9280,6 +9303,7 @@ def test_run_build_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.run_build_trigger(**mock_args)
 
@@ -9474,6 +9498,7 @@ def test_create_worker_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_worker_pool(request)
 
@@ -9539,6 +9564,7 @@ def test_create_worker_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_worker_pool(**mock_args)
 
@@ -9672,6 +9698,7 @@ def test_get_worker_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_worker_pool(request)
 
@@ -9719,6 +9746,7 @@ def test_get_worker_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_worker_pool(**mock_args)
 
@@ -9863,6 +9891,7 @@ def test_delete_worker_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_worker_pool(request)
 
@@ -9917,6 +9946,7 @@ def test_delete_worker_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_worker_pool(**mock_args)
 
@@ -10056,6 +10086,7 @@ def test_update_worker_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_worker_pool(request)
 
@@ -10112,6 +10143,7 @@ def test_update_worker_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_worker_pool(**mock_args)
 
@@ -10253,6 +10285,7 @@ def test_list_worker_pools_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_worker_pools(request)
 
@@ -10306,6 +10339,7 @@ def test_list_worker_pools_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_worker_pools(**mock_args)
 
@@ -12638,6 +12672,7 @@ def test_create_build_rest_bad_request(request_type=cloudbuild.CreateBuildReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_build(request)
 
 
@@ -12908,6 +12943,7 @@ def test_create_build_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_build(request)
 
     # Establish that the response is the type that we expect.
@@ -12947,6 +12983,7 @@ def test_create_build_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12989,6 +13026,7 @@ def test_get_build_rest_bad_request(request_type=cloudbuild.GetBuildRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_build(request)
 
 
@@ -13034,6 +13072,7 @@ def test_get_build_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_build(request)
 
     # Establish that the response is the type that we expect.
@@ -13082,6 +13121,7 @@ def test_get_build_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.Build.to_json(cloudbuild.Build())
         req.return_value.content = return_value
 
@@ -13124,6 +13164,7 @@ def test_list_builds_rest_bad_request(request_type=cloudbuild.ListBuildsRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_builds(request)
 
 
@@ -13159,6 +13200,7 @@ def test_list_builds_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_builds(request)
 
     # Establish that the response is the type that we expect.
@@ -13197,6 +13239,7 @@ def test_list_builds_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.ListBuildsResponse.to_json(
             cloudbuild.ListBuildsResponse()
         )
@@ -13241,6 +13284,7 @@ def test_cancel_build_rest_bad_request(request_type=cloudbuild.CancelBuildReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_build(request)
 
 
@@ -13286,6 +13330,7 @@ def test_cancel_build_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.cancel_build(request)
 
     # Establish that the response is the type that we expect.
@@ -13334,6 +13379,7 @@ def test_cancel_build_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.Build.to_json(cloudbuild.Build())
         req.return_value.content = return_value
 
@@ -13376,6 +13422,7 @@ def test_retry_build_rest_bad_request(request_type=cloudbuild.RetryBuildRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.retry_build(request)
 
 
@@ -13406,6 +13453,7 @@ def test_retry_build_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.retry_build(request)
 
     # Establish that the response is the type that we expect.
@@ -13445,6 +13493,7 @@ def test_retry_build_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13487,6 +13536,7 @@ def test_approve_build_rest_bad_request(request_type=cloudbuild.ApproveBuildRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.approve_build(request)
 
 
@@ -13517,6 +13567,7 @@ def test_approve_build_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.approve_build(request)
 
     # Establish that the response is the type that we expect.
@@ -13556,6 +13607,7 @@ def test_approve_build_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13600,6 +13652,7 @@ def test_create_build_trigger_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_build_trigger(request)
 
 
@@ -13948,6 +14001,7 @@ def test_create_build_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_build_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -13997,6 +14051,7 @@ def test_create_build_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.BuildTrigger.to_json(cloudbuild.BuildTrigger())
         req.return_value.content = return_value
 
@@ -14041,6 +14096,7 @@ def test_get_build_trigger_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_build_trigger(request)
 
 
@@ -14086,6 +14142,7 @@ def test_get_build_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_build_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -14135,6 +14192,7 @@ def test_get_build_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.BuildTrigger.to_json(cloudbuild.BuildTrigger())
         req.return_value.content = return_value
 
@@ -14179,6 +14237,7 @@ def test_list_build_triggers_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_build_triggers(request)
 
 
@@ -14214,6 +14273,7 @@ def test_list_build_triggers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_build_triggers(request)
 
     # Establish that the response is the type that we expect.
@@ -14254,6 +14314,7 @@ def test_list_build_triggers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.ListBuildTriggersResponse.to_json(
             cloudbuild.ListBuildTriggersResponse()
         )
@@ -14300,6 +14361,7 @@ def test_delete_build_trigger_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_build_trigger(request)
 
 
@@ -14330,6 +14392,7 @@ def test_delete_build_trigger_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_build_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -14366,6 +14429,7 @@ def test_delete_build_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = cloudbuild.DeleteBuildTriggerRequest()
         metadata = [
@@ -14406,6 +14470,7 @@ def test_update_build_trigger_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_build_trigger(request)
 
 
@@ -14754,6 +14819,7 @@ def test_update_build_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_build_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -14803,6 +14869,7 @@ def test_update_build_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.BuildTrigger.to_json(cloudbuild.BuildTrigger())
         req.return_value.content = return_value
 
@@ -14847,6 +14914,7 @@ def test_run_build_trigger_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_build_trigger(request)
 
 
@@ -14954,6 +15022,7 @@ def test_run_build_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_build_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -14995,6 +15064,7 @@ def test_run_build_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15039,6 +15109,7 @@ def test_receive_trigger_webhook_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.receive_trigger_webhook(request)
 
 
@@ -15149,6 +15220,7 @@ def test_receive_trigger_webhook_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.receive_trigger_webhook(request)
 
     # Establish that the response is the type that we expect.
@@ -15188,6 +15260,7 @@ def test_receive_trigger_webhook_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.ReceiveTriggerWebhookResponse.to_json(
             cloudbuild.ReceiveTriggerWebhookResponse()
         )
@@ -15234,6 +15307,7 @@ def test_create_worker_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_worker_pool(request)
 
 
@@ -15358,6 +15432,7 @@ def test_create_worker_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_worker_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -15399,6 +15474,7 @@ def test_create_worker_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15441,6 +15517,7 @@ def test_get_worker_pool_rest_bad_request(request_type=cloudbuild.GetWorkerPoolR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_worker_pool(request)
 
 
@@ -15480,6 +15557,7 @@ def test_get_worker_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_worker_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -15524,6 +15602,7 @@ def test_get_worker_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.WorkerPool.to_json(cloudbuild.WorkerPool())
         req.return_value.content = return_value
 
@@ -15568,6 +15647,7 @@ def test_delete_worker_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_worker_pool(request)
 
 
@@ -15598,6 +15678,7 @@ def test_delete_worker_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_worker_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -15639,6 +15720,7 @@ def test_delete_worker_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15687,6 +15769,7 @@ def test_update_worker_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_worker_pool(request)
 
 
@@ -15815,6 +15898,7 @@ def test_update_worker_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_worker_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -15856,6 +15940,7 @@ def test_update_worker_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15900,6 +15985,7 @@ def test_list_worker_pools_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_worker_pools(request)
 
 
@@ -15935,6 +16021,7 @@ def test_list_worker_pools_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_worker_pools(request)
 
     # Establish that the response is the type that we expect.
@@ -15975,6 +16062,7 @@ def test_list_worker_pools_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudbuild.ListWorkerPoolsResponse.to_json(
             cloudbuild.ListWorkerPoolsResponse()
         )

@@ -4819,6 +4819,7 @@ def test_get_metadata_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_metadata(request)
 
@@ -4864,6 +4865,7 @@ def test_get_metadata_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_metadata(**mock_args)
 
@@ -5080,6 +5082,7 @@ def test_create_audience_export_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_audience_export(request)
 
@@ -5132,6 +5135,7 @@ def test_create_audience_export_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_audience_export(**mock_args)
 
@@ -5271,6 +5275,7 @@ def test_query_audience_export_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_audience_export(request)
 
@@ -5316,6 +5321,7 @@ def test_query_audience_export_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.query_audience_export(**mock_args)
 
@@ -5451,6 +5457,7 @@ def test_get_audience_export_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_audience_export(request)
 
@@ -5496,6 +5503,7 @@ def test_get_audience_export_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_audience_export(**mock_args)
 
@@ -5640,6 +5648,7 @@ def test_list_audience_exports_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_audience_exports(request)
 
@@ -5693,6 +5702,7 @@ def test_list_audience_exports_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_audience_exports(**mock_args)
 
@@ -6495,6 +6505,7 @@ def test_run_report_rest_bad_request(request_type=analytics_data_api.RunReportRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_report(request)
 
 
@@ -6531,6 +6542,7 @@ def test_run_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_report(request)
 
     # Establish that the response is the type that we expect.
@@ -6572,6 +6584,7 @@ def test_run_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.RunReportResponse.to_json(
             analytics_data_api.RunReportResponse()
         )
@@ -6618,6 +6631,7 @@ def test_run_pivot_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_pivot_report(request)
 
 
@@ -6653,6 +6667,7 @@ def test_run_pivot_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_pivot_report(request)
 
     # Establish that the response is the type that we expect.
@@ -6693,6 +6708,7 @@ def test_run_pivot_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.RunPivotReportResponse.to_json(
             analytics_data_api.RunPivotReportResponse()
         )
@@ -6739,6 +6755,7 @@ def test_batch_run_reports_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_run_reports(request)
 
 
@@ -6774,6 +6791,7 @@ def test_batch_run_reports_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_run_reports(request)
 
     # Establish that the response is the type that we expect.
@@ -6814,6 +6832,7 @@ def test_batch_run_reports_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.BatchRunReportsResponse.to_json(
             analytics_data_api.BatchRunReportsResponse()
         )
@@ -6860,6 +6879,7 @@ def test_batch_run_pivot_reports_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_run_pivot_reports(request)
 
 
@@ -6895,6 +6915,7 @@ def test_batch_run_pivot_reports_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_run_pivot_reports(request)
 
     # Establish that the response is the type that we expect.
@@ -6935,6 +6956,7 @@ def test_batch_run_pivot_reports_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.BatchRunPivotReportsResponse.to_json(
             analytics_data_api.BatchRunPivotReportsResponse()
         )
@@ -6981,6 +7003,7 @@ def test_get_metadata_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_metadata(request)
 
 
@@ -7016,6 +7039,7 @@ def test_get_metadata_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_metadata(request)
 
     # Establish that the response is the type that we expect.
@@ -7056,6 +7080,7 @@ def test_get_metadata_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.Metadata.to_json(
             analytics_data_api.Metadata()
         )
@@ -7102,6 +7127,7 @@ def test_run_realtime_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_realtime_report(request)
 
 
@@ -7138,6 +7164,7 @@ def test_run_realtime_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_realtime_report(request)
 
     # Establish that the response is the type that we expect.
@@ -7179,6 +7206,7 @@ def test_run_realtime_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.RunRealtimeReportResponse.to_json(
             analytics_data_api.RunRealtimeReportResponse()
         )
@@ -7225,6 +7253,7 @@ def test_check_compatibility_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.check_compatibility(request)
 
 
@@ -7258,6 +7287,7 @@ def test_check_compatibility_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.check_compatibility(request)
 
     # Establish that the response is the type that we expect.
@@ -7297,6 +7327,7 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.CheckCompatibilityResponse.to_json(
             analytics_data_api.CheckCompatibilityResponse()
         )
@@ -7343,6 +7374,7 @@ def test_create_audience_export_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_audience_export(request)
 
 
@@ -7454,6 +7486,7 @@ def test_create_audience_export_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_audience_export(request)
 
     # Establish that the response is the type that we expect.
@@ -7495,6 +7528,7 @@ def test_create_audience_export_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7539,6 +7573,7 @@ def test_query_audience_export_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_audience_export(request)
 
 
@@ -7574,6 +7609,7 @@ def test_query_audience_export_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_audience_export(request)
 
     # Establish that the response is the type that we expect.
@@ -7614,6 +7650,7 @@ def test_query_audience_export_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.QueryAudienceExportResponse.to_json(
             analytics_data_api.QueryAudienceExportResponse()
         )
@@ -7660,6 +7697,7 @@ def test_get_audience_export_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_audience_export(request)
 
 
@@ -7702,6 +7740,7 @@ def test_get_audience_export_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_audience_export(request)
 
     # Establish that the response is the type that we expect.
@@ -7749,6 +7788,7 @@ def test_get_audience_export_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.AudienceExport.to_json(
             analytics_data_api.AudienceExport()
         )
@@ -7795,6 +7835,7 @@ def test_list_audience_exports_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_audience_exports(request)
 
 
@@ -7830,6 +7871,7 @@ def test_list_audience_exports_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_audience_exports(request)
 
     # Establish that the response is the type that we expect.
@@ -7870,6 +7912,7 @@ def test_list_audience_exports_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.ListAudienceExportsResponse.to_json(
             analytics_data_api.ListAudienceExportsResponse()
         )

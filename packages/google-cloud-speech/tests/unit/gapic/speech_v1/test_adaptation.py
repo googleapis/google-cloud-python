@@ -4936,6 +4936,7 @@ def test_create_phrase_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_phrase_set(request)
 
@@ -4992,6 +4993,7 @@ def test_create_phrase_set_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_phrase_set(**mock_args)
 
@@ -5124,6 +5126,7 @@ def test_get_phrase_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_phrase_set(request)
 
@@ -5171,6 +5174,7 @@ def test_get_phrase_set_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_phrase_set(**mock_args)
 
@@ -5310,6 +5314,7 @@ def test_list_phrase_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_phrase_set(request)
 
@@ -5363,6 +5368,7 @@ def test_list_phrase_set_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_phrase_set(**mock_args)
 
@@ -5556,6 +5562,7 @@ def test_update_phrase_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_phrase_set(request)
 
@@ -5606,6 +5613,7 @@ def test_update_phrase_set_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_phrase_set(**mock_args)
 
@@ -5737,6 +5745,7 @@ def test_delete_phrase_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_phrase_set(request)
 
@@ -5782,6 +5791,7 @@ def test_delete_phrase_set_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_phrase_set(**mock_args)
 
@@ -5921,6 +5931,7 @@ def test_create_custom_class_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_custom_class(request)
 
@@ -5977,6 +5988,7 @@ def test_create_custom_class_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_custom_class(**mock_args)
 
@@ -6112,6 +6124,7 @@ def test_get_custom_class_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_custom_class(request)
 
@@ -6159,6 +6172,7 @@ def test_get_custom_class_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_custom_class(**mock_args)
 
@@ -6303,6 +6317,7 @@ def test_list_custom_classes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_custom_classes(request)
 
@@ -6358,6 +6373,7 @@ def test_list_custom_classes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_custom_classes(**mock_args)
 
@@ -6555,6 +6571,7 @@ def test_update_custom_class_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_custom_class(request)
 
@@ -6605,6 +6622,7 @@ def test_update_custom_class_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_custom_class(**mock_args)
 
@@ -6738,6 +6756,7 @@ def test_delete_custom_class_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_custom_class(request)
 
@@ -6783,6 +6802,7 @@ def test_delete_custom_class_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_custom_class(**mock_args)
 
@@ -7466,6 +7486,7 @@ def test_create_phrase_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_phrase_set(request)
 
 
@@ -7502,6 +7523,7 @@ def test_create_phrase_set_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_phrase_set(request)
 
     # Establish that the response is the type that we expect.
@@ -7543,6 +7565,7 @@ def test_create_phrase_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.PhraseSet.to_json(resource.PhraseSet())
         req.return_value.content = return_value
 
@@ -7587,6 +7610,7 @@ def test_get_phrase_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_phrase_set(request)
 
 
@@ -7623,6 +7647,7 @@ def test_get_phrase_set_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_phrase_set(request)
 
     # Establish that the response is the type that we expect.
@@ -7664,6 +7689,7 @@ def test_get_phrase_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.PhraseSet.to_json(resource.PhraseSet())
         req.return_value.content = return_value
 
@@ -7708,6 +7734,7 @@ def test_list_phrase_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_phrase_set(request)
 
 
@@ -7743,6 +7770,7 @@ def test_list_phrase_set_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_phrase_set(request)
 
     # Establish that the response is the type that we expect.
@@ -7783,6 +7811,7 @@ def test_list_phrase_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_speech_adaptation.ListPhraseSetResponse.to_json(
             cloud_speech_adaptation.ListPhraseSetResponse()
         )
@@ -7831,6 +7860,7 @@ def test_update_phrase_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_phrase_set(request)
 
 
@@ -7943,6 +7973,7 @@ def test_update_phrase_set_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_phrase_set(request)
 
     # Establish that the response is the type that we expect.
@@ -7984,6 +8015,7 @@ def test_update_phrase_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.PhraseSet.to_json(resource.PhraseSet())
         req.return_value.content = return_value
 
@@ -8028,6 +8060,7 @@ def test_delete_phrase_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_phrase_set(request)
 
 
@@ -8058,6 +8091,7 @@ def test_delete_phrase_set_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_phrase_set(request)
 
     # Establish that the response is the type that we expect.
@@ -8094,6 +8128,7 @@ def test_delete_phrase_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = cloud_speech_adaptation.DeletePhraseSetRequest()
         metadata = [
@@ -8134,6 +8169,7 @@ def test_create_custom_class_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_custom_class(request)
 
 
@@ -8170,6 +8206,7 @@ def test_create_custom_class_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_custom_class(request)
 
     # Establish that the response is the type that we expect.
@@ -8211,6 +8248,7 @@ def test_create_custom_class_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.CustomClass.to_json(resource.CustomClass())
         req.return_value.content = return_value
 
@@ -8255,6 +8293,7 @@ def test_get_custom_class_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_custom_class(request)
 
 
@@ -8291,6 +8330,7 @@ def test_get_custom_class_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_custom_class(request)
 
     # Establish that the response is the type that we expect.
@@ -8332,6 +8372,7 @@ def test_get_custom_class_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.CustomClass.to_json(resource.CustomClass())
         req.return_value.content = return_value
 
@@ -8376,6 +8417,7 @@ def test_list_custom_classes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_custom_classes(request)
 
 
@@ -8413,6 +8455,7 @@ def test_list_custom_classes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_custom_classes(request)
 
     # Establish that the response is the type that we expect.
@@ -8453,6 +8496,7 @@ def test_list_custom_classes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_speech_adaptation.ListCustomClassesResponse.to_json(
             cloud_speech_adaptation.ListCustomClassesResponse()
         )
@@ -8503,6 +8547,7 @@ def test_update_custom_class_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_custom_class(request)
 
 
@@ -8617,6 +8662,7 @@ def test_update_custom_class_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_custom_class(request)
 
     # Establish that the response is the type that we expect.
@@ -8658,6 +8704,7 @@ def test_update_custom_class_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.CustomClass.to_json(resource.CustomClass())
         req.return_value.content = return_value
 
@@ -8702,6 +8749,7 @@ def test_delete_custom_class_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_custom_class(request)
 
 
@@ -8732,6 +8780,7 @@ def test_delete_custom_class_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_custom_class(request)
 
     # Establish that the response is the type that we expect.
@@ -8768,6 +8817,7 @@ def test_delete_custom_class_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = cloud_speech_adaptation.DeleteCustomClassRequest()
         metadata = [
@@ -8808,6 +8858,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -8838,6 +8889,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -8866,6 +8918,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -8896,6 +8949,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
