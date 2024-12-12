@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -109,8 +117,10 @@ class TenantServiceRestInterceptor:
     def pre_create_tenant(
         self,
         request: tenant_service.CreateTenantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tenant_service.CreateTenantRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tenant_service.CreateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -130,8 +140,10 @@ class TenantServiceRestInterceptor:
     def pre_delete_tenant(
         self,
         request: tenant_service.DeleteTenantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tenant_service.DeleteTenantRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tenant_service.DeleteTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +154,10 @@ class TenantServiceRestInterceptor:
     def pre_get_tenant(
         self,
         request: tenant_service.GetTenantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tenant_service.GetTenantRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tenant_service.GetTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -163,8 +177,10 @@ class TenantServiceRestInterceptor:
     def pre_list_tenants(
         self,
         request: tenant_service.ListTenantsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tenant_service.ListTenantsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tenant_service.ListTenantsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_tenants
 
         Override in a subclass to manipulate the request or metadata
@@ -186,8 +202,10 @@ class TenantServiceRestInterceptor:
     def pre_update_tenant(
         self,
         request: tenant_service.UpdateTenantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tenant_service.UpdateTenantRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tenant_service.UpdateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -207,8 +225,10 @@ class TenantServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -350,7 +370,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gct_tenant.Tenant:
             r"""Call the create tenant method over HTTP.
 
@@ -361,8 +381,10 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gct_tenant.Tenant:
@@ -379,6 +401,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             http_options = (
                 _BaseTenantServiceRestTransport._BaseCreateTenant._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_tenant(request, metadata)
             transcoded_request = _BaseTenantServiceRestTransport._BaseCreateTenant._get_transcoded_request(
                 http_options, request
@@ -392,6 +415,33 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             query_params = _BaseTenantServiceRestTransport._BaseCreateTenant._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4beta1.TenantServiceClient.CreateTenant",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "CreateTenant",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TenantServiceRestTransport._CreateTenant._get_response(
@@ -414,7 +464,29 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             pb_resp = gct_tenant.Tenant.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_tenant(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gct_tenant.Tenant.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4beta1.TenantServiceClient.create_tenant",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "CreateTenant",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTenant(
@@ -451,7 +523,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete tenant method over HTTP.
 
@@ -461,13 +533,16 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTenantServiceRestTransport._BaseDeleteTenant._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_tenant(request, metadata)
             transcoded_request = _BaseTenantServiceRestTransport._BaseDeleteTenant._get_transcoded_request(
                 http_options, request
@@ -477,6 +552,33 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             query_params = _BaseTenantServiceRestTransport._BaseDeleteTenant._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4beta1.TenantServiceClient.DeleteTenant",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "DeleteTenant",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TenantServiceRestTransport._DeleteTenant._get_response(
@@ -527,7 +629,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tenant.Tenant:
             r"""Call the get tenant method over HTTP.
 
@@ -537,8 +639,10 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tenant.Tenant:
@@ -555,6 +659,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             http_options = (
                 _BaseTenantServiceRestTransport._BaseGetTenant._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_tenant(request, metadata)
             transcoded_request = (
                 _BaseTenantServiceRestTransport._BaseGetTenant._get_transcoded_request(
@@ -568,6 +673,33 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4beta1.TenantServiceClient.GetTenant",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "GetTenant",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TenantServiceRestTransport._GetTenant._get_response(
@@ -589,7 +721,29 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             pb_resp = tenant.Tenant.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_tenant(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tenant.Tenant.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4beta1.TenantServiceClient.get_tenant",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "GetTenant",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTenants(
@@ -626,7 +780,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tenant_service.ListTenantsResponse:
             r"""Call the list tenants method over HTTP.
 
@@ -637,8 +791,10 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tenant_service.ListTenantsResponse:
@@ -648,6 +804,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             http_options = (
                 _BaseTenantServiceRestTransport._BaseListTenants._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tenants(request, metadata)
             transcoded_request = _BaseTenantServiceRestTransport._BaseListTenants._get_transcoded_request(
                 http_options, request
@@ -659,6 +816,33 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4beta1.TenantServiceClient.ListTenants",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "ListTenants",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TenantServiceRestTransport._ListTenants._get_response(
@@ -680,7 +864,31 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             pb_resp = tenant_service.ListTenantsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tenants(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tenant_service.ListTenantsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4beta1.TenantServiceClient.list_tenants",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "ListTenants",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTenant(
@@ -718,7 +926,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gct_tenant.Tenant:
             r"""Call the update tenant method over HTTP.
 
@@ -729,8 +937,10 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gct_tenant.Tenant:
@@ -747,6 +957,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             http_options = (
                 _BaseTenantServiceRestTransport._BaseUpdateTenant._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_tenant(request, metadata)
             transcoded_request = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_transcoded_request(
                 http_options, request
@@ -760,6 +971,33 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             query_params = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4beta1.TenantServiceClient.UpdateTenant",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "UpdateTenant",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TenantServiceRestTransport._UpdateTenant._get_response(
@@ -782,7 +1020,29 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             pb_resp = gct_tenant.Tenant.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_tenant(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gct_tenant.Tenant.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4beta1.TenantServiceClient.update_tenant",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "UpdateTenant",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -863,7 +1123,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -873,8 +1133,10 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -883,6 +1145,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             http_options = (
                 _BaseTenantServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseTenantServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -892,6 +1155,33 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             query_params = _BaseTenantServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4beta1.TenantServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TenantServiceRestTransport._GetOperation._get_response(
@@ -912,6 +1202,27 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4beta1.TenantServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4beta1.TenantService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

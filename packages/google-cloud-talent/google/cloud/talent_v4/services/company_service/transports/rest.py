@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -109,8 +117,10 @@ class CompanyServiceRestInterceptor:
     def pre_create_company(
         self,
         request: company_service.CreateCompanyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[company_service.CreateCompanyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.CreateCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_company
 
         Override in a subclass to manipulate the request or metadata
@@ -130,8 +140,10 @@ class CompanyServiceRestInterceptor:
     def pre_delete_company(
         self,
         request: company_service.DeleteCompanyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[company_service.DeleteCompanyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.DeleteCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_company
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +154,10 @@ class CompanyServiceRestInterceptor:
     def pre_get_company(
         self,
         request: company_service.GetCompanyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[company_service.GetCompanyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.GetCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_company
 
         Override in a subclass to manipulate the request or metadata
@@ -163,8 +177,10 @@ class CompanyServiceRestInterceptor:
     def pre_list_companies(
         self,
         request: company_service.ListCompaniesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[company_service.ListCompaniesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.ListCompaniesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_companies
 
         Override in a subclass to manipulate the request or metadata
@@ -186,8 +202,10 @@ class CompanyServiceRestInterceptor:
     def pre_update_company(
         self,
         request: company_service.UpdateCompanyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[company_service.UpdateCompanyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.UpdateCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_company
 
         Override in a subclass to manipulate the request or metadata
@@ -207,8 +225,10 @@ class CompanyServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -350,7 +370,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gct_company.Company:
             r"""Call the create company method over HTTP.
 
@@ -361,8 +381,10 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gct_company.Company:
@@ -378,6 +400,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseCreateCompany._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_company(request, metadata)
             transcoded_request = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_transcoded_request(
                 http_options, request
@@ -391,6 +414,33 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             query_params = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4.CompanyServiceClient.CreateCompany",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "CreateCompany",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompanyServiceRestTransport._CreateCompany._get_response(
@@ -413,7 +463,29 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             pb_resp = gct_company.Company.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_company(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gct_company.Company.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4.CompanyServiceClient.create_company",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "CreateCompany",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCompany(
@@ -450,7 +522,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete company method over HTTP.
 
@@ -460,13 +532,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseDeleteCompany._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_company(request, metadata)
             transcoded_request = _BaseCompanyServiceRestTransport._BaseDeleteCompany._get_transcoded_request(
                 http_options, request
@@ -476,6 +551,33 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             query_params = _BaseCompanyServiceRestTransport._BaseDeleteCompany._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4.CompanyServiceClient.DeleteCompany",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "DeleteCompany",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompanyServiceRestTransport._DeleteCompany._get_response(
@@ -526,7 +628,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> company.Company:
             r"""Call the get company method over HTTP.
 
@@ -537,8 +639,10 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.company.Company:
@@ -554,6 +658,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseGetCompany._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_company(request, metadata)
             transcoded_request = _BaseCompanyServiceRestTransport._BaseGetCompany._get_transcoded_request(
                 http_options, request
@@ -565,6 +670,33 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4.CompanyServiceClient.GetCompany",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "GetCompany",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompanyServiceRestTransport._GetCompany._get_response(
@@ -586,7 +718,29 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             pb_resp = company.Company.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_company(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = company.Company.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4.CompanyServiceClient.get_company",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "GetCompany",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCompanies(
@@ -623,7 +777,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> company_service.ListCompaniesResponse:
             r"""Call the list companies method over HTTP.
 
@@ -634,8 +788,10 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.company_service.ListCompaniesResponse:
@@ -645,6 +801,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseListCompanies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_companies(request, metadata)
             transcoded_request = _BaseCompanyServiceRestTransport._BaseListCompanies._get_transcoded_request(
                 http_options, request
@@ -654,6 +811,33 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             query_params = _BaseCompanyServiceRestTransport._BaseListCompanies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4.CompanyServiceClient.ListCompanies",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "ListCompanies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompanyServiceRestTransport._ListCompanies._get_response(
@@ -675,7 +859,31 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             pb_resp = company_service.ListCompaniesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_companies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = company_service.ListCompaniesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4.CompanyServiceClient.list_companies",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "ListCompanies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCompany(
@@ -713,7 +921,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gct_company.Company:
             r"""Call the update company method over HTTP.
 
@@ -724,8 +932,10 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gct_company.Company:
@@ -741,6 +951,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_company(request, metadata)
             transcoded_request = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_transcoded_request(
                 http_options, request
@@ -754,6 +965,33 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             query_params = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4.CompanyServiceClient.UpdateCompany",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "UpdateCompany",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompanyServiceRestTransport._UpdateCompany._get_response(
@@ -776,7 +1014,29 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             pb_resp = gct_company.Company.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_company(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gct_company.Company.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4.CompanyServiceClient.update_company",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "UpdateCompany",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -859,7 +1119,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -869,8 +1129,10 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -879,6 +1141,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCompanyServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -888,6 +1151,33 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             query_params = _BaseCompanyServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.talent_v4.CompanyServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompanyServiceRestTransport._GetOperation._get_response(
@@ -908,6 +1198,27 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.talent_v4.CompanyServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.talent.v4.CompanyService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
