@@ -361,19 +361,21 @@ def test_entity_to_protobuf_w_variable_meanings():
     entity = Entity()
     name = "quux"
     entity[name] = values = [1, 20, 300]
-    meaning = 9
-    entity._meanings[name] = ([None, meaning, None], values)
+    root_meaning = 31
+    sub_meaning = 9
+    entity._meanings[name] = ((root_meaning, [None, sub_meaning, None]), values)
     entity_pb = entity_to_protobuf(entity)
 
     # Construct the expected protobuf.
     expected_pb = entity_pb2.Entity()
     value_pb = _new_value_pb(expected_pb, name)
+    value_pb.meaning = root_meaning
     value0 = value_pb.array_value.values.add()
     value0.integer_value = values[0]
     # The only array entry with a meaning is the middle one.
     value1 = value_pb.array_value.values.add()
     value1.integer_value = values[1]
-    value1.meaning = meaning
+    value1.meaning = sub_meaning
     value2 = value_pb.array_value.values.add()
     value2.integer_value = values[2]
 
@@ -1179,7 +1181,46 @@ def test__get_meaning_w_array_value():
     sub_value_pb2.string_value = "bye"
 
     result = _get_meaning(value_pb, is_list=True)
-    assert meaning == result
+    # should preserve sub-value meanings as list
+    assert (None, [meaning, meaning]) == result
+
+
+def test__get_meaning_w_array_value_root_meaning():
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import _get_meaning
+
+    value_pb = entity_pb2.Value()
+    meaning = 9
+    value_pb.meaning = meaning
+    sub_value_pb1 = value_pb._pb.array_value.values.add()
+    sub_value_pb2 = value_pb._pb.array_value.values.add()
+
+    sub_value_pb1.string_value = "hi"
+    sub_value_pb2.string_value = "bye"
+
+    result = _get_meaning(value_pb, is_list=True)
+    # should preserve sub-value meanings as list
+    assert (meaning, None) == result
+
+
+def test__get_meaning_w_array_value_root_and_sub_meanings():
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import _get_meaning
+
+    value_pb = entity_pb2.Value()
+    root_meaning = 9
+    sub_meaning = 3
+    value_pb.meaning = root_meaning
+    sub_value_pb1 = value_pb._pb.array_value.values.add()
+    sub_value_pb2 = value_pb._pb.array_value.values.add()
+
+    sub_value_pb1.meaning = sub_value_pb2.meaning = sub_meaning
+    sub_value_pb1.string_value = "hi"
+    sub_value_pb2.string_value = "bye"
+
+    result = _get_meaning(value_pb, is_list=True)
+    # should preserve sub-value meanings as list
+    assert (root_meaning, [sub_meaning, sub_meaning]) == result
 
 
 def test__get_meaning_w_array_value_multiple_meanings():
@@ -1198,7 +1239,7 @@ def test__get_meaning_w_array_value_multiple_meanings():
     sub_value_pb2.string_value = "bye"
 
     result = _get_meaning(value_pb, is_list=True)
-    assert result == [meaning1, meaning2]
+    assert result == (None, [meaning1, meaning2])
 
 
 def test__get_meaning_w_array_value_meaning_partially_unset():
@@ -1215,7 +1256,102 @@ def test__get_meaning_w_array_value_meaning_partially_unset():
     sub_value_pb2.string_value = "bye"
 
     result = _get_meaning(value_pb, is_list=True)
-    assert result == [meaning1, None]
+    assert result == (None, [meaning1, None])
+
+
+def test__get_meaning_w_array_value_meaning_fully_unset():
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import _get_meaning
+
+    value_pb = entity_pb2.Value()
+    sub_value_pb1 = value_pb._pb.array_value.values.add()
+    sub_value_pb2 = value_pb._pb.array_value.values.add()
+
+    sub_value_pb1.string_value = "hi"
+    sub_value_pb2.string_value = "bye"
+
+    result = _get_meaning(value_pb, is_list=True)
+    assert result is None
+
+
+@pytest.mark.parametrize("orig_root_meaning", [0, 1])
+@pytest.mark.parametrize("orig_sub_meaning", [0, 1])
+def test__set_pb_meaning_w_array_value_fully_unset(orig_root_meaning, orig_sub_meaning):
+    """
+    call _set_pb_meaning_from_entity with meaning=None data.
+    Should not touch proto's meaning field
+    """
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore.entity import Entity
+
+    orig_pb = entity_pb2.Entity()
+    value_pb = orig_pb._pb.properties.get_or_create("value")
+    value_pb.meaning = orig_root_meaning
+    sub_value_pb1 = value_pb.array_value.values.add()
+    sub_value_pb1.meaning = orig_sub_meaning
+
+    entity = Entity(key="key")
+    entity._meanings = {"value": ((None, None), None)}
+    _set_pb_meaning_from_entity(entity, "value", None, value_pb, is_list=True)
+    assert value_pb.meaning == orig_root_meaning
+    assert value_pb.array_value.values[0].meaning == orig_sub_meaning
+
+
+@pytest.mark.parametrize("orig_meaning", [0, 1])
+def test__set_pb_meaning_w_value_unset(orig_meaning):
+    """
+    call _set_pb_meaning_from_entity with meaning=None data.
+    Should not touch proto's meaning field
+    """
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore.entity import Entity
+
+    orig_pb = entity_pb2.Entity()
+    value_pb = orig_pb._pb.properties.get_or_create("value")
+    value_pb.meaning = orig_meaning
+
+    entity = Entity(key="key")
+    entity._meanings = {"value": (None, None)}
+    _set_pb_meaning_from_entity(entity, "value", None, value_pb, is_list=False)
+    assert value_pb.meaning == orig_meaning
+
+
+def test__array_w_meaning_end_to_end():
+    """
+    Test proto->entity->proto with an array with a meaning field
+    """
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+    from google.cloud.datastore.helpers import entity_from_protobuf
+    from google.cloud.datastore.helpers import entity_to_protobuf
+
+    orig_pb = entity_pb2.Entity()
+    value_pb = orig_pb._pb.properties.get_or_create("value")
+    value_pb.meaning = 31
+    sub_value_pb1 = value_pb.array_value.values.add()
+    sub_value_pb1.double_value = 1
+    sub_value_pb1.meaning = 1
+    sub_value_pb2 = value_pb.array_value.values.add()
+    sub_value_pb2.double_value = 2
+    sub_value_pb3 = value_pb.array_value.values.add()
+    sub_value_pb3.double_value = 3
+    sub_value_pb3.meaning = 3
+    # convert to entity
+    entity = entity_from_protobuf(orig_pb._pb)
+    assert entity._meanings["value"][0] == (31, [1, None, 3])
+    assert entity._meanings["value"][1] == [1, 2, 3]
+    # convert back to pb
+    output_entity_pb = entity_to_protobuf(entity)
+    final_pb = output_entity_pb._pb.properties["value"]
+    assert final_pb.meaning == 31
+    assert len(final_pb.array_value.values) == 3
+    assert final_pb.array_value.values[0].meaning == 1
+    assert final_pb.array_value.values[0].double_value == 1
+    assert final_pb.array_value.values[1].meaning == 0
+    assert final_pb.array_value.values[1].double_value == 2
+    assert final_pb.array_value.values[2].meaning == 3
+    assert final_pb.array_value.values[2].double_value == 3
 
 
 def _make_geopoint(*args, **kwargs):
