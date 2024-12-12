@@ -6683,6 +6683,7 @@ def test_create_audience_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_audience_list(request)
 
@@ -6735,6 +6736,7 @@ def test_create_audience_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_audience_list(**mock_args)
 
@@ -6871,6 +6873,7 @@ def test_query_audience_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_audience_list(request)
 
@@ -6916,6 +6919,7 @@ def test_query_audience_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.query_audience_list(**mock_args)
 
@@ -7055,6 +7059,7 @@ def test_sheet_export_audience_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.sheet_export_audience_list(request)
 
@@ -7102,6 +7107,7 @@ def test_sheet_export_audience_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.sheet_export_audience_list(**mock_args)
 
@@ -7235,6 +7241,7 @@ def test_get_audience_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_audience_list(request)
 
@@ -7280,6 +7287,7 @@ def test_get_audience_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_audience_list(**mock_args)
 
@@ -7421,6 +7429,7 @@ def test_list_audience_lists_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_audience_lists(request)
 
@@ -7474,6 +7483,7 @@ def test_list_audience_lists_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_audience_lists(**mock_args)
 
@@ -7673,6 +7683,7 @@ def test_create_recurring_audience_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_recurring_audience_list(request)
 
@@ -7731,6 +7742,7 @@ def test_create_recurring_audience_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_recurring_audience_list(**mock_args)
 
@@ -7870,6 +7882,7 @@ def test_get_recurring_audience_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_recurring_audience_list(request)
 
@@ -7915,6 +7928,7 @@ def test_get_recurring_audience_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_recurring_audience_list(**mock_args)
 
@@ -8060,6 +8074,7 @@ def test_list_recurring_audience_lists_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_recurring_audience_lists(request)
 
@@ -8117,6 +8132,7 @@ def test_list_recurring_audience_lists_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_recurring_audience_lists(**mock_args)
 
@@ -8319,6 +8335,7 @@ def test_get_property_quotas_snapshot_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_property_quotas_snapshot(request)
 
@@ -8364,6 +8381,7 @@ def test_get_property_quotas_snapshot_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_property_quotas_snapshot(**mock_args)
 
@@ -8501,6 +8519,7 @@ def test_create_report_task_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_report_task(request)
 
@@ -8553,6 +8572,7 @@ def test_create_report_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_report_task(**mock_args)
 
@@ -8687,6 +8707,7 @@ def test_query_report_task_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_report_task(request)
 
@@ -8732,6 +8753,7 @@ def test_query_report_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.query_report_task(**mock_args)
 
@@ -8863,6 +8885,7 @@ def test_get_report_task_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_report_task(request)
 
@@ -8908,6 +8931,7 @@ def test_get_report_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_report_task(**mock_args)
 
@@ -9047,6 +9071,7 @@ def test_list_report_tasks_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_report_tasks(request)
 
@@ -9100,6 +9125,7 @@ def test_list_report_tasks_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_report_tasks(**mock_args)
 
@@ -10077,6 +10103,7 @@ def test_run_funnel_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_funnel_report(request)
 
 
@@ -10112,6 +10139,7 @@ def test_run_funnel_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_funnel_report(request)
 
     # Establish that the response is the type that we expect.
@@ -10152,6 +10180,7 @@ def test_run_funnel_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.RunFunnelReportResponse.to_json(
             analytics_data_api.RunFunnelReportResponse()
         )
@@ -10198,6 +10227,7 @@ def test_create_audience_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_audience_list(request)
 
 
@@ -10314,6 +10344,7 @@ def test_create_audience_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_audience_list(request)
 
     # Establish that the response is the type that we expect.
@@ -10355,6 +10386,7 @@ def test_create_audience_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10399,6 +10431,7 @@ def test_query_audience_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_audience_list(request)
 
 
@@ -10434,6 +10467,7 @@ def test_query_audience_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_audience_list(request)
 
     # Establish that the response is the type that we expect.
@@ -10474,6 +10508,7 @@ def test_query_audience_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.QueryAudienceListResponse.to_json(
             analytics_data_api.QueryAudienceListResponse()
         )
@@ -10520,6 +10555,7 @@ def test_sheet_export_audience_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.sheet_export_audience_list(request)
 
 
@@ -10559,6 +10595,7 @@ def test_sheet_export_audience_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.sheet_export_audience_list(request)
 
     # Establish that the response is the type that we expect.
@@ -10601,6 +10638,7 @@ def test_sheet_export_audience_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.SheetExportAudienceListResponse.to_json(
             analytics_data_api.SheetExportAudienceListResponse()
         )
@@ -10647,6 +10685,7 @@ def test_get_audience_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_audience_list(request)
 
 
@@ -10690,6 +10729,7 @@ def test_get_audience_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_audience_list(request)
 
     # Establish that the response is the type that we expect.
@@ -10738,6 +10778,7 @@ def test_get_audience_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.AudienceList.to_json(
             analytics_data_api.AudienceList()
         )
@@ -10784,6 +10825,7 @@ def test_list_audience_lists_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_audience_lists(request)
 
 
@@ -10819,6 +10861,7 @@ def test_list_audience_lists_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_audience_lists(request)
 
     # Establish that the response is the type that we expect.
@@ -10859,6 +10902,7 @@ def test_list_audience_lists_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.ListAudienceListsResponse.to_json(
             analytics_data_api.ListAudienceListsResponse()
         )
@@ -10905,6 +10949,7 @@ def test_create_recurring_audience_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_recurring_audience_list(request)
 
 
@@ -11027,6 +11072,7 @@ def test_create_recurring_audience_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_recurring_audience_list(request)
 
     # Establish that the response is the type that we expect.
@@ -11073,6 +11119,7 @@ def test_create_recurring_audience_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.RecurringAudienceList.to_json(
             analytics_data_api.RecurringAudienceList()
         )
@@ -11119,6 +11166,7 @@ def test_get_recurring_audience_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_recurring_audience_list(request)
 
 
@@ -11158,6 +11206,7 @@ def test_get_recurring_audience_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_recurring_audience_list(request)
 
     # Establish that the response is the type that we expect.
@@ -11202,6 +11251,7 @@ def test_get_recurring_audience_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.RecurringAudienceList.to_json(
             analytics_data_api.RecurringAudienceList()
         )
@@ -11248,6 +11298,7 @@ def test_list_recurring_audience_lists_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_recurring_audience_lists(request)
 
 
@@ -11285,6 +11336,7 @@ def test_list_recurring_audience_lists_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_recurring_audience_lists(request)
 
     # Establish that the response is the type that we expect.
@@ -11327,6 +11379,7 @@ def test_list_recurring_audience_lists_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.ListRecurringAudienceListsResponse.to_json(
             analytics_data_api.ListRecurringAudienceListsResponse()
         )
@@ -11373,6 +11426,7 @@ def test_get_property_quotas_snapshot_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_property_quotas_snapshot(request)
 
 
@@ -11408,6 +11462,7 @@ def test_get_property_quotas_snapshot_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_property_quotas_snapshot(request)
 
     # Establish that the response is the type that we expect.
@@ -11449,6 +11504,7 @@ def test_get_property_quotas_snapshot_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.PropertyQuotasSnapshot.to_json(
             analytics_data_api.PropertyQuotasSnapshot()
         )
@@ -11495,6 +11551,7 @@ def test_create_report_task_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_report_task(request)
 
 
@@ -11693,6 +11750,7 @@ def test_create_report_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_report_task(request)
 
     # Establish that the response is the type that we expect.
@@ -11734,6 +11792,7 @@ def test_create_report_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11778,6 +11837,7 @@ def test_query_report_task_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_report_task(request)
 
 
@@ -11813,6 +11873,7 @@ def test_query_report_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_report_task(request)
 
     # Establish that the response is the type that we expect.
@@ -11853,6 +11914,7 @@ def test_query_report_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.QueryReportTaskResponse.to_json(
             analytics_data_api.QueryReportTaskResponse()
         )
@@ -11899,6 +11961,7 @@ def test_get_report_task_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_report_task(request)
 
 
@@ -11934,6 +11997,7 @@ def test_get_report_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_report_task(request)
 
     # Establish that the response is the type that we expect.
@@ -11974,6 +12038,7 @@ def test_get_report_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.ReportTask.to_json(
             analytics_data_api.ReportTask()
         )
@@ -12020,6 +12085,7 @@ def test_list_report_tasks_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_report_tasks(request)
 
 
@@ -12055,6 +12121,7 @@ def test_list_report_tasks_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_report_tasks(request)
 
     # Establish that the response is the type that we expect.
@@ -12095,6 +12162,7 @@ def test_list_report_tasks_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = analytics_data_api.ListReportTasksResponse.to_json(
             analytics_data_api.ListReportTasksResponse()
         )
