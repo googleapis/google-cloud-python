@@ -32,6 +32,7 @@ from google.maps.routing_v2.types import (
 from google.maps.routing_v2.types import (
     navigation_instruction as gmr_navigation_instruction,
 )
+from google.maps.routing_v2.types import polyline_details as gmr_polyline_details
 from google.maps.routing_v2.types import localized_time, location
 from google.maps.routing_v2.types import polyline as gmr_polyline
 from google.maps.routing_v2.types import toll_info as gmr_toll_info
@@ -123,6 +124,9 @@ class Route(proto.Message):
             ``TRAFFIC_AWARE`` or ``TRAFFIC_AWARE_OPTIMAL``.
             ``Route.route_token`` is not supported for requests that
             have Via waypoints.
+        polyline_details (google.maps.routing_v2.types.PolylineDetails):
+            Contains information about details along the
+            polyline.
     """
 
     class RouteLocalizedValues(proto.Message):
@@ -224,6 +228,11 @@ class Route(proto.Message):
     route_token: str = proto.Field(
         proto.STRING,
         number=12,
+    )
+    polyline_details: gmr_polyline_details.PolylineDetails = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=gmr_polyline_details.PolylineDetails,
     )
 
 

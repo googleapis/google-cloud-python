@@ -868,6 +868,95 @@ class ReservationServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def failover_reservation(
+        self,
+        request: Optional[Union[reservation.FailoverReservationRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> reservation.Reservation:
+        r"""Fail over a reservation to the secondary location. The operation
+        should be done in the current secondary location, which will be
+        promoted to the new primary location for the reservation.
+        Attempting to failover a reservation in the current primary
+        location will fail with the error code
+        ``google.rpc.Code.FAILED_PRECONDITION``.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_reservation_v1
+
+            async def sample_failover_reservation():
+                # Create a client
+                client = bigquery_reservation_v1.ReservationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_reservation_v1.FailoverReservationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.failover_reservation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_reservation_v1.types.FailoverReservationRequest, dict]]):
+                The request object. The request for
+                ReservationService.FailoverReservation.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_reservation_v1.types.Reservation:
+                A reservation is a mechanism used to
+                guarantee slots to users.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, reservation.FailoverReservationRequest):
+            request = reservation.FailoverReservationRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.failover_reservation
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def create_capacity_commitment(
         self,
         request: Optional[
