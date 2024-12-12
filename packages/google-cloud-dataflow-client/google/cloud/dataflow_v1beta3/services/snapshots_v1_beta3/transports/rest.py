@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,8 +101,10 @@ class SnapshotsV1Beta3RestInterceptor:
     def pre_delete_snapshot(
         self,
         request: snapshots.DeleteSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[snapshots.DeleteSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        snapshots.DeleteSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -114,8 +124,10 @@ class SnapshotsV1Beta3RestInterceptor:
         return response
 
     def pre_get_snapshot(
-        self, request: snapshots.GetSnapshotRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[snapshots.GetSnapshotRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: snapshots.GetSnapshotRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[snapshots.GetSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -135,8 +147,8 @@ class SnapshotsV1Beta3RestInterceptor:
     def pre_list_snapshots(
         self,
         request: snapshots.ListSnapshotsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[snapshots.ListSnapshotsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[snapshots.ListSnapshotsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_snapshots
 
         Override in a subclass to manipulate the request or metadata
@@ -277,7 +289,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> snapshots.DeleteSnapshotResponse:
             r"""Call the delete snapshot method over HTTP.
 
@@ -287,8 +299,10 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.snapshots.DeleteSnapshotResponse:
@@ -298,6 +312,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             http_options = (
                 _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
             transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_transcoded_request(
                 http_options, request
@@ -307,6 +322,33 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             query_params = _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.dataflow_v1beta3.SnapshotsV1Beta3Client.DeleteSnapshot",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "rpcName": "DeleteSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SnapshotsV1Beta3RestTransport._DeleteSnapshot._get_response(
@@ -328,7 +370,31 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             pb_resp = snapshots.DeleteSnapshotResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = snapshots.DeleteSnapshotResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.dataflow_v1beta3.SnapshotsV1Beta3Client.delete_snapshot",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "rpcName": "DeleteSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSnapshot(
@@ -365,7 +431,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> snapshots.Snapshot:
             r"""Call the get snapshot method over HTTP.
 
@@ -376,8 +442,10 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.snapshots.Snapshot:
@@ -387,6 +455,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             http_options = (
                 _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
             transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_transcoded_request(
                 http_options, request
@@ -396,6 +465,33 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             query_params = _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.dataflow_v1beta3.SnapshotsV1Beta3Client.GetSnapshot",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "rpcName": "GetSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SnapshotsV1Beta3RestTransport._GetSnapshot._get_response(
@@ -417,7 +513,29 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             pb_resp = snapshots.Snapshot.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = snapshots.Snapshot.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.dataflow_v1beta3.SnapshotsV1Beta3Client.get_snapshot",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "rpcName": "GetSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSnapshots(
@@ -454,7 +572,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> snapshots.ListSnapshotsResponse:
             r"""Call the list snapshots method over HTTP.
 
@@ -464,8 +582,10 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.snapshots.ListSnapshotsResponse:
@@ -475,6 +595,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             http_options = (
                 _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
             transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_transcoded_request(
                 http_options, request
@@ -484,6 +605,33 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             query_params = _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.dataflow_v1beta3.SnapshotsV1Beta3Client.ListSnapshots",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "rpcName": "ListSnapshots",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SnapshotsV1Beta3RestTransport._ListSnapshots._get_response(
@@ -505,7 +653,29 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             pb_resp = snapshots.ListSnapshotsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_snapshots(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = snapshots.ListSnapshotsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.dataflow_v1beta3.SnapshotsV1Beta3Client.list_snapshots",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.SnapshotsV1Beta3",
+                        "rpcName": "ListSnapshots",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

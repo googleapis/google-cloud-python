@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -21,13 +24,91 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.commerce_consumer_procurement_v1.types import (
     license_management_service,
 )
 
 from .base import DEFAULT_CLIENT_INFO, LicenseManagementServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
@@ -182,7 +263,12 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -259,7 +345,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_license_pool" not in self._stubs:
-            self._stubs["get_license_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["get_license_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/GetLicensePool",
                 request_serializer=license_management_service.GetLicensePoolRequest.serialize,
                 response_deserializer=license_management_service.LicensePool.deserialize,
@@ -289,7 +375,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_license_pool" not in self._stubs:
-            self._stubs["update_license_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["update_license_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/UpdateLicensePool",
                 request_serializer=license_management_service.UpdateLicensePoolRequest.serialize,
                 response_deserializer=license_management_service.LicensePool.deserialize,
@@ -318,7 +404,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "assign" not in self._stubs:
-            self._stubs["assign"] = self.grpc_channel.unary_unary(
+            self._stubs["assign"] = self._logged_channel.unary_unary(
                 "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/Assign",
                 request_serializer=license_management_service.AssignRequest.serialize,
                 response_deserializer=license_management_service.AssignResponse.deserialize,
@@ -347,7 +433,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "unassign" not in self._stubs:
-            self._stubs["unassign"] = self.grpc_channel.unary_unary(
+            self._stubs["unassign"] = self._logged_channel.unary_unary(
                 "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/Unassign",
                 request_serializer=license_management_service.UnassignRequest.serialize,
                 response_deserializer=license_management_service.UnassignResponse.deserialize,
@@ -376,7 +462,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enumerate_licensed_users" not in self._stubs:
-            self._stubs["enumerate_licensed_users"] = self.grpc_channel.unary_unary(
+            self._stubs["enumerate_licensed_users"] = self._logged_channel.unary_unary(
                 "/google.cloud.commerce.consumer.procurement.v1.LicenseManagementService/EnumerateLicensedUsers",
                 request_serializer=license_management_service.EnumerateLicensedUsersRequest.serialize,
                 response_deserializer=license_management_service.EnumerateLicensedUsersResponse.deserialize,
@@ -384,7 +470,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         return self._stubs["enumerate_licensed_users"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def get_operation(
@@ -396,7 +482,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,

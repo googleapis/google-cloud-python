@@ -4146,6 +4146,7 @@ def test_create_document_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_document(request)
 
@@ -4200,6 +4201,7 @@ def test_create_document_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_document(**mock_args)
 
@@ -4332,6 +4334,7 @@ def test_get_document_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_document(request)
 
@@ -4379,6 +4382,7 @@ def test_get_document_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_document(**mock_args)
 
@@ -4511,6 +4515,7 @@ def test_update_document_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_document(request)
 
@@ -4567,6 +4572,7 @@ def test_update_document_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_document(**mock_args)
 
@@ -4696,6 +4702,7 @@ def test_delete_document_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_document(request)
 
@@ -4741,6 +4748,7 @@ def test_delete_document_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_document(**mock_args)
 
@@ -4875,6 +4883,7 @@ def test_search_documents_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_documents(request)
 
@@ -4920,6 +4929,7 @@ def test_search_documents_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_documents(**mock_args)
 
@@ -5118,6 +5128,7 @@ def test_lock_document_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.lock_document(request)
 
@@ -5165,6 +5176,7 @@ def test_lock_document_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.lock_document(**mock_args)
 
@@ -5297,6 +5309,7 @@ def test_fetch_acl_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_acl(request)
 
@@ -5344,6 +5357,7 @@ def test_fetch_acl_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.fetch_acl(**mock_args)
 
@@ -5476,6 +5490,7 @@ def test_set_acl_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.set_acl(request)
 
@@ -5532,6 +5547,7 @@ def test_set_acl_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.set_acl(**mock_args)
 
@@ -6112,6 +6128,7 @@ def test_create_document_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_document(request)
 
 
@@ -6145,6 +6162,7 @@ def test_create_document_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_document(request)
 
     # Establish that the response is the type that we expect.
@@ -6184,6 +6202,7 @@ def test_create_document_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = document_service.CreateDocumentResponse.to_json(
             document_service.CreateDocumentResponse()
         )
@@ -6230,6 +6249,7 @@ def test_get_document_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_document(request)
 
 
@@ -6281,6 +6301,7 @@ def test_get_document_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_document(request)
 
     # Establish that the response is the type that we expect.
@@ -6340,6 +6361,7 @@ def test_get_document_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcc_document.Document.to_json(gcc_document.Document())
         req.return_value.content = return_value
 
@@ -6384,6 +6406,7 @@ def test_update_document_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_document(request)
 
 
@@ -6417,6 +6440,7 @@ def test_update_document_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_document(request)
 
     # Establish that the response is the type that we expect.
@@ -6456,6 +6480,7 @@ def test_update_document_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = document_service.UpdateDocumentResponse.to_json(
             document_service.UpdateDocumentResponse()
         )
@@ -6502,6 +6527,7 @@ def test_delete_document_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_document(request)
 
 
@@ -6532,6 +6558,7 @@ def test_delete_document_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_document(request)
 
     # Establish that the response is the type that we expect.
@@ -6568,6 +6595,7 @@ def test_delete_document_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = document_service_request.DeleteDocumentRequest()
         metadata = [
@@ -6608,6 +6636,7 @@ def test_search_documents_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_documents(request)
 
 
@@ -6645,6 +6674,7 @@ def test_search_documents_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_documents(request)
 
     # Establish that the response is the type that we expect.
@@ -6687,6 +6717,7 @@ def test_search_documents_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = document_service.SearchDocumentsResponse.to_json(
             document_service.SearchDocumentsResponse()
         )
@@ -6733,6 +6764,7 @@ def test_lock_document_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.lock_document(request)
 
 
@@ -6784,6 +6816,7 @@ def test_lock_document_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.lock_document(request)
 
     # Establish that the response is the type that we expect.
@@ -6843,6 +6876,7 @@ def test_lock_document_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcc_document.Document.to_json(gcc_document.Document())
         req.return_value.content = return_value
 
@@ -6887,6 +6921,7 @@ def test_fetch_acl_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_acl(request)
 
 
@@ -6920,6 +6955,7 @@ def test_fetch_acl_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_acl(request)
 
     # Establish that the response is the type that we expect.
@@ -6959,6 +6995,7 @@ def test_fetch_acl_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = document_service.FetchAclResponse.to_json(
             document_service.FetchAclResponse()
         )
@@ -7003,6 +7040,7 @@ def test_set_acl_rest_bad_request(request_type=document_service_request.SetAclRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_acl(request)
 
 
@@ -7036,6 +7074,7 @@ def test_set_acl_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.set_acl(request)
 
     # Establish that the response is the type that we expect.
@@ -7075,6 +7114,7 @@ def test_set_acl_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = document_service.SetAclResponse.to_json(
             document_service.SetAclResponse()
         )
@@ -7123,6 +7163,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -7153,6 +7194,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

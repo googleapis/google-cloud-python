@@ -7650,6 +7650,7 @@ def test_process_open_lineage_run_event_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.process_open_lineage_run_event(request)
 
@@ -7712,6 +7713,7 @@ def test_process_open_lineage_run_event_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.process_open_lineage_run_event(**mock_args)
 
@@ -7851,6 +7853,7 @@ def test_create_process_rest_required_fields(request_type=lineage.CreateProcessR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_process(request)
 
@@ -7905,6 +7908,7 @@ def test_create_process_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_process(**mock_args)
 
@@ -8037,6 +8041,7 @@ def test_update_process_rest_required_fields(request_type=lineage.UpdateProcessR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_process(request)
 
@@ -8093,6 +8098,7 @@ def test_update_process_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_process(**mock_args)
 
@@ -8223,6 +8229,7 @@ def test_get_process_rest_required_fields(request_type=lineage.GetProcessRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_process(request)
 
@@ -8270,6 +8277,7 @@ def test_get_process_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_process(**mock_args)
 
@@ -8405,6 +8413,7 @@ def test_list_processes_rest_required_fields(request_type=lineage.ListProcessesR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_processes(request)
 
@@ -8458,6 +8467,7 @@ def test_list_processes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_processes(**mock_args)
 
@@ -8650,6 +8660,7 @@ def test_delete_process_rest_required_fields(request_type=lineage.DeleteProcessR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_process(request)
 
@@ -8695,6 +8706,7 @@ def test_delete_process_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_process(**mock_args)
 
@@ -8826,6 +8838,7 @@ def test_create_run_rest_required_fields(request_type=lineage.CreateRunRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_run(request)
 
@@ -8882,6 +8895,7 @@ def test_create_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_run(**mock_args)
 
@@ -9015,6 +9029,7 @@ def test_update_run_rest_required_fields(request_type=lineage.UpdateRunRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_run(request)
 
@@ -9073,6 +9088,7 @@ def test_update_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_run(**mock_args)
 
@@ -9203,6 +9219,7 @@ def test_get_run_rest_required_fields(request_type=lineage.GetRunRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_run(request)
 
@@ -9250,6 +9267,7 @@ def test_get_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_run(**mock_args)
 
@@ -9386,6 +9404,7 @@ def test_list_runs_rest_required_fields(request_type=lineage.ListRunsRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_runs(request)
 
@@ -9441,6 +9460,7 @@ def test_list_runs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_runs(**mock_args)
 
@@ -9636,6 +9656,7 @@ def test_delete_run_rest_required_fields(request_type=lineage.DeleteRunRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_run(request)
 
@@ -9681,6 +9702,7 @@ def test_delete_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_run(**mock_args)
 
@@ -9819,6 +9841,7 @@ def test_create_lineage_event_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_lineage_event(request)
 
@@ -9875,6 +9898,7 @@ def test_create_lineage_event_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_lineage_event(**mock_args)
 
@@ -10009,6 +10033,7 @@ def test_get_lineage_event_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_lineage_event(request)
 
@@ -10056,6 +10081,7 @@ def test_get_lineage_event_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_lineage_event(**mock_args)
 
@@ -10198,6 +10224,7 @@ def test_list_lineage_events_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_lineage_events(request)
 
@@ -10253,6 +10280,7 @@ def test_list_lineage_events_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_lineage_events(**mock_args)
 
@@ -10450,6 +10478,7 @@ def test_delete_lineage_event_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_lineage_event(request)
 
@@ -10495,6 +10524,7 @@ def test_delete_lineage_event_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_lineage_event(**mock_args)
 
@@ -10625,6 +10655,7 @@ def test_search_links_rest_required_fields(request_type=lineage.SearchLinksReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_links(request)
 
@@ -10815,6 +10846,7 @@ def test_batch_search_link_processes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_search_link_processes(request)
 
@@ -11894,6 +11926,7 @@ def test_process_open_lineage_run_event_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.process_open_lineage_run_event(request)
 
 
@@ -11999,6 +12032,7 @@ def test_process_open_lineage_run_event_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.process_open_lineage_run_event(request)
 
     # Establish that the response is the type that we expect.
@@ -12039,6 +12073,7 @@ def test_process_open_lineage_run_event_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.ProcessOpenLineageRunEventResponse.to_json(
             lineage.ProcessOpenLineageRunEventResponse()
         )
@@ -12083,6 +12118,7 @@ def test_create_process_rest_bad_request(request_type=lineage.CreateProcessReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_process(request)
 
 
@@ -12192,6 +12228,7 @@ def test_create_process_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_process(request)
 
     # Establish that the response is the type that we expect.
@@ -12229,6 +12266,7 @@ def test_create_process_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.Process.to_json(lineage.Process())
         req.return_value.content = return_value
 
@@ -12273,6 +12311,7 @@ def test_update_process_rest_bad_request(request_type=lineage.UpdateProcessReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_process(request)
 
 
@@ -12384,6 +12423,7 @@ def test_update_process_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_process(request)
 
     # Establish that the response is the type that we expect.
@@ -12421,6 +12461,7 @@ def test_update_process_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.Process.to_json(lineage.Process())
         req.return_value.content = return_value
 
@@ -12463,6 +12504,7 @@ def test_get_process_rest_bad_request(request_type=lineage.GetProcessRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_process(request)
 
 
@@ -12499,6 +12541,7 @@ def test_get_process_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_process(request)
 
     # Establish that the response is the type that we expect.
@@ -12536,6 +12579,7 @@ def test_get_process_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.Process.to_json(lineage.Process())
         req.return_value.content = return_value
 
@@ -12578,6 +12622,7 @@ def test_list_processes_rest_bad_request(request_type=lineage.ListProcessesReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_processes(request)
 
 
@@ -12613,6 +12658,7 @@ def test_list_processes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_processes(request)
 
     # Establish that the response is the type that we expect.
@@ -12649,6 +12695,7 @@ def test_list_processes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.ListProcessesResponse.to_json(
             lineage.ListProcessesResponse()
         )
@@ -12693,6 +12740,7 @@ def test_delete_process_rest_bad_request(request_type=lineage.DeleteProcessReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_process(request)
 
 
@@ -12723,6 +12771,7 @@ def test_delete_process_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_process(request)
 
     # Establish that the response is the type that we expect.
@@ -12760,6 +12809,7 @@ def test_delete_process_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12802,6 +12852,7 @@ def test_create_run_rest_bad_request(request_type=lineage.CreateRunRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_run(request)
 
 
@@ -12914,6 +12965,7 @@ def test_create_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_run(request)
 
     # Establish that the response is the type that we expect.
@@ -12952,6 +13004,7 @@ def test_create_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.Run.to_json(lineage.Run())
         req.return_value.content = return_value
 
@@ -12998,6 +13051,7 @@ def test_update_run_rest_bad_request(request_type=lineage.UpdateRunRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_run(request)
 
 
@@ -13114,6 +13168,7 @@ def test_update_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_run(request)
 
     # Establish that the response is the type that we expect.
@@ -13152,6 +13207,7 @@ def test_update_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.Run.to_json(lineage.Run())
         req.return_value.content = return_value
 
@@ -13196,6 +13252,7 @@ def test_get_run_rest_bad_request(request_type=lineage.GetRunRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_run(request)
 
 
@@ -13235,6 +13292,7 @@ def test_get_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_run(request)
 
     # Establish that the response is the type that we expect.
@@ -13273,6 +13331,7 @@ def test_get_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.Run.to_json(lineage.Run())
         req.return_value.content = return_value
 
@@ -13315,6 +13374,7 @@ def test_list_runs_rest_bad_request(request_type=lineage.ListRunsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_runs(request)
 
 
@@ -13350,6 +13410,7 @@ def test_list_runs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_runs(request)
 
     # Establish that the response is the type that we expect.
@@ -13386,6 +13447,7 @@ def test_list_runs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.ListRunsResponse.to_json(lineage.ListRunsResponse())
         req.return_value.content = return_value
 
@@ -13430,6 +13492,7 @@ def test_delete_run_rest_bad_request(request_type=lineage.DeleteRunRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_run(request)
 
 
@@ -13462,6 +13525,7 @@ def test_delete_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_run(request)
 
     # Establish that the response is the type that we expect.
@@ -13499,6 +13563,7 @@ def test_delete_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13545,6 +13610,7 @@ def test_create_lineage_event_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_lineage_event(request)
 
 
@@ -13660,6 +13726,7 @@ def test_create_lineage_event_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_lineage_event(request)
 
     # Establish that the response is the type that we expect.
@@ -13698,6 +13765,7 @@ def test_create_lineage_event_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.LineageEvent.to_json(lineage.LineageEvent())
         req.return_value.content = return_value
 
@@ -13744,6 +13812,7 @@ def test_get_lineage_event_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_lineage_event(request)
 
 
@@ -13781,6 +13850,7 @@ def test_get_lineage_event_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_lineage_event(request)
 
     # Establish that the response is the type that we expect.
@@ -13817,6 +13887,7 @@ def test_get_lineage_event_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.LineageEvent.to_json(lineage.LineageEvent())
         req.return_value.content = return_value
 
@@ -13863,6 +13934,7 @@ def test_list_lineage_events_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_lineage_events(request)
 
 
@@ -13900,6 +13972,7 @@ def test_list_lineage_events_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_lineage_events(request)
 
     # Establish that the response is the type that we expect.
@@ -13938,6 +14011,7 @@ def test_list_lineage_events_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.ListLineageEventsResponse.to_json(
             lineage.ListLineageEventsResponse()
         )
@@ -13986,6 +14060,7 @@ def test_delete_lineage_event_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_lineage_event(request)
 
 
@@ -14018,6 +14093,7 @@ def test_delete_lineage_event_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_lineage_event(request)
 
     # Establish that the response is the type that we expect.
@@ -14052,6 +14128,7 @@ def test_delete_lineage_event_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = lineage.DeleteLineageEventRequest()
         metadata = [
@@ -14090,6 +14167,7 @@ def test_search_links_rest_bad_request(request_type=lineage.SearchLinksRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_links(request)
 
 
@@ -14125,6 +14203,7 @@ def test_search_links_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_links(request)
 
     # Establish that the response is the type that we expect.
@@ -14161,6 +14240,7 @@ def test_search_links_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.SearchLinksResponse.to_json(
             lineage.SearchLinksResponse()
         )
@@ -14207,6 +14287,7 @@ def test_batch_search_link_processes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_search_link_processes(request)
 
 
@@ -14242,6 +14323,7 @@ def test_batch_search_link_processes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_search_link_processes(request)
 
     # Establish that the response is the type that we expect.
@@ -14280,6 +14362,7 @@ def test_batch_search_link_processes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lineage.BatchSearchLinkProcessesResponse.to_json(
             lineage.BatchSearchLinkProcessesResponse()
         )
@@ -14328,6 +14411,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -14358,6 +14442,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -14388,6 +14473,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -14418,6 +14504,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -14448,6 +14535,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -14478,6 +14566,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -14508,6 +14597,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -14538,6 +14628,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

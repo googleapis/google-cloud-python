@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-cloudcontrolspartner",
-    "version": "0.2.2"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -47,7 +47,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Customer",
@@ -127,7 +127,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Customer",
@@ -208,7 +208,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.EkmConnections",
@@ -288,7 +288,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.EkmConnections",
@@ -369,7 +369,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.PartnerPermissions",
@@ -449,7 +449,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.PartnerPermissions",
@@ -530,7 +530,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Partner",
@@ -610,7 +610,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Partner",
@@ -691,7 +691,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Workload",
@@ -771,7 +771,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Workload",
@@ -852,7 +852,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.pagers.ListAccessApprovalRequestsAsyncPager",
@@ -932,7 +932,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.pagers.ListAccessApprovalRequestsPager",
@@ -1013,7 +1013,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.pagers.ListCustomersAsyncPager",
@@ -1093,7 +1093,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.pagers.ListCustomersPager",
@@ -1174,7 +1174,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.pagers.ListWorkloadsAsyncPager",
@@ -1254,7 +1254,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.pagers.ListWorkloadsPager",
@@ -1335,7 +1335,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Violation",
@@ -1415,7 +1415,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.types.Violation",
@@ -1496,7 +1496,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_monitoring.pagers.ListViolationsAsyncPager",
@@ -1576,7 +1576,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_monitoring.pagers.ListViolationsPager",

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -44,6 +44,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -628,10 +636,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_bulk_analyze_conversations(
         self,
         request: contact_center_insights.BulkAnalyzeConversationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.BulkAnalyzeConversationsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for bulk_analyze_conversations
 
@@ -654,10 +662,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_bulk_delete_conversations(
         self,
         request: contact_center_insights.BulkDeleteConversationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.BulkDeleteConversationsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for bulk_delete_conversations
 
@@ -680,10 +688,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_bulk_download_feedback_labels(
         self,
         request: contact_center_insights.BulkDownloadFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.BulkDownloadFeedbackLabelsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for bulk_download_feedback_labels
 
@@ -706,10 +714,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_bulk_upload_feedback_labels(
         self,
         request: contact_center_insights.BulkUploadFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.BulkUploadFeedbackLabelsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for bulk_upload_feedback_labels
 
@@ -732,10 +740,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_calculate_issue_model_stats(
         self,
         request: contact_center_insights.CalculateIssueModelStatsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.CalculateIssueModelStatsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for calculate_issue_model_stats
 
@@ -758,9 +766,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_calculate_stats(
         self,
         request: contact_center_insights.CalculateStatsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CalculateStatsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CalculateStatsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for calculate_stats
 
@@ -783,9 +792,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_analysis(
         self,
         request: contact_center_insights.CreateAnalysisRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreateAnalysisRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreateAnalysisRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_analysis
 
@@ -808,9 +818,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_analysis_rule(
         self,
         request: contact_center_insights.CreateAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreateAnalysisRuleRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreateAnalysisRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_analysis_rule
 
@@ -833,9 +844,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_conversation(
         self,
         request: contact_center_insights.CreateConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreateConversationRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreateConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_conversation
 
@@ -858,9 +870,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_feedback_label(
         self,
         request: contact_center_insights.CreateFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreateFeedbackLabelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreateFeedbackLabelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_feedback_label
 
@@ -883,9 +896,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_issue_model(
         self,
         request: contact_center_insights.CreateIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreateIssueModelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreateIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_issue_model
 
@@ -908,9 +922,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_phrase_matcher(
         self,
         request: contact_center_insights.CreatePhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreatePhraseMatcherRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreatePhraseMatcherRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_phrase_matcher
 
@@ -933,9 +948,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_qa_question(
         self,
         request: contact_center_insights.CreateQaQuestionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreateQaQuestionRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreateQaQuestionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_qa_question
 
@@ -958,9 +974,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_qa_scorecard(
         self,
         request: contact_center_insights.CreateQaScorecardRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.CreateQaScorecardRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.CreateQaScorecardRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_qa_scorecard
 
@@ -983,10 +1000,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_qa_scorecard_revision(
         self,
         request: contact_center_insights.CreateQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.CreateQaScorecardRevisionRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_qa_scorecard_revision
 
@@ -1009,8 +1026,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_create_view(
         self,
         request: contact_center_insights.CreateViewRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.CreateViewRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.CreateViewRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_view
 
         Override in a subclass to manipulate the request or metadata
@@ -1030,9 +1050,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_analysis(
         self,
         request: contact_center_insights.DeleteAnalysisRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeleteAnalysisRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeleteAnalysisRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_analysis
 
@@ -1044,9 +1065,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_analysis_rule(
         self,
         request: contact_center_insights.DeleteAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeleteAnalysisRuleRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeleteAnalysisRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_analysis_rule
 
@@ -1058,9 +1080,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_conversation(
         self,
         request: contact_center_insights.DeleteConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeleteConversationRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeleteConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_conversation
 
@@ -1072,9 +1095,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_feedback_label(
         self,
         request: contact_center_insights.DeleteFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeleteFeedbackLabelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeleteFeedbackLabelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_feedback_label
 
@@ -1086,8 +1110,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_issue(
         self,
         request: contact_center_insights.DeleteIssueRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.DeleteIssueRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.DeleteIssueRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_issue
 
         Override in a subclass to manipulate the request or metadata
@@ -1098,9 +1125,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_issue_model(
         self,
         request: contact_center_insights.DeleteIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeleteIssueModelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeleteIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_issue_model
 
@@ -1123,9 +1151,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_phrase_matcher(
         self,
         request: contact_center_insights.DeletePhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeletePhraseMatcherRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeletePhraseMatcherRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_phrase_matcher
 
@@ -1137,9 +1166,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_qa_question(
         self,
         request: contact_center_insights.DeleteQaQuestionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeleteQaQuestionRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeleteQaQuestionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_qa_question
 
@@ -1151,9 +1181,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_qa_scorecard(
         self,
         request: contact_center_insights.DeleteQaScorecardRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeleteQaScorecardRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeleteQaScorecardRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_qa_scorecard
 
@@ -1165,10 +1196,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_qa_scorecard_revision(
         self,
         request: contact_center_insights.DeleteQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.DeleteQaScorecardRevisionRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_qa_scorecard_revision
 
@@ -1180,8 +1211,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_delete_view(
         self,
         request: contact_center_insights.DeleteViewRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.DeleteViewRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.DeleteViewRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_view
 
         Override in a subclass to manipulate the request or metadata
@@ -1192,9 +1226,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_deploy_issue_model(
         self,
         request: contact_center_insights.DeployIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.DeployIssueModelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.DeployIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for deploy_issue_model
 
@@ -1217,10 +1252,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_deploy_qa_scorecard_revision(
         self,
         request: contact_center_insights.DeployQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.DeployQaScorecardRevisionRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for deploy_qa_scorecard_revision
 
@@ -1243,9 +1278,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_export_insights_data(
         self,
         request: contact_center_insights.ExportInsightsDataRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ExportInsightsDataRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ExportInsightsDataRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for export_insights_data
 
@@ -1268,9 +1304,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_export_issue_model(
         self,
         request: contact_center_insights.ExportIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ExportIssueModelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ExportIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for export_issue_model
 
@@ -1293,8 +1330,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_analysis(
         self,
         request: contact_center_insights.GetAnalysisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.GetAnalysisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.GetAnalysisRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -1314,9 +1354,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_analysis_rule(
         self,
         request: contact_center_insights.GetAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.GetAnalysisRuleRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.GetAnalysisRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_analysis_rule
 
@@ -1339,9 +1380,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_conversation(
         self,
         request: contact_center_insights.GetConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.GetConversationRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.GetConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_conversation
 
@@ -1364,9 +1406,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_encryption_spec(
         self,
         request: contact_center_insights.GetEncryptionSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.GetEncryptionSpecRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.GetEncryptionSpecRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_encryption_spec
 
@@ -1389,9 +1432,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_feedback_label(
         self,
         request: contact_center_insights.GetFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.GetFeedbackLabelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.GetFeedbackLabelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_feedback_label
 
@@ -1414,8 +1458,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_issue(
         self,
         request: contact_center_insights.GetIssueRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.GetIssueRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.GetIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_issue
 
         Override in a subclass to manipulate the request or metadata
@@ -1435,8 +1481,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_issue_model(
         self,
         request: contact_center_insights.GetIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.GetIssueModelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.GetIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -1458,9 +1507,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_phrase_matcher(
         self,
         request: contact_center_insights.GetPhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.GetPhraseMatcherRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.GetPhraseMatcherRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_phrase_matcher
 
@@ -1483,8 +1533,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_qa_question(
         self,
         request: contact_center_insights.GetQaQuestionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.GetQaQuestionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.GetQaQuestionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_qa_question
 
         Override in a subclass to manipulate the request or metadata
@@ -1506,9 +1559,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_qa_scorecard(
         self,
         request: contact_center_insights.GetQaScorecardRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.GetQaScorecardRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.GetQaScorecardRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_qa_scorecard
 
@@ -1531,9 +1585,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_qa_scorecard_revision(
         self,
         request: contact_center_insights.GetQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.GetQaScorecardRevisionRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.GetQaScorecardRevisionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_qa_scorecard_revision
 
@@ -1556,8 +1611,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_settings(
         self,
         request: contact_center_insights.GetSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.GetSettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.GetSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -1577,8 +1635,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_view(
         self,
         request: contact_center_insights.GetViewRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.GetViewRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.GetViewRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_view
 
         Override in a subclass to manipulate the request or metadata
@@ -1598,9 +1658,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_import_issue_model(
         self,
         request: contact_center_insights.ImportIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ImportIssueModelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ImportIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for import_issue_model
 
@@ -1623,9 +1684,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_ingest_conversations(
         self,
         request: contact_center_insights.IngestConversationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.IngestConversationsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.IngestConversationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for ingest_conversations
 
@@ -1648,10 +1710,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_initialize_encryption_spec(
         self,
         request: contact_center_insights.InitializeEncryptionSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.InitializeEncryptionSpecRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for initialize_encryption_spec
 
@@ -1674,9 +1736,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_all_feedback_labels(
         self,
         request: contact_center_insights.ListAllFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListAllFeedbackLabelsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListAllFeedbackLabelsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_all_feedback_labels
 
@@ -1699,8 +1762,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_analyses(
         self,
         request: contact_center_insights.ListAnalysesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.ListAnalysesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListAnalysesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_analyses
 
         Override in a subclass to manipulate the request or metadata
@@ -1722,9 +1788,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_analysis_rules(
         self,
         request: contact_center_insights.ListAnalysisRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListAnalysisRulesRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListAnalysisRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_analysis_rules
 
@@ -1747,9 +1814,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_conversations(
         self,
         request: contact_center_insights.ListConversationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListConversationsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListConversationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_conversations
 
@@ -1772,9 +1840,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_feedback_labels(
         self,
         request: contact_center_insights.ListFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListFeedbackLabelsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListFeedbackLabelsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_feedback_labels
 
@@ -1797,9 +1866,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_issue_models(
         self,
         request: contact_center_insights.ListIssueModelsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListIssueModelsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListIssueModelsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_issue_models
 
@@ -1822,8 +1892,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_issues(
         self,
         request: contact_center_insights.ListIssuesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.ListIssuesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListIssuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_issues
 
         Override in a subclass to manipulate the request or metadata
@@ -1845,9 +1918,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_phrase_matchers(
         self,
         request: contact_center_insights.ListPhraseMatchersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListPhraseMatchersRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListPhraseMatchersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_phrase_matchers
 
@@ -1870,9 +1944,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_qa_questions(
         self,
         request: contact_center_insights.ListQaQuestionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListQaQuestionsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListQaQuestionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_qa_questions
 
@@ -1895,10 +1970,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_qa_scorecard_revisions(
         self,
         request: contact_center_insights.ListQaScorecardRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.ListQaScorecardRevisionsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_qa_scorecard_revisions
 
@@ -1921,9 +1996,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_qa_scorecards(
         self,
         request: contact_center_insights.ListQaScorecardsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.ListQaScorecardsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.ListQaScorecardsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_qa_scorecards
 
@@ -1946,8 +2022,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_views(
         self,
         request: contact_center_insights.ListViewsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.ListViewsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListViewsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_views
 
         Override in a subclass to manipulate the request or metadata
@@ -1969,8 +2048,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_query_metrics(
         self,
         request: contact_center_insights.QueryMetricsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.QueryMetricsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.QueryMetricsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for query_metrics
 
         Override in a subclass to manipulate the request or metadata
@@ -1992,10 +2074,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_tune_qa_scorecard_revision(
         self,
         request: contact_center_insights.TuneQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.TuneQaScorecardRevisionRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for tune_qa_scorecard_revision
 
@@ -2018,9 +2100,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_undeploy_issue_model(
         self,
         request: contact_center_insights.UndeployIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UndeployIssueModelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UndeployIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for undeploy_issue_model
 
@@ -2043,10 +2126,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_undeploy_qa_scorecard_revision(
         self,
         request: contact_center_insights.UndeployQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         contact_center_insights.UndeployQaScorecardRevisionRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for undeploy_qa_scorecard_revision
 
@@ -2069,9 +2152,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_analysis_rule(
         self,
         request: contact_center_insights.UpdateAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdateAnalysisRuleRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdateAnalysisRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_analysis_rule
 
@@ -2094,9 +2178,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_conversation(
         self,
         request: contact_center_insights.UpdateConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdateConversationRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdateConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_conversation
 
@@ -2119,9 +2204,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_feedback_label(
         self,
         request: contact_center_insights.UpdateFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdateFeedbackLabelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdateFeedbackLabelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_feedback_label
 
@@ -2144,8 +2230,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_issue(
         self,
         request: contact_center_insights.UpdateIssueRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.UpdateIssueRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.UpdateIssueRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_issue
 
         Override in a subclass to manipulate the request or metadata
@@ -2165,9 +2254,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_issue_model(
         self,
         request: contact_center_insights.UpdateIssueModelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdateIssueModelRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdateIssueModelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_issue_model
 
@@ -2190,9 +2280,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_phrase_matcher(
         self,
         request: contact_center_insights.UpdatePhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdatePhraseMatcherRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdatePhraseMatcherRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_phrase_matcher
 
@@ -2215,9 +2306,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_qa_question(
         self,
         request: contact_center_insights.UpdateQaQuestionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdateQaQuestionRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdateQaQuestionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_qa_question
 
@@ -2240,9 +2332,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_qa_scorecard(
         self,
         request: contact_center_insights.UpdateQaScorecardRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdateQaScorecardRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdateQaScorecardRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_qa_scorecard
 
@@ -2265,9 +2358,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_settings(
         self,
         request: contact_center_insights.UpdateSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UpdateSettingsRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UpdateSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_settings
 
@@ -2288,8 +2382,11 @@ class ContactCenterInsightsRestInterceptor:
     def pre_update_view(
         self,
         request: contact_center_insights.UpdateViewRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[contact_center_insights.UpdateViewRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.UpdateViewRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_view
 
         Override in a subclass to manipulate the request or metadata
@@ -2309,9 +2406,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_upload_conversation(
         self,
         request: contact_center_insights.UploadConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        contact_center_insights.UploadConversationRequest, Sequence[Tuple[str, str]]
+        contact_center_insights.UploadConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for upload_conversation
 
@@ -2334,8 +2432,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2355,8 +2455,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2378,8 +2480,10 @@ class ContactCenterInsightsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2569,7 +2673,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the bulk analyze
             conversations method over HTTP.
@@ -2581,8 +2685,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2595,6 +2701,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_bulk_analyze_conversations(
                 request, metadata
             )
@@ -2610,6 +2717,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.BulkAnalyzeConversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkAnalyzeConversations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkAnalyzeConversations._get_response(
@@ -2630,7 +2764,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_bulk_analyze_conversations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.bulk_analyze_conversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkAnalyzeConversations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BulkDeleteConversations(
@@ -2669,7 +2825,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the bulk delete conversations method over HTTP.
 
@@ -2680,8 +2836,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2694,6 +2852,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_bulk_delete_conversations(
                 request, metadata
             )
@@ -2709,6 +2868,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.BulkDeleteConversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkDeleteConversations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkDeleteConversations._get_response(
@@ -2729,7 +2915,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_bulk_delete_conversations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.bulk_delete_conversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkDeleteConversations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BulkDownloadFeedbackLabels(
@@ -2768,7 +2976,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the bulk download feedback
             labels method over HTTP.
@@ -2780,8 +2988,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2794,6 +3004,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_bulk_download_feedback_labels(
                 request, metadata
             )
@@ -2809,6 +3020,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.BulkDownloadFeedbackLabels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkDownloadFeedbackLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkDownloadFeedbackLabels._get_response(
@@ -2829,7 +3067,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_bulk_download_feedback_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.bulk_download_feedback_labels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkDownloadFeedbackLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BulkUploadFeedbackLabels(
@@ -2868,7 +3128,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the bulk upload feedback
             labels method over HTTP.
@@ -2880,8 +3140,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2894,6 +3156,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_bulk_upload_feedback_labels(
                 request, metadata
             )
@@ -2909,6 +3172,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.BulkUploadFeedbackLabels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkUploadFeedbackLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkUploadFeedbackLabels._get_response(
@@ -2929,7 +3219,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_bulk_upload_feedback_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.bulk_upload_feedback_labels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "BulkUploadFeedbackLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CalculateIssueModelStats(
@@ -2967,7 +3279,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.CalculateIssueModelStatsResponse:
             r"""Call the calculate issue model
             stats method over HTTP.
@@ -2979,8 +3291,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.contact_center_insights.CalculateIssueModelStatsResponse:
@@ -2992,6 +3306,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_calculate_issue_model_stats(
                 request, metadata
             )
@@ -3003,6 +3318,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CalculateIssueModelStats",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CalculateIssueModelStats",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CalculateIssueModelStats._get_response(
@@ -3024,7 +3366,31 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.CalculateIssueModelStatsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_calculate_issue_model_stats(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = contact_center_insights.CalculateIssueModelStatsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.calculate_issue_model_stats",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CalculateIssueModelStats",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CalculateStats(
@@ -3062,7 +3428,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.CalculateStatsResponse:
             r"""Call the calculate stats method over HTTP.
 
@@ -3073,8 +3439,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.CalculateStatsResponse:
@@ -3086,6 +3454,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_calculate_stats(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_transcoded_request(
                 http_options, request
@@ -3095,6 +3464,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CalculateStats",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CalculateStats",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CalculateStats._get_response(
@@ -3116,7 +3512,31 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.CalculateStatsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_calculate_stats(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.CalculateStatsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.calculate_stats",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CalculateStats",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAnalysis(
@@ -3155,7 +3575,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create analysis method over HTTP.
 
@@ -3165,8 +3585,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3179,6 +3601,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_analysis(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_transcoded_request(
                 http_options, request
@@ -3192,6 +3615,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateAnalysis",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateAnalysis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CreateAnalysis._get_response(
@@ -3212,7 +3662,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_analysis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_analysis",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateAnalysis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAnalysisRule(
@@ -3251,7 +3723,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AnalysisRule:
             r"""Call the create analysis rule method over HTTP.
 
@@ -3262,8 +3734,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AnalysisRule:
@@ -3283,6 +3757,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_analysis_rule(
                 request, metadata
             )
@@ -3298,6 +3773,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateAnalysisRule",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateAnalysisRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3322,7 +3824,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.AnalysisRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_analysis_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AnalysisRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_analysis_rule",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateAnalysisRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateConversation(
@@ -3361,7 +3885,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Conversation:
             r"""Call the create conversation method over HTTP.
 
@@ -3371,8 +3895,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Conversation:
@@ -3382,6 +3908,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_conversation(
                 request, metadata
             )
@@ -3397,6 +3924,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateConversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3421,7 +3975,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_conversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateFeedbackLabel(
@@ -3460,7 +4036,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.FeedbackLabel:
             r"""Call the create feedback label method over HTTP.
 
@@ -3471,8 +4047,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.FeedbackLabel:
@@ -3484,6 +4062,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_feedback_label(
                 request, metadata
             )
@@ -3499,6 +4078,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateFeedbackLabel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateFeedbackLabel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3523,7 +4129,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.FeedbackLabel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_feedback_label(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.FeedbackLabel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_feedback_label",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateFeedbackLabel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateIssueModel(
@@ -3562,7 +4190,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create issue model method over HTTP.
 
@@ -3572,8 +4200,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3586,6 +4216,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_issue_model(
                 request, metadata
             )
@@ -3601,6 +4232,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3623,7 +4281,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePhraseMatcher(
@@ -3662,7 +4342,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.PhraseMatcher:
             r"""Call the create phrase matcher method over HTTP.
 
@@ -3672,8 +4352,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.PhraseMatcher:
@@ -3683,6 +4365,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_phrase_matcher(
                 request, metadata
             )
@@ -3698,6 +4381,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreatePhraseMatcher",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreatePhraseMatcher",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3722,7 +4432,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.PhraseMatcher.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_phrase_matcher(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.PhraseMatcher.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_phrase_matcher",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreatePhraseMatcher",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateQaQuestion(
@@ -3761,7 +4493,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaQuestion:
             r"""Call the create qa question method over HTTP.
 
@@ -3772,8 +4504,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QaQuestion:
@@ -3785,6 +4519,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_qa_question(
                 request, metadata
             )
@@ -3800,6 +4535,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateQaQuestion",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateQaQuestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3824,7 +4586,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaQuestion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_qa_question(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaQuestion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_qa_question",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateQaQuestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateQaScorecard(
@@ -3863,7 +4647,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaScorecard:
             r"""Call the create qa scorecard method over HTTP.
 
@@ -3874,8 +4658,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QaScorecard:
@@ -3888,6 +4674,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_qa_scorecard(
                 request, metadata
             )
@@ -3903,6 +4690,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateQaScorecard",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateQaScorecard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3927,7 +4741,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaScorecard.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_qa_scorecard(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaScorecard.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_qa_scorecard",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateQaScorecard",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateQaScorecardRevision(
@@ -3966,7 +4802,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaScorecardRevision:
             r"""Call the create qa scorecard
             revision method over HTTP.
@@ -3978,8 +4814,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.QaScorecardRevision:
@@ -3999,6 +4837,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_qa_scorecard_revision(
                 request, metadata
             )
@@ -4014,6 +4853,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateQaScorecardRevision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateQaScorecardRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CreateQaScorecardRevision._get_response(
@@ -4036,7 +4902,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaScorecardRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_qa_scorecard_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaScorecardRevision.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_qa_scorecard_revision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateQaScorecardRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateView(
@@ -4075,7 +4963,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.View:
             r"""Call the create view method over HTTP.
 
@@ -4085,8 +4973,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.View:
@@ -4096,6 +4986,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCreateView._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_view(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_transcoded_request(
                 http_options, request
@@ -4109,6 +5000,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CreateView",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateView",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CreateView._get_response(
@@ -4131,7 +5049,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.View.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_view(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.View.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.create_view",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CreateView",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAnalysis(
@@ -4169,7 +5109,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete analysis method over HTTP.
 
@@ -4179,13 +5119,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_analysis(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_transcoded_request(
                 http_options, request
@@ -4195,6 +5138,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteAnalysis",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteAnalysis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteAnalysis._get_response(
@@ -4246,7 +5216,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete analysis rule method over HTTP.
 
@@ -4257,13 +5227,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_analysis_rule(
                 request, metadata
             )
@@ -4275,6 +5248,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteAnalysisRule",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteAnalysisRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4328,7 +5328,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete conversation method over HTTP.
 
@@ -4338,13 +5338,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_conversation(
                 request, metadata
             )
@@ -4356,6 +5359,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteConversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4409,7 +5439,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete feedback label method over HTTP.
 
@@ -4420,13 +5450,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_feedback_label(
                 request, metadata
             )
@@ -4438,6 +5471,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteFeedbackLabel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteFeedbackLabel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4491,7 +5551,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete issue method over HTTP.
 
@@ -4501,13 +5561,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_issue(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_transcoded_request(
                 http_options, request
@@ -4517,6 +5580,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteIssue",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteIssue._get_response(
@@ -4568,7 +5658,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete issue model method over HTTP.
 
@@ -4578,8 +5668,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4592,6 +5684,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_issue_model(
                 request, metadata
             )
@@ -4603,6 +5696,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4624,7 +5744,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.delete_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePhraseMatcher(
@@ -4662,7 +5804,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete phrase matcher method over HTTP.
 
@@ -4673,13 +5815,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_phrase_matcher(
                 request, metadata
             )
@@ -4691,6 +5836,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeletePhraseMatcher",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeletePhraseMatcher",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4744,7 +5916,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete qa question method over HTTP.
 
@@ -4755,13 +5927,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_qa_question(
                 request, metadata
             )
@@ -4773,6 +5948,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteQaQuestion",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteQaQuestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4826,7 +6028,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete qa scorecard method over HTTP.
 
@@ -4837,13 +6039,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_qa_scorecard(
                 request, metadata
             )
@@ -4855,6 +6060,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteQaScorecard",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteQaScorecard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4908,7 +6140,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete qa scorecard
             revision method over HTTP.
@@ -4920,13 +6152,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_qa_scorecard_revision(
                 request, metadata
             )
@@ -4938,6 +6173,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteQaScorecardRevision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteQaScorecardRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteQaScorecardRevision._get_response(
@@ -4989,7 +6251,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete view method over HTTP.
 
@@ -4999,13 +6261,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_view(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_transcoded_request(
                 http_options, request
@@ -5015,6 +6280,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeleteView",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeleteView",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteView._get_response(
@@ -5067,7 +6359,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the deploy issue model method over HTTP.
 
@@ -5077,8 +6369,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5091,6 +6385,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_deploy_issue_model(
                 request, metadata
             )
@@ -5106,6 +6401,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeployIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeployIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5128,7 +6450,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_deploy_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.deploy_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeployIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeployQaScorecardRevision(
@@ -5167,7 +6511,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaScorecardRevision:
             r"""Call the deploy qa scorecard
             revision method over HTTP.
@@ -5179,8 +6523,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.QaScorecardRevision:
@@ -5200,6 +6546,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_deploy_qa_scorecard_revision(
                 request, metadata
             )
@@ -5215,6 +6562,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.DeployQaScorecardRevision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeployQaScorecardRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeployQaScorecardRevision._get_response(
@@ -5237,7 +6611,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaScorecardRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_deploy_qa_scorecard_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaScorecardRevision.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.deploy_qa_scorecard_revision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "DeployQaScorecardRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportInsightsData(
@@ -5276,7 +6672,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export insights data method over HTTP.
 
@@ -5286,8 +6682,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5300,6 +6698,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_insights_data(
                 request, metadata
             )
@@ -5315,6 +6714,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ExportInsightsData",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ExportInsightsData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5337,7 +6763,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_insights_data(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.export_insights_data",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ExportInsightsData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportIssueModel(
@@ -5376,7 +6824,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export issue model method over HTTP.
 
@@ -5386,8 +6834,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5400,6 +6850,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_issue_model(
                 request, metadata
             )
@@ -5415,6 +6866,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ExportIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ExportIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5437,7 +6915,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.export_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ExportIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAnalysis(
@@ -5475,7 +6975,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Analysis:
             r"""Call the get analysis method over HTTP.
 
@@ -5485,8 +6985,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Analysis:
@@ -5496,6 +6998,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_analysis(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_transcoded_request(
                 http_options, request
@@ -5505,6 +7008,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetAnalysis",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetAnalysis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetAnalysis._get_response(
@@ -5526,7 +7056,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Analysis.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_analysis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Analysis.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_analysis",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetAnalysis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAnalysisRule(
@@ -5564,7 +7116,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AnalysisRule:
             r"""Call the get analysis rule method over HTTP.
 
@@ -5575,8 +7127,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AnalysisRule:
@@ -5596,6 +7150,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_analysis_rule(
                 request, metadata
             )
@@ -5607,6 +7162,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetAnalysisRule",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetAnalysisRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5630,7 +7212,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.AnalysisRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_analysis_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AnalysisRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_analysis_rule",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetAnalysisRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConversation(
@@ -5668,7 +7272,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Conversation:
             r"""Call the get conversation method over HTTP.
 
@@ -5678,8 +7282,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Conversation:
@@ -5689,6 +7295,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_conversation(
                 request, metadata
             )
@@ -5700,6 +7307,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetConversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5723,7 +7357,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_conversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEncryptionSpec(
@@ -5761,7 +7417,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.EncryptionSpec:
             r"""Call the get encryption spec method over HTTP.
 
@@ -5772,8 +7428,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.EncryptionSpec:
@@ -5786,6 +7444,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_encryption_spec(
                 request, metadata
             )
@@ -5797,6 +7456,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetEncryptionSpec",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetEncryptionSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5820,7 +7506,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.EncryptionSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_encryption_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.EncryptionSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_encryption_spec",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetEncryptionSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetFeedbackLabel(
@@ -5858,7 +7566,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.FeedbackLabel:
             r"""Call the get feedback label method over HTTP.
 
@@ -5869,8 +7577,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.FeedbackLabel:
@@ -5882,6 +7592,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_feedback_label(
                 request, metadata
             )
@@ -5893,6 +7604,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetFeedbackLabel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetFeedbackLabel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5916,7 +7654,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.FeedbackLabel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_feedback_label(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.FeedbackLabel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_feedback_label",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetFeedbackLabel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIssue(
@@ -5954,7 +7714,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Issue:
             r"""Call the get issue method over HTTP.
 
@@ -5964,8 +7724,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Issue:
@@ -5975,6 +7737,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_issue(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_transcoded_request(
                 http_options, request
@@ -5984,6 +7747,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetIssue",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetIssue._get_response(
@@ -6005,7 +7795,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Issue.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_issue(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Issue.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_issue",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIssueModel(
@@ -6043,7 +7855,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.IssueModel:
             r"""Call the get issue model method over HTTP.
 
@@ -6053,8 +7865,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.IssueModel:
@@ -6064,6 +7878,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_issue_model(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_transcoded_request(
                 http_options, request
@@ -6073,6 +7888,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetIssueModel._get_response(
@@ -6094,7 +7936,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.IssueModel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.IssueModel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPhraseMatcher(
@@ -6132,7 +7996,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.PhraseMatcher:
             r"""Call the get phrase matcher method over HTTP.
 
@@ -6143,8 +8007,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.PhraseMatcher:
@@ -6154,6 +8020,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_phrase_matcher(
                 request, metadata
             )
@@ -6165,6 +8032,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetPhraseMatcher",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetPhraseMatcher",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6188,7 +8082,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.PhraseMatcher.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_phrase_matcher(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.PhraseMatcher.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_phrase_matcher",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetPhraseMatcher",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetQaQuestion(
@@ -6226,7 +8142,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaQuestion:
             r"""Call the get qa question method over HTTP.
 
@@ -6236,8 +8152,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QaQuestion:
@@ -6249,6 +8167,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_qa_question(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_transcoded_request(
                 http_options, request
@@ -6258,6 +8177,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetQaQuestion",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetQaQuestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetQaQuestion._get_response(
@@ -6279,7 +8225,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaQuestion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_qa_question(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaQuestion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_qa_question",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetQaQuestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetQaScorecard(
@@ -6317,7 +8285,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaScorecard:
             r"""Call the get qa scorecard method over HTTP.
 
@@ -6328,8 +8296,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QaScorecard:
@@ -6342,6 +8312,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_qa_scorecard(
                 request, metadata
             )
@@ -6353,6 +8324,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetQaScorecard",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetQaScorecard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetQaScorecard._get_response(
@@ -6374,7 +8372,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaScorecard.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_qa_scorecard(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaScorecard.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_qa_scorecard",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetQaScorecard",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetQaScorecardRevision(
@@ -6412,7 +8432,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaScorecardRevision:
             r"""Call the get qa scorecard revision method over HTTP.
 
@@ -6423,8 +8443,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QaScorecardRevision:
@@ -6444,6 +8466,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_qa_scorecard_revision(
                 request, metadata
             )
@@ -6455,6 +8478,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetQaScorecardRevision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetQaScorecardRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetQaScorecardRevision._get_response(
@@ -6476,7 +8526,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaScorecardRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_qa_scorecard_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaScorecardRevision.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_qa_scorecard_revision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetQaScorecardRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSettings(
@@ -6514,7 +8586,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Settings:
             r"""Call the get settings method over HTTP.
 
@@ -6525,8 +8597,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Settings:
@@ -6542,6 +8616,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_transcoded_request(
                 http_options, request
@@ -6551,6 +8626,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetSettings",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetSettings._get_response(
@@ -6572,7 +8674,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Settings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Settings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_settings",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetView(
@@ -6610,7 +8734,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.View:
             r"""Call the get view method over HTTP.
 
@@ -6620,8 +8744,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.View:
@@ -6631,6 +8757,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetView._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_view(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetView._get_transcoded_request(
                 http_options, request
@@ -6640,6 +8767,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetView._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetView",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetView",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetView._get_response(
@@ -6661,7 +8815,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.View.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_view(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.View.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.get_view",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetView",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportIssueModel(
@@ -6700,7 +8876,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import issue model method over HTTP.
 
@@ -6710,8 +8886,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6724,6 +8902,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_issue_model(
                 request, metadata
             )
@@ -6739,6 +8918,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ImportIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ImportIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6761,7 +8967,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.import_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ImportIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _IngestConversations(
@@ -6800,7 +9028,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the ingest conversations method over HTTP.
 
@@ -6810,8 +9038,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6824,6 +9054,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_ingest_conversations(
                 request, metadata
             )
@@ -6839,6 +9070,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.IngestConversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "IngestConversations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6861,7 +9119,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_ingest_conversations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ingest_conversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "IngestConversations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InitializeEncryptionSpec(
@@ -6900,7 +9180,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the initialize encryption
             spec method over HTTP.
@@ -6912,8 +9192,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -6926,6 +9208,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_initialize_encryption_spec(
                 request, metadata
             )
@@ -6941,6 +9224,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.InitializeEncryptionSpec",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "InitializeEncryptionSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._InitializeEncryptionSpec._get_response(
@@ -6961,7 +9271,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_initialize_encryption_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.initialize_encryption_spec",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "InitializeEncryptionSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAllFeedbackLabels(
@@ -6999,7 +9331,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListAllFeedbackLabelsResponse:
             r"""Call the list all feedback labels method over HTTP.
 
@@ -7010,8 +9342,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListAllFeedbackLabelsResponse:
@@ -7023,6 +9357,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_all_feedback_labels(
                 request, metadata
             )
@@ -7034,6 +9369,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListAllFeedbackLabels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListAllFeedbackLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7057,7 +9419,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListAllFeedbackLabelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_all_feedback_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListAllFeedbackLabelsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_all_feedback_labels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListAllFeedbackLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAnalyses(
@@ -7095,7 +9483,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListAnalysesResponse:
             r"""Call the list analyses method over HTTP.
 
@@ -7105,8 +9493,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListAnalysesResponse:
@@ -7116,6 +9506,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_analyses(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_transcoded_request(
                 http_options, request
@@ -7125,6 +9516,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListAnalyses",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListAnalyses",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListAnalyses._get_response(
@@ -7146,7 +9564,31 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListAnalysesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_analyses(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListAnalysesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_analyses",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListAnalyses",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAnalysisRules(
@@ -7184,7 +9626,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListAnalysisRulesResponse:
             r"""Call the list analysis rules method over HTTP.
 
@@ -7194,8 +9636,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListAnalysisRulesResponse:
@@ -7205,6 +9649,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_analysis_rules(
                 request, metadata
             )
@@ -7216,6 +9661,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListAnalysisRules",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListAnalysisRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7239,7 +9711,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListAnalysisRulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_analysis_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListAnalysisRulesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_analysis_rules",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListAnalysisRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConversations(
@@ -7277,7 +9775,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListConversationsResponse:
             r"""Call the list conversations method over HTTP.
 
@@ -7287,8 +9785,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListConversationsResponse:
@@ -7300,6 +9800,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListConversations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_conversations(
                 request, metadata
             )
@@ -7311,6 +9812,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListConversations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListConversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListConversations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7334,7 +9862,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListConversationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_conversations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListConversationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_conversations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListConversations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFeedbackLabels(
@@ -7372,7 +9926,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListFeedbackLabelsResponse:
             r"""Call the list feedback labels method over HTTP.
 
@@ -7383,8 +9937,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListFeedbackLabelsResponse:
@@ -7396,6 +9952,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_feedback_labels(
                 request, metadata
             )
@@ -7407,6 +9964,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListFeedbackLabels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListFeedbackLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7430,7 +10014,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListFeedbackLabelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_feedback_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListFeedbackLabelsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_feedback_labels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListFeedbackLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListIssueModels(
@@ -7468,7 +10078,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListIssueModelsResponse:
             r"""Call the list issue models method over HTTP.
 
@@ -7478,8 +10088,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListIssueModelsResponse:
@@ -7489,6 +10101,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_issue_models(
                 request, metadata
             )
@@ -7500,6 +10113,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListIssueModels",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListIssueModels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7523,7 +10163,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListIssueModelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_issue_models(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListIssueModelsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_issue_models",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListIssueModels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListIssues(
@@ -7561,7 +10227,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListIssuesResponse:
             r"""Call the list issues method over HTTP.
 
@@ -7571,8 +10237,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListIssuesResponse:
@@ -7582,6 +10250,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListIssues._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_issues(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_transcoded_request(
                 http_options, request
@@ -7591,6 +10260,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListIssues",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListIssues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListIssues._get_response(
@@ -7612,7 +10308,31 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListIssuesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_issues(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListIssuesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_issues",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListIssues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPhraseMatchers(
@@ -7650,7 +10370,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListPhraseMatchersResponse:
             r"""Call the list phrase matchers method over HTTP.
 
@@ -7660,8 +10380,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListPhraseMatchersResponse:
@@ -7673,6 +10395,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_phrase_matchers(
                 request, metadata
             )
@@ -7684,6 +10407,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListPhraseMatchers",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListPhraseMatchers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7707,7 +10457,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListPhraseMatchersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_phrase_matchers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListPhraseMatchersResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_phrase_matchers",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListPhraseMatchers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListQaQuestions(
@@ -7745,7 +10521,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListQaQuestionsResponse:
             r"""Call the list qa questions method over HTTP.
 
@@ -7755,8 +10531,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListQaQuestionsResponse:
@@ -7768,6 +10546,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_qa_questions(
                 request, metadata
             )
@@ -7779,6 +10558,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListQaQuestions",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListQaQuestions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7802,7 +10608,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListQaQuestionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_qa_questions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListQaQuestionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_qa_questions",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListQaQuestions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListQaScorecardRevisions(
@@ -7840,7 +10672,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListQaScorecardRevisionsResponse:
             r"""Call the list qa scorecard
             revisions method over HTTP.
@@ -7851,8 +10683,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.contact_center_insights.ListQaScorecardRevisionsResponse:
@@ -7864,6 +10698,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_qa_scorecard_revisions(
                 request, metadata
             )
@@ -7875,6 +10710,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListQaScorecardRevisions",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListQaScorecardRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListQaScorecardRevisions._get_response(
@@ -7896,7 +10758,31 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListQaScorecardRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_qa_scorecard_revisions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = contact_center_insights.ListQaScorecardRevisionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_qa_scorecard_revisions",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListQaScorecardRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListQaScorecards(
@@ -7934,7 +10820,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListQaScorecardsResponse:
             r"""Call the list qa scorecards method over HTTP.
 
@@ -7944,8 +10830,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListQaScorecardsResponse:
@@ -7957,6 +10845,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_qa_scorecards(
                 request, metadata
             )
@@ -7968,6 +10857,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListQaScorecards",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListQaScorecards",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7991,7 +10907,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListQaScorecardsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_qa_scorecards(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListQaScorecardsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_qa_scorecards",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListQaScorecards",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListViews(
@@ -8029,7 +10971,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> contact_center_insights.ListViewsResponse:
             r"""Call the list views method over HTTP.
 
@@ -8039,8 +10981,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.contact_center_insights.ListViewsResponse:
@@ -8050,6 +10994,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListViews._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_views(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListViews._get_transcoded_request(
                 http_options, request
@@ -8059,6 +11004,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListViews._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListViews",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListViews",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListViews._get_response(
@@ -8080,7 +11052,31 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = contact_center_insights.ListViewsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_views(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        contact_center_insights.ListViewsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.list_views",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListViews",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _QueryMetrics(
@@ -8119,7 +11115,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the query metrics method over HTTP.
 
@@ -8129,8 +11125,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8143,6 +11141,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_query_metrics(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_transcoded_request(
                 http_options, request
@@ -8156,6 +11155,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.QueryMetrics",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "QueryMetrics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._QueryMetrics._get_response(
@@ -8176,7 +11202,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_query_metrics(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.query_metrics",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "QueryMetrics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TuneQaScorecardRevision(
@@ -8215,7 +11263,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the tune qa scorecard
             revision method over HTTP.
@@ -8227,8 +11275,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -8241,6 +11291,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_tune_qa_scorecard_revision(
                 request, metadata
             )
@@ -8256,6 +11307,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.TuneQaScorecardRevision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "TuneQaScorecardRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._TuneQaScorecardRevision._get_response(
@@ -8276,7 +11354,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_tune_qa_scorecard_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.tune_qa_scorecard_revision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "TuneQaScorecardRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeployIssueModel(
@@ -8315,7 +11415,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undeploy issue model method over HTTP.
 
@@ -8326,8 +11426,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -8340,6 +11442,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undeploy_issue_model(
                 request, metadata
             )
@@ -8355,6 +11458,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UndeployIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UndeployIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8377,7 +11507,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undeploy_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.undeploy_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UndeployIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeployQaScorecardRevision(
@@ -8418,7 +11570,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaScorecardRevision:
             r"""Call the undeploy qa scorecard
             revision method over HTTP.
@@ -8430,8 +11582,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.QaScorecardRevision:
@@ -8451,6 +11605,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undeploy_qa_scorecard_revision(
                 request, metadata
             )
@@ -8466,6 +11621,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UndeployQaScorecardRevision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UndeployQaScorecardRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UndeployQaScorecardRevision._get_response(
@@ -8488,7 +11670,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaScorecardRevision.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undeploy_qa_scorecard_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaScorecardRevision.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.undeploy_qa_scorecard_revision",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UndeployQaScorecardRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAnalysisRule(
@@ -8527,7 +11731,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AnalysisRule:
             r"""Call the update analysis rule method over HTTP.
 
@@ -8538,8 +11742,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AnalysisRule:
@@ -8559,6 +11765,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_analysis_rule(
                 request, metadata
             )
@@ -8574,6 +11781,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateAnalysisRule",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateAnalysisRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8598,7 +11832,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.AnalysisRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_analysis_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AnalysisRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_analysis_rule",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateAnalysisRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConversation(
@@ -8637,7 +11893,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Conversation:
             r"""Call the update conversation method over HTTP.
 
@@ -8647,8 +11903,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Conversation:
@@ -8658,6 +11916,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_conversation(
                 request, metadata
             )
@@ -8673,6 +11932,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateConversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8697,7 +11983,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_conversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateFeedbackLabel(
@@ -8736,7 +12044,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.FeedbackLabel:
             r"""Call the update feedback label method over HTTP.
 
@@ -8747,8 +12055,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.FeedbackLabel:
@@ -8760,6 +12070,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_feedback_label(
                 request, metadata
             )
@@ -8775,6 +12086,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateFeedbackLabel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateFeedbackLabel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8799,7 +12137,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.FeedbackLabel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_feedback_label(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.FeedbackLabel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_feedback_label",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateFeedbackLabel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateIssue(
@@ -8838,7 +12198,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Issue:
             r"""Call the update issue method over HTTP.
 
@@ -8848,8 +12208,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Issue:
@@ -8859,6 +12221,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_issue(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_transcoded_request(
                 http_options, request
@@ -8872,6 +12235,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateIssue",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UpdateIssue._get_response(
@@ -8894,7 +12284,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Issue.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_issue(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Issue.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_issue",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateIssueModel(
@@ -8933,7 +12345,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.IssueModel:
             r"""Call the update issue model method over HTTP.
 
@@ -8943,8 +12355,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.IssueModel:
@@ -8954,6 +12368,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_issue_model(
                 request, metadata
             )
@@ -8969,6 +12384,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateIssueModel",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateIssueModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8993,7 +12435,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.IssueModel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_issue_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.IssueModel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_issue_model",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateIssueModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePhraseMatcher(
@@ -9032,7 +12496,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.PhraseMatcher:
             r"""Call the update phrase matcher method over HTTP.
 
@@ -9043,8 +12507,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.PhraseMatcher:
@@ -9054,6 +12520,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_phrase_matcher(
                 request, metadata
             )
@@ -9069,6 +12536,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdatePhraseMatcher",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdatePhraseMatcher",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9093,7 +12587,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.PhraseMatcher.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_phrase_matcher(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.PhraseMatcher.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_phrase_matcher",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdatePhraseMatcher",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateQaQuestion(
@@ -9132,7 +12648,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaQuestion:
             r"""Call the update qa question method over HTTP.
 
@@ -9143,8 +12659,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QaQuestion:
@@ -9156,6 +12674,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_qa_question(
                 request, metadata
             )
@@ -9171,6 +12690,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateQaQuestion",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateQaQuestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9195,7 +12741,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaQuestion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_qa_question(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaQuestion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_qa_question",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateQaQuestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateQaScorecard(
@@ -9234,7 +12802,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QaScorecard:
             r"""Call the update qa scorecard method over HTTP.
 
@@ -9245,8 +12813,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QaScorecard:
@@ -9259,6 +12829,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_qa_scorecard(
                 request, metadata
             )
@@ -9274,6 +12845,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateQaScorecard",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateQaScorecard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9298,7 +12896,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.QaScorecard.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_qa_scorecard(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QaScorecard.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_qa_scorecard",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateQaScorecard",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSettings(
@@ -9337,7 +12957,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Settings:
             r"""Call the update settings method over HTTP.
 
@@ -9348,8 +12968,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Settings:
@@ -9365,6 +12987,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_transcoded_request(
                 http_options, request
@@ -9378,6 +13001,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateSettings",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UpdateSettings._get_response(
@@ -9400,7 +13050,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.Settings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Settings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_settings",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateView(
@@ -9439,7 +13111,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.View:
             r"""Call the update view method over HTTP.
 
@@ -9449,8 +13121,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.View:
@@ -9460,6 +13134,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_view(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_transcoded_request(
                 http_options, request
@@ -9473,6 +13148,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UpdateView",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateView",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UpdateView._get_response(
@@ -9495,7 +13197,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             pb_resp = resources.View.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_view(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.View.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.update_view",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UpdateView",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UploadConversation(
@@ -9534,7 +13258,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the upload conversation method over HTTP.
 
@@ -9544,8 +13268,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -9558,6 +13284,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_upload_conversation(
                 request, metadata
             )
@@ -9573,6 +13300,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.UploadConversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UploadConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9595,7 +13349,29 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_upload_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.upload_conversation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "UploadConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -10367,7 +14143,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -10377,13 +14153,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -10395,6 +14174,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -10454,7 +14260,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -10464,8 +14270,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -10474,6 +14282,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -10483,6 +14292,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetOperation._get_response(
@@ -10503,6 +14339,27 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -10544,7 +14401,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -10554,8 +14411,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -10564,6 +14423,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             http_options = (
                 _BaseContactCenterInsightsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -10573,6 +14433,33 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             query_params = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contactcenterinsights_v1.ContactCenterInsightsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListOperations._get_response(
@@ -10593,6 +14480,27 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contactcenterinsights_v1.ContactCenterInsightsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

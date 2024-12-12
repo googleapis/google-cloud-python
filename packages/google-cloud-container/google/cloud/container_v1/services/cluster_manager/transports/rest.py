@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -334,8 +342,10 @@ class ClusterManagerRestInterceptor:
     def pre_cancel_operation(
         self,
         request: cluster_service.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -346,9 +356,10 @@ class ClusterManagerRestInterceptor:
     def pre_check_autopilot_compatibility(
         self,
         request: cluster_service.CheckAutopilotCompatibilityRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cluster_service.CheckAutopilotCompatibilityRequest, Sequence[Tuple[str, str]]
+        cluster_service.CheckAutopilotCompatibilityRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for check_autopilot_compatibility
 
@@ -371,8 +382,11 @@ class ClusterManagerRestInterceptor:
     def pre_complete_ip_rotation(
         self,
         request: cluster_service.CompleteIPRotationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.CompleteIPRotationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.CompleteIPRotationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for complete_ip_rotation
 
         Override in a subclass to manipulate the request or metadata
@@ -394,9 +408,10 @@ class ClusterManagerRestInterceptor:
     def pre_complete_node_pool_upgrade(
         self,
         request: cluster_service.CompleteNodePoolUpgradeRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cluster_service.CompleteNodePoolUpgradeRequest, Sequence[Tuple[str, str]]
+        cluster_service.CompleteNodePoolUpgradeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for complete_node_pool_upgrade
 
@@ -408,8 +423,10 @@ class ClusterManagerRestInterceptor:
     def pre_create_cluster(
         self,
         request: cluster_service.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.CreateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -431,8 +448,10 @@ class ClusterManagerRestInterceptor:
     def pre_create_node_pool(
         self,
         request: cluster_service.CreateNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.CreateNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.CreateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -454,8 +473,10 @@ class ClusterManagerRestInterceptor:
     def pre_delete_cluster(
         self,
         request: cluster_service.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.DeleteClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -477,8 +498,10 @@ class ClusterManagerRestInterceptor:
     def pre_delete_node_pool(
         self,
         request: cluster_service.DeleteNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.DeleteNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.DeleteNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -500,8 +523,10 @@ class ClusterManagerRestInterceptor:
     def pre_get_cluster(
         self,
         request: cluster_service.GetClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.GetClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -523,8 +548,10 @@ class ClusterManagerRestInterceptor:
     def pre_get_json_web_keys(
         self,
         request: cluster_service.GetJSONWebKeysRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.GetJSONWebKeysRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.GetJSONWebKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_json_web_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -546,8 +573,10 @@ class ClusterManagerRestInterceptor:
     def pre_get_node_pool(
         self,
         request: cluster_service.GetNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.GetNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.GetNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -569,8 +598,10 @@ class ClusterManagerRestInterceptor:
     def pre_get_operation(
         self,
         request: cluster_service.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -592,8 +623,10 @@ class ClusterManagerRestInterceptor:
     def pre_get_server_config(
         self,
         request: cluster_service.GetServerConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.GetServerConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.GetServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -615,8 +648,10 @@ class ClusterManagerRestInterceptor:
     def pre_list_clusters(
         self,
         request: cluster_service.ListClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.ListClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -638,8 +673,10 @@ class ClusterManagerRestInterceptor:
     def pre_list_node_pools(
         self,
         request: cluster_service.ListNodePoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.ListNodePoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -661,8 +698,10 @@ class ClusterManagerRestInterceptor:
     def pre_list_operations(
         self,
         request: cluster_service.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -684,8 +723,11 @@ class ClusterManagerRestInterceptor:
     def pre_list_usable_subnetworks(
         self,
         request: cluster_service.ListUsableSubnetworksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.ListUsableSubnetworksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListUsableSubnetworksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_usable_subnetworks
 
         Override in a subclass to manipulate the request or metadata
@@ -707,9 +749,10 @@ class ClusterManagerRestInterceptor:
     def pre_rollback_node_pool_upgrade(
         self,
         request: cluster_service.RollbackNodePoolUpgradeRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cluster_service.RollbackNodePoolUpgradeRequest, Sequence[Tuple[str, str]]
+        cluster_service.RollbackNodePoolUpgradeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for rollback_node_pool_upgrade
 
@@ -732,8 +775,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_addons_config(
         self,
         request: cluster_service.SetAddonsConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetAddonsConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetAddonsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_addons_config
 
         Override in a subclass to manipulate the request or metadata
@@ -755,8 +800,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_labels(
         self,
         request: cluster_service.SetLabelsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetLabelsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -778,8 +825,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_legacy_abac(
         self,
         request: cluster_service.SetLegacyAbacRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetLegacyAbacRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetLegacyAbacRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_legacy_abac
 
         Override in a subclass to manipulate the request or metadata
@@ -801,8 +850,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_locations(
         self,
         request: cluster_service.SetLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -824,8 +875,11 @@ class ClusterManagerRestInterceptor:
     def pre_set_logging_service(
         self,
         request: cluster_service.SetLoggingServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetLoggingServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetLoggingServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_logging_service
 
         Override in a subclass to manipulate the request or metadata
@@ -847,8 +901,11 @@ class ClusterManagerRestInterceptor:
     def pre_set_maintenance_policy(
         self,
         request: cluster_service.SetMaintenancePolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetMaintenancePolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetMaintenancePolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_maintenance_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -870,8 +927,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_master_auth(
         self,
         request: cluster_service.SetMasterAuthRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetMasterAuthRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetMasterAuthRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_master_auth
 
         Override in a subclass to manipulate the request or metadata
@@ -893,8 +952,11 @@ class ClusterManagerRestInterceptor:
     def pre_set_monitoring_service(
         self,
         request: cluster_service.SetMonitoringServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetMonitoringServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetMonitoringServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_monitoring_service
 
         Override in a subclass to manipulate the request or metadata
@@ -916,8 +978,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_network_policy(
         self,
         request: cluster_service.SetNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetNetworkPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_network_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -939,9 +1003,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_node_pool_autoscaling(
         self,
         request: cluster_service.SetNodePoolAutoscalingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cluster_service.SetNodePoolAutoscalingRequest, Sequence[Tuple[str, str]]
+        cluster_service.SetNodePoolAutoscalingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_node_pool_autoscaling
 
@@ -964,8 +1029,11 @@ class ClusterManagerRestInterceptor:
     def pre_set_node_pool_management(
         self,
         request: cluster_service.SetNodePoolManagementRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetNodePoolManagementRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetNodePoolManagementRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_node_pool_management
 
         Override in a subclass to manipulate the request or metadata
@@ -987,8 +1055,10 @@ class ClusterManagerRestInterceptor:
     def pre_set_node_pool_size(
         self,
         request: cluster_service.SetNodePoolSizeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.SetNodePoolSizeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.SetNodePoolSizeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_node_pool_size
 
         Override in a subclass to manipulate the request or metadata
@@ -1010,8 +1080,10 @@ class ClusterManagerRestInterceptor:
     def pre_start_ip_rotation(
         self,
         request: cluster_service.StartIPRotationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.StartIPRotationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.StartIPRotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for start_ip_rotation
 
         Override in a subclass to manipulate the request or metadata
@@ -1033,8 +1105,10 @@ class ClusterManagerRestInterceptor:
     def pre_update_cluster(
         self,
         request: cluster_service.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.UpdateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1056,8 +1130,10 @@ class ClusterManagerRestInterceptor:
     def pre_update_master(
         self,
         request: cluster_service.UpdateMasterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.UpdateMasterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.UpdateMasterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_master
 
         Override in a subclass to manipulate the request or metadata
@@ -1079,8 +1155,10 @@ class ClusterManagerRestInterceptor:
     def pre_update_node_pool(
         self,
         request: cluster_service.UpdateNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cluster_service.UpdateNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.UpdateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -1221,7 +1299,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the cancel operation method over HTTP.
 
@@ -1232,13 +1310,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseClusterManagerRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1254,6 +1335,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._CancelOperation._get_response(
@@ -1306,7 +1414,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.CheckAutopilotCompatibilityResponse:
             r"""Call the check autopilot
             compatibility method over HTTP.
@@ -1319,8 +1427,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.cluster_service.CheckAutopilotCompatibilityResponse:
@@ -1332,6 +1442,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_check_autopilot_compatibility(
                 request, metadata
             )
@@ -1343,6 +1454,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.CheckAutopilotCompatibility",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CheckAutopilotCompatibility",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1366,7 +1504,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.CheckAutopilotCompatibilityResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_check_autopilot_compatibility(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cluster_service.CheckAutopilotCompatibilityResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.check_autopilot_compatibility",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CheckAutopilotCompatibility",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CompleteIPRotation(
@@ -1404,7 +1568,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the complete ip rotation method over HTTP.
 
@@ -1415,8 +1579,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -1430,6 +1596,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_complete_ip_rotation(
                 request, metadata
             )
@@ -1445,6 +1612,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.CompleteIPRotation",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CompleteIPRotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._CompleteIPRotation._get_response(
@@ -1467,7 +1661,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_complete_ip_rotation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.complete_ip_rotation",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CompleteIPRotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CompleteNodePoolUpgrade(
@@ -1506,7 +1722,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the complete node pool
             upgrade method over HTTP.
@@ -1519,13 +1735,16 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_complete_node_pool_upgrade(
                 request, metadata
             )
@@ -1541,6 +1760,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.CompleteNodePoolUpgrade",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CompleteNodePoolUpgrade",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1595,7 +1841,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the create cluster method over HTTP.
 
@@ -1606,8 +1852,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -1621,6 +1869,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseCreateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseCreateCluster._get_transcoded_request(
                 http_options, request
@@ -1634,6 +1883,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseCreateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.CreateCluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CreateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._CreateCluster._get_response(
@@ -1656,7 +1932,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.create_cluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CreateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNodePool(
@@ -1694,7 +1992,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the create node pool method over HTTP.
 
@@ -1705,8 +2003,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -1720,6 +2020,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseCreateNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_node_pool(
                 request, metadata
             )
@@ -1735,6 +2036,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.CreateNodePool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CreateNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._CreateNodePool._get_response(
@@ -1757,7 +2085,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.create_node_pool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "CreateNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCluster(
@@ -1794,7 +2144,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the delete cluster method over HTTP.
 
@@ -1805,8 +2155,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -1820,6 +2172,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseDeleteCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_transcoded_request(
                 http_options, request
@@ -1829,6 +2182,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.DeleteCluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "DeleteCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._DeleteCluster._get_response(
@@ -1850,7 +2230,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.delete_cluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "DeleteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNodePool(
@@ -1887,7 +2289,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the delete node pool method over HTTP.
 
@@ -1898,8 +2300,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -1913,6 +2317,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_node_pool(
                 request, metadata
             )
@@ -1924,6 +2329,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.DeleteNodePool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "DeleteNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._DeleteNodePool._get_response(
@@ -1945,7 +2377,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.delete_node_pool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "DeleteNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCluster(
@@ -1982,7 +2436,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Cluster:
             r"""Call the get cluster method over HTTP.
 
@@ -1993,8 +2447,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Cluster:
@@ -2004,6 +2460,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseGetCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseGetCluster._get_transcoded_request(
                 http_options, request
@@ -2015,6 +2472,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.GetCluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._GetCluster._get_response(
@@ -2036,7 +2520,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Cluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Cluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.get_cluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetJSONWebKeys(
@@ -2073,7 +2579,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.GetJSONWebKeysResponse:
             r"""Call the get json web keys method over HTTP.
 
@@ -2087,8 +2593,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.GetJSONWebKeysResponse:
@@ -2101,6 +2609,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_json_web_keys(
                 request, metadata
             )
@@ -2112,6 +2621,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.GetJSONWebKeys",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetJSONWebKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._GetJSONWebKeys._get_response(
@@ -2133,7 +2669,31 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.GetJSONWebKeysResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_json_web_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.GetJSONWebKeysResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.get_json_web_keys",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetJSONWebKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNodePool(
@@ -2170,7 +2730,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.NodePool:
             r"""Call the get node pool method over HTTP.
 
@@ -2181,8 +2741,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.NodePool:
@@ -2202,6 +2764,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseGetNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_node_pool(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseGetNodePool._get_transcoded_request(
                 http_options, request
@@ -2211,6 +2774,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseGetNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.GetNodePool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._GetNodePool._get_response(
@@ -2232,7 +2822,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.NodePool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.NodePool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.get_node_pool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOperation(
@@ -2269,7 +2881,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2280,8 +2892,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -2295,6 +2909,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2304,6 +2919,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.GetOperation",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._GetOperation._get_response(
@@ -2325,7 +2967,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.get_operation",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetServerConfig(
@@ -2362,7 +3026,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.ServerConfig:
             r"""Call the get server config method over HTTP.
 
@@ -2373,8 +3037,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.ServerConfig:
@@ -2386,6 +3052,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseGetServerConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_server_config(
                 request, metadata
             )
@@ -2397,6 +3064,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.GetServerConfig",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetServerConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._GetServerConfig._get_response(
@@ -2418,7 +3112,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.ServerConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_server_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.ServerConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.get_server_config",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "GetServerConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClusters(
@@ -2455,7 +3171,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.ListClustersResponse:
             r"""Call the list clusters method over HTTP.
 
@@ -2465,8 +3181,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.ListClustersResponse:
@@ -2478,6 +3196,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseListClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseListClusters._get_transcoded_request(
                 http_options, request
@@ -2487,6 +3206,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseListClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.ListClusters",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._ListClusters._get_response(
@@ -2508,7 +3254,31 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.ListClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.ListClustersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.list_clusters",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNodePools(
@@ -2545,7 +3315,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.ListNodePoolsResponse:
             r"""Call the list node pools method over HTTP.
 
@@ -2556,8 +3326,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.ListNodePoolsResponse:
@@ -2569,6 +3341,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseListNodePools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_node_pools(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseListNodePools._get_transcoded_request(
                 http_options, request
@@ -2578,6 +3351,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseListNodePools._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.ListNodePools",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListNodePools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._ListNodePools._get_response(
@@ -2599,7 +3399,31 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.ListNodePoolsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_node_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.ListNodePoolsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.list_node_pools",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListNodePools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListOperations(
@@ -2636,7 +3460,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2647,8 +3471,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.ListOperationsResponse:
@@ -2660,6 +3486,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2669,6 +3496,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.ListOperations",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._ListOperations._get_response(
@@ -2690,7 +3544,31 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.ListOperationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.ListOperationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.list_operations",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListUsableSubnetworks(
@@ -2728,7 +3606,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.ListUsableSubnetworksResponse:
             r"""Call the list usable subnetworks method over HTTP.
 
@@ -2740,8 +3618,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.ListUsableSubnetworksResponse:
@@ -2754,6 +3634,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_usable_subnetworks(
                 request, metadata
             )
@@ -2765,6 +3646,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.ListUsableSubnetworks",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListUsableSubnetworks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._ListUsableSubnetworks._get_response(
@@ -2786,7 +3694,31 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.ListUsableSubnetworksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_usable_subnetworks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cluster_service.ListUsableSubnetworksResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.list_usable_subnetworks",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "ListUsableSubnetworks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RollbackNodePoolUpgrade(
@@ -2825,7 +3757,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the rollback node pool
             upgrade method over HTTP.
@@ -2840,8 +3772,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.cluster_service.Operation:
@@ -2855,6 +3789,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rollback_node_pool_upgrade(
                 request, metadata
             )
@@ -2870,6 +3805,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.RollbackNodePoolUpgrade",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "RollbackNodePoolUpgrade",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2894,7 +3856,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback_node_pool_upgrade(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.rollback_node_pool_upgrade",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "RollbackNodePoolUpgrade",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetAddonsConfig(
@@ -2932,7 +3916,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set addons config method over HTTP.
 
@@ -2943,8 +3927,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -2958,6 +3944,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_addons_config(
                 request, metadata
             )
@@ -2973,6 +3960,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetAddonsConfig",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetAddonsConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetAddonsConfig._get_response(
@@ -2995,7 +4009,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_addons_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_addons_config",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetAddonsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLabels(
@@ -3033,7 +4069,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set labels method over HTTP.
 
@@ -3047,8 +4083,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3062,6 +4100,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
             transcoded_request = (
                 _BaseClusterManagerRestTransport._BaseSetLabels._get_transcoded_request(
@@ -3081,6 +4120,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetLabels",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetLabels._get_response(
@@ -3103,7 +4169,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_labels",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLegacyAbac(
@@ -3141,7 +4229,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set legacy abac method over HTTP.
 
@@ -3153,8 +4241,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3168,6 +4258,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_legacy_abac(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_transcoded_request(
                 http_options, request
@@ -3181,6 +4272,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetLegacyAbac",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLegacyAbac",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetLegacyAbac._get_response(
@@ -3203,7 +4321,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_legacy_abac(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_legacy_abac",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLegacyAbac",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLocations(
@@ -3241,7 +4381,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set locations method over HTTP.
 
@@ -3252,8 +4392,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3267,6 +4409,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_locations(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseSetLocations._get_transcoded_request(
                 http_options, request
@@ -3280,6 +4423,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetLocations",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetLocations._get_response(
@@ -3302,7 +4472,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_locations",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLocations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLoggingService(
@@ -3340,7 +4532,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set logging service method over HTTP.
 
@@ -3351,8 +4543,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3366,6 +4560,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetLoggingService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_logging_service(
                 request, metadata
             )
@@ -3381,6 +4576,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetLoggingService",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLoggingService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetLoggingService._get_response(
@@ -3403,7 +4625,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_logging_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_logging_service",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetLoggingService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetMaintenancePolicy(
@@ -3442,7 +4686,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set maintenance policy method over HTTP.
 
@@ -3453,8 +4697,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3468,6 +4714,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_maintenance_policy(
                 request, metadata
             )
@@ -3483,6 +4730,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetMaintenancePolicy",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetMaintenancePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetMaintenancePolicy._get_response(
@@ -3505,7 +4779,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_maintenance_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_maintenance_policy",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetMaintenancePolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetMasterAuth(
@@ -3543,7 +4839,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set master auth method over HTTP.
 
@@ -3554,8 +4850,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3569,6 +4867,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_master_auth(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_transcoded_request(
                 http_options, request
@@ -3582,6 +4881,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetMasterAuth",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetMasterAuth",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetMasterAuth._get_response(
@@ -3604,7 +4930,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_master_auth(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_master_auth",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetMasterAuth",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetMonitoringService(
@@ -3643,7 +4991,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set monitoring service method over HTTP.
 
@@ -3654,8 +5002,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3669,6 +5019,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_monitoring_service(
                 request, metadata
             )
@@ -3684,6 +5035,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetMonitoringService",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetMonitoringService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetMonitoringService._get_response(
@@ -3706,7 +5084,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_monitoring_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_monitoring_service",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetMonitoringService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetNetworkPolicy(
@@ -3744,7 +5144,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set network policy method over HTTP.
 
@@ -3756,8 +5156,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3771,6 +5173,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_network_policy(
                 request, metadata
             )
@@ -3786,6 +5189,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetNetworkPolicy",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNetworkPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetNetworkPolicy._get_response(
@@ -3808,7 +5238,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_network_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_network_policy",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNetworkPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetNodePoolAutoscaling(
@@ -3847,7 +5299,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set node pool autoscaling method over HTTP.
 
@@ -3858,8 +5310,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3873,6 +5327,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_node_pool_autoscaling(
                 request, metadata
             )
@@ -3888,6 +5343,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetNodePoolAutoscaling",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNodePoolAutoscaling",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3912,7 +5394,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_node_pool_autoscaling(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_node_pool_autoscaling",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNodePoolAutoscaling",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetNodePoolManagement(
@@ -3951,7 +5455,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set node pool management method over HTTP.
 
@@ -3963,8 +5467,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -3978,6 +5484,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_node_pool_management(
                 request, metadata
             )
@@ -3993,6 +5500,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetNodePoolManagement",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNodePoolManagement",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetNodePoolManagement._get_response(
@@ -4015,7 +5549,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_node_pool_management(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_node_pool_management",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNodePoolManagement",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetNodePoolSize(
@@ -4053,7 +5609,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the set node pool size method over HTTP.
 
@@ -4064,8 +5620,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -4079,6 +5637,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_node_pool_size(
                 request, metadata
             )
@@ -4094,6 +5653,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.SetNodePoolSize",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNodePoolSize",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._SetNodePoolSize._get_response(
@@ -4116,7 +5702,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_node_pool_size(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.set_node_pool_size",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "SetNodePoolSize",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StartIPRotation(
@@ -4154,7 +5762,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the start ip rotation method over HTTP.
 
@@ -4167,8 +5775,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -4182,6 +5792,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseStartIPRotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_start_ip_rotation(
                 request, metadata
             )
@@ -4197,6 +5808,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.StartIPRotation",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "StartIPRotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._StartIPRotation._get_response(
@@ -4219,7 +5857,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_start_ip_rotation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.start_ip_rotation",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "StartIPRotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCluster(
@@ -4257,7 +5917,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the update cluster method over HTTP.
 
@@ -4268,8 +5928,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -4283,6 +5945,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseUpdateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_transcoded_request(
                 http_options, request
@@ -4296,6 +5959,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.UpdateCluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "UpdateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._UpdateCluster._get_response(
@@ -4318,7 +6008,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.update_cluster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "UpdateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateMaster(
@@ -4356,7 +6068,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the update master method over HTTP.
 
@@ -4367,8 +6079,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -4382,6 +6096,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseUpdateMaster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_master(request, metadata)
             transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_transcoded_request(
                 http_options, request
@@ -4395,6 +6110,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.UpdateMaster",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "UpdateMaster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._UpdateMaster._get_response(
@@ -4417,7 +6159,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_master(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.update_master",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "UpdateMaster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNodePool(
@@ -4455,7 +6219,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cluster_service.Operation:
             r"""Call the update node pool method over HTTP.
 
@@ -4466,8 +6230,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cluster_service.Operation:
@@ -4481,6 +6247,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             http_options = (
                 _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_node_pool(
                 request, metadata
             )
@@ -4496,6 +6263,33 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             query_params = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.UpdateNodePool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "UpdateNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ClusterManagerRestTransport._UpdateNodePool._get_response(
@@ -4518,7 +6312,29 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             pb_resp = cluster_service.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.update_node_pool",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "UpdateNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -48,6 +49,15 @@ from google.cloud.dataflow_v1beta3.types import messages
 from .client import MessagesV1Beta3Client
 from .transports.base import DEFAULT_CLIENT_INFO, MessagesV1Beta3Transport
 from .transports.grpc_asyncio import MessagesV1Beta3GrpcAsyncIOTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class MessagesV1Beta3AsyncClient:
@@ -256,13 +266,35 @@ class MessagesV1Beta3AsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.dataflow_v1beta3.MessagesV1Beta3AsyncClient`.",
+                extra={
+                    "serviceName": "google.dataflow.v1beta3.MessagesV1Beta3",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.dataflow.v1beta3.MessagesV1Beta3",
+                    "credentialsType": None,
+                },
+            )
+
     async def list_job_messages(
         self,
         request: Optional[Union[messages.ListJobMessagesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListJobMessagesAsyncPager:
         r"""Request the job status.
 
@@ -310,8 +342,10 @@ class MessagesV1Beta3AsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.dataflow_v1beta3.services.messages_v1_beta3.pagers.ListJobMessagesAsyncPager:

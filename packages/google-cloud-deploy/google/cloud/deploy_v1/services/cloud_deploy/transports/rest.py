@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -433,8 +441,10 @@ class CloudDeployRestInterceptor:
     def pre_abandon_release(
         self,
         request: cloud_deploy.AbandonReleaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.AbandonReleaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.AbandonReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for abandon_release
 
         Override in a subclass to manipulate the request or metadata
@@ -456,8 +466,10 @@ class CloudDeployRestInterceptor:
     def pre_advance_rollout(
         self,
         request: cloud_deploy.AdvanceRolloutRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.AdvanceRolloutRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.AdvanceRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for advance_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -479,8 +491,10 @@ class CloudDeployRestInterceptor:
     def pre_approve_rollout(
         self,
         request: cloud_deploy.ApproveRolloutRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ApproveRolloutRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ApproveRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for approve_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -502,8 +516,10 @@ class CloudDeployRestInterceptor:
     def pre_cancel_automation_run(
         self,
         request: cloud_deploy.CancelAutomationRunRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CancelAutomationRunRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CancelAutomationRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_automation_run
 
         Override in a subclass to manipulate the request or metadata
@@ -525,8 +541,10 @@ class CloudDeployRestInterceptor:
     def pre_cancel_rollout(
         self,
         request: cloud_deploy.CancelRolloutRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CancelRolloutRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CancelRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -548,8 +566,10 @@ class CloudDeployRestInterceptor:
     def pre_create_automation(
         self,
         request: cloud_deploy.CreateAutomationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CreateAutomationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CreateAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -571,8 +591,11 @@ class CloudDeployRestInterceptor:
     def pre_create_custom_target_type(
         self,
         request: cloud_deploy.CreateCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CreateCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CreateCustomTargetTypeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -594,8 +617,11 @@ class CloudDeployRestInterceptor:
     def pre_create_delivery_pipeline(
         self,
         request: cloud_deploy.CreateDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CreateDeliveryPipelineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CreateDeliveryPipelineRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -617,8 +643,10 @@ class CloudDeployRestInterceptor:
     def pre_create_deploy_policy(
         self,
         request: cloud_deploy.CreateDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CreateDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CreateDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -640,8 +668,10 @@ class CloudDeployRestInterceptor:
     def pre_create_release(
         self,
         request: cloud_deploy.CreateReleaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CreateReleaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CreateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_release
 
         Override in a subclass to manipulate the request or metadata
@@ -663,8 +693,10 @@ class CloudDeployRestInterceptor:
     def pre_create_rollout(
         self,
         request: cloud_deploy.CreateRolloutRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CreateRolloutRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CreateRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -686,8 +718,10 @@ class CloudDeployRestInterceptor:
     def pre_create_target(
         self,
         request: cloud_deploy.CreateTargetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.CreateTargetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.CreateTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_target
 
         Override in a subclass to manipulate the request or metadata
@@ -709,8 +743,10 @@ class CloudDeployRestInterceptor:
     def pre_delete_automation(
         self,
         request: cloud_deploy.DeleteAutomationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.DeleteAutomationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.DeleteAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -732,8 +768,11 @@ class CloudDeployRestInterceptor:
     def pre_delete_custom_target_type(
         self,
         request: cloud_deploy.DeleteCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.DeleteCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.DeleteCustomTargetTypeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -755,8 +794,11 @@ class CloudDeployRestInterceptor:
     def pre_delete_delivery_pipeline(
         self,
         request: cloud_deploy.DeleteDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.DeleteDeliveryPipelineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.DeleteDeliveryPipelineRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -778,8 +820,10 @@ class CloudDeployRestInterceptor:
     def pre_delete_deploy_policy(
         self,
         request: cloud_deploy.DeleteDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.DeleteDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.DeleteDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -801,8 +845,10 @@ class CloudDeployRestInterceptor:
     def pre_delete_target(
         self,
         request: cloud_deploy.DeleteTargetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.DeleteTargetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.DeleteTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_target
 
         Override in a subclass to manipulate the request or metadata
@@ -824,8 +870,10 @@ class CloudDeployRestInterceptor:
     def pre_get_automation(
         self,
         request: cloud_deploy.GetAutomationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetAutomationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.GetAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -847,8 +895,10 @@ class CloudDeployRestInterceptor:
     def pre_get_automation_run(
         self,
         request: cloud_deploy.GetAutomationRunRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetAutomationRunRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.GetAutomationRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_automation_run
 
         Override in a subclass to manipulate the request or metadata
@@ -870,8 +920,8 @@ class CloudDeployRestInterceptor:
     def pre_get_config(
         self,
         request: cloud_deploy.GetConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.GetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_config
 
         Override in a subclass to manipulate the request or metadata
@@ -891,8 +941,10 @@ class CloudDeployRestInterceptor:
     def pre_get_custom_target_type(
         self,
         request: cloud_deploy.GetCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.GetCustomTargetTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -914,8 +966,10 @@ class CloudDeployRestInterceptor:
     def pre_get_delivery_pipeline(
         self,
         request: cloud_deploy.GetDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetDeliveryPipelineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.GetDeliveryPipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -937,8 +991,10 @@ class CloudDeployRestInterceptor:
     def pre_get_deploy_policy(
         self,
         request: cloud_deploy.GetDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.GetDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -960,8 +1016,8 @@ class CloudDeployRestInterceptor:
     def pre_get_job_run(
         self,
         request: cloud_deploy.GetJobRunRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetJobRunRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.GetJobRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_run
 
         Override in a subclass to manipulate the request or metadata
@@ -981,8 +1037,8 @@ class CloudDeployRestInterceptor:
     def pre_get_release(
         self,
         request: cloud_deploy.GetReleaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetReleaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.GetReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_release
 
         Override in a subclass to manipulate the request or metadata
@@ -1002,8 +1058,8 @@ class CloudDeployRestInterceptor:
     def pre_get_rollout(
         self,
         request: cloud_deploy.GetRolloutRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetRolloutRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.GetRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -1023,8 +1079,8 @@ class CloudDeployRestInterceptor:
     def pre_get_target(
         self,
         request: cloud_deploy.GetTargetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.GetTargetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.GetTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_target
 
         Override in a subclass to manipulate the request or metadata
@@ -1044,8 +1100,8 @@ class CloudDeployRestInterceptor:
     def pre_ignore_job(
         self,
         request: cloud_deploy.IgnoreJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.IgnoreJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.IgnoreJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for ignore_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1067,8 +1123,10 @@ class CloudDeployRestInterceptor:
     def pre_list_automation_runs(
         self,
         request: cloud_deploy.ListAutomationRunsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListAutomationRunsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListAutomationRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_automation_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -1090,8 +1148,10 @@ class CloudDeployRestInterceptor:
     def pre_list_automations(
         self,
         request: cloud_deploy.ListAutomationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListAutomationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListAutomationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_automations
 
         Override in a subclass to manipulate the request or metadata
@@ -1113,8 +1173,11 @@ class CloudDeployRestInterceptor:
     def pre_list_custom_target_types(
         self,
         request: cloud_deploy.ListCustomTargetTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListCustomTargetTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListCustomTargetTypesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_custom_target_types
 
         Override in a subclass to manipulate the request or metadata
@@ -1136,8 +1199,11 @@ class CloudDeployRestInterceptor:
     def pre_list_delivery_pipelines(
         self,
         request: cloud_deploy.ListDeliveryPipelinesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListDeliveryPipelinesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListDeliveryPipelinesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_delivery_pipelines
 
         Override in a subclass to manipulate the request or metadata
@@ -1159,8 +1225,10 @@ class CloudDeployRestInterceptor:
     def pre_list_deploy_policies(
         self,
         request: cloud_deploy.ListDeployPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListDeployPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListDeployPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_deploy_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -1182,8 +1250,10 @@ class CloudDeployRestInterceptor:
     def pre_list_job_runs(
         self,
         request: cloud_deploy.ListJobRunsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListJobRunsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListJobRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_job_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -1205,8 +1275,10 @@ class CloudDeployRestInterceptor:
     def pre_list_releases(
         self,
         request: cloud_deploy.ListReleasesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListReleasesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListReleasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_releases
 
         Override in a subclass to manipulate the request or metadata
@@ -1228,8 +1300,10 @@ class CloudDeployRestInterceptor:
     def pre_list_rollouts(
         self,
         request: cloud_deploy.ListRolloutsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListRolloutsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListRolloutsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_rollouts
 
         Override in a subclass to manipulate the request or metadata
@@ -1251,8 +1325,10 @@ class CloudDeployRestInterceptor:
     def pre_list_targets(
         self,
         request: cloud_deploy.ListTargetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.ListTargetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.ListTargetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_targets
 
         Override in a subclass to manipulate the request or metadata
@@ -1272,8 +1348,10 @@ class CloudDeployRestInterceptor:
         return response
 
     def pre_retry_job(
-        self, request: cloud_deploy.RetryJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[cloud_deploy.RetryJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: cloud_deploy.RetryJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_deploy.RetryJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retry_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1295,8 +1373,10 @@ class CloudDeployRestInterceptor:
     def pre_rollback_target(
         self,
         request: cloud_deploy.RollbackTargetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.RollbackTargetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.RollbackTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for rollback_target
 
         Override in a subclass to manipulate the request or metadata
@@ -1318,8 +1398,10 @@ class CloudDeployRestInterceptor:
     def pre_terminate_job_run(
         self,
         request: cloud_deploy.TerminateJobRunRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.TerminateJobRunRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.TerminateJobRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for terminate_job_run
 
         Override in a subclass to manipulate the request or metadata
@@ -1341,8 +1423,10 @@ class CloudDeployRestInterceptor:
     def pre_update_automation(
         self,
         request: cloud_deploy.UpdateAutomationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.UpdateAutomationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.UpdateAutomationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_automation
 
         Override in a subclass to manipulate the request or metadata
@@ -1364,8 +1448,11 @@ class CloudDeployRestInterceptor:
     def pre_update_custom_target_type(
         self,
         request: cloud_deploy.UpdateCustomTargetTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.UpdateCustomTargetTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.UpdateCustomTargetTypeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_custom_target_type
 
         Override in a subclass to manipulate the request or metadata
@@ -1387,8 +1474,11 @@ class CloudDeployRestInterceptor:
     def pre_update_delivery_pipeline(
         self,
         request: cloud_deploy.UpdateDeliveryPipelineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.UpdateDeliveryPipelineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.UpdateDeliveryPipelineRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_delivery_pipeline
 
         Override in a subclass to manipulate the request or metadata
@@ -1410,8 +1500,10 @@ class CloudDeployRestInterceptor:
     def pre_update_deploy_policy(
         self,
         request: cloud_deploy.UpdateDeployPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.UpdateDeployPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.UpdateDeployPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_deploy_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1433,8 +1525,10 @@ class CloudDeployRestInterceptor:
     def pre_update_target(
         self,
         request: cloud_deploy.UpdateTargetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_deploy.UpdateTargetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_deploy.UpdateTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_target
 
         Override in a subclass to manipulate the request or metadata
@@ -1456,8 +1550,10 @@ class CloudDeployRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1479,8 +1575,10 @@ class CloudDeployRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1502,8 +1600,10 @@ class CloudDeployRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1523,8 +1623,10 @@ class CloudDeployRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1544,8 +1646,11 @@ class CloudDeployRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1567,8 +1672,10 @@ class CloudDeployRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1588,8 +1695,10 @@ class CloudDeployRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1609,8 +1718,10 @@ class CloudDeployRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1632,8 +1743,10 @@ class CloudDeployRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1830,7 +1943,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.AbandonReleaseResponse:
             r"""Call the abandon release method over HTTP.
 
@@ -1840,8 +1953,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.AbandonReleaseResponse:
@@ -1851,6 +1966,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseAbandonRelease._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_abandon_release(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_transcoded_request(
                 http_options, request
@@ -1864,6 +1980,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseAbandonRelease._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.AbandonRelease",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "AbandonRelease",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._AbandonRelease._get_response(
@@ -1886,7 +2029,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.AbandonReleaseResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_abandon_release(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.AbandonReleaseResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.abandon_release",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "AbandonRelease",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AdvanceRollout(
@@ -1924,7 +2091,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.AdvanceRolloutResponse:
             r"""Call the advance rollout method over HTTP.
 
@@ -1934,8 +2101,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.AdvanceRolloutResponse:
@@ -1945,6 +2114,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_advance_rollout(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_transcoded_request(
                 http_options, request
@@ -1958,6 +2128,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseAdvanceRollout._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.AdvanceRollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "AdvanceRollout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._AdvanceRollout._get_response(
@@ -1980,7 +2177,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.AdvanceRolloutResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_advance_rollout(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.AdvanceRolloutResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.advance_rollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "AdvanceRollout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ApproveRollout(
@@ -2018,7 +2239,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ApproveRolloutResponse:
             r"""Call the approve rollout method over HTTP.
 
@@ -2028,8 +2249,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ApproveRolloutResponse:
@@ -2039,6 +2262,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseApproveRollout._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_approve_rollout(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseApproveRollout._get_transcoded_request(
                 http_options, request
@@ -2052,6 +2276,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseApproveRollout._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ApproveRollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ApproveRollout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ApproveRollout._get_response(
@@ -2074,7 +2325,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ApproveRolloutResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_approve_rollout(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ApproveRolloutResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.approve_rollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ApproveRollout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CancelAutomationRun(
@@ -2112,7 +2387,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.CancelAutomationRunResponse:
             r"""Call the cancel automation run method over HTTP.
 
@@ -2122,8 +2397,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.CancelAutomationRunResponse:
@@ -2133,6 +2410,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_automation_run(
                 request, metadata
             )
@@ -2148,6 +2426,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CancelAutomationRun",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CancelAutomationRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CancelAutomationRun._get_response(
@@ -2170,7 +2475,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.CancelAutomationRunResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_cancel_automation_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.CancelAutomationRunResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.cancel_automation_run",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CancelAutomationRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CancelRollout(
@@ -2208,7 +2537,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.CancelRolloutResponse:
             r"""Call the cancel rollout method over HTTP.
 
@@ -2218,8 +2547,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.CancelRolloutResponse:
@@ -2229,6 +2560,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCancelRollout._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_rollout(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseCancelRollout._get_transcoded_request(
                 http_options, request
@@ -2246,6 +2578,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CancelRollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CancelRollout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CancelRollout._get_response(
@@ -2268,7 +2627,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.CancelRolloutResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_cancel_rollout(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.CancelRolloutResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.cancel_rollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CancelRollout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAutomation(
@@ -2306,7 +2689,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create automation method over HTTP.
 
@@ -2316,8 +2699,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2330,6 +2715,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCreateAutomation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_automation(
                 request, metadata
             )
@@ -2345,6 +2731,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseCreateAutomation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CreateAutomation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateAutomation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CreateAutomation._get_response(
@@ -2365,7 +2778,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_automation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.create_automation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateAutomation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCustomTargetType(
@@ -2403,7 +2838,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create custom target type method over HTTP.
 
@@ -2413,8 +2848,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2427,6 +2864,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_custom_target_type(
                 request, metadata
             )
@@ -2442,6 +2880,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CreateCustomTargetType",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateCustomTargetType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CreateCustomTargetType._get_response(
@@ -2462,7 +2927,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_custom_target_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.create_custom_target_type",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateCustomTargetType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDeliveryPipeline(
@@ -2500,7 +2987,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create delivery pipeline method over HTTP.
 
@@ -2510,8 +2997,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2524,6 +3013,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_delivery_pipeline(
                 request, metadata
             )
@@ -2539,6 +3029,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CreateDeliveryPipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateDeliveryPipeline",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CreateDeliveryPipeline._get_response(
@@ -2559,7 +3076,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_delivery_pipeline(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.create_delivery_pipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateDeliveryPipeline",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDeployPolicy(
@@ -2597,7 +3136,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create deploy policy method over HTTP.
 
@@ -2607,8 +3146,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2621,6 +3162,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_deploy_policy(
                 request, metadata
             )
@@ -2636,6 +3178,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CreateDeployPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateDeployPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CreateDeployPolicy._get_response(
@@ -2656,7 +3225,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_deploy_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.create_deploy_policy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateDeployPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRelease(
@@ -2694,7 +3285,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create release method over HTTP.
 
@@ -2704,8 +3295,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2718,6 +3311,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCreateRelease._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_release(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseCreateRelease._get_transcoded_request(
                 http_options, request
@@ -2735,6 +3329,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CreateRelease",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateRelease",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CreateRelease._get_response(
@@ -2755,7 +3376,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_release(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.create_release",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateRelease",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRollout(
@@ -2793,7 +3436,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create rollout method over HTTP.
 
@@ -2804,8 +3447,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2818,6 +3463,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCreateRollout._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_rollout(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseCreateRollout._get_transcoded_request(
                 http_options, request
@@ -2835,6 +3481,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CreateRollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateRollout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CreateRollout._get_response(
@@ -2855,7 +3528,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_rollout(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.create_rollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateRollout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTarget(
@@ -2893,7 +3588,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create target method over HTTP.
 
@@ -2903,8 +3598,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2917,6 +3614,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCreateTarget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_target(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseCreateTarget._get_transcoded_request(
@@ -2937,6 +3635,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CreateTarget",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateTarget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = CloudDeployRestTransport._CreateTarget._get_response(
                 self._host,
@@ -2956,7 +3681,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_target(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.create_target",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CreateTarget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAutomation(
@@ -2993,7 +3740,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete automation method over HTTP.
 
@@ -3003,8 +3750,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3017,6 +3766,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_automation(
                 request, metadata
             )
@@ -3028,6 +3778,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseDeleteAutomation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.DeleteAutomation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteAutomation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._DeleteAutomation._get_response(
@@ -3047,7 +3824,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_automation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.delete_automation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteAutomation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCustomTargetType(
@@ -3084,7 +3883,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete custom target type method over HTTP.
 
@@ -3094,8 +3893,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3108,6 +3909,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_custom_target_type(
                 request, metadata
             )
@@ -3119,6 +3921,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.DeleteCustomTargetType",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteCustomTargetType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._DeleteCustomTargetType._get_response(
@@ -3138,7 +3967,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_custom_target_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.delete_custom_target_type",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteCustomTargetType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDeliveryPipeline(
@@ -3175,7 +4026,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete delivery pipeline method over HTTP.
 
@@ -3185,8 +4036,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3199,6 +4052,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_delivery_pipeline(
                 request, metadata
             )
@@ -3210,6 +4064,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.DeleteDeliveryPipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteDeliveryPipeline",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._DeleteDeliveryPipeline._get_response(
@@ -3229,7 +4110,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_delivery_pipeline(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.delete_delivery_pipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteDeliveryPipeline",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDeployPolicy(
@@ -3266,7 +4169,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete deploy policy method over HTTP.
 
@@ -3276,8 +4179,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3290,6 +4195,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_deploy_policy(
                 request, metadata
             )
@@ -3301,6 +4207,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.DeleteDeployPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteDeployPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._DeleteDeployPolicy._get_response(
@@ -3320,7 +4253,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_deploy_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.delete_deploy_policy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteDeployPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTarget(
@@ -3357,7 +4312,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete target method over HTTP.
 
@@ -3367,8 +4322,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3381,6 +4338,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseDeleteTarget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_target(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseDeleteTarget._get_transcoded_request(
@@ -3394,6 +4352,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.DeleteTarget",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteTarget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._DeleteTarget._get_response(
@@ -3413,7 +4398,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_target(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.delete_target",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteTarget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAutomation(
@@ -3450,7 +4457,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.Automation:
             r"""Call the get automation method over HTTP.
 
@@ -3460,8 +4467,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.Automation:
@@ -3479,6 +4488,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetAutomation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_automation(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseGetAutomation._get_transcoded_request(
                 http_options, request
@@ -3490,6 +4500,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetAutomation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetAutomation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetAutomation._get_response(
@@ -3511,7 +4548,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.Automation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_automation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.Automation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_automation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetAutomation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAutomationRun(
@@ -3548,7 +4607,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.AutomationRun:
             r"""Call the get automation run method over HTTP.
 
@@ -3558,8 +4617,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.AutomationRun:
@@ -3573,6 +4634,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_automation_run(
                 request, metadata
             )
@@ -3584,6 +4646,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseGetAutomationRun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetAutomationRun",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetAutomationRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetAutomationRun._get_response(
@@ -3605,7 +4694,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.AutomationRun.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_automation_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.AutomationRun.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_automation_run",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetAutomationRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConfig(_BaseCloudDeployRestTransport._BaseGetConfig, CloudDeployRestStub):
@@ -3640,7 +4751,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.Config:
             r"""Call the get config method over HTTP.
 
@@ -3650,8 +4761,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.Config:
@@ -3661,6 +4774,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_config(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetConfig._get_transcoded_request(
@@ -3674,6 +4788,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetConfig",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetConfig._get_response(
@@ -3695,7 +4836,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.Config.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.Config.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_config",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCustomTargetType(
@@ -3732,7 +4895,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.CustomTargetType:
             r"""Call the get custom target type method over HTTP.
 
@@ -3742,8 +4905,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.CustomTargetType:
@@ -3759,6 +4924,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_custom_target_type(
                 request, metadata
             )
@@ -3770,6 +4936,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetCustomTargetType",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetCustomTargetType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetCustomTargetType._get_response(
@@ -3791,7 +4984,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.CustomTargetType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_custom_target_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.CustomTargetType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_custom_target_type",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetCustomTargetType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDeliveryPipeline(
@@ -3828,7 +5043,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.DeliveryPipeline:
             r"""Call the get delivery pipeline method over HTTP.
 
@@ -3838,8 +5053,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.DeliveryPipeline:
@@ -3853,6 +5070,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_delivery_pipeline(
                 request, metadata
             )
@@ -3864,6 +5082,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetDeliveryPipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetDeliveryPipeline",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetDeliveryPipeline._get_response(
@@ -3885,7 +5130,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.DeliveryPipeline.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_delivery_pipeline(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.DeliveryPipeline.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_delivery_pipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetDeliveryPipeline",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDeployPolicy(
@@ -3922,7 +5189,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.DeployPolicy:
             r"""Call the get deploy policy method over HTTP.
 
@@ -3932,8 +5199,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.DeployPolicy:
@@ -3947,6 +5216,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_deploy_policy(
                 request, metadata
             )
@@ -3958,6 +5228,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseGetDeployPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetDeployPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetDeployPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetDeployPolicy._get_response(
@@ -3979,7 +5276,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.DeployPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_deploy_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.DeployPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_deploy_policy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetDeployPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetJobRun(_BaseCloudDeployRestTransport._BaseGetJobRun, CloudDeployRestStub):
@@ -4014,7 +5333,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.JobRun:
             r"""Call the get job run method over HTTP.
 
@@ -4025,8 +5344,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.JobRun:
@@ -4040,6 +5361,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetJobRun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job_run(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetJobRun._get_transcoded_request(
@@ -4053,6 +5375,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetJobRun",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetJobRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetJobRun._get_response(
@@ -4074,7 +5423,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.JobRun.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.JobRun.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_job_run",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetJobRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRelease(
@@ -4111,7 +5482,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.Release:
             r"""Call the get release method over HTTP.
 
@@ -4121,8 +5492,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.Release:
@@ -4136,6 +5509,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetRelease._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_release(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetRelease._get_transcoded_request(
@@ -4149,6 +5523,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetRelease",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetRelease",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetRelease._get_response(
@@ -4170,7 +5571,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.Release.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_release(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.Release.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_release",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetRelease",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRollout(
@@ -4207,7 +5630,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.Rollout:
             r"""Call the get rollout method over HTTP.
 
@@ -4218,8 +5641,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.Rollout:
@@ -4233,6 +5658,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetRollout._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_rollout(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetRollout._get_transcoded_request(
@@ -4246,6 +5672,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetRollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetRollout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetRollout._get_response(
@@ -4267,7 +5720,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.Rollout.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_rollout(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.Rollout.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_rollout",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetRollout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTarget(_BaseCloudDeployRestTransport._BaseGetTarget, CloudDeployRestStub):
@@ -4302,7 +5777,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.Target:
             r"""Call the get target method over HTTP.
 
@@ -4312,8 +5787,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.Target:
@@ -4327,6 +5804,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetTarget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_target(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetTarget._get_transcoded_request(
@@ -4340,6 +5818,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetTarget",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetTarget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetTarget._get_response(
@@ -4361,7 +5866,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.Target.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_target(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.Target.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.get_target",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetTarget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _IgnoreJob(_BaseCloudDeployRestTransport._BaseIgnoreJob, CloudDeployRestStub):
@@ -4397,7 +5924,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.IgnoreJobResponse:
             r"""Call the ignore job method over HTTP.
 
@@ -4407,8 +5934,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.IgnoreJobResponse:
@@ -4418,6 +5947,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseIgnoreJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_ignore_job(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseIgnoreJob._get_transcoded_request(
@@ -4435,6 +5965,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.IgnoreJob",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "IgnoreJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._IgnoreJob._get_response(
@@ -4457,7 +6014,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.IgnoreJobResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_ignore_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.IgnoreJobResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.ignore_job",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "IgnoreJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAutomationRuns(
@@ -4494,7 +6073,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListAutomationRunsResponse:
             r"""Call the list automation runs method over HTTP.
 
@@ -4504,8 +6083,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListAutomationRunsResponse:
@@ -4515,6 +6096,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_automation_runs(
                 request, metadata
             )
@@ -4526,6 +6108,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListAutomationRuns",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListAutomationRuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListAutomationRuns._get_response(
@@ -4547,7 +6156,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListAutomationRunsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_automation_runs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ListAutomationRunsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_automation_runs",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListAutomationRuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAutomations(
@@ -4584,7 +6217,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListAutomationsResponse:
             r"""Call the list automations method over HTTP.
 
@@ -4594,8 +6227,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListAutomationsResponse:
@@ -4605,6 +6240,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListAutomations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_automations(
                 request, metadata
             )
@@ -4616,6 +6252,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseListAutomations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListAutomations",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListAutomations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListAutomations._get_response(
@@ -4637,7 +6300,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListAutomationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_automations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ListAutomationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_automations",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListAutomations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCustomTargetTypes(
@@ -4674,7 +6361,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListCustomTargetTypesResponse:
             r"""Call the list custom target types method over HTTP.
 
@@ -4684,8 +6371,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListCustomTargetTypesResponse:
@@ -4695,6 +6384,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_custom_target_types(
                 request, metadata
             )
@@ -4706,6 +6396,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListCustomTargetTypes",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListCustomTargetTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListCustomTargetTypes._get_response(
@@ -4727,7 +6444,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListCustomTargetTypesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_custom_target_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_deploy.ListCustomTargetTypesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_custom_target_types",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListCustomTargetTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDeliveryPipelines(
@@ -4764,7 +6505,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListDeliveryPipelinesResponse:
             r"""Call the list delivery pipelines method over HTTP.
 
@@ -4774,8 +6515,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListDeliveryPipelinesResponse:
@@ -4785,6 +6528,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_delivery_pipelines(
                 request, metadata
             )
@@ -4796,6 +6540,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListDeliveryPipelines",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListDeliveryPipelines",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListDeliveryPipelines._get_response(
@@ -4817,7 +6588,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListDeliveryPipelinesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_delivery_pipelines(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_deploy.ListDeliveryPipelinesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_delivery_pipelines",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListDeliveryPipelines",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDeployPolicies(
@@ -4854,7 +6649,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListDeployPoliciesResponse:
             r"""Call the list deploy policies method over HTTP.
 
@@ -4864,8 +6659,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListDeployPoliciesResponse:
@@ -4875,6 +6672,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_deploy_policies(
                 request, metadata
             )
@@ -4886,6 +6684,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListDeployPolicies",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListDeployPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListDeployPolicies._get_response(
@@ -4907,7 +6732,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListDeployPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_deploy_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ListDeployPoliciesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_deploy_policies",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListDeployPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListJobRuns(
@@ -4944,7 +6793,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListJobRunsResponse:
             r"""Call the list job runs method over HTTP.
 
@@ -4955,8 +6804,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListJobRunsResponse:
@@ -4968,6 +6819,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListJobRuns._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_job_runs(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseListJobRuns._get_transcoded_request(
@@ -4981,6 +6833,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListJobRuns",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListJobRuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListJobRuns._get_response(
@@ -5002,7 +6881,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListJobRunsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_job_runs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ListJobRunsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_job_runs",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListJobRuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReleases(
@@ -5039,7 +6942,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListReleasesResponse:
             r"""Call the list releases method over HTTP.
 
@@ -5049,8 +6952,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListReleasesResponse:
@@ -5060,6 +6965,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListReleases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_releases(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseListReleases._get_transcoded_request(
@@ -5073,6 +6979,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListReleases",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListReleases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListReleases._get_response(
@@ -5094,7 +7027,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListReleasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_releases(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ListReleasesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_releases",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListReleases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRollouts(
@@ -5131,7 +7088,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListRolloutsResponse:
             r"""Call the list rollouts method over HTTP.
 
@@ -5142,8 +7099,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListRolloutsResponse:
@@ -5155,6 +7114,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListRollouts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_rollouts(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseListRollouts._get_transcoded_request(
@@ -5168,6 +7128,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListRollouts",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListRollouts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListRollouts._get_response(
@@ -5189,7 +7176,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListRolloutsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_rollouts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ListRolloutsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_rollouts",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListRollouts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTargets(
@@ -5226,7 +7237,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.ListTargetsResponse:
             r"""Call the list targets method over HTTP.
 
@@ -5236,8 +7247,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.ListTargetsResponse:
@@ -5247,6 +7260,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListTargets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_targets(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseListTargets._get_transcoded_request(
@@ -5260,6 +7274,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListTargets",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListTargets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListTargets._get_response(
@@ -5281,7 +7322,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.ListTargetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_targets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.ListTargetsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.list_targets",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListTargets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RetryJob(_BaseCloudDeployRestTransport._BaseRetryJob, CloudDeployRestStub):
@@ -5317,7 +7382,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.RetryJobResponse:
             r"""Call the retry job method over HTTP.
 
@@ -5328,8 +7393,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.RetryJobResponse:
@@ -5339,6 +7406,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseRetryJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_retry_job(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseRetryJob._get_transcoded_request(
@@ -5356,6 +7424,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.RetryJob",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "RetryJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._RetryJob._get_response(
@@ -5378,7 +7473,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.RetryJobResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_retry_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.RetryJobResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.retry_job",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "RetryJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RollbackTarget(
@@ -5416,7 +7533,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.RollbackTargetResponse:
             r"""Call the rollback target method over HTTP.
 
@@ -5426,8 +7543,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.RollbackTargetResponse:
@@ -5437,6 +7556,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseRollbackTarget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rollback_target(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_transcoded_request(
                 http_options, request
@@ -5450,6 +7570,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseRollbackTarget._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.RollbackTarget",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "RollbackTarget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._RollbackTarget._get_response(
@@ -5472,7 +7619,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.RollbackTargetResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback_target(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.RollbackTargetResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.rollback_target",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "RollbackTarget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TerminateJobRun(
@@ -5510,7 +7681,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_deploy.TerminateJobRunResponse:
             r"""Call the terminate job run method over HTTP.
 
@@ -5520,8 +7691,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_deploy.TerminateJobRunResponse:
@@ -5531,6 +7704,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_terminate_job_run(
                 request, metadata
             )
@@ -5546,6 +7720,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseTerminateJobRun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.TerminateJobRun",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "TerminateJobRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._TerminateJobRun._get_response(
@@ -5568,7 +7769,31 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             pb_resp = cloud_deploy.TerminateJobRunResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_terminate_job_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_deploy.TerminateJobRunResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.terminate_job_run",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "TerminateJobRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAutomation(
@@ -5606,7 +7831,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update automation method over HTTP.
 
@@ -5616,8 +7841,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5630,6 +7857,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_automation(
                 request, metadata
             )
@@ -5645,6 +7873,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseUpdateAutomation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.UpdateAutomation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateAutomation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._UpdateAutomation._get_response(
@@ -5665,7 +7920,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_automation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.update_automation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateAutomation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCustomTargetType(
@@ -5703,7 +7980,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update custom target type method over HTTP.
 
@@ -5713,8 +7990,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5727,6 +8006,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_custom_target_type(
                 request, metadata
             )
@@ -5742,6 +8022,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.UpdateCustomTargetType",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateCustomTargetType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._UpdateCustomTargetType._get_response(
@@ -5762,7 +8069,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_custom_target_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.update_custom_target_type",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateCustomTargetType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDeliveryPipeline(
@@ -5800,7 +8129,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update delivery pipeline method over HTTP.
 
@@ -5810,8 +8139,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5824,6 +8155,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_delivery_pipeline(
                 request, metadata
             )
@@ -5839,6 +8171,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.UpdateDeliveryPipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateDeliveryPipeline",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._UpdateDeliveryPipeline._get_response(
@@ -5859,7 +8218,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_delivery_pipeline(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.update_delivery_pipeline",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateDeliveryPipeline",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDeployPolicy(
@@ -5897,7 +8278,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update deploy policy method over HTTP.
 
@@ -5907,8 +8288,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5921,6 +8304,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_deploy_policy(
                 request, metadata
             )
@@ -5936,6 +8320,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.UpdateDeployPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateDeployPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._UpdateDeployPolicy._get_response(
@@ -5956,7 +8367,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_deploy_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.update_deploy_policy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateDeployPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTarget(
@@ -5994,7 +8427,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update target method over HTTP.
 
@@ -6004,8 +8437,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6018,6 +8453,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseUpdateTarget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_target(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseUpdateTarget._get_transcoded_request(
@@ -6038,6 +8474,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.UpdateTarget",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateTarget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = CloudDeployRestTransport._UpdateTarget._get_response(
                 self._host,
@@ -6057,7 +8520,29 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_target(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployClient.update_target",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "UpdateTarget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -6507,7 +8992,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -6517,8 +9002,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -6527,6 +9014,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetLocation._get_transcoded_request(
@@ -6540,6 +9028,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetLocation._get_response(
@@ -6560,6 +9075,27 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6600,7 +9136,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -6610,8 +9146,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -6620,6 +9158,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -6631,6 +9170,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListLocations._get_response(
@@ -6651,6 +9217,27 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6691,7 +9278,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -6701,8 +9288,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -6711,6 +9300,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -6724,6 +9314,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetIamPolicy._get_response(
@@ -6744,6 +9361,27 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6785,7 +9423,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -6795,8 +9433,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -6805,6 +9445,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -6824,6 +9465,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._SetIamPolicy._get_response(
@@ -6845,6 +9513,27 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6886,7 +9575,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -6896,8 +9585,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -6906,6 +9597,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -6921,6 +9613,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._TestIamPermissions._get_response(
@@ -6942,6 +9661,27 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6983,7 +9723,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -6993,13 +9733,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCloudDeployRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -7015,6 +9758,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._CancelOperation._get_response(
@@ -7072,7 +9842,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -7082,13 +9852,16 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCloudDeployRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -7100,6 +9873,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._DeleteOperation._get_response(
@@ -7156,7 +9956,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -7166,8 +9966,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -7176,6 +9978,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseCloudDeployRestTransport._BaseGetOperation._get_transcoded_request(
@@ -7189,6 +9992,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._GetOperation._get_response(
@@ -7209,6 +10039,27 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -7249,7 +10100,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -7259,8 +10110,10 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -7269,6 +10122,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             http_options = (
                 _BaseCloudDeployRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCloudDeployRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -7278,6 +10132,33 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             query_params = _BaseCloudDeployRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.deploy_v1.CloudDeployClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudDeployRestTransport._ListOperations._get_response(
@@ -7298,6 +10179,27 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.deploy_v1.CloudDeployAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
