@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -43,6 +43,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -115,8 +123,10 @@ class CompletionServiceRestInterceptor:
     def pre_complete_query(
         self,
         request: completion_service.CompleteQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[completion_service.CompleteQueryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        completion_service.CompleteQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for complete_query
 
         Override in a subclass to manipulate the request or metadata
@@ -138,9 +148,10 @@ class CompletionServiceRestInterceptor:
     def pre_import_completion_suggestions(
         self,
         request: import_config.ImportCompletionSuggestionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        import_config.ImportCompletionSuggestionsRequest, Sequence[Tuple[str, str]]
+        import_config.ImportCompletionSuggestionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for import_completion_suggestions
 
@@ -163,9 +174,10 @@ class CompletionServiceRestInterceptor:
     def pre_import_suggestion_deny_list_entries(
         self,
         request: import_config.ImportSuggestionDenyListEntriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        import_config.ImportSuggestionDenyListEntriesRequest, Sequence[Tuple[str, str]]
+        import_config.ImportSuggestionDenyListEntriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for import_suggestion_deny_list_entries
 
@@ -188,9 +200,10 @@ class CompletionServiceRestInterceptor:
     def pre_purge_completion_suggestions(
         self,
         request: purge_config.PurgeCompletionSuggestionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        purge_config.PurgeCompletionSuggestionsRequest, Sequence[Tuple[str, str]]
+        purge_config.PurgeCompletionSuggestionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for purge_completion_suggestions
 
@@ -213,9 +226,10 @@ class CompletionServiceRestInterceptor:
     def pre_purge_suggestion_deny_list_entries(
         self,
         request: purge_config.PurgeSuggestionDenyListEntriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        purge_config.PurgeSuggestionDenyListEntriesRequest, Sequence[Tuple[str, str]]
+        purge_config.PurgeSuggestionDenyListEntriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for purge_suggestion_deny_list_entries
 
@@ -238,8 +252,10 @@ class CompletionServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -259,8 +275,10 @@ class CompletionServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -282,8 +300,10 @@ class CompletionServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -602,7 +622,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> completion_service.CompleteQueryResponse:
             r"""Call the complete query method over HTTP.
 
@@ -614,8 +634,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.completion_service.CompleteQueryResponse:
@@ -628,6 +650,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             http_options = (
                 _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_complete_query(request, metadata)
             transcoded_request = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_transcoded_request(
                 http_options, request
@@ -637,6 +660,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.CompleteQuery",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "CompleteQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._CompleteQuery._get_response(
@@ -658,7 +708,31 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             pb_resp = completion_service.CompleteQueryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_complete_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = completion_service.CompleteQueryResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.complete_query",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "CompleteQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportCompletionSuggestions(
@@ -697,7 +771,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import completion
             suggestions method over HTTP.
@@ -710,8 +784,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -724,6 +800,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             http_options = (
                 _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_completion_suggestions(
                 request, metadata
             )
@@ -739,6 +816,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.ImportCompletionSuggestions",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "ImportCompletionSuggestions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._ImportCompletionSuggestions._get_response(
@@ -759,7 +863,29 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_completion_suggestions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.import_completion_suggestions",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "ImportCompletionSuggestions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportSuggestionDenyListEntries(
@@ -800,7 +926,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import suggestion deny
             list entries method over HTTP.
@@ -813,8 +939,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -827,6 +955,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             http_options = (
                 _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -845,6 +974,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.ImportSuggestionDenyListEntries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "ImportSuggestionDenyListEntries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._ImportSuggestionDenyListEntries._get_response(
@@ -865,7 +1021,29 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_suggestion_deny_list_entries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.import_suggestion_deny_list_entries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "ImportSuggestionDenyListEntries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PurgeCompletionSuggestions(
@@ -904,7 +1082,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the purge completion
             suggestions method over HTTP.
@@ -917,8 +1095,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -931,6 +1111,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             http_options = (
                 _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_purge_completion_suggestions(
                 request, metadata
             )
@@ -946,6 +1127,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.PurgeCompletionSuggestions",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "PurgeCompletionSuggestions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._PurgeCompletionSuggestions._get_response(
@@ -966,7 +1174,29 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_purge_completion_suggestions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.purge_completion_suggestions",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "PurgeCompletionSuggestions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PurgeSuggestionDenyListEntries(
@@ -1005,7 +1235,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the purge suggestion deny
             list entries method over HTTP.
@@ -1018,8 +1248,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1032,6 +1264,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             http_options = (
                 _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1050,6 +1283,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.PurgeSuggestionDenyListEntries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "PurgeSuggestionDenyListEntries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._PurgeSuggestionDenyListEntries._get_response(
@@ -1070,7 +1330,29 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_purge_suggestion_deny_list_entries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.CompletionServiceClient.purge_suggestion_deny_list_entries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "PurgeSuggestionDenyListEntries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1164,7 +1446,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1174,13 +1456,16 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCompletionServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1196,6 +1481,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._CancelOperation._get_response(
@@ -1253,7 +1565,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1263,8 +1575,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1273,6 +1587,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             http_options = (
                 _BaseCompletionServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCompletionServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1282,6 +1597,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._GetOperation._get_response(
@@ -1302,6 +1644,27 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.CompletionServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1343,7 +1706,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1353,8 +1716,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1363,6 +1728,7 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             http_options = (
                 _BaseCompletionServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCompletionServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1372,6 +1738,33 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             query_params = _BaseCompletionServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1.CompletionServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CompletionServiceRestTransport._ListOperations._get_response(
@@ -1392,6 +1785,27 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1.CompletionServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1.CompletionService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

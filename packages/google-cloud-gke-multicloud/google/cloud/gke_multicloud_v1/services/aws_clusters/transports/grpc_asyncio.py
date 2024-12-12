@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,13 +26,92 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
 
 from .base import DEFAULT_CLIENT_INFO, AwsClustersTransport
 from .grpc import AwsClustersGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
@@ -230,10 +312,13 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -256,7 +341,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -289,7 +374,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_aws_cluster" not in self._stubs:
-            self._stubs["create_aws_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["create_aws_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/CreateAwsCluster",
                 request_serializer=aws_service.CreateAwsClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -318,7 +403,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_aws_cluster" not in self._stubs:
-            self._stubs["update_aws_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["update_aws_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/UpdateAwsCluster",
                 request_serializer=aws_service.UpdateAwsClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -347,7 +432,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_aws_cluster" not in self._stubs:
-            self._stubs["get_aws_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["get_aws_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsCluster",
                 request_serializer=aws_service.GetAwsClusterRequest.serialize,
                 response_deserializer=aws_resources.AwsCluster.deserialize,
@@ -377,7 +462,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_aws_clusters" not in self._stubs:
-            self._stubs["list_aws_clusters"] = self.grpc_channel.unary_unary(
+            self._stubs["list_aws_clusters"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/ListAwsClusters",
                 request_serializer=aws_service.ListAwsClustersRequest.serialize,
                 response_deserializer=aws_service.ListAwsClustersResponse.deserialize,
@@ -414,7 +499,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_aws_cluster" not in self._stubs:
-            self._stubs["delete_aws_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_aws_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/DeleteAwsCluster",
                 request_serializer=aws_service.DeleteAwsClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -446,7 +531,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         if "generate_aws_cluster_agent_token" not in self._stubs:
             self._stubs[
                 "generate_aws_cluster_agent_token"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsClusterAgentToken",
                 request_serializer=aws_service.GenerateAwsClusterAgentTokenRequest.serialize,
                 response_deserializer=aws_service.GenerateAwsClusterAgentTokenResponse.deserialize,
@@ -476,7 +561,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_aws_access_token" not in self._stubs:
-            self._stubs["generate_aws_access_token"] = self.grpc_channel.unary_unary(
+            self._stubs["generate_aws_access_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsAccessToken",
                 request_serializer=aws_service.GenerateAwsAccessTokenRequest.serialize,
                 response_deserializer=aws_service.GenerateAwsAccessTokenResponse.deserialize,
@@ -511,7 +596,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_aws_node_pool" not in self._stubs:
-            self._stubs["create_aws_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["create_aws_node_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/CreateAwsNodePool",
                 request_serializer=aws_service.CreateAwsNodePoolRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -540,7 +625,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_aws_node_pool" not in self._stubs:
-            self._stubs["update_aws_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["update_aws_node_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/UpdateAwsNodePool",
                 request_serializer=aws_service.UpdateAwsNodePoolRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -576,7 +661,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         if "rollback_aws_node_pool_update" not in self._stubs:
             self._stubs[
                 "rollback_aws_node_pool_update"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/RollbackAwsNodePoolUpdate",
                 request_serializer=aws_service.RollbackAwsNodePoolUpdateRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -606,7 +691,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_aws_node_pool" not in self._stubs:
-            self._stubs["get_aws_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["get_aws_node_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsNodePool",
                 request_serializer=aws_service.GetAwsNodePoolRequest.serialize,
                 response_deserializer=aws_resources.AwsNodePool.deserialize,
@@ -638,7 +723,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_aws_node_pools" not in self._stubs:
-            self._stubs["list_aws_node_pools"] = self.grpc_channel.unary_unary(
+            self._stubs["list_aws_node_pools"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/ListAwsNodePools",
                 request_serializer=aws_service.ListAwsNodePoolsRequest.serialize,
                 response_deserializer=aws_service.ListAwsNodePoolsResponse.deserialize,
@@ -672,7 +757,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_aws_node_pool" not in self._stubs:
-            self._stubs["delete_aws_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_aws_node_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/DeleteAwsNodePool",
                 request_serializer=aws_service.DeleteAwsNodePoolRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -704,7 +789,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_aws_open_id_config" not in self._stubs:
-            self._stubs["get_aws_open_id_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_aws_open_id_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsOpenIdConfig",
                 request_serializer=aws_service.GetAwsOpenIdConfigRequest.serialize,
                 response_deserializer=aws_resources.AwsOpenIdConfig.deserialize,
@@ -733,7 +818,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_aws_json_web_keys" not in self._stubs:
-            self._stubs["get_aws_json_web_keys"] = self.grpc_channel.unary_unary(
+            self._stubs["get_aws_json_web_keys"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsJsonWebKeys",
                 request_serializer=aws_service.GetAwsJsonWebKeysRequest.serialize,
                 response_deserializer=aws_resources.AwsJsonWebKeys.deserialize,
@@ -764,7 +849,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_aws_server_config" not in self._stubs:
-            self._stubs["get_aws_server_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_aws_server_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsServerConfig",
                 request_serializer=aws_service.GetAwsServerConfigRequest.serialize,
                 response_deserializer=aws_resources.AwsServerConfig.deserialize,
@@ -963,7 +1048,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -979,7 +1064,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -996,7 +1081,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1013,7 +1098,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1032,7 +1117,7 @@ class AwsClustersGrpcAsyncIOTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,

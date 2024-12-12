@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -43,6 +43,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -119,9 +127,10 @@ class SampleQueryServiceRestInterceptor:
     def pre_create_sample_query(
         self,
         request: sample_query_service.CreateSampleQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        sample_query_service.CreateSampleQueryRequest, Sequence[Tuple[str, str]]
+        sample_query_service.CreateSampleQueryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_sample_query
 
@@ -144,9 +153,10 @@ class SampleQueryServiceRestInterceptor:
     def pre_delete_sample_query(
         self,
         request: sample_query_service.DeleteSampleQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        sample_query_service.DeleteSampleQueryRequest, Sequence[Tuple[str, str]]
+        sample_query_service.DeleteSampleQueryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_sample_query
 
@@ -158,8 +168,11 @@ class SampleQueryServiceRestInterceptor:
     def pre_get_sample_query(
         self,
         request: sample_query_service.GetSampleQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[sample_query_service.GetSampleQueryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        sample_query_service.GetSampleQueryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_sample_query
 
         Override in a subclass to manipulate the request or metadata
@@ -181,8 +194,11 @@ class SampleQueryServiceRestInterceptor:
     def pre_import_sample_queries(
         self,
         request: import_config.ImportSampleQueriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[import_config.ImportSampleQueriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        import_config.ImportSampleQueriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for import_sample_queries
 
         Override in a subclass to manipulate the request or metadata
@@ -204,9 +220,10 @@ class SampleQueryServiceRestInterceptor:
     def pre_list_sample_queries(
         self,
         request: sample_query_service.ListSampleQueriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        sample_query_service.ListSampleQueriesRequest, Sequence[Tuple[str, str]]
+        sample_query_service.ListSampleQueriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_sample_queries
 
@@ -229,9 +246,10 @@ class SampleQueryServiceRestInterceptor:
     def pre_update_sample_query(
         self,
         request: sample_query_service.UpdateSampleQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        sample_query_service.UpdateSampleQueryRequest, Sequence[Tuple[str, str]]
+        sample_query_service.UpdateSampleQueryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_sample_query
 
@@ -254,8 +272,10 @@ class SampleQueryServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -275,8 +295,10 @@ class SampleQueryServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -298,8 +320,10 @@ class SampleQueryServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -615,7 +639,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_sample_query.SampleQuery:
             r"""Call the create sample query method over HTTP.
 
@@ -627,8 +651,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_sample_query.SampleQuery:
@@ -640,6 +666,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_sample_query(
                 request, metadata
             )
@@ -655,6 +682,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.CreateSampleQuery",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "CreateSampleQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._CreateSampleQuery._get_response(
@@ -677,7 +731,29 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             pb_resp = gcd_sample_query.SampleQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_sample_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_sample_query.SampleQuery.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.create_sample_query",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "CreateSampleQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSampleQuery(
@@ -715,7 +791,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete sample query method over HTTP.
 
@@ -727,13 +803,16 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_sample_query(
                 request, metadata
             )
@@ -745,6 +824,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.DeleteSampleQuery",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "DeleteSampleQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._DeleteSampleQuery._get_response(
@@ -796,7 +902,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> sample_query.SampleQuery:
             r"""Call the get sample query method over HTTP.
 
@@ -808,8 +914,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.sample_query.SampleQuery:
@@ -821,6 +929,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_sample_query(
                 request, metadata
             )
@@ -832,6 +941,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.GetSampleQuery",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "GetSampleQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._GetSampleQuery._get_response(
@@ -853,7 +989,29 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             pb_resp = sample_query.SampleQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_sample_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = sample_query.SampleQuery.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.get_sample_query",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "GetSampleQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportSampleQueries(
@@ -892,7 +1050,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import sample queries method over HTTP.
 
@@ -904,8 +1062,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -918,6 +1078,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_sample_queries(
                 request, metadata
             )
@@ -933,6 +1094,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.ImportSampleQueries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "ImportSampleQueries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -955,7 +1143,29 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_sample_queries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.import_sample_queries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "ImportSampleQueries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSampleQueries(
@@ -993,7 +1203,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> sample_query_service.ListSampleQueriesResponse:
             r"""Call the list sample queries method over HTTP.
 
@@ -1005,8 +1215,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.sample_query_service.ListSampleQueriesResponse:
@@ -1019,6 +1231,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_sample_queries(
                 request, metadata
             )
@@ -1030,6 +1243,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.ListSampleQueries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "ListSampleQueries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._ListSampleQueries._get_response(
@@ -1051,7 +1291,31 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             pb_resp = sample_query_service.ListSampleQueriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_sample_queries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        sample_query_service.ListSampleQueriesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.list_sample_queries",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "ListSampleQueries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSampleQuery(
@@ -1090,7 +1354,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_sample_query.SampleQuery:
             r"""Call the update sample query method over HTTP.
 
@@ -1102,8 +1366,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_sample_query.SampleQuery:
@@ -1115,6 +1381,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_sample_query(
                 request, metadata
             )
@@ -1130,6 +1397,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.UpdateSampleQuery",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "UpdateSampleQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._UpdateSampleQuery._get_response(
@@ -1152,7 +1446,29 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             pb_resp = gcd_sample_query.SampleQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_sample_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_sample_query.SampleQuery.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.update_sample_query",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "UpdateSampleQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1252,7 +1568,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1262,13 +1578,16 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1284,6 +1603,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._CancelOperation._get_response(
@@ -1342,7 +1688,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1352,8 +1698,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1362,6 +1710,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1371,6 +1720,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._GetOperation._get_response(
@@ -1391,6 +1767,27 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1alpha.SampleQueryServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1432,7 +1829,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1442,8 +1839,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1452,6 +1851,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             http_options = (
                 _BaseSampleQueryServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1461,6 +1861,33 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             query_params = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1alpha.SampleQueryServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SampleQueryServiceRestTransport._ListOperations._get_response(
@@ -1481,6 +1908,27 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1alpha.SampleQueryServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1alpha.SampleQueryService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

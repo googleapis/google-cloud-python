@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -43,6 +43,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -111,9 +119,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_create_security_settings(
         self,
         request: gcdc_security_settings.CreateSecuritySettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_security_settings.CreateSecuritySettingsRequest, Sequence[Tuple[str, str]]
+        gcdc_security_settings.CreateSecuritySettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_security_settings
 
@@ -136,9 +145,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_delete_security_settings(
         self,
         request: security_settings.DeleteSecuritySettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        security_settings.DeleteSecuritySettingsRequest, Sequence[Tuple[str, str]]
+        security_settings.DeleteSecuritySettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_security_settings
 
@@ -150,8 +160,11 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_get_security_settings(
         self,
         request: security_settings.GetSecuritySettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[security_settings.GetSecuritySettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_settings.GetSecuritySettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_security_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -173,9 +186,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_list_security_settings(
         self,
         request: security_settings.ListSecuritySettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        security_settings.ListSecuritySettingsRequest, Sequence[Tuple[str, str]]
+        security_settings.ListSecuritySettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_security_settings
 
@@ -198,9 +212,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_update_security_settings(
         self,
         request: gcdc_security_settings.UpdateSecuritySettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcdc_security_settings.UpdateSecuritySettingsRequest, Sequence[Tuple[str, str]]
+        gcdc_security_settings.UpdateSecuritySettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_security_settings
 
@@ -223,8 +238,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -246,8 +263,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +288,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -290,8 +311,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -313,8 +336,10 @@ class SecuritySettingsServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -456,7 +481,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcdc_security_settings.SecuritySettings:
             r"""Call the create security settings method over HTTP.
 
@@ -467,8 +492,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcdc_security_settings.SecuritySettings:
@@ -484,6 +511,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseCreateSecuritySettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_security_settings(
                 request, metadata
             )
@@ -499,6 +527,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseCreateSecuritySettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.CreateSecuritySettings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "CreateSecuritySettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecuritySettingsServiceRestTransport._CreateSecuritySettings._get_response(
@@ -521,7 +576,31 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             pb_resp = gcdc_security_settings.SecuritySettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_security_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcdc_security_settings.SecuritySettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.create_security_settings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "CreateSecuritySettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSecuritySettings(
@@ -559,7 +638,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete security settings method over HTTP.
 
@@ -570,13 +649,16 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseDeleteSecuritySettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_security_settings(
                 request, metadata
             )
@@ -588,6 +670,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseDeleteSecuritySettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.DeleteSecuritySettings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "DeleteSecuritySettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecuritySettingsServiceRestTransport._DeleteSecuritySettings._get_response(
@@ -639,7 +748,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_settings.SecuritySettings:
             r"""Call the get security settings method over HTTP.
 
@@ -650,8 +759,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.security_settings.SecuritySettings:
@@ -667,6 +778,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseGetSecuritySettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_security_settings(
                 request, metadata
             )
@@ -678,6 +790,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseGetSecuritySettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.GetSecuritySettings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "GetSecuritySettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -701,7 +840,31 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             pb_resp = security_settings.SecuritySettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_security_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_settings.SecuritySettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.get_security_settings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "GetSecuritySettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSecuritySettings(
@@ -739,7 +902,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_settings.ListSecuritySettingsResponse:
             r"""Call the list security settings method over HTTP.
 
@@ -750,8 +913,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.security_settings.ListSecuritySettingsResponse:
@@ -763,6 +928,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseListSecuritySettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_security_settings(
                 request, metadata
             )
@@ -774,6 +940,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseListSecuritySettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.ListSecuritySettings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "ListSecuritySettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecuritySettingsServiceRestTransport._ListSecuritySettings._get_response(
@@ -795,7 +988,31 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             pb_resp = security_settings.ListSecuritySettingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_security_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        security_settings.ListSecuritySettingsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.list_security_settings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "ListSecuritySettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSecuritySettings(
@@ -834,7 +1051,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcdc_security_settings.SecuritySettings:
             r"""Call the update security settings method over HTTP.
 
@@ -845,8 +1062,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcdc_security_settings.SecuritySettings:
@@ -862,6 +1081,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseUpdateSecuritySettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_security_settings(
                 request, metadata
             )
@@ -877,6 +1097,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseUpdateSecuritySettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.UpdateSecuritySettings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "UpdateSecuritySettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecuritySettingsServiceRestTransport._UpdateSecuritySettings._get_response(
@@ -899,7 +1146,31 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             pb_resp = gcdc_security_settings.SecuritySettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_security_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcdc_security_settings.SecuritySettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.update_security_settings",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "UpdateSecuritySettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -993,7 +1264,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1003,8 +1274,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1013,6 +1286,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseSecuritySettingsServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1022,6 +1296,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecuritySettingsServiceRestTransport._GetLocation._get_response(
@@ -1042,6 +1343,27 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1083,7 +1405,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1093,8 +1415,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1103,6 +1427,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseSecuritySettingsServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1112,6 +1437,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1134,6 +1486,27 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1175,7 +1548,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1185,13 +1558,16 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1203,6 +1579,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1262,7 +1665,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1272,8 +1675,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1282,6 +1687,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSecuritySettingsServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1291,6 +1697,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecuritySettingsServiceRestTransport._GetOperation._get_response(
@@ -1311,6 +1744,27 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1352,7 +1806,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1362,8 +1816,10 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1372,6 +1828,7 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             http_options = (
                 _BaseSecuritySettingsServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSecuritySettingsServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1381,6 +1838,33 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             query_params = _BaseSecuritySettingsServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1403,6 +1887,27 @@ class SecuritySettingsServiceRestTransport(_BaseSecuritySettingsServiceRestTrans
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.SecuritySettingsServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.SecuritySettingsService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

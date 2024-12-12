@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -45,6 +45,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -173,9 +181,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_answer_query(
         self,
         request: conversational_search_service.AnswerQueryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.AnswerQueryRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.AnswerQueryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for answer_query
 
@@ -198,10 +207,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_converse_conversation(
         self,
         request: conversational_search_service.ConverseConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         conversational_search_service.ConverseConversationRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for converse_conversation
 
@@ -224,10 +233,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_create_conversation(
         self,
         request: conversational_search_service.CreateConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         conversational_search_service.CreateConversationRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_conversation
 
@@ -250,9 +259,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_create_session(
         self,
         request: conversational_search_service.CreateSessionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.CreateSessionRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.CreateSessionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_session
 
@@ -273,10 +283,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_delete_conversation(
         self,
         request: conversational_search_service.DeleteConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         conversational_search_service.DeleteConversationRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_conversation
 
@@ -288,9 +298,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_delete_session(
         self,
         request: conversational_search_service.DeleteSessionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.DeleteSessionRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.DeleteSessionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_session
 
@@ -302,9 +313,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_get_answer(
         self,
         request: conversational_search_service.GetAnswerRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.GetAnswerRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.GetAnswerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_answer
 
@@ -325,9 +337,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_get_conversation(
         self,
         request: conversational_search_service.GetConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.GetConversationRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.GetConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_conversation
 
@@ -350,9 +363,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_get_session(
         self,
         request: conversational_search_service.GetSessionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.GetSessionRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.GetSessionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_session
 
@@ -373,10 +387,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_list_conversations(
         self,
         request: conversational_search_service.ListConversationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         conversational_search_service.ListConversationsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_conversations
 
@@ -399,9 +413,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_list_sessions(
         self,
         request: conversational_search_service.ListSessionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.ListSessionsRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.ListSessionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_sessions
 
@@ -424,10 +439,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_update_conversation(
         self,
         request: conversational_search_service.UpdateConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         conversational_search_service.UpdateConversationRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_conversation
 
@@ -450,9 +465,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_update_session(
         self,
         request: conversational_search_service.UpdateSessionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversational_search_service.UpdateSessionRequest, Sequence[Tuple[str, str]]
+        conversational_search_service.UpdateSessionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_session
 
@@ -473,8 +489,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -494,8 +512,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -517,8 +537,10 @@ class ConversationalSearchServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -662,7 +684,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversational_search_service.AnswerQueryResponse:
             r"""Call the answer query method over HTTP.
 
@@ -674,8 +696,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversational_search_service.AnswerQueryResponse:
@@ -688,6 +712,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_answer_query(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_transcoded_request(
                 http_options, request
@@ -701,6 +726,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.AnswerQuery",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "AnswerQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -725,7 +777,33 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = conversational_search_service.AnswerQueryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_answer_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        conversational_search_service.AnswerQueryResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.answer_query",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "AnswerQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ConverseConversation(
@@ -764,7 +842,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversational_search_service.ConverseConversationResponse:
             r"""Call the converse conversation method over HTTP.
 
@@ -776,8 +854,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversational_search_service.ConverseConversationResponse:
@@ -790,6 +870,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_converse_conversation(
                 request, metadata
             )
@@ -805,6 +886,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.ConverseConversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ConverseConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationalSearchServiceRestTransport._ConverseConversation._get_response(
@@ -829,7 +937,31 @@ class ConversationalSearchServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_converse_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversational_search_service.ConverseConversationResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.converse_conversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ConverseConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateConversation(
@@ -868,7 +1000,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_conversation.Conversation:
             r"""Call the create conversation method over HTTP.
 
@@ -879,8 +1011,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_conversation.Conversation:
@@ -892,6 +1026,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_conversation(
                 request, metadata
             )
@@ -907,6 +1042,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.CreateConversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "CreateConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationalSearchServiceRestTransport._CreateConversation._get_response(
@@ -929,7 +1091,29 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = gcd_conversation.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_conversation.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.create_conversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "CreateConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSession(
@@ -968,7 +1152,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_session.Session:
             r"""Call the create session method over HTTP.
 
@@ -978,8 +1162,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_session.Session:
@@ -989,6 +1175,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_session(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_transcoded_request(
                 http_options, request
@@ -1002,6 +1189,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.CreateSession",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "CreateSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1026,7 +1240,29 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = gcd_session.Session.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_session(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_session.Session.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.create_session",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "CreateSession",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConversation(
@@ -1064,7 +1300,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete conversation method over HTTP.
 
@@ -1075,13 +1311,16 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseDeleteConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_conversation(
                 request, metadata
             )
@@ -1093,6 +1332,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseDeleteConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.DeleteConversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "DeleteConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationalSearchServiceRestTransport._DeleteConversation._get_response(
@@ -1144,7 +1410,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete session method over HTTP.
 
@@ -1154,13 +1420,16 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_session(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_transcoded_request(
                 http_options, request
@@ -1170,6 +1439,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.DeleteSession",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "DeleteSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1223,7 +1519,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> answer.Answer:
             r"""Call the get answer method over HTTP.
 
@@ -1233,8 +1529,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.answer.Answer:
@@ -1244,6 +1542,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_answer(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_transcoded_request(
                 http_options, request
@@ -1253,6 +1552,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.GetAnswer",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetAnswer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1276,7 +1602,29 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = answer.Answer.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_answer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = answer.Answer.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.get_answer",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetAnswer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConversation(
@@ -1314,7 +1662,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.Conversation:
             r"""Call the get conversation method over HTTP.
 
@@ -1324,8 +1672,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversation.Conversation:
@@ -1337,6 +1687,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseGetConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_conversation(
                 request, metadata
             )
@@ -1348,6 +1699,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseGetConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.GetConversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1371,7 +1749,29 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = conversation.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversation.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.get_conversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSession(
@@ -1409,7 +1809,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> session.Session:
             r"""Call the get session method over HTTP.
 
@@ -1419,8 +1819,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.session.Session:
@@ -1430,6 +1832,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseGetSession._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_session(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseGetSession._get_transcoded_request(
                 http_options, request
@@ -1439,6 +1842,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseGetSession._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.GetSession",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1462,7 +1892,29 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = session.Session.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_session(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = session.Session.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.get_session",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetSession",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConversations(
@@ -1500,7 +1952,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversational_search_service.ListConversationsResponse:
             r"""Call the list conversations method over HTTP.
 
@@ -1510,8 +1962,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversational_search_service.ListConversationsResponse:
@@ -1523,6 +1977,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseListConversations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_conversations(
                 request, metadata
             )
@@ -1534,6 +1989,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseListConversations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.ListConversations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ListConversations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationalSearchServiceRestTransport._ListConversations._get_response(
@@ -1555,7 +2037,33 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = conversational_search_service.ListConversationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_conversations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        conversational_search_service.ListConversationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.list_conversations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ListConversations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSessions(
@@ -1593,7 +2101,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversational_search_service.ListSessionsResponse:
             r"""Call the list sessions method over HTTP.
 
@@ -1603,8 +2111,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversational_search_service.ListSessionsResponse:
@@ -1614,6 +2124,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseListSessions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_sessions(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseListSessions._get_transcoded_request(
                 http_options, request
@@ -1623,6 +2134,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseListSessions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.ListSessions",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ListSessions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1646,7 +2184,33 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = conversational_search_service.ListSessionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_sessions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        conversational_search_service.ListSessionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.list_sessions",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ListSessions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConversation(
@@ -1685,7 +2249,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_conversation.Conversation:
             r"""Call the update conversation method over HTTP.
 
@@ -1696,8 +2260,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_conversation.Conversation:
@@ -1709,6 +2275,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_conversation(
                 request, metadata
             )
@@ -1724,6 +2291,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.UpdateConversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "UpdateConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationalSearchServiceRestTransport._UpdateConversation._get_response(
@@ -1746,7 +2340,29 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = gcd_conversation.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_conversation.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.update_conversation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "UpdateConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSession(
@@ -1785,7 +2401,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_session.Session:
             r"""Call the update session method over HTTP.
 
@@ -1795,8 +2411,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_session.Session:
@@ -1806,6 +2424,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_session(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_transcoded_request(
                 http_options, request
@@ -1819,6 +2438,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.UpdateSession",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "UpdateSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1843,7 +2489,29 @@ class ConversationalSearchServiceRestTransport(
             pb_resp = gcd_session.Session.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_session(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_session.Session.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.update_session",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "UpdateSession",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2019,7 +2687,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2029,13 +2697,16 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2051,6 +2722,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2111,7 +2809,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2121,8 +2819,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2131,6 +2831,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2140,6 +2841,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2162,6 +2890,27 @@ class ConversationalSearchServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2203,7 +2952,7 @@ class ConversationalSearchServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2213,8 +2962,10 @@ class ConversationalSearchServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2223,6 +2974,7 @@ class ConversationalSearchServiceRestTransport(
             http_options = (
                 _BaseConversationalSearchServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2232,6 +2984,33 @@ class ConversationalSearchServiceRestTransport(
             query_params = _BaseConversationalSearchServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2254,6 +3033,27 @@ class ConversationalSearchServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

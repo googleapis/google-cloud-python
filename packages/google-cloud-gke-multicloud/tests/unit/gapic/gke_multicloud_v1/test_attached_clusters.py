@@ -4590,6 +4590,7 @@ def test_create_attached_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_attached_cluster(request)
 
@@ -4654,6 +4655,7 @@ def test_create_attached_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_attached_cluster(**mock_args)
 
@@ -4796,6 +4798,7 @@ def test_update_attached_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_attached_cluster(request)
 
@@ -4857,6 +4860,7 @@ def test_update_attached_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_attached_cluster(**mock_args)
 
@@ -5008,6 +5012,7 @@ def test_import_attached_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.import_attached_cluster(request)
 
@@ -5062,6 +5067,7 @@ def test_import_attached_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.import_attached_cluster(**mock_args)
 
@@ -5198,6 +5204,7 @@ def test_get_attached_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_attached_cluster(request)
 
@@ -5245,6 +5252,7 @@ def test_get_attached_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_attached_cluster(**mock_args)
 
@@ -5390,6 +5398,7 @@ def test_list_attached_clusters_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_attached_clusters(request)
 
@@ -5443,6 +5452,7 @@ def test_list_attached_clusters_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_attached_clusters(**mock_args)
 
@@ -5652,6 +5662,7 @@ def test_delete_attached_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_attached_cluster(request)
 
@@ -5707,6 +5718,7 @@ def test_delete_attached_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_attached_cluster(**mock_args)
 
@@ -5843,6 +5855,7 @@ def test_get_attached_server_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_attached_server_config(request)
 
@@ -5890,6 +5903,7 @@ def test_get_attached_server_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_attached_server_config(**mock_args)
 
@@ -6056,6 +6070,7 @@ def test_generate_attached_cluster_install_manifest_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_attached_cluster_install_manifest(request)
 
@@ -6134,6 +6149,7 @@ def test_generate_attached_cluster_install_manifest_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.generate_attached_cluster_install_manifest(**mock_args)
 
@@ -6294,6 +6310,7 @@ def test_generate_attached_cluster_agent_token_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_attached_cluster_agent_token(request)
 
@@ -6944,6 +6961,7 @@ def test_create_attached_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_attached_cluster(request)
 
 
@@ -7077,6 +7095,7 @@ def test_create_attached_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_attached_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -7118,6 +7137,7 @@ def test_create_attached_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7166,6 +7186,7 @@ def test_update_attached_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_attached_cluster(request)
 
 
@@ -7303,6 +7324,7 @@ def test_update_attached_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_attached_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -7344,6 +7366,7 @@ def test_update_attached_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7388,6 +7411,7 @@ def test_import_attached_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.import_attached_cluster(request)
 
 
@@ -7418,6 +7442,7 @@ def test_import_attached_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.import_attached_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -7459,6 +7484,7 @@ def test_import_attached_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7505,6 +7531,7 @@ def test_get_attached_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_attached_cluster(request)
 
 
@@ -7551,6 +7578,7 @@ def test_get_attached_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_attached_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -7600,6 +7628,7 @@ def test_get_attached_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = attached_resources.AttachedCluster.to_json(
             attached_resources.AttachedCluster()
         )
@@ -7646,6 +7675,7 @@ def test_list_attached_clusters_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_attached_clusters(request)
 
 
@@ -7681,6 +7711,7 @@ def test_list_attached_clusters_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_attached_clusters(request)
 
     # Establish that the response is the type that we expect.
@@ -7721,6 +7752,7 @@ def test_list_attached_clusters_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = attached_service.ListAttachedClustersResponse.to_json(
             attached_service.ListAttachedClustersResponse()
         )
@@ -7769,6 +7801,7 @@ def test_delete_attached_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_attached_cluster(request)
 
 
@@ -7801,6 +7834,7 @@ def test_delete_attached_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_attached_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -7842,6 +7876,7 @@ def test_delete_attached_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7886,6 +7921,7 @@ def test_get_attached_server_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_attached_server_config(request)
 
 
@@ -7921,6 +7957,7 @@ def test_get_attached_server_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_attached_server_config(request)
 
     # Establish that the response is the type that we expect.
@@ -7961,6 +7998,7 @@ def test_get_attached_server_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = attached_resources.AttachedServerConfig.to_json(
             attached_resources.AttachedServerConfig()
         )
@@ -8007,6 +8045,7 @@ def test_generate_attached_cluster_install_manifest_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_attached_cluster_install_manifest(request)
 
 
@@ -8046,6 +8085,7 @@ def test_generate_attached_cluster_install_manifest_rest_call_success(request_ty
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_attached_cluster_install_manifest(request)
 
     # Establish that the response is the type that we expect.
@@ -8090,6 +8130,7 @@ def test_generate_attached_cluster_install_manifest_rest_interceptors(null_inter
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             attached_service.GenerateAttachedClusterInstallManifestResponse.to_json(
                 attached_service.GenerateAttachedClusterInstallManifestResponse()
@@ -8142,6 +8183,7 @@ def test_generate_attached_cluster_agent_token_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_attached_cluster_agent_token(request)
 
 
@@ -8183,6 +8225,7 @@ def test_generate_attached_cluster_agent_token_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_attached_cluster_agent_token(request)
 
     # Establish that the response is the type that we expect.
@@ -8229,6 +8272,7 @@ def test_generate_attached_cluster_agent_token_rest_interceptors(null_intercepto
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             attached_service.GenerateAttachedClusterAgentTokenResponse.to_json(
                 attached_service.GenerateAttachedClusterAgentTokenResponse()
@@ -8279,6 +8323,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -8309,6 +8354,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -8339,6 +8385,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -8369,6 +8416,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -8399,6 +8447,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -8429,6 +8478,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -8459,6 +8509,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -8489,6 +8540,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

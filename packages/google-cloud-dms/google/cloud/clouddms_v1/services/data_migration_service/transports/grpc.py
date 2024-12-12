@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -25,7 +28,10 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.clouddms_v1.types import (
     clouddms,
@@ -34,6 +40,81 @@ from google.cloud.clouddms_v1.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO, DataMigrationServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.clouddms.v1.DataMigrationService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.clouddms.v1.DataMigrationService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
@@ -189,7 +270,12 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -253,7 +339,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -279,7 +367,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_migration_jobs" not in self._stubs:
-            self._stubs["list_migration_jobs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_migration_jobs"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListMigrationJobs",
                 request_serializer=clouddms.ListMigrationJobsRequest.serialize,
                 response_deserializer=clouddms.ListMigrationJobsResponse.deserialize,
@@ -305,7 +393,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_migration_job" not in self._stubs:
-            self._stubs["get_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["get_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/GetMigrationJob",
                 request_serializer=clouddms.GetMigrationJobRequest.serialize,
                 response_deserializer=clouddms_resources.MigrationJob.deserialize,
@@ -332,7 +420,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_migration_job" not in self._stubs:
-            self._stubs["create_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["create_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreateMigrationJob",
                 request_serializer=clouddms.CreateMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -358,7 +446,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_migration_job" not in self._stubs:
-            self._stubs["update_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["update_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/UpdateMigrationJob",
                 request_serializer=clouddms.UpdateMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -384,7 +472,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_migration_job" not in self._stubs:
-            self._stubs["delete_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeleteMigrationJob",
                 request_serializer=clouddms.DeleteMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -410,7 +498,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_migration_job" not in self._stubs:
-            self._stubs["start_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["start_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/StartMigrationJob",
                 request_serializer=clouddms.StartMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -436,7 +524,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "stop_migration_job" not in self._stubs:
-            self._stubs["stop_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["stop_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/StopMigrationJob",
                 request_serializer=clouddms.StopMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -463,7 +551,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "resume_migration_job" not in self._stubs:
-            self._stubs["resume_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["resume_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ResumeMigrationJob",
                 request_serializer=clouddms.ResumeMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -491,7 +579,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "promote_migration_job" not in self._stubs:
-            self._stubs["promote_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["promote_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/PromoteMigrationJob",
                 request_serializer=clouddms.PromoteMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -519,7 +607,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "verify_migration_job" not in self._stubs:
-            self._stubs["verify_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["verify_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/VerifyMigrationJob",
                 request_serializer=clouddms.VerifyMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -547,7 +635,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restart_migration_job" not in self._stubs:
-            self._stubs["restart_migration_job"] = self.grpc_channel.unary_unary(
+            self._stubs["restart_migration_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/RestartMigrationJob",
                 request_serializer=clouddms.RestartMigrationJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -574,7 +662,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_ssh_script" not in self._stubs:
-            self._stubs["generate_ssh_script"] = self.grpc_channel.unary_unary(
+            self._stubs["generate_ssh_script"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/GenerateSshScript",
                 request_serializer=clouddms.GenerateSshScriptRequest.serialize,
                 response_deserializer=clouddms.SshScript.deserialize,
@@ -601,7 +689,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_tcp_proxy_script" not in self._stubs:
-            self._stubs["generate_tcp_proxy_script"] = self.grpc_channel.unary_unary(
+            self._stubs["generate_tcp_proxy_script"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/GenerateTcpProxyScript",
                 request_serializer=clouddms.GenerateTcpProxyScriptRequest.serialize,
                 response_deserializer=clouddms.TcpProxyScript.deserialize,
@@ -631,7 +719,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_connection_profiles" not in self._stubs:
-            self._stubs["list_connection_profiles"] = self.grpc_channel.unary_unary(
+            self._stubs["list_connection_profiles"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListConnectionProfiles",
                 request_serializer=clouddms.ListConnectionProfilesRequest.serialize,
                 response_deserializer=clouddms.ListConnectionProfilesResponse.deserialize,
@@ -659,7 +747,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_connection_profile" not in self._stubs:
-            self._stubs["get_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["get_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/GetConnectionProfile",
                 request_serializer=clouddms.GetConnectionProfileRequest.serialize,
                 response_deserializer=clouddms_resources.ConnectionProfile.deserialize,
@@ -686,7 +774,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_connection_profile" not in self._stubs:
-            self._stubs["create_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["create_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreateConnectionProfile",
                 request_serializer=clouddms.CreateConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -713,7 +801,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_connection_profile" not in self._stubs:
-            self._stubs["update_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["update_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/UpdateConnectionProfile",
                 request_serializer=clouddms.UpdateConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -742,7 +830,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_connection_profile" not in self._stubs:
-            self._stubs["delete_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeleteConnectionProfile",
                 request_serializer=clouddms.DeleteConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -769,7 +857,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_private_connection" not in self._stubs:
-            self._stubs["create_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["create_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreatePrivateConnection",
                 request_serializer=clouddms.CreatePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -797,7 +885,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_private_connection" not in self._stubs:
-            self._stubs["get_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["get_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/GetPrivateConnection",
                 request_serializer=clouddms.GetPrivateConnectionRequest.serialize,
                 response_deserializer=clouddms_resources.PrivateConnection.deserialize,
@@ -827,7 +915,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_private_connections" not in self._stubs:
-            self._stubs["list_private_connections"] = self.grpc_channel.unary_unary(
+            self._stubs["list_private_connections"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListPrivateConnections",
                 request_serializer=clouddms.ListPrivateConnectionsRequest.serialize,
                 response_deserializer=clouddms.ListPrivateConnectionsResponse.deserialize,
@@ -854,7 +942,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_private_connection" not in self._stubs:
-            self._stubs["delete_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeletePrivateConnection",
                 request_serializer=clouddms.DeletePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -883,7 +971,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_conversion_workspace" not in self._stubs:
-            self._stubs["get_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs["get_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace",
                 request_serializer=clouddms.GetConversionWorkspaceRequest.serialize,
                 response_deserializer=conversionworkspace_resources.ConversionWorkspace.deserialize,
@@ -913,7 +1001,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_conversion_workspaces" not in self._stubs:
-            self._stubs["list_conversion_workspaces"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_conversion_workspaces"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListConversionWorkspaces",
                 request_serializer=clouddms.ListConversionWorkspacesRequest.serialize,
                 response_deserializer=clouddms.ListConversionWorkspacesResponse.deserialize,
@@ -942,7 +1032,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_conversion_workspace" not in self._stubs:
-            self._stubs["create_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_conversion_workspace"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreateConversionWorkspace",
                 request_serializer=clouddms.CreateConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -971,7 +1063,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_conversion_workspace" not in self._stubs:
-            self._stubs["update_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_conversion_workspace"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/UpdateConversionWorkspace",
                 request_serializer=clouddms.UpdateConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -999,7 +1093,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_conversion_workspace" not in self._stubs:
-            self._stubs["delete_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_conversion_workspace"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeleteConversionWorkspace",
                 request_serializer=clouddms.DeleteConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1028,7 +1124,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mapping_rule" not in self._stubs:
-            self._stubs["create_mapping_rule"] = self.grpc_channel.unary_unary(
+            self._stubs["create_mapping_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreateMappingRule",
                 request_serializer=clouddms.CreateMappingRuleRequest.serialize,
                 response_deserializer=conversionworkspace_resources.MappingRule.deserialize,
@@ -1054,7 +1150,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mapping_rule" not in self._stubs:
-            self._stubs["delete_mapping_rule"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_mapping_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeleteMappingRule",
                 request_serializer=clouddms.DeleteMappingRuleRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1083,7 +1179,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mapping_rules" not in self._stubs:
-            self._stubs["list_mapping_rules"] = self.grpc_channel.unary_unary(
+            self._stubs["list_mapping_rules"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListMappingRules",
                 request_serializer=clouddms.ListMappingRulesRequest.serialize,
                 response_deserializer=clouddms.ListMappingRulesResponse.deserialize,
@@ -1111,7 +1207,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mapping_rule" not in self._stubs:
-            self._stubs["get_mapping_rule"] = self.grpc_channel.unary_unary(
+            self._stubs["get_mapping_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/GetMappingRule",
                 request_serializer=clouddms.GetMappingRuleRequest.serialize,
                 response_deserializer=conversionworkspace_resources.MappingRule.deserialize,
@@ -1138,7 +1234,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "seed_conversion_workspace" not in self._stubs:
-            self._stubs["seed_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs["seed_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/SeedConversionWorkspace",
                 request_serializer=clouddms.SeedConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1166,7 +1262,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_mapping_rules" not in self._stubs:
-            self._stubs["import_mapping_rules"] = self.grpc_channel.unary_unary(
+            self._stubs["import_mapping_rules"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ImportMappingRules",
                 request_serializer=clouddms.ImportMappingRulesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1195,7 +1291,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "convert_conversion_workspace" not in self._stubs:
-            self._stubs["convert_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "convert_conversion_workspace"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ConvertConversionWorkspace",
                 request_serializer=clouddms.ConvertConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1224,7 +1322,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "commit_conversion_workspace" not in self._stubs:
-            self._stubs["commit_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "commit_conversion_workspace"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CommitConversionWorkspace",
                 request_serializer=clouddms.CommitConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1255,7 +1355,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         if "rollback_conversion_workspace" not in self._stubs:
             self._stubs[
                 "rollback_conversion_workspace"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/RollbackConversionWorkspace",
                 request_serializer=clouddms.RollbackConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1282,7 +1382,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "apply_conversion_workspace" not in self._stubs:
-            self._stubs["apply_conversion_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "apply_conversion_workspace"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ApplyConversionWorkspace",
                 request_serializer=clouddms.ApplyConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1317,7 +1419,9 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "describe_database_entities" not in self._stubs:
-            self._stubs["describe_database_entities"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "describe_database_entities"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DescribeDatabaseEntities",
                 request_serializer=clouddms.DescribeDatabaseEntitiesRequest.serialize,
                 response_deserializer=clouddms.DescribeDatabaseEntitiesResponse.deserialize,
@@ -1351,7 +1455,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_background_jobs" not in self._stubs:
-            self._stubs["search_background_jobs"] = self.grpc_channel.unary_unary(
+            self._stubs["search_background_jobs"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/SearchBackgroundJobs",
                 request_serializer=clouddms.SearchBackgroundJobsRequest.serialize,
                 response_deserializer=clouddms.SearchBackgroundJobsResponse.deserialize,
@@ -1384,7 +1488,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         if "describe_conversion_workspace_revisions" not in self._stubs:
             self._stubs[
                 "describe_conversion_workspace_revisions"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DescribeConversionWorkspaceRevisions",
                 request_serializer=clouddms.DescribeConversionWorkspaceRevisionsRequest.serialize,
                 response_deserializer=clouddms.DescribeConversionWorkspaceRevisionsResponse.deserialize,
@@ -1412,7 +1516,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_static_ips" not in self._stubs:
-            self._stubs["fetch_static_ips"] = self.grpc_channel.unary_unary(
+            self._stubs["fetch_static_ips"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/FetchStaticIps",
                 request_serializer=clouddms.FetchStaticIpsRequest.serialize,
                 response_deserializer=clouddms.FetchStaticIpsResponse.deserialize,
@@ -1420,7 +1524,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         return self._stubs["fetch_static_ips"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1432,7 +1536,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1449,7 +1553,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1466,7 +1570,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1485,7 +1589,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1504,7 +1608,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1521,7 +1625,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -1546,7 +1650,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1572,7 +1676,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1601,7 +1705,7 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,

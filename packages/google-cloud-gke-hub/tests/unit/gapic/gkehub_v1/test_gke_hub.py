@@ -5250,6 +5250,7 @@ def test_list_memberships_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_memberships(request)
 
@@ -5305,6 +5306,7 @@ def test_list_memberships_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_memberships(**mock_args)
 
@@ -5459,6 +5461,7 @@ def test_list_features_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_features(**mock_args)
 
@@ -5648,6 +5651,7 @@ def test_get_membership_rest_required_fields(request_type=service.GetMembershipR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_membership(request)
 
@@ -5695,6 +5699,7 @@ def test_get_membership_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_membership(**mock_args)
 
@@ -5788,6 +5793,7 @@ def test_get_feature_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_feature(**mock_args)
 
@@ -5936,6 +5942,7 @@ def test_create_membership_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_membership(request)
 
@@ -6007,6 +6014,7 @@ def test_create_membership_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_membership(**mock_args)
 
@@ -6112,6 +6120,7 @@ def test_create_feature_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_feature(**mock_args)
 
@@ -6254,6 +6263,7 @@ def test_delete_membership_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_membership(request)
 
@@ -6307,6 +6317,7 @@ def test_delete_membership_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_membership(**mock_args)
 
@@ -6402,6 +6413,7 @@ def test_delete_feature_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_feature(**mock_args)
 
@@ -6543,6 +6555,7 @@ def test_update_membership_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_membership(request)
 
@@ -6610,6 +6623,7 @@ def test_update_membership_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_membership(**mock_args)
 
@@ -6715,6 +6729,7 @@ def test_update_feature_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_feature(**mock_args)
 
@@ -6863,6 +6878,7 @@ def test_generate_connect_manifest_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_connect_manifest(request)
 
@@ -7572,6 +7588,7 @@ def test_list_memberships_rest_bad_request(request_type=service.ListMembershipsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_memberships(request)
 
 
@@ -7608,6 +7625,7 @@ def test_list_memberships_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_memberships(request)
 
     # Establish that the response is the type that we expect.
@@ -7645,6 +7663,7 @@ def test_list_memberships_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListMembershipsResponse.to_json(
             service.ListMembershipsResponse()
         )
@@ -7689,6 +7708,7 @@ def test_list_features_rest_bad_request(request_type=service.ListFeaturesRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_features(request)
 
 
@@ -7724,6 +7744,7 @@ def test_list_features_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_features(request)
 
     # Establish that the response is the type that we expect.
@@ -7760,6 +7781,7 @@ def test_list_features_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListFeaturesResponse.to_json(
             service.ListFeaturesResponse()
         )
@@ -7804,6 +7826,7 @@ def test_get_membership_rest_bad_request(request_type=service.GetMembershipReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_membership(request)
 
 
@@ -7842,6 +7865,7 @@ def test_get_membership_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_membership(request)
 
     # Establish that the response is the type that we expect.
@@ -7881,6 +7905,7 @@ def test_get_membership_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = membership.Membership.to_json(membership.Membership())
         req.return_value.content = return_value
 
@@ -7923,6 +7948,7 @@ def test_get_feature_rest_bad_request(request_type=service.GetFeatureRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_feature(request)
 
 
@@ -7958,6 +7984,7 @@ def test_get_feature_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_feature(request)
 
     # Establish that the response is the type that we expect.
@@ -7994,6 +8021,7 @@ def test_get_feature_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = feature.Feature.to_json(feature.Feature())
         req.return_value.content = return_value
 
@@ -8038,6 +8066,7 @@ def test_create_membership_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_membership(request)
 
 
@@ -8187,6 +8216,7 @@ def test_create_membership_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_membership(request)
 
     # Establish that the response is the type that we expect.
@@ -8226,6 +8256,7 @@ def test_create_membership_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8268,6 +8299,7 @@ def test_create_feature_rest_bad_request(request_type=service.CreateFeatureReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_feature(request)
 
 
@@ -8385,6 +8417,7 @@ def test_create_feature_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_feature(request)
 
     # Establish that the response is the type that we expect.
@@ -8422,6 +8455,7 @@ def test_create_feature_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8466,6 +8500,7 @@ def test_delete_membership_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_membership(request)
 
 
@@ -8496,6 +8531,7 @@ def test_delete_membership_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_membership(request)
 
     # Establish that the response is the type that we expect.
@@ -8535,6 +8571,7 @@ def test_delete_membership_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8577,6 +8614,7 @@ def test_delete_feature_rest_bad_request(request_type=service.DeleteFeatureReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_feature(request)
 
 
@@ -8607,6 +8645,7 @@ def test_delete_feature_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_feature(request)
 
     # Establish that the response is the type that we expect.
@@ -8644,6 +8683,7 @@ def test_delete_feature_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8688,6 +8728,7 @@ def test_update_membership_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_membership(request)
 
 
@@ -8837,6 +8878,7 @@ def test_update_membership_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_membership(request)
 
     # Establish that the response is the type that we expect.
@@ -8876,6 +8918,7 @@ def test_update_membership_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8918,6 +8961,7 @@ def test_update_feature_rest_bad_request(request_type=service.UpdateFeatureReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_feature(request)
 
 
@@ -9035,6 +9079,7 @@ def test_update_feature_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_feature(request)
 
     # Establish that the response is the type that we expect.
@@ -9072,6 +9117,7 @@ def test_update_feature_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -9116,6 +9162,7 @@ def test_generate_connect_manifest_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_connect_manifest(request)
 
 
@@ -9149,6 +9196,7 @@ def test_generate_connect_manifest_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_connect_manifest(request)
 
     # Establish that the response is the type that we expect.
@@ -9186,6 +9234,7 @@ def test_generate_connect_manifest_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.GenerateConnectManifestResponse.to_json(
             service.GenerateConnectManifestResponse()
         )

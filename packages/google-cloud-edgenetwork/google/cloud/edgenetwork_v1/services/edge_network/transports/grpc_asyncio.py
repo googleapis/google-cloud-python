@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,13 +27,92 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.edgenetwork_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO, EdgeNetworkTransport
 from .grpc import EdgeNetworkGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
@@ -233,10 +315,13 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -259,7 +344,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -287,7 +372,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "initialize_zone" not in self._stubs:
-            self._stubs["initialize_zone"] = self.grpc_channel.unary_unary(
+            self._stubs["initialize_zone"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/InitializeZone",
                 request_serializer=service.InitializeZoneRequest.serialize,
                 response_deserializer=service.InitializeZoneResponse.deserialize,
@@ -314,7 +399,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_zones" not in self._stubs:
-            self._stubs["list_zones"] = self.grpc_channel.unary_unary(
+            self._stubs["list_zones"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListZones",
                 request_serializer=service.ListZonesRequest.serialize,
                 response_deserializer=service.ListZonesResponse.deserialize,
@@ -339,7 +424,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_zone" not in self._stubs:
-            self._stubs["get_zone"] = self.grpc_channel.unary_unary(
+            self._stubs["get_zone"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetZone",
                 request_serializer=service.GetZoneRequest.serialize,
                 response_deserializer=resources.Zone.deserialize,
@@ -367,7 +452,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_networks" not in self._stubs:
-            self._stubs["list_networks"] = self.grpc_channel.unary_unary(
+            self._stubs["list_networks"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListNetworks",
                 request_serializer=service.ListNetworksRequest.serialize,
                 response_deserializer=service.ListNetworksResponse.deserialize,
@@ -393,7 +478,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_network" not in self._stubs:
-            self._stubs["get_network"] = self.grpc_channel.unary_unary(
+            self._stubs["get_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetNetwork",
                 request_serializer=service.GetNetworkRequest.serialize,
                 response_deserializer=resources.Network.deserialize,
@@ -421,7 +506,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "diagnose_network" not in self._stubs:
-            self._stubs["diagnose_network"] = self.grpc_channel.unary_unary(
+            self._stubs["diagnose_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DiagnoseNetwork",
                 request_serializer=service.DiagnoseNetworkRequest.serialize,
                 response_deserializer=service.DiagnoseNetworkResponse.deserialize,
@@ -448,7 +533,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_network" not in self._stubs:
-            self._stubs["create_network"] = self.grpc_channel.unary_unary(
+            self._stubs["create_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateNetwork",
                 request_serializer=service.CreateNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -474,7 +559,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_network" not in self._stubs:
-            self._stubs["delete_network"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteNetwork",
                 request_serializer=service.DeleteNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -500,7 +585,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subnets" not in self._stubs:
-            self._stubs["list_subnets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_subnets"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListSubnets",
                 request_serializer=service.ListSubnetsRequest.serialize,
                 response_deserializer=service.ListSubnetsResponse.deserialize,
@@ -526,7 +611,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_subnet" not in self._stubs:
-            self._stubs["get_subnet"] = self.grpc_channel.unary_unary(
+            self._stubs["get_subnet"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetSubnet",
                 request_serializer=service.GetSubnetRequest.serialize,
                 response_deserializer=resources.Subnet.deserialize,
@@ -552,7 +637,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_subnet" not in self._stubs:
-            self._stubs["create_subnet"] = self.grpc_channel.unary_unary(
+            self._stubs["create_subnet"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateSubnet",
                 request_serializer=service.CreateSubnetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -578,7 +663,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_subnet" not in self._stubs:
-            self._stubs["update_subnet"] = self.grpc_channel.unary_unary(
+            self._stubs["update_subnet"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/UpdateSubnet",
                 request_serializer=service.UpdateSubnetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -604,7 +689,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_subnet" not in self._stubs:
-            self._stubs["delete_subnet"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_subnet"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteSubnet",
                 request_serializer=service.DeleteSubnetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -632,7 +717,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_interconnects" not in self._stubs:
-            self._stubs["list_interconnects"] = self.grpc_channel.unary_unary(
+            self._stubs["list_interconnects"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListInterconnects",
                 request_serializer=service.ListInterconnectsRequest.serialize,
                 response_deserializer=service.ListInterconnectsResponse.deserialize,
@@ -658,7 +743,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_interconnect" not in self._stubs:
-            self._stubs["get_interconnect"] = self.grpc_channel.unary_unary(
+            self._stubs["get_interconnect"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetInterconnect",
                 request_serializer=service.GetInterconnectRequest.serialize,
                 response_deserializer=resources.Interconnect.deserialize,
@@ -688,7 +773,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "diagnose_interconnect" not in self._stubs:
-            self._stubs["diagnose_interconnect"] = self.grpc_channel.unary_unary(
+            self._stubs["diagnose_interconnect"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DiagnoseInterconnect",
                 request_serializer=service.DiagnoseInterconnectRequest.serialize,
                 response_deserializer=service.DiagnoseInterconnectResponse.deserialize,
@@ -720,7 +805,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         if "list_interconnect_attachments" not in self._stubs:
             self._stubs[
                 "list_interconnect_attachments"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListInterconnectAttachments",
                 request_serializer=service.ListInterconnectAttachmentsRequest.serialize,
                 response_deserializer=service.ListInterconnectAttachmentsResponse.deserialize,
@@ -749,7 +834,9 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_interconnect_attachment" not in self._stubs:
-            self._stubs["get_interconnect_attachment"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "get_interconnect_attachment"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetInterconnectAttachment",
                 request_serializer=service.GetInterconnectAttachmentRequest.serialize,
                 response_deserializer=resources.InterconnectAttachment.deserialize,
@@ -781,7 +868,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         if "create_interconnect_attachment" not in self._stubs:
             self._stubs[
                 "create_interconnect_attachment"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateInterconnectAttachment",
                 request_serializer=service.CreateInterconnectAttachmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -812,7 +899,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         if "delete_interconnect_attachment" not in self._stubs:
             self._stubs[
                 "delete_interconnect_attachment"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteInterconnectAttachment",
                 request_serializer=service.DeleteInterconnectAttachmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -838,7 +925,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_routers" not in self._stubs:
-            self._stubs["list_routers"] = self.grpc_channel.unary_unary(
+            self._stubs["list_routers"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListRouters",
                 request_serializer=service.ListRoutersRequest.serialize,
                 response_deserializer=service.ListRoutersResponse.deserialize,
@@ -864,7 +951,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_router" not in self._stubs:
-            self._stubs["get_router"] = self.grpc_channel.unary_unary(
+            self._stubs["get_router"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetRouter",
                 request_serializer=service.GetRouterRequest.serialize,
                 response_deserializer=resources.Router.deserialize,
@@ -892,7 +979,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "diagnose_router" not in self._stubs:
-            self._stubs["diagnose_router"] = self.grpc_channel.unary_unary(
+            self._stubs["diagnose_router"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DiagnoseRouter",
                 request_serializer=service.DiagnoseRouterRequest.serialize,
                 response_deserializer=service.DiagnoseRouterResponse.deserialize,
@@ -918,7 +1005,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_router" not in self._stubs:
-            self._stubs["create_router"] = self.grpc_channel.unary_unary(
+            self._stubs["create_router"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateRouter",
                 request_serializer=service.CreateRouterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -944,7 +1031,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_router" not in self._stubs:
-            self._stubs["update_router"] = self.grpc_channel.unary_unary(
+            self._stubs["update_router"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/UpdateRouter",
                 request_serializer=service.UpdateRouterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -970,7 +1057,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_router" not in self._stubs:
-            self._stubs["delete_router"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_router"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteRouter",
                 request_serializer=service.DeleteRouterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1265,7 +1352,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -1281,7 +1368,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1298,7 +1385,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1315,7 +1402,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1334,7 +1421,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1353,7 +1440,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1370,7 +1457,7 @@ class EdgeNetworkGrpcAsyncIOTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

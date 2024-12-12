@@ -6610,6 +6610,7 @@ def test_search_domains_rest_required_fields(request_type=domains.SearchDomainsR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_domains(request)
 
@@ -6670,6 +6671,7 @@ def test_search_domains_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_domains(**mock_args)
 
@@ -6816,6 +6818,7 @@ def test_retrieve_register_parameters_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.retrieve_register_parameters(request)
 
@@ -6876,6 +6879,7 @@ def test_retrieve_register_parameters_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.retrieve_register_parameters(**mock_args)
 
@@ -7010,6 +7014,7 @@ def test_register_domain_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.register_domain(request)
 
@@ -7064,6 +7069,7 @@ def test_register_domain_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.register_domain(**mock_args)
 
@@ -7211,6 +7217,7 @@ def test_retrieve_transfer_parameters_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.retrieve_transfer_parameters(request)
 
@@ -7271,6 +7278,7 @@ def test_retrieve_transfer_parameters_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.retrieve_transfer_parameters(**mock_args)
 
@@ -7405,6 +7413,7 @@ def test_transfer_domain_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.transfer_domain(request)
 
@@ -7460,6 +7469,7 @@ def test_transfer_domain_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.transfer_domain(**mock_args)
 
@@ -7606,6 +7616,7 @@ def test_list_registrations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_registrations(request)
 
@@ -7660,6 +7671,7 @@ def test_list_registrations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_registrations(**mock_args)
 
@@ -7854,6 +7866,7 @@ def test_get_registration_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_registration(request)
 
@@ -7901,6 +7914,7 @@ def test_get_registration_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_registration(**mock_args)
 
@@ -8035,6 +8049,7 @@ def test_update_registration_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_registration(request)
 
@@ -8083,6 +8098,7 @@ def test_update_registration_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_registration(**mock_args)
 
@@ -8222,6 +8238,7 @@ def test_configure_management_settings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.configure_management_settings(request)
 
@@ -8281,6 +8298,7 @@ def test_configure_management_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.configure_management_settings(**mock_args)
 
@@ -8423,6 +8441,7 @@ def test_configure_dns_settings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.configure_dns_settings(request)
 
@@ -8482,6 +8501,7 @@ def test_configure_dns_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.configure_dns_settings(**mock_args)
 
@@ -8626,6 +8646,7 @@ def test_configure_contact_settings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.configure_contact_settings(request)
 
@@ -8683,6 +8704,7 @@ def test_configure_contact_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.configure_contact_settings(**mock_args)
 
@@ -8824,6 +8846,7 @@ def test_export_registration_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_registration(request)
 
@@ -8869,6 +8892,7 @@ def test_export_registration_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.export_registration(**mock_args)
 
@@ -9005,6 +9029,7 @@ def test_delete_registration_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_registration(request)
 
@@ -9050,6 +9075,7 @@ def test_delete_registration_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_registration(**mock_args)
 
@@ -9186,6 +9212,7 @@ def test_retrieve_authorization_code_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.retrieve_authorization_code(request)
 
@@ -9233,6 +9260,7 @@ def test_retrieve_authorization_code_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.retrieve_authorization_code(**mock_args)
 
@@ -9370,6 +9398,7 @@ def test_reset_authorization_code_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.reset_authorization_code(request)
 
@@ -9417,6 +9446,7 @@ def test_reset_authorization_code_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.reset_authorization_code(**mock_args)
 
@@ -10338,6 +10368,7 @@ def test_search_domains_rest_bad_request(request_type=domains.SearchDomainsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_domains(request)
 
 
@@ -10371,6 +10402,7 @@ def test_search_domains_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_domains(request)
 
     # Establish that the response is the type that we expect.
@@ -10406,6 +10438,7 @@ def test_search_domains_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domains.SearchDomainsResponse.to_json(
             domains.SearchDomainsResponse()
         )
@@ -10452,6 +10485,7 @@ def test_retrieve_register_parameters_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.retrieve_register_parameters(request)
 
 
@@ -10485,6 +10519,7 @@ def test_retrieve_register_parameters_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.retrieve_register_parameters(request)
 
     # Establish that the response is the type that we expect.
@@ -10522,6 +10557,7 @@ def test_retrieve_register_parameters_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domains.RetrieveRegisterParametersResponse.to_json(
             domains.RetrieveRegisterParametersResponse()
         )
@@ -10566,6 +10602,7 @@ def test_register_domain_rest_bad_request(request_type=domains.RegisterDomainReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.register_domain(request)
 
 
@@ -10596,6 +10633,7 @@ def test_register_domain_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.register_domain(request)
 
     # Establish that the response is the type that we expect.
@@ -10633,6 +10671,7 @@ def test_register_domain_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10677,6 +10716,7 @@ def test_retrieve_transfer_parameters_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.retrieve_transfer_parameters(request)
 
 
@@ -10710,6 +10750,7 @@ def test_retrieve_transfer_parameters_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.retrieve_transfer_parameters(request)
 
     # Establish that the response is the type that we expect.
@@ -10747,6 +10788,7 @@ def test_retrieve_transfer_parameters_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domains.RetrieveTransferParametersResponse.to_json(
             domains.RetrieveTransferParametersResponse()
         )
@@ -10791,6 +10833,7 @@ def test_transfer_domain_rest_bad_request(request_type=domains.TransferDomainReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.transfer_domain(request)
 
 
@@ -10821,6 +10864,7 @@ def test_transfer_domain_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.transfer_domain(request)
 
     # Establish that the response is the type that we expect.
@@ -10858,6 +10902,7 @@ def test_transfer_domain_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10902,6 +10947,7 @@ def test_list_registrations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_registrations(request)
 
 
@@ -10937,6 +10983,7 @@ def test_list_registrations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_registrations(request)
 
     # Establish that the response is the type that we expect.
@@ -10975,6 +11022,7 @@ def test_list_registrations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domains.ListRegistrationsResponse.to_json(
             domains.ListRegistrationsResponse()
         )
@@ -11019,6 +11067,7 @@ def test_get_registration_rest_bad_request(request_type=domains.GetRegistrationR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_registration(request)
 
 
@@ -11058,6 +11107,7 @@ def test_get_registration_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_registration(request)
 
     # Establish that the response is the type that we expect.
@@ -11098,6 +11148,7 @@ def test_get_registration_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domains.Registration.to_json(domains.Registration())
         req.return_value.content = return_value
 
@@ -11146,6 +11197,7 @@ def test_update_registration_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_registration(request)
 
 
@@ -11313,6 +11365,7 @@ def test_update_registration_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_registration(request)
 
     # Establish that the response is the type that we expect.
@@ -11352,6 +11405,7 @@ def test_update_registration_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11398,6 +11452,7 @@ def test_configure_management_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.configure_management_settings(request)
 
 
@@ -11430,6 +11485,7 @@ def test_configure_management_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.configure_management_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -11469,6 +11525,7 @@ def test_configure_management_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11515,6 +11572,7 @@ def test_configure_dns_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.configure_dns_settings(request)
 
 
@@ -11547,6 +11605,7 @@ def test_configure_dns_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.configure_dns_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -11586,6 +11645,7 @@ def test_configure_dns_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11632,6 +11692,7 @@ def test_configure_contact_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.configure_contact_settings(request)
 
 
@@ -11664,6 +11725,7 @@ def test_configure_contact_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.configure_contact_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -11703,6 +11765,7 @@ def test_configure_contact_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11747,6 +11810,7 @@ def test_export_registration_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_registration(request)
 
 
@@ -11777,6 +11841,7 @@ def test_export_registration_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_registration(request)
 
     # Establish that the response is the type that we expect.
@@ -11816,6 +11881,7 @@ def test_export_registration_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11860,6 +11926,7 @@ def test_delete_registration_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_registration(request)
 
 
@@ -11890,6 +11957,7 @@ def test_delete_registration_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_registration(request)
 
     # Establish that the response is the type that we expect.
@@ -11929,6 +11997,7 @@ def test_delete_registration_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11975,6 +12044,7 @@ def test_retrieve_authorization_code_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.retrieve_authorization_code(request)
 
 
@@ -12012,6 +12082,7 @@ def test_retrieve_authorization_code_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.retrieve_authorization_code(request)
 
     # Establish that the response is the type that we expect.
@@ -12050,6 +12121,7 @@ def test_retrieve_authorization_code_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domains.AuthorizationCode.to_json(domains.AuthorizationCode())
         req.return_value.content = return_value
 
@@ -12096,6 +12168,7 @@ def test_reset_authorization_code_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.reset_authorization_code(request)
 
 
@@ -12133,6 +12206,7 @@ def test_reset_authorization_code_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.reset_authorization_code(request)
 
     # Establish that the response is the type that we expect.
@@ -12171,6 +12245,7 @@ def test_reset_authorization_code_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = domains.AuthorizationCode.to_json(domains.AuthorizationCode())
         req.return_value.content = return_value
 

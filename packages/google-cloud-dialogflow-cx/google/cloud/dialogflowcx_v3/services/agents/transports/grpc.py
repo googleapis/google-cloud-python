@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,7 +26,10 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import (
     generative_settings as gcdc_generative_settings,
@@ -33,6 +39,81 @@ from google.cloud.dialogflowcx_v3.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3.types import generative_settings
 
 from .base import DEFAULT_CLIENT_INFO, AgentsTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.dialogflow.cx.v3.Agents",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.dialogflow.cx.v3.Agents",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class AgentsGrpcTransport(AgentsTransport):
@@ -188,7 +269,12 @@ class AgentsGrpcTransport(AgentsTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -252,7 +338,9 @@ class AgentsGrpcTransport(AgentsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -277,7 +365,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_agents" not in self._stubs:
-            self._stubs["list_agents"] = self.grpc_channel.unary_unary(
+            self._stubs["list_agents"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/ListAgents",
                 request_serializer=agent.ListAgentsRequest.serialize,
                 response_deserializer=agent.ListAgentsResponse.deserialize,
@@ -301,7 +389,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_agent" not in self._stubs:
-            self._stubs["get_agent"] = self.grpc_channel.unary_unary(
+            self._stubs["get_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/GetAgent",
                 request_serializer=agent.GetAgentRequest.serialize,
                 response_deserializer=agent.Agent.deserialize,
@@ -331,7 +419,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_agent" not in self._stubs:
-            self._stubs["create_agent"] = self.grpc_channel.unary_unary(
+            self._stubs["create_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/CreateAgent",
                 request_serializer=gcdc_agent.CreateAgentRequest.serialize,
                 response_deserializer=gcdc_agent.Agent.deserialize,
@@ -361,7 +449,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_agent" not in self._stubs:
-            self._stubs["update_agent"] = self.grpc_channel.unary_unary(
+            self._stubs["update_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/UpdateAgent",
                 request_serializer=gcdc_agent.UpdateAgentRequest.serialize,
                 response_deserializer=gcdc_agent.Agent.deserialize,
@@ -385,7 +473,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_agent" not in self._stubs:
-            self._stubs["delete_agent"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/DeleteAgent",
                 request_serializer=agent.DeleteAgentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -421,7 +509,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_agent" not in self._stubs:
-            self._stubs["export_agent"] = self.grpc_channel.unary_unary(
+            self._stubs["export_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/ExportAgent",
                 request_serializer=agent.ExportAgentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -465,7 +553,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_agent" not in self._stubs:
-            self._stubs["restore_agent"] = self.grpc_channel.unary_unary(
+            self._stubs["restore_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/RestoreAgent",
                 request_serializer=agent.RestoreAgentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -494,7 +582,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_agent" not in self._stubs:
-            self._stubs["validate_agent"] = self.grpc_channel.unary_unary(
+            self._stubs["validate_agent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/ValidateAgent",
                 request_serializer=agent.ValidateAgentRequest.serialize,
                 response_deserializer=agent.AgentValidationResult.deserialize,
@@ -521,7 +609,9 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_agent_validation_result" not in self._stubs:
-            self._stubs["get_agent_validation_result"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "get_agent_validation_result"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/GetAgentValidationResult",
                 request_serializer=agent.GetAgentValidationResultRequest.serialize,
                 response_deserializer=agent.AgentValidationResult.deserialize,
@@ -549,7 +639,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_generative_settings" not in self._stubs:
-            self._stubs["get_generative_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["get_generative_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/GetGenerativeSettings",
                 request_serializer=agent.GetGenerativeSettingsRequest.serialize,
                 response_deserializer=generative_settings.GenerativeSettings.deserialize,
@@ -578,7 +668,9 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_generative_settings" not in self._stubs:
-            self._stubs["update_generative_settings"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_generative_settings"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Agents/UpdateGenerativeSettings",
                 request_serializer=agent.UpdateGenerativeSettingsRequest.serialize,
                 response_deserializer=gcdc_generative_settings.GenerativeSettings.deserialize,
@@ -586,7 +678,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["update_generative_settings"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def cancel_operation(
@@ -598,7 +690,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -615,7 +707,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -634,7 +726,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -653,7 +745,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -670,7 +762,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
