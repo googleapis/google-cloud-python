@@ -181,9 +181,8 @@ class SpeechModelVariant(proto.Enum):
             No model variant specified. In this case Dialogflow defaults
             to USE_BEST_AVAILABLE.
         USE_BEST_AVAILABLE (1):
-            Use the best available variant of the [Speech
-            model][InputAudioConfig.model] that the caller is eligible
-            for.
+            Use the best available variant of the [Speech model][model]
+            that the caller is eligible for.
 
             Please see the `Dialogflow
             docs <https://cloud.google.com/dialogflow/docs/data-logging>`__

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -144,8 +152,10 @@ class ParticipantsRestInterceptor:
     def pre_analyze_content(
         self,
         request: gcd_participant.AnalyzeContentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_participant.AnalyzeContentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_participant.AnalyzeContentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for analyze_content
 
         Override in a subclass to manipulate the request or metadata
@@ -167,8 +177,11 @@ class ParticipantsRestInterceptor:
     def pre_create_participant(
         self,
         request: gcd_participant.CreateParticipantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_participant.CreateParticipantRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_participant.CreateParticipantRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_participant
 
         Override in a subclass to manipulate the request or metadata
@@ -190,8 +203,10 @@ class ParticipantsRestInterceptor:
     def pre_get_participant(
         self,
         request: participant.GetParticipantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.GetParticipantRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.GetParticipantRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_participant
 
         Override in a subclass to manipulate the request or metadata
@@ -213,8 +228,10 @@ class ParticipantsRestInterceptor:
     def pre_list_participants(
         self,
         request: participant.ListParticipantsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.ListParticipantsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.ListParticipantsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_participants
 
         Override in a subclass to manipulate the request or metadata
@@ -236,8 +253,10 @@ class ParticipantsRestInterceptor:
     def pre_suggest_articles(
         self,
         request: participant.SuggestArticlesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestArticlesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestArticlesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for suggest_articles
 
         Override in a subclass to manipulate the request or metadata
@@ -259,8 +278,10 @@ class ParticipantsRestInterceptor:
     def pre_suggest_faq_answers(
         self,
         request: participant.SuggestFaqAnswersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestFaqAnswersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestFaqAnswersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for suggest_faq_answers
 
         Override in a subclass to manipulate the request or metadata
@@ -282,8 +303,11 @@ class ParticipantsRestInterceptor:
     def pre_suggest_knowledge_assist(
         self,
         request: participant.SuggestKnowledgeAssistRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestKnowledgeAssistRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestKnowledgeAssistRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for suggest_knowledge_assist
 
         Override in a subclass to manipulate the request or metadata
@@ -305,8 +329,10 @@ class ParticipantsRestInterceptor:
     def pre_suggest_smart_replies(
         self,
         request: participant.SuggestSmartRepliesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[participant.SuggestSmartRepliesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestSmartRepliesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for suggest_smart_replies
 
         Override in a subclass to manipulate the request or metadata
@@ -328,8 +354,11 @@ class ParticipantsRestInterceptor:
     def pre_update_participant(
         self,
         request: gcd_participant.UpdateParticipantRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_participant.UpdateParticipantRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_participant.UpdateParticipantRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_participant
 
         Override in a subclass to manipulate the request or metadata
@@ -351,8 +380,10 @@ class ParticipantsRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -374,8 +405,10 @@ class ParticipantsRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -397,8 +430,10 @@ class ParticipantsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -418,8 +453,10 @@ class ParticipantsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -441,8 +478,10 @@ class ParticipantsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -584,7 +623,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_participant.AnalyzeContentResponse:
             r"""Call the analyze content method over HTTP.
 
@@ -595,8 +634,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_participant.AnalyzeContentResponse:
@@ -608,6 +649,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseAnalyzeContent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_analyze_content(request, metadata)
             transcoded_request = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_transcoded_request(
                 http_options, request
@@ -621,6 +663,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.AnalyzeContent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "AnalyzeContent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._AnalyzeContent._get_response(
@@ -643,7 +712,31 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = gcd_participant.AnalyzeContentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_content(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_participant.AnalyzeContentResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.analyze_content",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "AnalyzeContent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateParticipant(
@@ -681,7 +774,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_participant.Participant:
             r"""Call the create participant method over HTTP.
 
@@ -692,8 +785,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_participant.Participant:
@@ -705,6 +800,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseCreateParticipant._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_participant(
                 request, metadata
             )
@@ -720,6 +816,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseCreateParticipant._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.CreateParticipant",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "CreateParticipant",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._CreateParticipant._get_response(
@@ -742,7 +865,29 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = gcd_participant.Participant.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_participant(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_participant.Participant.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.create_participant",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "CreateParticipant",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetParticipant(
@@ -779,7 +924,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> participant.Participant:
             r"""Call the get participant method over HTTP.
 
@@ -790,8 +935,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.participant.Participant:
@@ -803,6 +950,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseGetParticipant._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_participant(request, metadata)
             transcoded_request = _BaseParticipantsRestTransport._BaseGetParticipant._get_transcoded_request(
                 http_options, request
@@ -812,6 +960,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseGetParticipant._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.GetParticipant",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "GetParticipant",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._GetParticipant._get_response(
@@ -833,7 +1008,29 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = participant.Participant.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_participant(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = participant.Participant.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.get_participant",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "GetParticipant",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListParticipants(
@@ -870,7 +1067,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> participant.ListParticipantsResponse:
             r"""Call the list participants method over HTTP.
 
@@ -881,8 +1078,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.participant.ListParticipantsResponse:
@@ -894,6 +1093,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseListParticipants._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_participants(
                 request, metadata
             )
@@ -905,6 +1105,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseListParticipants._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.ListParticipants",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "ListParticipants",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._ListParticipants._get_response(
@@ -926,7 +1153,31 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = participant.ListParticipantsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_participants(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = participant.ListParticipantsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.list_participants",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "ListParticipants",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StreamingAnalyzeContent(
@@ -942,7 +1193,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             raise NotImplementedError(
                 "Method StreamingAnalyzeContent is not available over REST transport"
@@ -983,7 +1234,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> participant.SuggestArticlesResponse:
             r"""Call the suggest articles method over HTTP.
 
@@ -994,8 +1245,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.participant.SuggestArticlesResponse:
@@ -1007,6 +1260,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseSuggestArticles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_suggest_articles(
                 request, metadata
             )
@@ -1022,6 +1276,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseSuggestArticles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.SuggestArticles",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestArticles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._SuggestArticles._get_response(
@@ -1044,7 +1325,31 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = participant.SuggestArticlesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_suggest_articles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = participant.SuggestArticlesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.suggest_articles",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestArticles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SuggestFaqAnswers(
@@ -1082,7 +1387,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> participant.SuggestFaqAnswersResponse:
             r"""Call the suggest faq answers method over HTTP.
 
@@ -1093,8 +1398,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.participant.SuggestFaqAnswersResponse:
@@ -1106,6 +1413,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_suggest_faq_answers(
                 request, metadata
             )
@@ -1121,6 +1429,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.SuggestFaqAnswers",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestFaqAnswers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._SuggestFaqAnswers._get_response(
@@ -1143,7 +1478,31 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = participant.SuggestFaqAnswersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_suggest_faq_answers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = participant.SuggestFaqAnswersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.suggest_faq_answers",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestFaqAnswers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SuggestKnowledgeAssist(
@@ -1181,7 +1540,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> participant.SuggestKnowledgeAssistResponse:
             r"""Call the suggest knowledge assist method over HTTP.
 
@@ -1192,8 +1551,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.participant.SuggestKnowledgeAssistResponse:
@@ -1205,6 +1566,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_suggest_knowledge_assist(
                 request, metadata
             )
@@ -1220,6 +1582,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.SuggestKnowledgeAssist",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestKnowledgeAssist",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._SuggestKnowledgeAssist._get_response(
@@ -1242,7 +1631,31 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = participant.SuggestKnowledgeAssistResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_suggest_knowledge_assist(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        participant.SuggestKnowledgeAssistResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.suggest_knowledge_assist",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestKnowledgeAssist",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SuggestSmartReplies(
@@ -1280,7 +1693,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> participant.SuggestSmartRepliesResponse:
             r"""Call the suggest smart replies method over HTTP.
 
@@ -1291,8 +1704,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.participant.SuggestSmartRepliesResponse:
@@ -1304,6 +1719,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_suggest_smart_replies(
                 request, metadata
             )
@@ -1319,6 +1735,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.SuggestSmartReplies",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestSmartReplies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._SuggestSmartReplies._get_response(
@@ -1341,7 +1784,31 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = participant.SuggestSmartRepliesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_suggest_smart_replies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = participant.SuggestSmartRepliesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.suggest_smart_replies",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "SuggestSmartReplies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateParticipant(
@@ -1379,7 +1846,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_participant.Participant:
             r"""Call the update participant method over HTTP.
 
@@ -1390,8 +1857,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_participant.Participant:
@@ -1403,6 +1872,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseUpdateParticipant._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_participant(
                 request, metadata
             )
@@ -1418,6 +1888,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.UpdateParticipant",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "UpdateParticipant",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._UpdateParticipant._get_response(
@@ -1440,7 +1937,29 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             pb_resp = gcd_participant.Participant.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_participant(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_participant.Participant.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsClient.update_participant",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "UpdateParticipant",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1582,7 +2101,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1592,8 +2111,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1602,6 +2123,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseParticipantsRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1615,6 +2137,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._GetLocation._get_response(
@@ -1635,6 +2184,27 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1675,7 +2245,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1685,8 +2255,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1695,6 +2267,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseParticipantsRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1704,6 +2277,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._ListLocations._get_response(
@@ -1724,6 +2324,27 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1764,7 +2385,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1774,13 +2395,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseParticipantsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1792,6 +2416,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._CancelOperation._get_response(
@@ -1848,7 +2499,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1858,8 +2509,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1868,6 +2521,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseParticipantsRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1879,6 +2533,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._GetOperation._get_response(
@@ -1899,6 +2580,27 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1939,7 +2641,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1949,8 +2651,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1959,6 +2663,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseParticipantsRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1968,6 +2673,33 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             query_params = _BaseParticipantsRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2.ParticipantsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParticipantsRestTransport._ListOperations._get_response(
@@ -1988,6 +2720,27 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2.ParticipantsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2.Participants",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
