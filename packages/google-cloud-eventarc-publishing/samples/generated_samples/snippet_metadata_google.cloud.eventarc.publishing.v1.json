@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-eventarc-publishing",
-    "version": "0.6.14"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -43,7 +43,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.eventarc_publishing_v1.types.PublishChannelConnectionEventsResponse",
@@ -119,7 +119,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.eventarc_publishing_v1.types.PublishChannelConnectionEventsResponse",
@@ -196,7 +196,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.eventarc_publishing_v1.types.PublishEventsResponse",
@@ -272,7 +272,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.eventarc_publishing_v1.types.PublishEventsResponse",
@@ -349,7 +349,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.eventarc_publishing_v1.types.PublishResponse",
@@ -425,7 +425,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.eventarc_publishing_v1.types.PublishResponse",

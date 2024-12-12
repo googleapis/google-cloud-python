@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -21,11 +24,89 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.domains_v1beta1.types import domains
 
 from .base import DEFAULT_CLIENT_INFO, DomainsTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.domains.v1beta1.Domains",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.domains.v1beta1.Domains",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class DomainsGrpcTransport(DomainsTransport):
@@ -182,7 +263,12 @@ class DomainsGrpcTransport(DomainsTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -246,7 +332,9 @@ class DomainsGrpcTransport(DomainsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -275,7 +363,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_domains" not in self._stubs:
-            self._stubs["search_domains"] = self.grpc_channel.unary_unary(
+            self._stubs["search_domains"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/SearchDomains",
                 request_serializer=domains.SearchDomainsRequest.serialize,
                 response_deserializer=domains.SearchDomainsResponse.deserialize,
@@ -306,7 +394,9 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_register_parameters" not in self._stubs:
-            self._stubs["retrieve_register_parameters"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "retrieve_register_parameters"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/RetrieveRegisterParameters",
                 request_serializer=domains.RetrieveRegisterParametersRequest.serialize,
                 response_deserializer=domains.RetrieveRegisterParametersResponse.deserialize,
@@ -345,7 +435,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "register_domain" not in self._stubs:
-            self._stubs["register_domain"] = self.grpc_channel.unary_unary(
+            self._stubs["register_domain"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/RegisterDomain",
                 request_serializer=domains.RegisterDomainRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -378,7 +468,9 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_transfer_parameters" not in self._stubs:
-            self._stubs["retrieve_transfer_parameters"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "retrieve_transfer_parameters"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/RetrieveTransferParameters",
                 request_serializer=domains.RetrieveTransferParametersRequest.serialize,
                 response_deserializer=domains.RetrieveTransferParametersResponse.deserialize,
@@ -427,7 +519,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "transfer_domain" not in self._stubs:
-            self._stubs["transfer_domain"] = self.grpc_channel.unary_unary(
+            self._stubs["transfer_domain"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/TransferDomain",
                 request_serializer=domains.TransferDomainRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -455,7 +547,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_registrations" not in self._stubs:
-            self._stubs["list_registrations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_registrations"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ListRegistrations",
                 request_serializer=domains.ListRegistrationsRequest.serialize,
                 response_deserializer=domains.ListRegistrationsResponse.deserialize,
@@ -481,7 +573,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_registration" not in self._stubs:
-            self._stubs["get_registration"] = self.grpc_channel.unary_unary(
+            self._stubs["get_registration"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/GetRegistration",
                 request_serializer=domains.GetRegistrationRequest.serialize,
                 response_deserializer=domains.Registration.deserialize,
@@ -515,7 +607,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_registration" not in self._stubs:
-            self._stubs["update_registration"] = self.grpc_channel.unary_unary(
+            self._stubs["update_registration"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/UpdateRegistration",
                 request_serializer=domains.UpdateRegistrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -545,7 +637,7 @@ class DomainsGrpcTransport(DomainsTransport):
         if "configure_management_settings" not in self._stubs:
             self._stubs[
                 "configure_management_settings"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureManagementSettings",
                 request_serializer=domains.ConfigureManagementSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -571,7 +663,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "configure_dns_settings" not in self._stubs:
-            self._stubs["configure_dns_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["configure_dns_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureDnsSettings",
                 request_serializer=domains.ConfigureDnsSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -598,7 +690,9 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "configure_contact_settings" not in self._stubs:
-            self._stubs["configure_contact_settings"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "configure_contact_settings"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureContactSettings",
                 request_serializer=domains.ConfigureContactSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -633,7 +727,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_registration" not in self._stubs:
-            self._stubs["export_registration"] = self.grpc_channel.unary_unary(
+            self._stubs["export_registration"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ExportRegistration",
                 request_serializer=domains.ExportRegistrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -680,7 +774,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_registration" not in self._stubs:
-            self._stubs["delete_registration"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_registration"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/DeleteRegistration",
                 request_serializer=domains.DeleteRegistrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -712,7 +806,9 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_authorization_code" not in self._stubs:
-            self._stubs["retrieve_authorization_code"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "retrieve_authorization_code"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/RetrieveAuthorizationCode",
                 request_serializer=domains.RetrieveAuthorizationCodeRequest.serialize,
                 response_deserializer=domains.AuthorizationCode.deserialize,
@@ -742,7 +838,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reset_authorization_code" not in self._stubs:
-            self._stubs["reset_authorization_code"] = self.grpc_channel.unary_unary(
+            self._stubs["reset_authorization_code"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ResetAuthorizationCode",
                 request_serializer=domains.ResetAuthorizationCodeRequest.serialize,
                 response_deserializer=domains.AuthorizationCode.deserialize,
@@ -750,7 +846,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["reset_authorization_code"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def kind(self) -> str:

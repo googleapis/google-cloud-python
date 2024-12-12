@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -25,14 +28,93 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import environment as gcdc_environment
 from google.cloud.dialogflowcx_v3beta1.types import environment
 
 from .base import DEFAULT_CLIENT_INFO, EnvironmentsTransport
 from .grpc import EnvironmentsGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.dialogflow.cx.v3beta1.Environments",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.dialogflow.cx.v3beta1.Environments",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
@@ -232,10 +314,13 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -258,7 +343,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -287,7 +372,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_environments" not in self._stubs:
-            self._stubs["list_environments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_environments"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/ListEnvironments",
                 request_serializer=environment.ListEnvironmentsRequest.serialize,
                 response_deserializer=environment.ListEnvironmentsResponse.deserialize,
@@ -316,7 +401,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_environment" not in self._stubs:
-            self._stubs["get_environment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/GetEnvironment",
                 request_serializer=environment.GetEnvironmentRequest.serialize,
                 response_deserializer=environment.Environment.deserialize,
@@ -356,7 +441,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_environment" not in self._stubs:
-            self._stubs["create_environment"] = self.grpc_channel.unary_unary(
+            self._stubs["create_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/CreateEnvironment",
                 request_serializer=gcdc_environment.CreateEnvironmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -395,7 +480,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_environment" not in self._stubs:
-            self._stubs["update_environment"] = self.grpc_channel.unary_unary(
+            self._stubs["update_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/UpdateEnvironment",
                 request_serializer=gcdc_environment.UpdateEnvironmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -422,7 +507,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_environment" not in self._stubs:
-            self._stubs["delete_environment"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/DeleteEnvironment",
                 request_serializer=environment.DeleteEnvironmentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -452,7 +537,9 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "lookup_environment_history" not in self._stubs:
-            self._stubs["lookup_environment_history"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "lookup_environment_history"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/LookupEnvironmentHistory",
                 request_serializer=environment.LookupEnvironmentHistoryRequest.serialize,
                 response_deserializer=environment.LookupEnvironmentHistoryResponse.deserialize,
@@ -491,7 +578,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "run_continuous_test" not in self._stubs:
-            self._stubs["run_continuous_test"] = self.grpc_channel.unary_unary(
+            self._stubs["run_continuous_test"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/RunContinuousTest",
                 request_serializer=environment.RunContinuousTestRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -521,7 +608,9 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_continuous_test_results" not in self._stubs:
-            self._stubs["list_continuous_test_results"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_continuous_test_results"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/ListContinuousTestResults",
                 request_serializer=environment.ListContinuousTestResultsRequest.serialize,
                 response_deserializer=environment.ListContinuousTestResultsResponse.deserialize,
@@ -558,7 +647,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "deploy_flow" not in self._stubs:
-            self._stubs["deploy_flow"] = self.grpc_channel.unary_unary(
+            self._stubs["deploy_flow"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Environments/DeployFlow",
                 request_serializer=environment.DeployFlowRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -646,7 +735,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -662,7 +751,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -679,7 +768,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -698,7 +787,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -717,7 +806,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -734,7 +823,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

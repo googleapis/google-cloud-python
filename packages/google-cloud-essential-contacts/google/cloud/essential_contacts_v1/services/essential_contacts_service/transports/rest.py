@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -118,8 +126,8 @@ class EssentialContactsServiceRestInterceptor:
     def pre_compute_contacts(
         self,
         request: service.ComputeContactsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ComputeContactsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ComputeContactsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_contacts
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +147,10 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def pre_create_contact(
-        self, request: service.CreateContactRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateContactRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateContactRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_contact
 
         Override in a subclass to manipulate the request or metadata
@@ -158,8 +168,10 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def pre_delete_contact(
-        self, request: service.DeleteContactRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteContactRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteContactRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_contact
 
         Override in a subclass to manipulate the request or metadata
@@ -168,8 +180,10 @@ class EssentialContactsServiceRestInterceptor:
         return request, metadata
 
     def pre_get_contact(
-        self, request: service.GetContactRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetContactRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetContactRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_contact
 
         Override in a subclass to manipulate the request or metadata
@@ -187,8 +201,10 @@ class EssentialContactsServiceRestInterceptor:
         return response
 
     def pre_list_contacts(
-        self, request: service.ListContactsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListContactsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListContactsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListContactsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_contacts
 
         Override in a subclass to manipulate the request or metadata
@@ -210,8 +226,8 @@ class EssentialContactsServiceRestInterceptor:
     def pre_send_test_message(
         self,
         request: service.SendTestMessageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.SendTestMessageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.SendTestMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for send_test_message
 
         Override in a subclass to manipulate the request or metadata
@@ -220,8 +236,10 @@ class EssentialContactsServiceRestInterceptor:
         return request, metadata
 
     def pre_update_contact(
-        self, request: service.UpdateContactRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateContactRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateContactRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateContactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_contact
 
         Override in a subclass to manipulate the request or metadata
@@ -360,7 +378,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ComputeContactsResponse:
             r"""Call the compute contacts method over HTTP.
 
@@ -371,8 +389,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ComputeContactsResponse:
@@ -384,6 +404,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             http_options = (
                 _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_compute_contacts(
                 request, metadata
             )
@@ -395,6 +416,33 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             query_params = _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.ComputeContacts",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "ComputeContacts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -418,7 +466,29 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             pb_resp = service.ComputeContactsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_compute_contacts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ComputeContactsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.compute_contacts",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "ComputeContacts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateContact(
@@ -457,7 +527,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Contact:
             r"""Call the create contact method over HTTP.
 
@@ -468,8 +538,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Contact:
@@ -481,6 +553,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             http_options = (
                 _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_transcoded_request(
                 http_options, request
@@ -494,6 +567,33 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             query_params = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.CreateContact",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "CreateContact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -518,7 +618,29 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             pb_resp = service.Contact.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_contact(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Contact.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.create_contact",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "CreateContact",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteContact(
@@ -556,7 +678,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete contact method over HTTP.
 
@@ -567,13 +689,16 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_transcoded_request(
                 http_options, request
@@ -583,6 +708,33 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             query_params = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.DeleteContact",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "DeleteContact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -636,7 +788,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Contact:
             r"""Call the get contact method over HTTP.
 
@@ -647,8 +799,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Contact:
@@ -660,6 +814,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             http_options = (
                 _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_transcoded_request(
                 http_options, request
@@ -669,6 +824,33 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             query_params = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.GetContact",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "GetContact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EssentialContactsServiceRestTransport._GetContact._get_response(
@@ -690,7 +872,29 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             pb_resp = service.Contact.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_contact(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Contact.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.get_contact",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "GetContact",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListContacts(
@@ -728,7 +932,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListContactsResponse:
             r"""Call the list contacts method over HTTP.
 
@@ -739,8 +943,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListContactsResponse:
@@ -752,6 +958,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             http_options = (
                 _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_contacts(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_transcoded_request(
                 http_options, request
@@ -761,6 +968,33 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             query_params = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.ListContacts",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "ListContacts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -784,7 +1018,29 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             pb_resp = service.ListContactsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_contacts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListContactsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.list_contacts",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "ListContacts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SendTestMessage(
@@ -823,7 +1079,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the send test message method over HTTP.
 
@@ -834,13 +1090,16 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_send_test_message(
                 request, metadata
             )
@@ -856,6 +1115,33 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             query_params = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.SendTestMessage",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "SendTestMessage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -911,7 +1197,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Contact:
             r"""Call the update contact method over HTTP.
 
@@ -922,8 +1208,10 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Contact:
@@ -935,6 +1223,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             http_options = (
                 _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_transcoded_request(
                 http_options, request
@@ -948,6 +1237,33 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             query_params = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.UpdateContact",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "UpdateContact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -972,7 +1288,29 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
             pb_resp = service.Contact.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_contact(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Contact.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.essentialcontacts_v1.EssentialContactsServiceClient.update_contact",
+                    extra={
+                        "serviceName": "google.cloud.essentialcontacts.v1.EssentialContactsService",
+                        "rpcName": "UpdateContact",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
