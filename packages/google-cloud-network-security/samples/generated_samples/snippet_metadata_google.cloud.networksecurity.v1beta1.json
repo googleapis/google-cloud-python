@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-network-security",
-    "version": "0.9.13"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -55,7 +55,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -143,7 +143,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -232,7 +232,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -320,7 +320,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -409,7 +409,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -497,7 +497,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -578,7 +578,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -658,7 +658,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -739,7 +739,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -819,7 +819,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -900,7 +900,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -980,7 +980,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -1061,7 +1061,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy",
@@ -1141,7 +1141,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy",
@@ -1222,7 +1222,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy",
@@ -1302,7 +1302,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy",
@@ -1383,7 +1383,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy",
@@ -1463,7 +1463,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy",
@@ -1544,7 +1544,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListAuthorizationPoliciesAsyncPager",
@@ -1624,7 +1624,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListAuthorizationPoliciesPager",
@@ -1705,7 +1705,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListClientTlsPoliciesAsyncPager",
@@ -1785,7 +1785,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListClientTlsPoliciesPager",
@@ -1866,7 +1866,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListServerTlsPoliciesAsyncPager",
@@ -1946,7 +1946,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListServerTlsPoliciesPager",
@@ -2031,7 +2031,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -2115,7 +2115,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -2200,7 +2200,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -2284,7 +2284,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",
@@ -2369,7 +2369,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation_async.AsyncOperation",
@@ -2453,7 +2453,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.api_core.operation.Operation",

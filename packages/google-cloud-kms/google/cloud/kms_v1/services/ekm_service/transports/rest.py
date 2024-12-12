@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -129,8 +137,10 @@ class EkmServiceRestInterceptor:
     def pre_create_ekm_connection(
         self,
         request: ekm_service.CreateEkmConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_service.CreateEkmConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.CreateEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_ekm_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -152,8 +162,10 @@ class EkmServiceRestInterceptor:
     def pre_get_ekm_config(
         self,
         request: ekm_service.GetEkmConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_service.GetEkmConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.GetEkmConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_ekm_config
 
         Override in a subclass to manipulate the request or metadata
@@ -175,8 +187,10 @@ class EkmServiceRestInterceptor:
     def pre_get_ekm_connection(
         self,
         request: ekm_service.GetEkmConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_service.GetEkmConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.GetEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_ekm_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -198,8 +212,10 @@ class EkmServiceRestInterceptor:
     def pre_list_ekm_connections(
         self,
         request: ekm_service.ListEkmConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_service.ListEkmConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.ListEkmConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_ekm_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -221,8 +237,10 @@ class EkmServiceRestInterceptor:
     def pre_update_ekm_config(
         self,
         request: ekm_service.UpdateEkmConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_service.UpdateEkmConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.UpdateEkmConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_ekm_config
 
         Override in a subclass to manipulate the request or metadata
@@ -244,8 +262,10 @@ class EkmServiceRestInterceptor:
     def pre_update_ekm_connection(
         self,
         request: ekm_service.UpdateEkmConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_service.UpdateEkmConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.UpdateEkmConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_ekm_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -267,8 +287,10 @@ class EkmServiceRestInterceptor:
     def pre_verify_connectivity(
         self,
         request: ekm_service.VerifyConnectivityRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_service.VerifyConnectivityRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_service.VerifyConnectivityRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for verify_connectivity
 
         Override in a subclass to manipulate the request or metadata
@@ -290,8 +312,10 @@ class EkmServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -313,8 +337,10 @@ class EkmServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -336,8 +362,10 @@ class EkmServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -357,8 +385,10 @@ class EkmServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -378,8 +408,11 @@ class EkmServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -401,8 +434,10 @@ class EkmServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -548,7 +583,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_service.EkmConnection:
             r"""Call the create ekm connection method over HTTP.
 
@@ -559,8 +594,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_service.EkmConnection:
@@ -582,6 +619,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_ekm_connection(
                 request, metadata
             )
@@ -597,6 +635,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             query_params = _BaseEkmServiceRestTransport._BaseCreateEkmConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.CreateEkmConnection",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "CreateEkmConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._CreateEkmConnection._get_response(
@@ -619,7 +684,29 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             pb_resp = ekm_service.EkmConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_ekm_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_service.EkmConnection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceClient.create_ekm_connection",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "CreateEkmConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEkmConfig(
@@ -656,7 +743,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_service.EkmConfig:
             r"""Call the get ekm config method over HTTP.
 
@@ -667,8 +754,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_service.EkmConfig:
@@ -688,6 +777,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_ekm_config(request, metadata)
             transcoded_request = (
                 _BaseEkmServiceRestTransport._BaseGetEkmConfig._get_transcoded_request(
@@ -701,6 +791,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.GetEkmConfig",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetEkmConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._GetEkmConfig._get_response(
@@ -722,7 +839,29 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             pb_resp = ekm_service.EkmConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_ekm_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_service.EkmConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceClient.get_ekm_config",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetEkmConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEkmConnection(
@@ -759,7 +898,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_service.EkmConnection:
             r"""Call the get ekm connection method over HTTP.
 
@@ -770,8 +909,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_service.EkmConnection:
@@ -793,6 +934,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_ekm_connection(
                 request, metadata
             )
@@ -804,6 +946,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             query_params = _BaseEkmServiceRestTransport._BaseGetEkmConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.GetEkmConnection",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetEkmConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._GetEkmConnection._get_response(
@@ -825,7 +994,29 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             pb_resp = ekm_service.EkmConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_ekm_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_service.EkmConnection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceClient.get_ekm_connection",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetEkmConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEkmConnections(
@@ -862,7 +1053,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_service.ListEkmConnectionsResponse:
             r"""Call the list ekm connections method over HTTP.
 
@@ -873,8 +1064,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_service.ListEkmConnectionsResponse:
@@ -886,6 +1079,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseListEkmConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_ekm_connections(
                 request, metadata
             )
@@ -897,6 +1091,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             query_params = _BaseEkmServiceRestTransport._BaseListEkmConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.ListEkmConnections",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "ListEkmConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._ListEkmConnections._get_response(
@@ -918,7 +1139,31 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             pb_resp = ekm_service.ListEkmConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_ekm_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_service.ListEkmConnectionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceClient.list_ekm_connections",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "ListEkmConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEkmConfig(
@@ -956,7 +1201,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_service.EkmConfig:
             r"""Call the update ekm config method over HTTP.
 
@@ -967,8 +1212,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_service.EkmConfig:
@@ -988,6 +1235,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_ekm_config(
                 request, metadata
             )
@@ -1003,6 +1251,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             query_params = _BaseEkmServiceRestTransport._BaseUpdateEkmConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.UpdateEkmConfig",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "UpdateEkmConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._UpdateEkmConfig._get_response(
@@ -1025,7 +1300,29 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             pb_resp = ekm_service.EkmConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_ekm_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_service.EkmConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceClient.update_ekm_config",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "UpdateEkmConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEkmConnection(
@@ -1063,7 +1360,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_service.EkmConnection:
             r"""Call the update ekm connection method over HTTP.
 
@@ -1074,8 +1371,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_service.EkmConnection:
@@ -1097,6 +1396,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_ekm_connection(
                 request, metadata
             )
@@ -1112,6 +1412,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             query_params = _BaseEkmServiceRestTransport._BaseUpdateEkmConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.UpdateEkmConnection",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "UpdateEkmConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._UpdateEkmConnection._get_response(
@@ -1134,7 +1461,29 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             pb_resp = ekm_service.EkmConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_ekm_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_service.EkmConnection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceClient.update_ekm_connection",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "UpdateEkmConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _VerifyConnectivity(
@@ -1171,7 +1520,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_service.VerifyConnectivityResponse:
             r"""Call the verify connectivity method over HTTP.
 
@@ -1182,8 +1531,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_service.VerifyConnectivityResponse:
@@ -1195,6 +1546,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_verify_connectivity(
                 request, metadata
             )
@@ -1206,6 +1558,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             query_params = _BaseEkmServiceRestTransport._BaseVerifyConnectivity._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.VerifyConnectivity",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "VerifyConnectivity",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._VerifyConnectivity._get_response(
@@ -1227,7 +1606,31 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             pb_resp = ekm_service.VerifyConnectivityResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_verify_connectivity(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_service.VerifyConnectivityResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceClient.verify_connectivity",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "VerifyConnectivity",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1328,7 +1731,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1338,8 +1741,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1348,6 +1753,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseEkmServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1361,6 +1767,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._GetLocation._get_response(
@@ -1381,6 +1814,27 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1421,7 +1875,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1431,8 +1885,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1441,6 +1897,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseEkmServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -1454,6 +1911,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._ListLocations._get_response(
@@ -1474,6 +1958,27 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1514,7 +2019,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1524,8 +2029,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1534,6 +2041,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseEkmServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -1547,6 +2055,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._GetIamPolicy._get_response(
@@ -1567,6 +2102,27 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1608,7 +2164,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1618,8 +2174,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1628,6 +2186,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseEkmServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1647,6 +2206,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._SetIamPolicy._get_response(
@@ -1668,6 +2254,27 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1709,7 +2316,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1719,8 +2326,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1729,6 +2338,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1744,6 +2354,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             query_params = _BaseEkmServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._TestIamPermissions._get_response(
@@ -1765,6 +2402,27 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1805,7 +2463,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1815,8 +2473,10 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1825,6 +2485,7 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             http_options = (
                 _BaseEkmServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseEkmServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1838,6 +2499,33 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.EkmServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EkmServiceRestTransport._GetOperation._get_response(
@@ -1858,6 +2546,27 @@ class EkmServiceRestTransport(_BaseEkmServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.EkmServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.EkmService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -100,8 +108,10 @@ class IDSRestInterceptor:
     """
 
     def pre_create_endpoint(
-        self, request: ids.CreateEndpointRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[ids.CreateEndpointRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: ids.CreateEndpointRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ids.CreateEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -121,8 +131,10 @@ class IDSRestInterceptor:
         return response
 
     def pre_delete_endpoint(
-        self, request: ids.DeleteEndpointRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[ids.DeleteEndpointRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: ids.DeleteEndpointRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ids.DeleteEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +154,10 @@ class IDSRestInterceptor:
         return response
 
     def pre_get_endpoint(
-        self, request: ids.GetEndpointRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[ids.GetEndpointRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: ids.GetEndpointRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ids.GetEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -161,8 +175,10 @@ class IDSRestInterceptor:
         return response
 
     def pre_list_endpoints(
-        self, request: ids.ListEndpointsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[ids.ListEndpointsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: ids.ListEndpointsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ids.ListEndpointsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -355,7 +371,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create endpoint method over HTTP.
 
@@ -365,8 +381,10 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -377,6 +395,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             """
 
             http_options = _BaseIDSRestTransport._BaseCreateEndpoint._get_http_options()
+
             request, metadata = self._interceptor.pre_create_endpoint(request, metadata)
             transcoded_request = (
                 _BaseIDSRestTransport._BaseCreateEndpoint._get_transcoded_request(
@@ -394,6 +413,33 @@ class IDSRestTransport(_BaseIDSRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ids_v1.IDSClient.CreateEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "CreateEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IDSRestTransport._CreateEndpoint._get_response(
@@ -414,7 +460,29 @@ class IDSRestTransport(_BaseIDSRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_endpoint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ids_v1.IDSClient.create_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "CreateEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEndpoint(_BaseIDSRestTransport._BaseDeleteEndpoint, IDSRestStub):
@@ -449,7 +517,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete endpoint method over HTTP.
 
@@ -459,8 +527,10 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -471,6 +541,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             """
 
             http_options = _BaseIDSRestTransport._BaseDeleteEndpoint._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_endpoint(request, metadata)
             transcoded_request = (
                 _BaseIDSRestTransport._BaseDeleteEndpoint._get_transcoded_request(
@@ -484,6 +555,33 @@ class IDSRestTransport(_BaseIDSRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ids_v1.IDSClient.DeleteEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "DeleteEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IDSRestTransport._DeleteEndpoint._get_response(
@@ -503,7 +601,29 @@ class IDSRestTransport(_BaseIDSRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_endpoint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ids_v1.IDSClient.delete_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "DeleteEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEndpoint(_BaseIDSRestTransport._BaseGetEndpoint, IDSRestStub):
@@ -538,7 +658,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ids.Endpoint:
             r"""Call the get endpoint method over HTTP.
 
@@ -548,8 +668,10 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ids.Endpoint:
@@ -561,6 +683,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             """
 
             http_options = _BaseIDSRestTransport._BaseGetEndpoint._get_http_options()
+
             request, metadata = self._interceptor.pre_get_endpoint(request, metadata)
             transcoded_request = (
                 _BaseIDSRestTransport._BaseGetEndpoint._get_transcoded_request(
@@ -574,6 +697,33 @@ class IDSRestTransport(_BaseIDSRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ids_v1.IDSClient.GetEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "GetEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IDSRestTransport._GetEndpoint._get_response(
@@ -595,7 +745,29 @@ class IDSRestTransport(_BaseIDSRestTransport):
             pb_resp = ids.Endpoint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_endpoint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ids.Endpoint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ids_v1.IDSClient.get_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "GetEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEndpoints(_BaseIDSRestTransport._BaseListEndpoints, IDSRestStub):
@@ -630,7 +802,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ids.ListEndpointsResponse:
             r"""Call the list endpoints method over HTTP.
 
@@ -640,8 +812,10 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ids.ListEndpointsResponse:
@@ -649,6 +823,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             """
 
             http_options = _BaseIDSRestTransport._BaseListEndpoints._get_http_options()
+
             request, metadata = self._interceptor.pre_list_endpoints(request, metadata)
             transcoded_request = (
                 _BaseIDSRestTransport._BaseListEndpoints._get_transcoded_request(
@@ -662,6 +837,33 @@ class IDSRestTransport(_BaseIDSRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ids_v1.IDSClient.ListEndpoints",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "ListEndpoints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IDSRestTransport._ListEndpoints._get_response(
@@ -683,7 +885,29 @@ class IDSRestTransport(_BaseIDSRestTransport):
             pb_resp = ids.ListEndpointsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_endpoints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ids.ListEndpointsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ids_v1.IDSClient.list_endpoints",
+                    extra={
+                        "serviceName": "google.cloud.ids.v1.IDS",
+                        "rpcName": "ListEndpoints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

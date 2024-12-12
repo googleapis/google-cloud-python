@@ -3491,6 +3491,7 @@ def test_list_brands_rest_required_fields(request_type=service.ListBrandsRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_brands(request)
 
@@ -3609,6 +3610,7 @@ def test_create_brand_rest_required_fields(request_type=service.CreateBrandReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_brand(request)
 
@@ -3734,6 +3736,7 @@ def test_get_brand_rest_required_fields(request_type=service.GetBrandRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_brand(request)
 
@@ -3859,6 +3862,7 @@ def test_create_identity_aware_proxy_client_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_identity_aware_proxy_client(request)
 
@@ -4002,6 +4006,7 @@ def test_list_identity_aware_proxy_clients_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_identity_aware_proxy_clients(request)
 
@@ -4201,6 +4206,7 @@ def test_get_identity_aware_proxy_client_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_identity_aware_proxy_client(request)
 
@@ -4332,6 +4338,7 @@ def test_reset_identity_aware_proxy_client_secret_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.reset_identity_aware_proxy_client_secret(request)
 
@@ -4457,6 +4464,7 @@ def test_delete_identity_aware_proxy_client_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_identity_aware_proxy_client(request)
 
@@ -5032,6 +5040,7 @@ def test_list_brands_rest_bad_request(request_type=service.ListBrandsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_brands(request)
 
 
@@ -5065,6 +5074,7 @@ def test_list_brands_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_brands(request)
 
     # Establish that the response is the type that we expect.
@@ -5102,6 +5112,7 @@ def test_list_brands_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListBrandsResponse.to_json(service.ListBrandsResponse())
         req.return_value.content = return_value
 
@@ -5144,6 +5155,7 @@ def test_create_brand_rest_bad_request(request_type=service.CreateBrandRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_brand(request)
 
 
@@ -5255,6 +5267,7 @@ def test_create_brand_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_brand(request)
 
     # Establish that the response is the type that we expect.
@@ -5296,6 +5309,7 @@ def test_create_brand_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.Brand.to_json(service.Brand())
         req.return_value.content = return_value
 
@@ -5338,6 +5352,7 @@ def test_get_brand_rest_bad_request(request_type=service.GetBrandRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_brand(request)
 
 
@@ -5376,6 +5391,7 @@ def test_get_brand_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_brand(request)
 
     # Establish that the response is the type that we expect.
@@ -5417,6 +5433,7 @@ def test_get_brand_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.Brand.to_json(service.Brand())
         req.return_value.content = return_value
 
@@ -5461,6 +5478,7 @@ def test_create_identity_aware_proxy_client_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_identity_aware_proxy_client(request)
 
 
@@ -5576,6 +5594,7 @@ def test_create_identity_aware_proxy_client_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_identity_aware_proxy_client(request)
 
     # Establish that the response is the type that we expect.
@@ -5620,6 +5639,7 @@ def test_create_identity_aware_proxy_client_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.IdentityAwareProxyClient.to_json(
             service.IdentityAwareProxyClient()
         )
@@ -5666,6 +5686,7 @@ def test_list_identity_aware_proxy_clients_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_identity_aware_proxy_clients(request)
 
 
@@ -5701,6 +5722,7 @@ def test_list_identity_aware_proxy_clients_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_identity_aware_proxy_clients(request)
 
     # Establish that the response is the type that we expect.
@@ -5743,6 +5765,7 @@ def test_list_identity_aware_proxy_clients_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListIdentityAwareProxyClientsResponse.to_json(
             service.ListIdentityAwareProxyClientsResponse()
         )
@@ -5791,6 +5814,7 @@ def test_get_identity_aware_proxy_client_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_identity_aware_proxy_client(request)
 
 
@@ -5830,6 +5854,7 @@ def test_get_identity_aware_proxy_client_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_identity_aware_proxy_client(request)
 
     # Establish that the response is the type that we expect.
@@ -5874,6 +5899,7 @@ def test_get_identity_aware_proxy_client_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.IdentityAwareProxyClient.to_json(
             service.IdentityAwareProxyClient()
         )
@@ -5922,6 +5948,7 @@ def test_reset_identity_aware_proxy_client_secret_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.reset_identity_aware_proxy_client_secret(request)
 
 
@@ -5961,6 +5988,7 @@ def test_reset_identity_aware_proxy_client_secret_rest_call_success(request_type
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.reset_identity_aware_proxy_client_secret(request)
 
     # Establish that the response is the type that we expect.
@@ -6005,6 +6033,7 @@ def test_reset_identity_aware_proxy_client_secret_rest_interceptors(null_interce
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.IdentityAwareProxyClient.to_json(
             service.IdentityAwareProxyClient()
         )
@@ -6053,6 +6082,7 @@ def test_delete_identity_aware_proxy_client_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_identity_aware_proxy_client(request)
 
 
@@ -6085,6 +6115,7 @@ def test_delete_identity_aware_proxy_client_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_identity_aware_proxy_client(request)
 
     # Establish that the response is the type that we expect.
@@ -6122,6 +6153,7 @@ def test_delete_identity_aware_proxy_client_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = service.DeleteIdentityAwareProxyClientRequest()
         metadata = [

@@ -1,2 +1,0 @@
-recursive-include google/cloud/language *.py
-recursive-include google/cloud/language_v1 *.py

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -130,8 +138,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_create_deployment(
         self,
         request: gsuiteaddons.CreateDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.CreateDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -153,8 +163,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_delete_deployment(
         self,
         request: gsuiteaddons.DeleteDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.DeleteDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.DeleteDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -165,8 +177,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_get_authorization(
         self,
         request: gsuiteaddons.GetAuthorizationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.GetAuthorizationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.GetAuthorizationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_authorization
 
         Override in a subclass to manipulate the request or metadata
@@ -188,8 +202,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_get_deployment(
         self,
         request: gsuiteaddons.GetDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.GetDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -211,8 +227,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_get_install_status(
         self,
         request: gsuiteaddons.GetInstallStatusRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.GetInstallStatusRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.GetInstallStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_install_status
 
         Override in a subclass to manipulate the request or metadata
@@ -234,8 +252,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_install_deployment(
         self,
         request: gsuiteaddons.InstallDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.InstallDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.InstallDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for install_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -246,8 +266,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_list_deployments(
         self,
         request: gsuiteaddons.ListDeploymentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.ListDeploymentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +291,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_replace_deployment(
         self,
         request: gsuiteaddons.ReplaceDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.ReplaceDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.ReplaceDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for replace_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -292,8 +316,10 @@ class GSuiteAddOnsRestInterceptor:
     def pre_uninstall_deployment(
         self,
         request: gsuiteaddons.UninstallDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsuiteaddons.UninstallDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.UninstallDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for uninstall_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -457,7 +483,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsuiteaddons.Deployment:
             r"""Call the create deployment method over HTTP.
 
@@ -468,8 +494,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsuiteaddons.Deployment:
@@ -479,6 +507,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_deployment(
                 request, metadata
             )
@@ -494,6 +523,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.CreateDeployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "CreateDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._CreateDeployment._get_response(
@@ -516,7 +572,29 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             pb_resp = gsuiteaddons.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsuiteaddons.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.create_deployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "CreateDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDeployment(
@@ -553,7 +631,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete deployment method over HTTP.
 
@@ -564,13 +642,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_deployment(
                 request, metadata
             )
@@ -582,6 +663,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.DeleteDeployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "DeleteDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._DeleteDeployment._get_response(
@@ -632,7 +740,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsuiteaddons.Authorization:
             r"""Call the get authorization method over HTTP.
 
@@ -644,8 +752,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsuiteaddons.Authorization:
@@ -657,6 +767,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_authorization(
                 request, metadata
             )
@@ -668,6 +779,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.GetAuthorization",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "GetAuthorization",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._GetAuthorization._get_response(
@@ -689,7 +827,29 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             pb_resp = gsuiteaddons.Authorization.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_authorization(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsuiteaddons.Authorization.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.get_authorization",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "GetAuthorization",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDeployment(
@@ -726,7 +886,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsuiteaddons.Deployment:
             r"""Call the get deployment method over HTTP.
 
@@ -736,8 +896,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsuiteaddons.Deployment:
@@ -747,6 +909,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
             transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_transcoded_request(
                 http_options, request
@@ -756,6 +919,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.GetDeployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "GetDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._GetDeployment._get_response(
@@ -777,7 +967,29 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             pb_resp = gsuiteaddons.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsuiteaddons.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.get_deployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "GetDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstallStatus(
@@ -814,7 +1026,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsuiteaddons.InstallStatus:
             r"""Call the get install status method over HTTP.
 
@@ -825,8 +1037,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsuiteaddons.InstallStatus:
@@ -838,6 +1052,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_install_status(
                 request, metadata
             )
@@ -849,6 +1064,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.GetInstallStatus",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "GetInstallStatus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._GetInstallStatus._get_response(
@@ -870,7 +1112,29 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             pb_resp = gsuiteaddons.InstallStatus.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_install_status(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsuiteaddons.InstallStatus.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.get_install_status",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "GetInstallStatus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InstallDeployment(
@@ -908,7 +1172,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the install deployment method over HTTP.
 
@@ -919,13 +1183,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_install_deployment(
                 request, metadata
             )
@@ -941,6 +1208,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.InstallDeployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "InstallDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._InstallDeployment._get_response(
@@ -992,7 +1286,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsuiteaddons.ListDeploymentsResponse:
             r"""Call the list deployments method over HTTP.
 
@@ -1003,8 +1297,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsuiteaddons.ListDeploymentsResponse:
@@ -1014,6 +1310,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_deployments(
                 request, metadata
             )
@@ -1025,6 +1322,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.ListDeployments",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "ListDeployments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._ListDeployments._get_response(
@@ -1046,7 +1370,31 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             pb_resp = gsuiteaddons.ListDeploymentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_deployments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsuiteaddons.ListDeploymentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.list_deployments",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "ListDeployments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReplaceDeployment(
@@ -1084,7 +1432,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsuiteaddons.Deployment:
             r"""Call the replace deployment method over HTTP.
 
@@ -1095,8 +1443,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsuiteaddons.Deployment:
@@ -1106,6 +1456,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_replace_deployment(
                 request, metadata
             )
@@ -1121,6 +1472,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.ReplaceDeployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "ReplaceDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._ReplaceDeployment._get_response(
@@ -1143,7 +1521,29 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             pb_resp = gsuiteaddons.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_replace_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsuiteaddons.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.replace_deployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "ReplaceDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UninstallDeployment(
@@ -1181,7 +1581,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the uninstall deployment method over HTTP.
 
@@ -1192,13 +1592,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_uninstall_deployment(
                 request, metadata
             )
@@ -1214,6 +1617,33 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             query_params = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gsuiteaddons_v1.GSuiteAddOnsClient.UninstallDeployment",
+                    extra={
+                        "serviceName": "google.cloud.gsuiteaddons.v1.GSuiteAddOns",
+                        "rpcName": "UninstallDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GSuiteAddOnsRestTransport._UninstallDeployment._get_response(

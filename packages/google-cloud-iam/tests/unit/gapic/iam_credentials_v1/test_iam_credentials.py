@@ -2608,6 +2608,7 @@ def test_generate_access_token_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_access_token(request)
 
@@ -2664,6 +2665,7 @@ def test_generate_access_token_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.generate_access_token(**mock_args)
 
@@ -2805,6 +2807,7 @@ def test_generate_id_token_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_id_token(request)
 
@@ -2861,6 +2864,7 @@ def test_generate_id_token_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.generate_id_token(**mock_args)
 
@@ -2998,6 +3002,7 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.sign_blob(request)
 
@@ -3053,6 +3058,7 @@ def test_sign_blob_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.sign_blob(**mock_args)
 
@@ -3189,6 +3195,7 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.sign_jwt(request)
 
@@ -3244,6 +3251,7 @@ def test_sign_jwt_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.sign_jwt(**mock_args)
 
@@ -3625,6 +3633,7 @@ def test_generate_access_token_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_access_token(request)
 
 
@@ -3660,6 +3669,7 @@ def test_generate_access_token_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_access_token(request)
 
     # Establish that the response is the type that we expect.
@@ -3700,6 +3710,7 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = common.GenerateAccessTokenResponse.to_json(
             common.GenerateAccessTokenResponse()
         )
@@ -3744,6 +3755,7 @@ def test_generate_id_token_rest_bad_request(request_type=common.GenerateIdTokenR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_id_token(request)
 
 
@@ -3779,6 +3791,7 @@ def test_generate_id_token_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_id_token(request)
 
     # Establish that the response is the type that we expect.
@@ -3817,6 +3830,7 @@ def test_generate_id_token_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = common.GenerateIdTokenResponse.to_json(
             common.GenerateIdTokenResponse()
         )
@@ -3861,6 +3875,7 @@ def test_sign_blob_rest_bad_request(request_type=common.SignBlobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.sign_blob(request)
 
 
@@ -3897,6 +3912,7 @@ def test_sign_blob_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.sign_blob(request)
 
     # Establish that the response is the type that we expect.
@@ -3936,6 +3952,7 @@ def test_sign_blob_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = common.SignBlobResponse.to_json(common.SignBlobResponse())
         req.return_value.content = return_value
 
@@ -3978,6 +3995,7 @@ def test_sign_jwt_rest_bad_request(request_type=common.SignJwtRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.sign_jwt(request)
 
 
@@ -4014,6 +4032,7 @@ def test_sign_jwt_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.sign_jwt(request)
 
     # Establish that the response is the type that we expect.
@@ -4053,6 +4072,7 @@ def test_sign_jwt_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = common.SignJwtResponse.to_json(common.SignJwtResponse())
         req.return_value.content = return_value
 

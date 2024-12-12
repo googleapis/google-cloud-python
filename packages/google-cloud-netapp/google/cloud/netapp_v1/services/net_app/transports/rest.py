@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -55,6 +55,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -519,9 +527,10 @@ class NetAppRestInterceptor:
     def pre_create_active_directory(
         self,
         request: gcn_active_directory.CreateActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_active_directory.CreateActiveDirectoryRequest, Sequence[Tuple[str, str]]
+        gcn_active_directory.CreateActiveDirectoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_active_directory
 
@@ -544,8 +553,8 @@ class NetAppRestInterceptor:
     def pre_create_backup(
         self,
         request: gcn_backup.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_backup.CreateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcn_backup.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -567,8 +576,11 @@ class NetAppRestInterceptor:
     def pre_create_backup_policy(
         self,
         request: gcn_backup_policy.CreateBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_backup_policy.CreateBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_backup_policy.CreateBackupPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -590,8 +602,11 @@ class NetAppRestInterceptor:
     def pre_create_backup_vault(
         self,
         request: gcn_backup_vault.CreateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_backup_vault.CreateBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_backup_vault.CreateBackupVaultRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -611,8 +626,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_create_kms_config(
-        self, request: kms.CreateKmsConfigRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[kms.CreateKmsConfigRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: kms.CreateKmsConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[kms.CreateKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_kms_config
 
         Override in a subclass to manipulate the request or metadata
@@ -634,8 +651,11 @@ class NetAppRestInterceptor:
     def pre_create_replication(
         self,
         request: gcn_replication.CreateReplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_replication.CreateReplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_replication.CreateReplicationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -657,8 +677,10 @@ class NetAppRestInterceptor:
     def pre_create_snapshot(
         self,
         request: gcn_snapshot.CreateSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_snapshot.CreateSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_snapshot.CreateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -680,8 +702,11 @@ class NetAppRestInterceptor:
     def pre_create_storage_pool(
         self,
         request: gcn_storage_pool.CreateStoragePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_storage_pool.CreateStoragePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_storage_pool.CreateStoragePoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -703,8 +728,8 @@ class NetAppRestInterceptor:
     def pre_create_volume(
         self,
         request: gcn_volume.CreateVolumeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_volume.CreateVolumeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcn_volume.CreateVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -726,9 +751,10 @@ class NetAppRestInterceptor:
     def pre_delete_active_directory(
         self,
         request: active_directory.DeleteActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        active_directory.DeleteActiveDirectoryRequest, Sequence[Tuple[str, str]]
+        active_directory.DeleteActiveDirectoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_active_directory
 
@@ -749,8 +775,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_delete_backup(
-        self, request: backup.DeleteBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backup.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backup.DeleteBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -772,8 +800,10 @@ class NetAppRestInterceptor:
     def pre_delete_backup_policy(
         self,
         request: backup_policy.DeleteBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_policy.DeleteBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_policy.DeleteBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -795,8 +825,10 @@ class NetAppRestInterceptor:
     def pre_delete_backup_vault(
         self,
         request: backup_vault.DeleteBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_vault.DeleteBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_vault.DeleteBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -816,8 +848,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_delete_kms_config(
-        self, request: kms.DeleteKmsConfigRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[kms.DeleteKmsConfigRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: kms.DeleteKmsConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[kms.DeleteKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_kms_config
 
         Override in a subclass to manipulate the request or metadata
@@ -839,8 +873,10 @@ class NetAppRestInterceptor:
     def pre_delete_replication(
         self,
         request: replication.DeleteReplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[replication.DeleteReplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        replication.DeleteReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -862,8 +898,8 @@ class NetAppRestInterceptor:
     def pre_delete_snapshot(
         self,
         request: snapshot.DeleteSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[snapshot.DeleteSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[snapshot.DeleteSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -885,8 +921,10 @@ class NetAppRestInterceptor:
     def pre_delete_storage_pool(
         self,
         request: storage_pool.DeleteStoragePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storage_pool.DeleteStoragePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_pool.DeleteStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -906,8 +944,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_delete_volume(
-        self, request: volume.DeleteVolumeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.DeleteVolumeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.DeleteVolumeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.DeleteVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -927,8 +967,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_encrypt_volumes(
-        self, request: kms.EncryptVolumesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[kms.EncryptVolumesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: kms.EncryptVolumesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[kms.EncryptVolumesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for encrypt_volumes
 
         Override in a subclass to manipulate the request or metadata
@@ -950,8 +992,10 @@ class NetAppRestInterceptor:
     def pre_establish_peering(
         self,
         request: replication.EstablishPeeringRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[replication.EstablishPeeringRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        replication.EstablishPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for establish_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -973,8 +1017,11 @@ class NetAppRestInterceptor:
     def pre_get_active_directory(
         self,
         request: active_directory.GetActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[active_directory.GetActiveDirectoryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        active_directory.GetActiveDirectoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_active_directory
 
         Override in a subclass to manipulate the request or metadata
@@ -994,8 +1041,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_get_backup(
-        self, request: backup.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backup.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backup.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -1015,8 +1064,10 @@ class NetAppRestInterceptor:
     def pre_get_backup_policy(
         self,
         request: backup_policy.GetBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_policy.GetBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_policy.GetBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1038,8 +1089,10 @@ class NetAppRestInterceptor:
     def pre_get_backup_vault(
         self,
         request: backup_vault.GetBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_vault.GetBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_vault.GetBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -1059,8 +1112,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_get_kms_config(
-        self, request: kms.GetKmsConfigRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[kms.GetKmsConfigRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: kms.GetKmsConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[kms.GetKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_kms_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1080,8 +1135,10 @@ class NetAppRestInterceptor:
     def pre_get_replication(
         self,
         request: replication.GetReplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[replication.GetReplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        replication.GetReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -1101,8 +1158,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_get_snapshot(
-        self, request: snapshot.GetSnapshotRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[snapshot.GetSnapshotRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: snapshot.GetSnapshotRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[snapshot.GetSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -1122,8 +1181,10 @@ class NetAppRestInterceptor:
     def pre_get_storage_pool(
         self,
         request: storage_pool.GetStoragePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storage_pool.GetStoragePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_pool.GetStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -1143,8 +1204,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_get_volume(
-        self, request: volume.GetVolumeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.GetVolumeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.GetVolumeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.GetVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -1164,9 +1227,10 @@ class NetAppRestInterceptor:
     def pre_list_active_directories(
         self,
         request: active_directory.ListActiveDirectoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        active_directory.ListActiveDirectoriesRequest, Sequence[Tuple[str, str]]
+        active_directory.ListActiveDirectoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_active_directories
 
@@ -1189,8 +1253,10 @@ class NetAppRestInterceptor:
     def pre_list_backup_policies(
         self,
         request: backup_policy.ListBackupPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_policy.ListBackupPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_policy.ListBackupPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_backup_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -1210,8 +1276,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_list_backups(
-        self, request: backup.ListBackupsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backup.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backup.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -1233,8 +1301,10 @@ class NetAppRestInterceptor:
     def pre_list_backup_vaults(
         self,
         request: backup_vault.ListBackupVaultsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backup_vault.ListBackupVaultsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backup_vault.ListBackupVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_backup_vaults
 
         Override in a subclass to manipulate the request or metadata
@@ -1254,8 +1324,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_list_kms_configs(
-        self, request: kms.ListKmsConfigsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[kms.ListKmsConfigsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: kms.ListKmsConfigsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[kms.ListKmsConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_kms_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1277,8 +1349,10 @@ class NetAppRestInterceptor:
     def pre_list_replications(
         self,
         request: replication.ListReplicationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[replication.ListReplicationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        replication.ListReplicationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_replications
 
         Override in a subclass to manipulate the request or metadata
@@ -1300,8 +1374,8 @@ class NetAppRestInterceptor:
     def pre_list_snapshots(
         self,
         request: snapshot.ListSnapshotsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[snapshot.ListSnapshotsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[snapshot.ListSnapshotsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_snapshots
 
         Override in a subclass to manipulate the request or metadata
@@ -1323,8 +1397,10 @@ class NetAppRestInterceptor:
     def pre_list_storage_pools(
         self,
         request: storage_pool.ListStoragePoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storage_pool.ListStoragePoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_pool.ListStoragePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_storage_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -1344,8 +1420,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_list_volumes(
-        self, request: volume.ListVolumesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.ListVolumesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.ListVolumesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.ListVolumesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_volumes
 
         Override in a subclass to manipulate the request or metadata
@@ -1367,8 +1445,10 @@ class NetAppRestInterceptor:
     def pre_resume_replication(
         self,
         request: replication.ResumeReplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[replication.ResumeReplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        replication.ResumeReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for resume_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -1390,9 +1470,10 @@ class NetAppRestInterceptor:
     def pre_reverse_replication_direction(
         self,
         request: replication.ReverseReplicationDirectionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        replication.ReverseReplicationDirectionRequest, Sequence[Tuple[str, str]]
+        replication.ReverseReplicationDirectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for reverse_replication_direction
 
@@ -1413,8 +1494,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_revert_volume(
-        self, request: volume.RevertVolumeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[volume.RevertVolumeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: volume.RevertVolumeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.RevertVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for revert_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -1436,8 +1519,10 @@ class NetAppRestInterceptor:
     def pre_stop_replication(
         self,
         request: replication.StopReplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[replication.StopReplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        replication.StopReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for stop_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -1459,8 +1544,11 @@ class NetAppRestInterceptor:
     def pre_switch_active_replica_zone(
         self,
         request: storage_pool.SwitchActiveReplicaZoneRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storage_pool.SwitchActiveReplicaZoneRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_pool.SwitchActiveReplicaZoneRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for switch_active_replica_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -1482,8 +1570,10 @@ class NetAppRestInterceptor:
     def pre_sync_replication(
         self,
         request: replication.SyncReplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[replication.SyncReplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        replication.SyncReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for sync_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -1505,9 +1595,10 @@ class NetAppRestInterceptor:
     def pre_update_active_directory(
         self,
         request: gcn_active_directory.UpdateActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_active_directory.UpdateActiveDirectoryRequest, Sequence[Tuple[str, str]]
+        gcn_active_directory.UpdateActiveDirectoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_active_directory
 
@@ -1530,8 +1621,8 @@ class NetAppRestInterceptor:
     def pre_update_backup(
         self,
         request: gcn_backup.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_backup.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcn_backup.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -1553,8 +1644,11 @@ class NetAppRestInterceptor:
     def pre_update_backup_policy(
         self,
         request: gcn_backup_policy.UpdateBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_backup_policy.UpdateBackupPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_backup_policy.UpdateBackupPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1576,8 +1670,11 @@ class NetAppRestInterceptor:
     def pre_update_backup_vault(
         self,
         request: gcn_backup_vault.UpdateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_backup_vault.UpdateBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_backup_vault.UpdateBackupVaultRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -1597,8 +1694,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_update_kms_config(
-        self, request: kms.UpdateKmsConfigRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[kms.UpdateKmsConfigRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: kms.UpdateKmsConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[kms.UpdateKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_kms_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1620,8 +1719,11 @@ class NetAppRestInterceptor:
     def pre_update_replication(
         self,
         request: gcn_replication.UpdateReplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_replication.UpdateReplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_replication.UpdateReplicationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -1643,8 +1745,10 @@ class NetAppRestInterceptor:
     def pre_update_snapshot(
         self,
         request: gcn_snapshot.UpdateSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_snapshot.UpdateSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_snapshot.UpdateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -1666,8 +1770,11 @@ class NetAppRestInterceptor:
     def pre_update_storage_pool(
         self,
         request: gcn_storage_pool.UpdateStoragePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_storage_pool.UpdateStoragePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_storage_pool.UpdateStoragePoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -1689,8 +1796,8 @@ class NetAppRestInterceptor:
     def pre_update_volume(
         self,
         request: gcn_volume.UpdateVolumeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_volume.UpdateVolumeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcn_volume.UpdateVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_volume
 
         Override in a subclass to manipulate the request or metadata
@@ -1710,8 +1817,10 @@ class NetAppRestInterceptor:
         return response
 
     def pre_verify_kms_config(
-        self, request: kms.VerifyKmsConfigRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[kms.VerifyKmsConfigRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: kms.VerifyKmsConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[kms.VerifyKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for verify_kms_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1733,8 +1842,10 @@ class NetAppRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1756,8 +1867,10 @@ class NetAppRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1779,8 +1892,10 @@ class NetAppRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1800,8 +1915,10 @@ class NetAppRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1821,8 +1938,10 @@ class NetAppRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1844,8 +1963,10 @@ class NetAppRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2040,7 +2161,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create active directory method over HTTP.
 
@@ -2051,8 +2172,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2065,6 +2188,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_active_directory(
                 request, metadata
             )
@@ -2080,6 +2204,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             query_params = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateActiveDirectory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateActiveDirectory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._CreateActiveDirectory._get_response(
@@ -2100,7 +2251,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_active_directory(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_active_directory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateActiveDirectory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackup(_BaseNetAppRestTransport._BaseCreateBackup, NetAppRestStub):
@@ -2136,7 +2309,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup method over HTTP.
 
@@ -2146,8 +2319,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2160,6 +2335,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseCreateBackup._get_transcoded_request(
@@ -2177,6 +2353,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateBackup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._CreateBackup._get_response(
@@ -2197,7 +2400,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_backup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackupPolicy(
@@ -2235,7 +2460,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup policy method over HTTP.
 
@@ -2246,8 +2471,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2260,6 +2487,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup_policy(
                 request, metadata
             )
@@ -2280,6 +2508,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateBackupPolicy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateBackupPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._CreateBackupPolicy._get_response(
                 self._host,
@@ -2299,7 +2554,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_backup_policy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateBackupPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackupVault(
@@ -2337,7 +2614,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup vault method over HTTP.
 
@@ -2348,8 +2625,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2362,6 +2641,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup_vault(
                 request, metadata
             )
@@ -2384,6 +2664,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._CreateBackupVault._get_response(
                 self._host,
@@ -2403,7 +2710,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateKmsConfig(
@@ -2441,7 +2770,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create kms config method over HTTP.
 
@@ -2452,8 +2781,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2466,6 +2797,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateKmsConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_kms_config(
                 request, metadata
             )
@@ -2486,6 +2818,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateKmsConfig",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateKmsConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._CreateKmsConfig._get_response(
                 self._host,
@@ -2505,7 +2864,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_kms_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_kms_config",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateKmsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateReplication(
@@ -2543,7 +2924,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create replication method over HTTP.
 
@@ -2554,8 +2935,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2568,6 +2951,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_replication(
                 request, metadata
             )
@@ -2590,6 +2974,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateReplication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._CreateReplication._get_response(
                 self._host,
@@ -2609,7 +3020,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_replication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSnapshot(_BaseNetAppRestTransport._BaseCreateSnapshot, NetAppRestStub):
@@ -2645,7 +3078,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create snapshot method over HTTP.
 
@@ -2656,8 +3089,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2670,6 +3105,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseCreateSnapshot._get_transcoded_request(
@@ -2687,6 +3123,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._CreateSnapshot._get_response(
@@ -2707,7 +3170,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateStoragePool(
@@ -2745,7 +3230,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create storage pool method over HTTP.
 
@@ -2756,8 +3241,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2770,6 +3257,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateStoragePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_storage_pool(
                 request, metadata
             )
@@ -2792,6 +3280,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateStoragePool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateStoragePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._CreateStoragePool._get_response(
                 self._host,
@@ -2811,7 +3326,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_storage_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_storage_pool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateStoragePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateVolume(_BaseNetAppRestTransport._BaseCreateVolume, NetAppRestStub):
@@ -2847,7 +3384,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create volume method over HTTP.
 
@@ -2857,8 +3394,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2871,6 +3410,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseCreateVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_volume(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseCreateVolume._get_transcoded_request(
@@ -2888,6 +3428,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateVolume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._CreateVolume._get_response(
@@ -2908,7 +3475,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_volume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteActiveDirectory(
@@ -2945,7 +3534,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete active directory method over HTTP.
 
@@ -2956,8 +3545,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2970,6 +3561,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_active_directory(
                 request, metadata
             )
@@ -2981,6 +3573,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             query_params = _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteActiveDirectory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteActiveDirectory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteActiveDirectory._get_response(
@@ -3000,7 +3619,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_active_directory(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_active_directory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteActiveDirectory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackup(_BaseNetAppRestTransport._BaseDeleteBackup, NetAppRestStub):
@@ -3035,7 +3676,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup method over HTTP.
 
@@ -3045,8 +3686,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3059,6 +3702,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseDeleteBackup._get_transcoded_request(
@@ -3072,6 +3716,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteBackup._get_response(
@@ -3091,7 +3762,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackupPolicy(
@@ -3128,7 +3821,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup policy method over HTTP.
 
@@ -3139,8 +3832,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3153,6 +3848,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup_policy(
                 request, metadata
             )
@@ -3166,6 +3862,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteBackupPolicy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteBackupPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteBackupPolicy._get_response(
@@ -3185,7 +3908,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_backup_policy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteBackupPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackupVault(
@@ -3222,7 +3967,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup vault method over HTTP.
 
@@ -3233,8 +3978,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3247,6 +3994,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup_vault(
                 request, metadata
             )
@@ -3262,6 +4010,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteBackupVault._get_response(
@@ -3281,7 +4056,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteKmsConfig(
@@ -3318,7 +4115,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete kms config method over HTTP.
 
@@ -3329,8 +4126,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3343,6 +4142,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_kms_config(
                 request, metadata
             )
@@ -3358,6 +4158,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteKmsConfig",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteKmsConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteKmsConfig._get_response(
@@ -3377,7 +4204,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_kms_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_kms_config",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteKmsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteReplication(
@@ -3414,7 +4263,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete replication method over HTTP.
 
@@ -3425,8 +4274,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3439,6 +4290,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_replication(
                 request, metadata
             )
@@ -3454,6 +4306,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteReplication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteReplication._get_response(
@@ -3473,7 +4352,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_replication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSnapshot(_BaseNetAppRestTransport._BaseDeleteSnapshot, NetAppRestStub):
@@ -3508,7 +4409,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete snapshot method over HTTP.
 
@@ -3519,8 +4420,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3533,6 +4436,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseDeleteSnapshot._get_transcoded_request(
@@ -3546,6 +4450,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteSnapshot._get_response(
@@ -3565,7 +4496,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteStoragePool(
@@ -3602,7 +4555,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete storage pool method over HTTP.
 
@@ -3613,8 +4566,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3627,6 +4582,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteStoragePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_storage_pool(
                 request, metadata
             )
@@ -3642,6 +4598,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteStoragePool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteStoragePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteStoragePool._get_response(
@@ -3661,7 +4644,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_storage_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_storage_pool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteStoragePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteVolume(_BaseNetAppRestTransport._BaseDeleteVolume, NetAppRestStub):
@@ -3696,7 +4701,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete volume method over HTTP.
 
@@ -3706,8 +4711,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3720,6 +4727,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_volume(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseDeleteVolume._get_transcoded_request(
@@ -3733,6 +4741,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteVolume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteVolume._get_response(
@@ -3752,7 +4787,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_volume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EncryptVolumes(_BaseNetAppRestTransport._BaseEncryptVolumes, NetAppRestStub):
@@ -3788,7 +4845,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the encrypt volumes method over HTTP.
 
@@ -3799,8 +4856,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3813,6 +4872,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseEncryptVolumes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_encrypt_volumes(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseEncryptVolumes._get_transcoded_request(
@@ -3830,6 +4890,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.EncryptVolumes",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "EncryptVolumes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._EncryptVolumes._get_response(
@@ -3850,7 +4937,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_encrypt_volumes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.encrypt_volumes",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "EncryptVolumes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EstablishPeering(
@@ -3888,7 +4997,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the establish peering method over HTTP.
 
@@ -3900,8 +5009,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3914,6 +5025,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseEstablishPeering._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_establish_peering(
                 request, metadata
             )
@@ -3936,6 +5048,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.EstablishPeering",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "EstablishPeering",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._EstablishPeering._get_response(
                 self._host,
@@ -3955,7 +5094,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_establish_peering(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.establish_peering",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "EstablishPeering",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetActiveDirectory(
@@ -3992,7 +5153,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> active_directory.ActiveDirectory:
             r"""Call the get active directory method over HTTP.
 
@@ -4003,8 +5164,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.active_directory.ActiveDirectory:
@@ -4017,6 +5180,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseGetActiveDirectory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_active_directory(
                 request, metadata
             )
@@ -4030,6 +5194,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetActiveDirectory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetActiveDirectory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetActiveDirectory._get_response(
@@ -4051,7 +5242,31 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = active_directory.ActiveDirectory.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_active_directory(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = active_directory.ActiveDirectory.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_active_directory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetActiveDirectory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackup(_BaseNetAppRestTransport._BaseGetBackup, NetAppRestStub):
@@ -4086,7 +5301,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup.Backup:
             r"""Call the get backup method over HTTP.
 
@@ -4097,8 +5312,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup.Backup:
@@ -4106,6 +5323,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             """
 
             http_options = _BaseNetAppRestTransport._BaseGetBackup._get_http_options()
+
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseGetBackup._get_transcoded_request(
@@ -4119,6 +5337,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetBackup._get_response(
@@ -4140,7 +5385,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = backup.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupPolicy(
@@ -4177,7 +5444,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup_policy.BackupPolicy:
             r"""Call the get backup policy method over HTTP.
 
@@ -4188,8 +5455,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup_policy.BackupPolicy:
@@ -4199,6 +5468,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseGetBackupPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_policy(
                 request, metadata
             )
@@ -4214,6 +5484,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetBackupPolicy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetBackupPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetBackupPolicy._get_response(
@@ -4235,7 +5532,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = backup_policy.BackupPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup_policy.BackupPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_backup_policy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetBackupPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupVault(_BaseNetAppRestTransport._BaseGetBackupVault, NetAppRestStub):
@@ -4270,7 +5589,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup_vault.BackupVault:
             r"""Call the get backup vault method over HTTP.
 
@@ -4281,8 +5600,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup_vault.BackupVault:
@@ -4292,6 +5613,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseGetBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_vault(
                 request, metadata
             )
@@ -4307,6 +5629,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetBackupVault._get_response(
@@ -4328,7 +5677,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = backup_vault.BackupVault.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup_vault.BackupVault.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetKmsConfig(_BaseNetAppRestTransport._BaseGetKmsConfig, NetAppRestStub):
@@ -4363,7 +5734,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> kms.KmsConfig:
             r"""Call the get kms config method over HTTP.
 
@@ -4374,8 +5745,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.kms.KmsConfig:
@@ -4387,6 +5760,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseGetKmsConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_kms_config(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseGetKmsConfig._get_transcoded_request(
@@ -4400,6 +5774,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetKmsConfig",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetKmsConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetKmsConfig._get_response(
@@ -4421,7 +5822,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = kms.KmsConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_kms_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = kms.KmsConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_kms_config",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetKmsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetReplication(_BaseNetAppRestTransport._BaseGetReplication, NetAppRestStub):
@@ -4456,7 +5879,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> replication.Replication:
             r"""Call the get replication method over HTTP.
 
@@ -4467,8 +5890,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.replication.Replication:
@@ -4482,6 +5907,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseGetReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_replication(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseGetReplication._get_transcoded_request(
@@ -4495,6 +5921,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetReplication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetReplication._get_response(
@@ -4516,7 +5969,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = replication.Replication.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = replication.Replication.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_replication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSnapshot(_BaseNetAppRestTransport._BaseGetSnapshot, NetAppRestStub):
@@ -4551,7 +6026,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> snapshot.Snapshot:
             r"""Call the get snapshot method over HTTP.
 
@@ -4562,8 +6037,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.snapshot.Snapshot:
@@ -4573,6 +6050,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             """
 
             http_options = _BaseNetAppRestTransport._BaseGetSnapshot._get_http_options()
+
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseGetSnapshot._get_transcoded_request(
@@ -4586,6 +6064,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetSnapshot._get_response(
@@ -4607,7 +6112,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = snapshot.Snapshot.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = snapshot.Snapshot.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetStoragePool(_BaseNetAppRestTransport._BaseGetStoragePool, NetAppRestStub):
@@ -4642,7 +6169,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_pool.StoragePool:
             r"""Call the get storage pool method over HTTP.
 
@@ -4653,8 +6180,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storage_pool.StoragePool:
@@ -4670,6 +6199,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseGetStoragePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_storage_pool(
                 request, metadata
             )
@@ -4685,6 +6215,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetStoragePool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetStoragePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetStoragePool._get_response(
@@ -4706,7 +6263,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = storage_pool.StoragePool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_storage_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storage_pool.StoragePool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_storage_pool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetStoragePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVolume(_BaseNetAppRestTransport._BaseGetVolume, NetAppRestStub):
@@ -4741,7 +6320,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume.Volume:
             r"""Call the get volume method over HTTP.
 
@@ -4751,8 +6330,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume.Volume:
@@ -4762,6 +6343,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             """
 
             http_options = _BaseNetAppRestTransport._BaseGetVolume._get_http_options()
+
             request, metadata = self._interceptor.pre_get_volume(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseGetVolume._get_transcoded_request(
@@ -4775,6 +6357,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetVolume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetVolume._get_response(
@@ -4796,7 +6405,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = volume.Volume.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume.Volume.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_volume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListActiveDirectories(
@@ -4833,7 +6464,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> active_directory.ListActiveDirectoriesResponse:
             r"""Call the list active directories method over HTTP.
 
@@ -4844,8 +6475,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.active_directory.ListActiveDirectoriesResponse:
@@ -4858,6 +6491,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListActiveDirectories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_active_directories(
                 request, metadata
             )
@@ -4869,6 +6503,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             query_params = _BaseNetAppRestTransport._BaseListActiveDirectories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListActiveDirectories",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListActiveDirectories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListActiveDirectories._get_response(
@@ -4890,7 +6551,31 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = active_directory.ListActiveDirectoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_active_directories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        active_directory.ListActiveDirectoriesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_active_directories",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListActiveDirectories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupPolicies(
@@ -4927,7 +6612,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup_policy.ListBackupPoliciesResponse:
             r"""Call the list backup policies method over HTTP.
 
@@ -4938,8 +6623,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup_policy.ListBackupPoliciesResponse:
@@ -4951,6 +6638,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListBackupPolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_policies(
                 request, metadata
             )
@@ -4964,6 +6652,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListBackupPolicies",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListBackupPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListBackupPolicies._get_response(
@@ -4985,7 +6700,31 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = backup_policy.ListBackupPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup_policy.ListBackupPoliciesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_backup_policies",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListBackupPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackups(_BaseNetAppRestTransport._BaseListBackups, NetAppRestStub):
@@ -5020,7 +6759,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup.ListBackupsResponse:
             r"""Call the list backups method over HTTP.
 
@@ -5030,8 +6769,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup.ListBackupsResponse:
@@ -5041,6 +6782,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             """
 
             http_options = _BaseNetAppRestTransport._BaseListBackups._get_http_options()
+
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseListBackups._get_transcoded_request(
@@ -5054,6 +6796,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListBackups._get_response(
@@ -5075,7 +6844,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = backup.ListBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup.ListBackupsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupVaults(
@@ -5112,7 +6903,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup_vault.ListBackupVaultsResponse:
             r"""Call the list backup vaults method over HTTP.
 
@@ -5123,8 +6914,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup_vault.ListBackupVaultsResponse:
@@ -5136,6 +6929,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListBackupVaults._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_vaults(
                 request, metadata
             )
@@ -5151,6 +6945,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListBackupVaults",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListBackupVaults",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListBackupVaults._get_response(
@@ -5172,7 +6993,31 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = backup_vault.ListBackupVaultsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_vaults(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup_vault.ListBackupVaultsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_backup_vaults",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListBackupVaults",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListKmsConfigs(_BaseNetAppRestTransport._BaseListKmsConfigs, NetAppRestStub):
@@ -5207,7 +7052,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> kms.ListKmsConfigsResponse:
             r"""Call the list kms configs method over HTTP.
 
@@ -5218,8 +7063,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.kms.ListKmsConfigsResponse:
@@ -5231,6 +7078,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListKmsConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_kms_configs(
                 request, metadata
             )
@@ -5246,6 +7094,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListKmsConfigs",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListKmsConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListKmsConfigs._get_response(
@@ -5267,7 +7142,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = kms.ListKmsConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_kms_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = kms.ListKmsConfigsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_kms_configs",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListKmsConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReplications(
@@ -5304,7 +7201,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> replication.ListReplicationsResponse:
             r"""Call the list replications method over HTTP.
 
@@ -5314,8 +7211,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.replication.ListReplicationsResponse:
@@ -5327,6 +7226,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListReplications._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_replications(
                 request, metadata
             )
@@ -5342,6 +7242,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListReplications",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListReplications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListReplications._get_response(
@@ -5363,7 +7290,31 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = replication.ListReplicationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_replications(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = replication.ListReplicationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_replications",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListReplications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSnapshots(_BaseNetAppRestTransport._BaseListSnapshots, NetAppRestStub):
@@ -5398,7 +7349,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> snapshot.ListSnapshotsResponse:
             r"""Call the list snapshots method over HTTP.
 
@@ -5408,8 +7359,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.snapshot.ListSnapshotsResponse:
@@ -5421,6 +7374,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListSnapshots._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseListSnapshots._get_transcoded_request(
@@ -5434,6 +7388,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListSnapshots",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListSnapshots",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListSnapshots._get_response(
@@ -5455,7 +7436,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = snapshot.ListSnapshotsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_snapshots(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = snapshot.ListSnapshotsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_snapshots",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListSnapshots",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListStoragePools(
@@ -5492,7 +7495,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storage_pool.ListStoragePoolsResponse:
             r"""Call the list storage pools method over HTTP.
 
@@ -5503,8 +7506,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storage_pool.ListStoragePoolsResponse:
@@ -5516,6 +7521,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListStoragePools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_storage_pools(
                 request, metadata
             )
@@ -5531,6 +7537,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListStoragePools",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListStoragePools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListStoragePools._get_response(
@@ -5552,7 +7585,31 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = storage_pool.ListStoragePoolsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_storage_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storage_pool.ListStoragePoolsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_storage_pools",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListStoragePools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVolumes(_BaseNetAppRestTransport._BaseListVolumes, NetAppRestStub):
@@ -5587,7 +7644,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume.ListVolumesResponse:
             r"""Call the list volumes method over HTTP.
 
@@ -5598,8 +7655,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume.ListVolumesResponse:
@@ -5609,6 +7668,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             """
 
             http_options = _BaseNetAppRestTransport._BaseListVolumes._get_http_options()
+
             request, metadata = self._interceptor.pre_list_volumes(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseListVolumes._get_transcoded_request(
@@ -5622,6 +7682,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListVolumes",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListVolumes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListVolumes._get_response(
@@ -5643,7 +7730,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = volume.ListVolumesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_volumes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume.ListVolumesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_volumes",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListVolumes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResumeReplication(
@@ -5681,7 +7790,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the resume replication method over HTTP.
 
@@ -5692,8 +7801,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5706,6 +7817,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseResumeReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resume_replication(
                 request, metadata
             )
@@ -5728,6 +7840,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ResumeReplication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ResumeReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._ResumeReplication._get_response(
                 self._host,
@@ -5747,7 +7886,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resume_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.resume_replication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ResumeReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReverseReplicationDirection(
@@ -5785,7 +7946,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the reverse replication
             direction method over HTTP.
@@ -5799,8 +7960,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -5813,6 +7976,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reverse_replication_direction(
                 request, metadata
             )
@@ -5828,6 +7992,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             query_params = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ReverseReplicationDirection",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ReverseReplicationDirection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ReverseReplicationDirection._get_response(
@@ -5848,7 +8039,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reverse_replication_direction(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.reverse_replication_direction",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ReverseReplicationDirection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RevertVolume(_BaseNetAppRestTransport._BaseRevertVolume, NetAppRestStub):
@@ -5884,7 +8097,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the revert volume method over HTTP.
 
@@ -5895,8 +8108,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5909,6 +8124,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseRevertVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_revert_volume(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseRevertVolume._get_transcoded_request(
@@ -5926,6 +8142,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.RevertVolume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "RevertVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._RevertVolume._get_response(
@@ -5946,7 +8189,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_revert_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.revert_volume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "RevertVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopReplication(
@@ -5984,7 +8249,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the stop replication method over HTTP.
 
@@ -5995,8 +8260,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6009,6 +8276,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseStopReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_replication(
                 request, metadata
             )
@@ -6029,6 +8297,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.StopReplication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "StopReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._StopReplication._get_response(
                 self._host,
@@ -6048,7 +8343,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.stop_replication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "StopReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SwitchActiveReplicaZone(
@@ -6086,7 +8403,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the switch active replica
             zone method over HTTP.
@@ -6099,8 +8416,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -6113,6 +8432,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_switch_active_replica_zone(
                 request, metadata
             )
@@ -6128,6 +8448,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             query_params = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.SwitchActiveReplicaZone",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "SwitchActiveReplicaZone",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._SwitchActiveReplicaZone._get_response(
@@ -6148,7 +8495,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_switch_active_replica_zone(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.switch_active_replica_zone",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "SwitchActiveReplicaZone",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SyncReplication(
@@ -6186,7 +8555,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the sync replication method over HTTP.
 
@@ -6197,8 +8566,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6211,6 +8582,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseSyncReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_sync_replication(
                 request, metadata
             )
@@ -6231,6 +8603,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.SyncReplication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "SyncReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._SyncReplication._get_response(
                 self._host,
@@ -6250,7 +8649,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_sync_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.sync_replication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "SyncReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateActiveDirectory(
@@ -6288,7 +8709,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update active directory method over HTTP.
 
@@ -6299,8 +8720,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6313,6 +8736,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_active_directory(
                 request, metadata
             )
@@ -6328,6 +8752,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             query_params = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateActiveDirectory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateActiveDirectory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._UpdateActiveDirectory._get_response(
@@ -6348,7 +8799,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_active_directory(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_active_directory",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateActiveDirectory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackup(_BaseNetAppRestTransport._BaseUpdateBackup, NetAppRestStub):
@@ -6384,7 +8857,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup method over HTTP.
 
@@ -6395,8 +8868,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6409,6 +8884,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseUpdateBackup._get_transcoded_request(
@@ -6426,6 +8902,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateBackup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._UpdateBackup._get_response(
@@ -6446,7 +8949,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_backup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackupPolicy(
@@ -6484,7 +9009,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup policy method over HTTP.
 
@@ -6495,8 +9020,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6509,6 +9036,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup_policy(
                 request, metadata
             )
@@ -6529,6 +9057,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateBackupPolicy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateBackupPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._UpdateBackupPolicy._get_response(
                 self._host,
@@ -6548,7 +9103,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_backup_policy",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateBackupPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackupVault(
@@ -6586,7 +9163,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup vault method over HTTP.
 
@@ -6598,8 +9175,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6612,6 +9191,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup_vault(
                 request, metadata
             )
@@ -6634,6 +9214,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._UpdateBackupVault._get_response(
                 self._host,
@@ -6653,7 +9260,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateKmsConfig(
@@ -6691,7 +9320,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update kms config method over HTTP.
 
@@ -6702,8 +9331,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6716,6 +9347,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_kms_config(
                 request, metadata
             )
@@ -6736,6 +9368,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateKmsConfig",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateKmsConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._UpdateKmsConfig._get_response(
                 self._host,
@@ -6755,7 +9414,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_kms_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_kms_config",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateKmsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateReplication(
@@ -6793,7 +9474,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update replication method over HTTP.
 
@@ -6805,8 +9486,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6819,6 +9502,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_replication(
                 request, metadata
             )
@@ -6841,6 +9525,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateReplication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._UpdateReplication._get_response(
                 self._host,
@@ -6860,7 +9571,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_replication",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSnapshot(_BaseNetAppRestTransport._BaseUpdateSnapshot, NetAppRestStub):
@@ -6896,7 +9629,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update snapshot method over HTTP.
 
@@ -6908,8 +9641,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6922,6 +9657,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_snapshot(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseUpdateSnapshot._get_transcoded_request(
@@ -6939,6 +9675,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._UpdateSnapshot._get_response(
@@ -6959,7 +9722,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateStoragePool(
@@ -6997,7 +9782,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update storage pool method over HTTP.
 
@@ -7008,8 +9793,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -7022,6 +9809,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateStoragePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_storage_pool(
                 request, metadata
             )
@@ -7044,6 +9832,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateStoragePool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateStoragePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = NetAppRestTransport._UpdateStoragePool._get_response(
                 self._host,
@@ -7063,7 +9878,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_storage_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_storage_pool",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateStoragePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateVolume(_BaseNetAppRestTransport._BaseUpdateVolume, NetAppRestStub):
@@ -7099,7 +9936,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update volume method over HTTP.
 
@@ -7109,8 +9946,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -7123,6 +9962,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseUpdateVolume._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_volume(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseUpdateVolume._get_transcoded_request(
@@ -7140,6 +9980,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateVolume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateVolume",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._UpdateVolume._get_response(
@@ -7160,7 +10027,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_volume(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_volume",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateVolume",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _VerifyKmsConfig(
@@ -7198,7 +10087,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> kms.VerifyKmsConfigResponse:
             r"""Call the verify kms config method over HTTP.
 
@@ -7209,8 +10098,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.kms.VerifyKmsConfigResponse:
@@ -7223,6 +10114,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_verify_kms_config(
                 request, metadata
             )
@@ -7242,6 +10134,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.VerifyKmsConfig",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "VerifyKmsConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._VerifyKmsConfig._get_response(
@@ -7264,7 +10183,29 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             pb_resp = kms.VerifyKmsConfigResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_verify_kms_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = kms.VerifyKmsConfigResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.verify_kms_config",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "VerifyKmsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -7765,7 +10706,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -7775,14 +10716,17 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
             """
 
             http_options = _BaseNetAppRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseGetLocation._get_transcoded_request(
@@ -7796,6 +10740,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetLocation._get_response(
@@ -7816,6 +10787,27 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -7854,7 +10846,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -7864,8 +10856,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -7874,6 +10868,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseListLocations._get_transcoded_request(
@@ -7887,6 +10882,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListLocations._get_response(
@@ -7907,6 +10929,27 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -7948,7 +10991,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -7958,13 +11001,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseNetAppRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -7984,6 +11030,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._CancelOperation._get_response(
@@ -8041,7 +11114,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -8051,13 +11124,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseNetAppRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -8073,6 +11149,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._DeleteOperation._get_response(
@@ -8127,7 +11230,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -8137,8 +11240,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -8147,6 +11252,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseGetOperation._get_transcoded_request(
@@ -8160,6 +11266,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._GetOperation._get_response(
@@ -8180,6 +11313,27 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -8218,7 +11372,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -8228,8 +11382,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -8238,6 +11394,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = (
                 _BaseNetAppRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseNetAppRestTransport._BaseListOperations._get_transcoded_request(
@@ -8251,6 +11408,33 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetAppRestTransport._ListOperations._get_response(
@@ -8271,6 +11455,27 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

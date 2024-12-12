@@ -7157,6 +7157,7 @@ def test_list_authorization_policies_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_authorization_policies(request)
 
@@ -7212,6 +7213,7 @@ def test_list_authorization_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_authorization_policies(**mock_args)
 
@@ -7414,6 +7416,7 @@ def test_get_authorization_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_authorization_policy(request)
 
@@ -7461,6 +7464,7 @@ def test_get_authorization_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_authorization_policy(**mock_args)
 
@@ -7611,6 +7615,7 @@ def test_create_authorization_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_authorization_policy(request)
 
@@ -7673,6 +7678,7 @@ def test_create_authorization_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_authorization_policy(**mock_args)
 
@@ -7812,6 +7818,7 @@ def test_update_authorization_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_authorization_policy(request)
 
@@ -7862,6 +7869,7 @@ def test_update_authorization_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_authorization_policy(**mock_args)
 
@@ -8002,6 +8010,7 @@ def test_delete_authorization_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_authorization_policy(request)
 
@@ -8047,6 +8056,7 @@ def test_delete_authorization_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_authorization_policy(**mock_args)
 
@@ -8192,6 +8202,7 @@ def test_list_server_tls_policies_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_server_tls_policies(request)
 
@@ -8245,6 +8256,7 @@ def test_list_server_tls_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_server_tls_policies(**mock_args)
 
@@ -8444,6 +8456,7 @@ def test_get_server_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_server_tls_policy(request)
 
@@ -8491,6 +8504,7 @@ def test_get_server_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_server_tls_policy(**mock_args)
 
@@ -8640,6 +8654,7 @@ def test_create_server_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_server_tls_policy(request)
 
@@ -8700,6 +8715,7 @@ def test_create_server_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_server_tls_policy(**mock_args)
 
@@ -8837,6 +8853,7 @@ def test_update_server_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_server_tls_policy(request)
 
@@ -8885,6 +8902,7 @@ def test_update_server_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_server_tls_policy(**mock_args)
 
@@ -9023,6 +9041,7 @@ def test_delete_server_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_server_tls_policy(request)
 
@@ -9068,6 +9087,7 @@ def test_delete_server_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_server_tls_policy(**mock_args)
 
@@ -9213,6 +9233,7 @@ def test_list_client_tls_policies_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_client_tls_policies(request)
 
@@ -9266,6 +9287,7 @@ def test_list_client_tls_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_client_tls_policies(**mock_args)
 
@@ -9465,6 +9487,7 @@ def test_get_client_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_client_tls_policy(request)
 
@@ -9512,6 +9535,7 @@ def test_get_client_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_client_tls_policy(**mock_args)
 
@@ -9661,6 +9685,7 @@ def test_create_client_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_client_tls_policy(request)
 
@@ -9721,6 +9746,7 @@ def test_create_client_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_client_tls_policy(**mock_args)
 
@@ -9858,6 +9884,7 @@ def test_update_client_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_client_tls_policy(request)
 
@@ -9906,6 +9933,7 @@ def test_update_client_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_client_tls_policy(**mock_args)
 
@@ -10044,6 +10072,7 @@ def test_delete_client_tls_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_client_tls_policy(request)
 
@@ -10089,6 +10118,7 @@ def test_delete_client_tls_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_client_tls_policy(**mock_args)
 
@@ -11034,6 +11064,7 @@ def test_list_authorization_policies_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_authorization_policies(request)
 
 
@@ -11071,6 +11102,7 @@ def test_list_authorization_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_authorization_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -11111,6 +11143,7 @@ def test_list_authorization_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = authorization_policy.ListAuthorizationPoliciesResponse.to_json(
             authorization_policy.ListAuthorizationPoliciesResponse()
         )
@@ -11159,6 +11192,7 @@ def test_get_authorization_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_authorization_policy(request)
 
 
@@ -11198,6 +11232,7 @@ def test_get_authorization_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_authorization_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -11240,6 +11275,7 @@ def test_get_authorization_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = authorization_policy.AuthorizationPolicy.to_json(
             authorization_policy.AuthorizationPolicy()
         )
@@ -11286,6 +11322,7 @@ def test_create_authorization_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_authorization_policy(request)
 
 
@@ -11416,6 +11453,7 @@ def test_create_authorization_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_authorization_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -11457,6 +11495,7 @@ def test_create_authorization_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11505,6 +11544,7 @@ def test_update_authorization_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_authorization_policy(request)
 
 
@@ -11639,6 +11679,7 @@ def test_update_authorization_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_authorization_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -11680,6 +11721,7 @@ def test_update_authorization_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11726,6 +11768,7 @@ def test_delete_authorization_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_authorization_policy(request)
 
 
@@ -11758,6 +11801,7 @@ def test_delete_authorization_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_authorization_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -11799,6 +11843,7 @@ def test_delete_authorization_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11843,6 +11888,7 @@ def test_list_server_tls_policies_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_server_tls_policies(request)
 
 
@@ -11878,6 +11924,7 @@ def test_list_server_tls_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_server_tls_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -11918,6 +11965,7 @@ def test_list_server_tls_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = server_tls_policy.ListServerTlsPoliciesResponse.to_json(
             server_tls_policy.ListServerTlsPoliciesResponse()
         )
@@ -11966,6 +12014,7 @@ def test_get_server_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_server_tls_policy(request)
 
 
@@ -12005,6 +12054,7 @@ def test_get_server_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_server_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -12047,6 +12097,7 @@ def test_get_server_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = server_tls_policy.ServerTlsPolicy.to_json(
             server_tls_policy.ServerTlsPolicy()
         )
@@ -12093,6 +12144,7 @@ def test_create_server_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_server_tls_policy(request)
 
 
@@ -12211,6 +12263,7 @@ def test_create_server_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_server_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -12252,6 +12305,7 @@ def test_create_server_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12300,6 +12354,7 @@ def test_update_server_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_server_tls_policy(request)
 
 
@@ -12422,6 +12477,7 @@ def test_update_server_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_server_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -12463,6 +12519,7 @@ def test_update_server_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12509,6 +12566,7 @@ def test_delete_server_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_server_tls_policy(request)
 
 
@@ -12541,6 +12599,7 @@ def test_delete_server_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_server_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -12582,6 +12641,7 @@ def test_delete_server_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12626,6 +12686,7 @@ def test_list_client_tls_policies_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_client_tls_policies(request)
 
 
@@ -12661,6 +12722,7 @@ def test_list_client_tls_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_client_tls_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -12701,6 +12763,7 @@ def test_list_client_tls_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = client_tls_policy.ListClientTlsPoliciesResponse.to_json(
             client_tls_policy.ListClientTlsPoliciesResponse()
         )
@@ -12749,6 +12812,7 @@ def test_get_client_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_client_tls_policy(request)
 
 
@@ -12788,6 +12852,7 @@ def test_get_client_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_client_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -12830,6 +12895,7 @@ def test_get_client_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = client_tls_policy.ClientTlsPolicy.to_json(
             client_tls_policy.ClientTlsPolicy()
         )
@@ -12876,6 +12942,7 @@ def test_create_client_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_client_tls_policy(request)
 
 
@@ -12992,6 +13059,7 @@ def test_create_client_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_client_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -13033,6 +13101,7 @@ def test_create_client_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13081,6 +13150,7 @@ def test_update_client_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_client_tls_policy(request)
 
 
@@ -13201,6 +13271,7 @@ def test_update_client_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_client_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -13242,6 +13313,7 @@ def test_update_client_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13288,6 +13360,7 @@ def test_delete_client_tls_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_client_tls_policy(request)
 
 
@@ -13320,6 +13393,7 @@ def test_delete_client_tls_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_client_tls_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -13361,6 +13435,7 @@ def test_delete_client_tls_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13405,6 +13480,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -13435,6 +13511,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -13463,6 +13540,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -13493,6 +13571,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -13526,6 +13605,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -13558,6 +13638,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -13591,6 +13672,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -13623,6 +13705,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -13656,6 +13739,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -13688,6 +13772,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 
@@ -13718,6 +13803,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -13748,6 +13834,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -13778,6 +13865,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -13808,6 +13896,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -13838,6 +13927,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -13868,6 +13958,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -13898,6 +13989,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -13928,6 +14020,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
