@@ -2077,6 +2077,7 @@ def test_compute_threat_list_diff_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.compute_threat_list_diff(request)
 
@@ -2140,6 +2141,7 @@ def test_compute_threat_list_diff_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.compute_threat_list_diff(**mock_args)
 
@@ -2281,6 +2283,7 @@ def test_search_uris_rest_required_fields(request_type=webrisk.SearchUrisRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_uris(request)
 
@@ -2346,6 +2349,7 @@ def test_search_uris_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_uris(**mock_args)
 
@@ -2476,6 +2480,7 @@ def test_search_hashes_rest_required_fields(request_type=webrisk.SearchHashesReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_hashes(request)
 
@@ -2530,6 +2535,7 @@ def test_search_hashes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_hashes(**mock_args)
 
@@ -2851,6 +2857,7 @@ def test_compute_threat_list_diff_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.compute_threat_list_diff(request)
 
 
@@ -2887,6 +2894,7 @@ def test_compute_threat_list_diff_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.compute_threat_list_diff(request)
 
     # Establish that the response is the type that we expect.
@@ -2931,6 +2939,7 @@ def test_compute_threat_list_diff_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = webrisk.ComputeThreatListDiffResponse.to_json(
             webrisk.ComputeThreatListDiffResponse()
         )
@@ -2975,6 +2984,7 @@ def test_search_uris_rest_bad_request(request_type=webrisk.SearchUrisRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_uris(request)
 
 
@@ -3008,6 +3018,7 @@ def test_search_uris_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_uris(request)
 
     # Establish that the response is the type that we expect.
@@ -3045,6 +3056,7 @@ def test_search_uris_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = webrisk.SearchUrisResponse.to_json(webrisk.SearchUrisResponse())
         req.return_value.content = return_value
 
@@ -3087,6 +3099,7 @@ def test_search_hashes_rest_bad_request(request_type=webrisk.SearchHashesRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_hashes(request)
 
 
@@ -3120,6 +3133,7 @@ def test_search_hashes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_hashes(request)
 
     # Establish that the response is the type that we expect.
@@ -3157,6 +3171,7 @@ def test_search_hashes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = webrisk.SearchHashesResponse.to_json(
             webrisk.SearchHashesResponse()
         )

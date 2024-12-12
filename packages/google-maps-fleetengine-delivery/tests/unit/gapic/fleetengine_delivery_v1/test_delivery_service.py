@@ -4441,6 +4441,7 @@ def test_create_delivery_vehicle_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_delivery_vehicle(request)
 
@@ -4508,6 +4509,7 @@ def test_create_delivery_vehicle_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_delivery_vehicle(**mock_args)
 
@@ -4646,6 +4648,7 @@ def test_get_delivery_vehicle_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_delivery_vehicle(request)
 
@@ -4691,6 +4694,7 @@ def test_get_delivery_vehicle_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_delivery_vehicle(**mock_args)
 
@@ -4829,6 +4833,7 @@ def test_update_delivery_vehicle_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_delivery_vehicle(request)
 
@@ -4890,6 +4895,7 @@ def test_update_delivery_vehicle_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_delivery_vehicle(**mock_args)
 
@@ -5027,6 +5033,7 @@ def test_batch_create_tasks_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_create_tasks(request)
 
@@ -5167,6 +5174,7 @@ def test_create_task_rest_required_fields(request_type=delivery_api.CreateTaskRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_task(request)
 
@@ -5234,6 +5242,7 @@ def test_create_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_task(**mock_args)
 
@@ -5365,6 +5374,7 @@ def test_get_task_rest_required_fields(request_type=delivery_api.GetTaskRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_task(request)
 
@@ -5410,6 +5420,7 @@ def test_get_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_task(**mock_args)
 
@@ -5540,6 +5551,7 @@ def test_update_task_rest_required_fields(request_type=delivery_api.UpdateTaskRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_task(request)
 
@@ -5599,6 +5611,7 @@ def test_update_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_task(**mock_args)
 
@@ -5736,6 +5749,7 @@ def test_list_tasks_rest_required_fields(request_type=delivery_api.ListTasksRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_tasks(request)
 
@@ -5791,6 +5805,7 @@ def test_list_tasks_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_tasks(**mock_args)
 
@@ -5988,6 +6003,7 @@ def test_get_task_tracking_info_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_task_tracking_info(request)
 
@@ -6033,6 +6049,7 @@ def test_get_task_tracking_info_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_task_tracking_info(**mock_args)
 
@@ -6178,6 +6195,7 @@ def test_list_delivery_vehicles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_delivery_vehicles(request)
 
@@ -6234,6 +6252,7 @@ def test_list_delivery_vehicles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_delivery_vehicles(**mock_args)
 
@@ -7633,6 +7652,7 @@ def test_create_delivery_vehicle_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_delivery_vehicle(request)
 
 
@@ -7806,6 +7826,7 @@ def test_create_delivery_vehicle_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_delivery_vehicle(request)
 
     # Establish that the response is the type that we expect.
@@ -7851,6 +7872,7 @@ def test_create_delivery_vehicle_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = delivery_vehicles.DeliveryVehicle.to_json(
             delivery_vehicles.DeliveryVehicle()
         )
@@ -7897,6 +7919,7 @@ def test_get_delivery_vehicle_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_delivery_vehicle(request)
 
 
@@ -7935,6 +7958,7 @@ def test_get_delivery_vehicle_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_delivery_vehicle(request)
 
     # Establish that the response is the type that we expect.
@@ -7980,6 +8004,7 @@ def test_get_delivery_vehicle_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = delivery_vehicles.DeliveryVehicle.to_json(
             delivery_vehicles.DeliveryVehicle()
         )
@@ -8028,6 +8053,7 @@ def test_update_delivery_vehicle_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_delivery_vehicle(request)
 
 
@@ -8203,6 +8229,7 @@ def test_update_delivery_vehicle_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_delivery_vehicle(request)
 
     # Establish that the response is the type that we expect.
@@ -8248,6 +8275,7 @@ def test_update_delivery_vehicle_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = delivery_vehicles.DeliveryVehicle.to_json(
             delivery_vehicles.DeliveryVehicle()
         )
@@ -8294,6 +8322,7 @@ def test_batch_create_tasks_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_create_tasks(request)
 
 
@@ -8327,6 +8356,7 @@ def test_batch_create_tasks_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_create_tasks(request)
 
     # Establish that the response is the type that we expect.
@@ -8366,6 +8396,7 @@ def test_batch_create_tasks_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = delivery_api.BatchCreateTasksResponse.to_json(
             delivery_api.BatchCreateTasksResponse()
         )
@@ -8410,6 +8441,7 @@ def test_create_task_rest_bad_request(request_type=delivery_api.CreateTaskReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_task(request)
 
 
@@ -8605,6 +8637,7 @@ def test_create_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_task(request)
 
     # Establish that the response is the type that we expect.
@@ -8652,6 +8685,7 @@ def test_create_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tasks.Task.to_json(tasks.Task())
         req.return_value.content = return_value
 
@@ -8694,6 +8728,7 @@ def test_get_task_rest_bad_request(request_type=delivery_api.GetTaskRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_task(request)
 
 
@@ -8735,6 +8770,7 @@ def test_get_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_task(request)
 
     # Establish that the response is the type that we expect.
@@ -8782,6 +8818,7 @@ def test_get_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tasks.Task.to_json(tasks.Task())
         req.return_value.content = return_value
 
@@ -8824,6 +8861,7 @@ def test_update_task_rest_bad_request(request_type=delivery_api.UpdateTaskReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_task(request)
 
 
@@ -9019,6 +9057,7 @@ def test_update_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_task(request)
 
     # Establish that the response is the type that we expect.
@@ -9066,6 +9105,7 @@ def test_update_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tasks.Task.to_json(tasks.Task())
         req.return_value.content = return_value
 
@@ -9108,6 +9148,7 @@ def test_list_tasks_rest_bad_request(request_type=delivery_api.ListTasksRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_tasks(request)
 
 
@@ -9144,6 +9185,7 @@ def test_list_tasks_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_tasks(request)
 
     # Establish that the response is the type that we expect.
@@ -9183,6 +9225,7 @@ def test_list_tasks_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = delivery_api.ListTasksResponse.to_json(
             delivery_api.ListTasksResponse()
         )
@@ -9229,6 +9272,7 @@ def test_get_task_tracking_info_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_task_tracking_info(request)
 
 
@@ -9267,6 +9311,7 @@ def test_get_task_tracking_info_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_task_tracking_info(request)
 
     # Establish that the response is the type that we expect.
@@ -9310,6 +9355,7 @@ def test_get_task_tracking_info_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = task_tracking_info.TaskTrackingInfo.to_json(
             task_tracking_info.TaskTrackingInfo()
         )
@@ -9356,6 +9402,7 @@ def test_list_delivery_vehicles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_delivery_vehicles(request)
 
 
@@ -9392,6 +9439,7 @@ def test_list_delivery_vehicles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_delivery_vehicles(request)
 
     # Establish that the response is the type that we expect.
@@ -9433,6 +9481,7 @@ def test_list_delivery_vehicles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = delivery_api.ListDeliveryVehiclesResponse.to_json(
             delivery_api.ListDeliveryVehiclesResponse()
         )

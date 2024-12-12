@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-trace",
-    "version": "1.14.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -51,7 +51,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.trace_v1.types.Trace",
@@ -135,7 +135,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.trace_v1.types.Trace",
@@ -216,7 +216,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.trace_v1.services.trace_service.pagers.ListTracesAsyncPager",
@@ -296,7 +296,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.trace_v1.services.trace_service.pagers.ListTracesPager",
@@ -381,7 +381,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "patch_traces"
@@ -462,7 +462,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "patch_traces"

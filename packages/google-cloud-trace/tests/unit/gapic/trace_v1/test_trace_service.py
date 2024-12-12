@@ -2333,6 +2333,7 @@ def test_list_traces_rest_required_fields(request_type=trace.ListTracesRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_traces(request)
 
@@ -2391,6 +2392,7 @@ def test_list_traces_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_traces(**mock_args)
 
@@ -2583,6 +2585,7 @@ def test_get_trace_rest_required_fields(request_type=trace.GetTraceRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_trace(request)
 
@@ -2637,6 +2640,7 @@ def test_get_trace_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_trace(**mock_args)
 
@@ -2764,6 +2768,7 @@ def test_patch_traces_rest_required_fields(request_type=trace.PatchTracesRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.patch_traces(request)
 
@@ -2816,6 +2821,7 @@ def test_patch_traces_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.patch_traces(**mock_args)
 
@@ -3131,6 +3137,7 @@ def test_list_traces_rest_bad_request(request_type=trace.ListTracesRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_traces(request)
 
 
@@ -3166,6 +3173,7 @@ def test_list_traces_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_traces(request)
 
     # Establish that the response is the type that we expect.
@@ -3204,6 +3212,7 @@ def test_list_traces_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = trace.ListTracesResponse.to_json(trace.ListTracesResponse())
         req.return_value.content = return_value
 
@@ -3246,6 +3255,7 @@ def test_get_trace_rest_bad_request(request_type=trace.GetTraceRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_trace(request)
 
 
@@ -3282,6 +3292,7 @@ def test_get_trace_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_trace(request)
 
     # Establish that the response is the type that we expect.
@@ -3321,6 +3332,7 @@ def test_get_trace_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = trace.Trace.to_json(trace.Trace())
         req.return_value.content = return_value
 
@@ -3363,6 +3375,7 @@ def test_patch_traces_rest_bad_request(request_type=trace.PatchTracesRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.patch_traces(request)
 
 
@@ -3479,6 +3492,7 @@ def test_patch_traces_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.patch_traces(request)
 
     # Establish that the response is the type that we expect.
@@ -3513,6 +3527,7 @@ def test_patch_traces_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = trace.PatchTracesRequest()
         metadata = [
