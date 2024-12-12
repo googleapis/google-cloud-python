@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.17.32](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.31...google-cloud-batch-v0.17.32) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([b1358ba](https://github.com/googleapis/google-cloud-python/commit/b1358ba4fb17713ab9f637dd6e698b8ec788fd92))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([b1358ba](https://github.com/googleapis/google-cloud-python/commit/b1358ba4fb17713ab9f637dd6e698b8ec788fd92))
+
+
+### Documentation
+
+* [google-cloud-batch] Rephrase reservation field doc ([#13311](https://github.com/googleapis/google-cloud-python/issues/13311)) ([bcf230c](https://github.com/googleapis/google-cloud-python/commit/bcf230c24d0a2ac158606a7c7176ea87be8ad592))
+* clarify options for logs ([b1358ba](https://github.com/googleapis/google-cloud-python/commit/b1358ba4fb17713ab9f637dd6e698b8ec788fd92))
+* clarify that user provided labels will also be applied to Cloud Logging ([90a49b2](https://github.com/googleapis/google-cloud-python/commit/90a49b2b5a4c9d0f197162b272ef097e990cd97b))
+* Clarify the custom instance template needs to be in the same project ([b1358ba](https://github.com/googleapis/google-cloud-python/commit/b1358ba4fb17713ab9f637dd6e698b8ec788fd92))
+* Rephrase reservation field doc ([b1358ba](https://github.com/googleapis/google-cloud-python/commit/b1358ba4fb17713ab9f637dd6e698b8ec788fd92))
+* Update reservation field to include NO_RESERVATION ([90a49b2](https://github.com/googleapis/google-cloud-python/commit/90a49b2b5a4c9d0f197162b272ef097e990cd97b))
+
 ## [0.17.31](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.30...google-cloud-batch-v0.17.31) (2024-10-31)
 
 

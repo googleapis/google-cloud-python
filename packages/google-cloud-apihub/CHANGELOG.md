@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.2...google-cloud-apihub-v0.2.3) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apihub-v0.2.1...google-cloud-apihub-v0.2.2) (2024-10-31)
 
 
