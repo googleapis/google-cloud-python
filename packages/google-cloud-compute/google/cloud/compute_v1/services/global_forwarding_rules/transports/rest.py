@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -125,8 +133,11 @@ class GlobalForwardingRulesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteGlobalForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteGlobalForwardingRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteGlobalForwardingRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -146,8 +157,10 @@ class GlobalForwardingRulesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetGlobalForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetGlobalForwardingRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetGlobalForwardingRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -167,8 +180,11 @@ class GlobalForwardingRulesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertGlobalForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertGlobalForwardingRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertGlobalForwardingRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -188,8 +204,11 @@ class GlobalForwardingRulesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListGlobalForwardingRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListGlobalForwardingRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListGlobalForwardingRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -211,8 +230,11 @@ class GlobalForwardingRulesRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchGlobalForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchGlobalForwardingRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchGlobalForwardingRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -232,8 +254,11 @@ class GlobalForwardingRulesRestInterceptor:
     def pre_set_labels(
         self,
         request: compute.SetLabelsGlobalForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetLabelsGlobalForwardingRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetLabelsGlobalForwardingRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -253,8 +278,11 @@ class GlobalForwardingRulesRestInterceptor:
     def pre_set_target(
         self,
         request: compute.SetTargetGlobalForwardingRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetTargetGlobalForwardingRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetTargetGlobalForwardingRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_target
 
         Override in a subclass to manipulate the request or metadata
@@ -397,7 +425,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -409,8 +437,10 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -437,6 +467,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             http_options = (
                 _BaseGlobalForwardingRulesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseGlobalForwardingRulesRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -446,6 +477,33 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             query_params = _BaseGlobalForwardingRulesRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalForwardingRulesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalForwardingRulesRestTransport._Delete._get_response(
@@ -467,7 +525,29 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalForwardingRulesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -504,7 +584,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.ForwardingRule:
             r"""Call the get method over HTTP.
 
@@ -516,8 +596,10 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.ForwardingRule:
@@ -539,6 +621,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             http_options = (
                 _BaseGlobalForwardingRulesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseGlobalForwardingRulesRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -550,6 +633,33 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalForwardingRulesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalForwardingRulesRestTransport._Get._get_response(
@@ -571,7 +681,29 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             pb_resp = compute.ForwardingRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.ForwardingRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalForwardingRulesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -610,7 +742,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -622,8 +754,10 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -650,6 +784,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             http_options = (
                 _BaseGlobalForwardingRulesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseGlobalForwardingRulesRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -663,6 +798,33 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             query_params = _BaseGlobalForwardingRulesRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalForwardingRulesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalForwardingRulesRestTransport._Insert._get_response(
@@ -685,7 +847,29 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalForwardingRulesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -722,7 +906,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.ForwardingRuleList:
             r"""Call the list method over HTTP.
 
@@ -734,8 +918,10 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.ForwardingRuleList:
@@ -747,6 +933,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             http_options = (
                 _BaseGlobalForwardingRulesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseGlobalForwardingRulesRestTransport._BaseList._get_transcoded_request(
                 http_options, request
@@ -756,6 +943,33 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             query_params = _BaseGlobalForwardingRulesRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalForwardingRulesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalForwardingRulesRestTransport._List._get_response(
@@ -777,7 +991,29 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             pb_resp = compute.ForwardingRuleList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.ForwardingRuleList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalForwardingRulesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(
@@ -816,7 +1052,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -828,8 +1064,10 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -856,6 +1094,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             http_options = (
                 _BaseGlobalForwardingRulesRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = _BaseGlobalForwardingRulesRestTransport._BasePatch._get_transcoded_request(
                 http_options, request
@@ -869,6 +1108,33 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             query_params = _BaseGlobalForwardingRulesRestTransport._BasePatch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalForwardingRulesClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalForwardingRulesRestTransport._Patch._get_response(
@@ -891,7 +1157,29 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalForwardingRulesClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLabels(
@@ -930,7 +1218,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set labels method over HTTP.
 
@@ -942,8 +1230,10 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -970,6 +1260,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             http_options = (
                 _BaseGlobalForwardingRulesRestTransport._BaseSetLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
             transcoded_request = _BaseGlobalForwardingRulesRestTransport._BaseSetLabels._get_transcoded_request(
                 http_options, request
@@ -983,6 +1274,33 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             query_params = _BaseGlobalForwardingRulesRestTransport._BaseSetLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalForwardingRulesClient.SetLabels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "SetLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalForwardingRulesRestTransport._SetLabels._get_response(
@@ -1005,7 +1323,29 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalForwardingRulesClient.set_labels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "SetLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetTarget(
@@ -1044,7 +1384,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set target method over HTTP.
 
@@ -1056,8 +1396,10 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1084,6 +1426,7 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             http_options = (
                 _BaseGlobalForwardingRulesRestTransport._BaseSetTarget._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_target(request, metadata)
             transcoded_request = _BaseGlobalForwardingRulesRestTransport._BaseSetTarget._get_transcoded_request(
                 http_options, request
@@ -1097,6 +1440,33 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             query_params = _BaseGlobalForwardingRulesRestTransport._BaseSetTarget._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalForwardingRulesClient.SetTarget",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "SetTarget",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalForwardingRulesRestTransport._SetTarget._get_response(
@@ -1119,7 +1489,29 @@ class GlobalForwardingRulesRestTransport(_BaseGlobalForwardingRulesRestTransport
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_target(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalForwardingRulesClient.set_target",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalForwardingRules",
+                        "rpcName": "SetTarget",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

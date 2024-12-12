@@ -26,6 +26,7 @@ from .types.location import Location
 from .types.maneuver import Maneuver
 from .types.navigation_instruction import NavigationInstruction
 from .types.polyline import Polyline, PolylineEncoding, PolylineQuality
+from .types.polyline_details import PolylineDetails
 from .types.route import (
     Route,
     RouteLeg,
@@ -74,6 +75,7 @@ __all__ = (
     "Maneuver",
     "NavigationInstruction",
     "Polyline",
+    "PolylineDetails",
     "PolylineEncoding",
     "PolylineQuality",
     "Route",

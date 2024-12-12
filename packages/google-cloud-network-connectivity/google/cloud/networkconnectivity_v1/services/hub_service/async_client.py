@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -60,6 +61,15 @@ from google.cloud.networkconnectivity_v1.types import hub as gcn_hub
 from .client import HubServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, HubServiceTransport
 from .transports.grpc_asyncio import HubServiceGrpcAsyncIOTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class HubServiceAsyncClient:
@@ -284,6 +294,28 @@ class HubServiceAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.networkconnectivity_v1.HubServiceAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
+                    "credentialsType": None,
+                },
+            )
+
     async def list_hubs(
         self,
         request: Optional[Union[hub.ListHubsRequest, dict]] = None,
@@ -291,7 +323,7 @@ class HubServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListHubsAsyncPager:
         r"""Lists the Network Connectivity Center hubs associated
         with a given project.
@@ -336,8 +368,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubsAsyncPager:
@@ -413,7 +447,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> hub.Hub:
         r"""Gets details about a Network Connectivity Center hub.
 
@@ -458,8 +492,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Hub:
@@ -530,7 +566,7 @@ class HubServiceAsyncClient:
         hub_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Network Connectivity Center hub in the
         specified project.
@@ -593,8 +629,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -676,7 +714,7 @@ class HubServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the description and/or labels of a Network
         Connectivity Center hub.
@@ -736,8 +774,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -816,7 +856,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a Network Connectivity Center hub.
 
@@ -864,8 +904,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -944,7 +986,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListHubSpokesAsyncPager:
         r"""Lists the Network Connectivity Center spokes
         associated with a specified hub and location. The list
@@ -990,8 +1032,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubSpokesAsyncPager:
@@ -1059,6 +1103,128 @@ class HubServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def query_hub_status(
+        self,
+        request: Optional[Union[hub.QueryHubStatusRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.QueryHubStatusAsyncPager:
+        r"""Query the Private Service Connect propagation status
+        of a Network Connectivity Center hub.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            async def sample_query_hub_status():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.QueryHubStatusRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.query_hub_status(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.QueryHubStatusRequest, dict]]):
+                The request object. The request for
+                [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
+            name (:class:`str`):
+                Required. The name of the hub.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.hub_service.pagers.QueryHubStatusAsyncPager:
+                The response for
+                   [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.QueryHubStatusRequest):
+            request = hub.QueryHubStatusRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_hub_status
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.QueryHubStatusAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_spokes(
         self,
         request: Optional[Union[hub.ListSpokesRequest, dict]] = None,
@@ -1066,7 +1232,7 @@ class HubServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSpokesAsyncPager:
         r"""Lists the Network Connectivity Center spokes in a
         specified project and location.
@@ -1110,8 +1276,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListSpokesAsyncPager:
@@ -1186,7 +1354,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> hub.Spoke:
         r"""Gets details about a Network Connectivity Center
         spoke.
@@ -1231,8 +1399,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Spoke:
@@ -1304,7 +1474,7 @@ class HubServiceAsyncClient:
         spoke_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a Network Connectivity Center spoke.
 
@@ -1365,8 +1535,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1451,7 +1623,7 @@ class HubServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a Network Connectivity
         Center spoke.
@@ -1511,8 +1683,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1597,7 +1771,7 @@ class HubServiceAsyncClient:
         spoke_uri: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Rejects a Network Connectivity Center spoke from being attached
         to a hub. If the spoke was previously in the ``ACTIVE`` state,
@@ -1656,8 +1830,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1731,7 +1907,7 @@ class HubServiceAsyncClient:
         spoke_uri: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Accepts a proposal to attach a Network Connectivity
         Center spoke to a hub.
@@ -1788,8 +1964,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1862,7 +2040,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a Network Connectivity Center spoke.
 
@@ -1910,8 +2088,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1990,7 +2170,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> hub.RouteTable:
         r"""Gets details about a Network Connectivity Center
         route table.
@@ -2035,8 +2215,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.types.RouteTable:
@@ -2095,7 +2277,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> hub.Route:
         r"""Gets details about the specified route.
 
@@ -2139,8 +2321,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Route:
@@ -2203,9 +2387,9 @@ class HubServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRoutesAsyncPager:
-        r"""Lists routes in a given project.
+        r"""Lists routes in a given route table.
 
         .. code-block:: python
 
@@ -2247,8 +2431,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRoutesAsyncPager:
@@ -2324,9 +2510,9 @@ class HubServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRouteTablesAsyncPager:
-        r"""Lists route tables in a given project.
+        r"""Lists route tables in a given hub.
 
         .. code-block:: python
 
@@ -2368,8 +2554,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRouteTablesAsyncPager:
@@ -2445,7 +2633,7 @@ class HubServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> hub.Group:
         r"""Gets details about a Network Connectivity Center
         group.
@@ -2490,8 +2678,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Group:
@@ -2552,7 +2742,7 @@ class HubServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListGroupsAsyncPager:
         r"""Lists groups in a given hub.
 
@@ -2596,8 +2786,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListGroupsAsyncPager:
@@ -2666,13 +2858,153 @@ class HubServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def update_group(
+        self,
+        request: Optional[Union[hub.UpdateGroupRequest, dict]] = None,
+        *,
+        group: Optional[hub.Group] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates the parameters of a Network Connectivity
+        Center group.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            async def sample_update_group():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.UpdateGroupRequest(
+                )
+
+                # Make the request
+                operation = client.update_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.networkconnectivity_v1.types.UpdateGroupRequest, dict]]):
+                The request object. Request for
+                [HubService.UpdateGroup][google.cloud.networkconnectivity.v1.HubService.UpdateGroup]
+                method.
+            group (:class:`google.cloud.networkconnectivity_v1.types.Group`):
+                Required. The state that the group
+                should be in after the update.
+
+                This corresponds to the ``group`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. In the case of an update to an existing group,
+                field mask is used to specify the fields to be
+                overwritten. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                is overwritten if it is in the mask. If the user does
+                not provide a mask, then all fields are overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.networkconnectivity_v1.types.Group`
+                A group represents a subset of spokes attached to a hub.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([group, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, hub.UpdateGroupRequest):
+            request = hub.UpdateGroupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if group is not None:
+            request.group = group
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_group
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("group.name", request.group.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            hub.Group,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
 
@@ -2683,8 +3015,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.ListOperationsResponse:
                 Response message for ``ListOperations`` method.
@@ -2725,7 +3059,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
 
@@ -2736,8 +3070,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.Operation:
                 An ``Operation`` object.
@@ -2778,7 +3114,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
 
@@ -2794,8 +3130,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -2832,7 +3170,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
 
@@ -2847,8 +3185,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -2885,7 +3225,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
 
@@ -2898,8 +3238,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.policy_pb2.Policy:
                 Defines an Identity and Access Management (IAM) policy.
@@ -3004,7 +3346,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
 
@@ -3018,8 +3360,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if
                 any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.policy_pb2.Policy:
                 Defines an Identity and Access Management (IAM) policy.
@@ -3124,7 +3468,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified IAM permissions against the IAM access control
             policy for a function.
@@ -3139,8 +3483,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.iam_policy_pb2.TestIamPermissionsResponse:
                 Response message for ``TestIamPermissions`` method.
@@ -3184,7 +3530,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
 
@@ -3195,8 +3541,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.Location:
                 Location object.
@@ -3237,7 +3585,7 @@ class HubServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
 
@@ -3248,8 +3596,10 @@ class HubServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.ListLocationsResponse:
                 Response message for ``ListLocations`` method.

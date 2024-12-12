@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -101,8 +109,10 @@ class ZoneOperationsRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteZoneOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteZoneOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -124,8 +134,10 @@ class ZoneOperationsRestInterceptor:
     def pre_get(
         self,
         request: compute.GetZoneOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetZoneOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -145,8 +157,10 @@ class ZoneOperationsRestInterceptor:
     def pre_list(
         self,
         request: compute.ListZoneOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListZoneOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListZoneOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -166,8 +180,10 @@ class ZoneOperationsRestInterceptor:
     def pre_wait(
         self,
         request: compute.WaitZoneOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.WaitZoneOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.WaitZoneOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for wait
 
         Override in a subclass to manipulate the request or metadata
@@ -307,7 +323,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.DeleteZoneOperationResponse:
             r"""Call the delete method over HTTP.
 
@@ -319,8 +335,10 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.DeleteZoneOperationResponse:
@@ -333,6 +351,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             http_options = (
                 _BaseZoneOperationsRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseZoneOperationsRestTransport._BaseDelete._get_transcoded_request(
@@ -346,6 +365,33 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ZoneOperationsClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ZoneOperationsRestTransport._Delete._get_response(
@@ -367,7 +413,31 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             pb_resp = compute.DeleteZoneOperationResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.DeleteZoneOperationResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ZoneOperationsClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseZoneOperationsRestTransport._BaseGet, ZoneOperationsRestStub):
@@ -402,7 +472,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the get method over HTTP.
 
@@ -414,8 +484,10 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -440,6 +512,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             """
 
             http_options = _BaseZoneOperationsRestTransport._BaseGet._get_http_options()
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseZoneOperationsRestTransport._BaseGet._get_transcoded_request(
@@ -453,6 +526,33 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ZoneOperationsClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ZoneOperationsRestTransport._Get._get_response(
@@ -474,7 +574,29 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ZoneOperationsClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseZoneOperationsRestTransport._BaseList, ZoneOperationsRestStub):
@@ -509,7 +631,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.OperationList:
             r"""Call the list method over HTTP.
 
@@ -521,8 +643,10 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.OperationList:
@@ -534,6 +658,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             http_options = (
                 _BaseZoneOperationsRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseZoneOperationsRestTransport._BaseList._get_transcoded_request(
@@ -547,6 +672,33 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ZoneOperationsClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ZoneOperationsRestTransport._List._get_response(
@@ -568,7 +720,29 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             pb_resp = compute.OperationList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.OperationList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ZoneOperationsClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Wait(_BaseZoneOperationsRestTransport._BaseWait, ZoneOperationsRestStub):
@@ -603,7 +777,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the wait method over HTTP.
 
@@ -615,8 +789,10 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -643,6 +819,7 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             http_options = (
                 _BaseZoneOperationsRestTransport._BaseWait._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_wait(request, metadata)
             transcoded_request = (
                 _BaseZoneOperationsRestTransport._BaseWait._get_transcoded_request(
@@ -656,6 +833,33 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.ZoneOperationsClient.Wait",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "Wait",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ZoneOperationsRestTransport._Wait._get_response(
@@ -677,7 +881,29 @@ class ZoneOperationsRestTransport(_BaseZoneOperationsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_wait(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.ZoneOperationsClient.wait",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.ZoneOperations",
+                        "rpcName": "Wait",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -133,8 +141,11 @@ class VpnGatewaysRestInterceptor:
     def pre_aggregated_list(
         self,
         request: compute.AggregatedListVpnGatewaysRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AggregatedListVpnGatewaysRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AggregatedListVpnGatewaysRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -156,8 +167,10 @@ class VpnGatewaysRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -175,8 +188,10 @@ class VpnGatewaysRestInterceptor:
         return response
 
     def pre_get(
-        self, request: compute.GetVpnGatewayRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.GetVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.GetVpnGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.GetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -196,8 +211,10 @@ class VpnGatewaysRestInterceptor:
     def pre_get_status(
         self,
         request: compute.GetStatusVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetStatusVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetStatusVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_status
 
         Override in a subclass to manipulate the request or metadata
@@ -219,8 +236,10 @@ class VpnGatewaysRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -240,8 +259,8 @@ class VpnGatewaysRestInterceptor:
     def pre_list(
         self,
         request: compute.ListVpnGatewaysRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListVpnGatewaysRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.ListVpnGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -261,8 +280,10 @@ class VpnGatewaysRestInterceptor:
     def pre_set_labels(
         self,
         request: compute.SetLabelsVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetLabelsVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetLabelsVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -282,8 +303,11 @@ class VpnGatewaysRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: compute.TestIamPermissionsVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.TestIamPermissionsVpnGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.TestIamPermissionsVpnGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -427,7 +451,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.VpnGatewayAggregatedList:
             r"""Call the aggregated list method over HTTP.
 
@@ -439,8 +463,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.VpnGatewayAggregatedList:
@@ -450,6 +476,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             http_options = (
                 _BaseVpnGatewaysRestTransport._BaseAggregatedList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseVpnGatewaysRestTransport._BaseAggregatedList._get_transcoded_request(
                 http_options, request
@@ -459,6 +486,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             query_params = _BaseVpnGatewaysRestTransport._BaseAggregatedList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._AggregatedList._get_response(
@@ -480,7 +534,31 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.VpnGatewayAggregatedList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.VpnGatewayAggregatedList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "AggregatedList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(_BaseVpnGatewaysRestTransport._BaseDelete, VpnGatewaysRestStub):
@@ -515,7 +593,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -527,8 +605,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -553,6 +633,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             """
 
             http_options = _BaseVpnGatewaysRestTransport._BaseDelete._get_http_options()
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseVpnGatewaysRestTransport._BaseDelete._get_transcoded_request(
@@ -566,6 +647,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._Delete._get_response(
@@ -587,7 +695,29 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseVpnGatewaysRestTransport._BaseGet, VpnGatewaysRestStub):
@@ -622,7 +752,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.VpnGateway:
             r"""Call the get method over HTTP.
 
@@ -634,8 +764,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.VpnGateway:
@@ -652,6 +784,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             """
 
             http_options = _BaseVpnGatewaysRestTransport._BaseGet._get_http_options()
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseVpnGatewaysRestTransport._BaseGet._get_transcoded_request(
@@ -665,6 +798,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._Get._get_response(
@@ -686,7 +846,29 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.VpnGateway.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.VpnGateway.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetStatus(_BaseVpnGatewaysRestTransport._BaseGetStatus, VpnGatewaysRestStub):
@@ -721,7 +903,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.VpnGatewaysGetStatusResponse:
             r"""Call the get status method over HTTP.
 
@@ -733,8 +915,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.VpnGatewaysGetStatusResponse:
@@ -744,6 +928,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             http_options = (
                 _BaseVpnGatewaysRestTransport._BaseGetStatus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_status(request, metadata)
             transcoded_request = (
                 _BaseVpnGatewaysRestTransport._BaseGetStatus._get_transcoded_request(
@@ -757,6 +942,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.GetStatus",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "GetStatus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._GetStatus._get_response(
@@ -778,7 +990,31 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.VpnGatewaysGetStatusResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_status(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.VpnGatewaysGetStatusResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.get_status",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "GetStatus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(_BaseVpnGatewaysRestTransport._BaseInsert, VpnGatewaysRestStub):
@@ -814,7 +1050,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -826,8 +1062,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -852,6 +1090,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             """
 
             http_options = _BaseVpnGatewaysRestTransport._BaseInsert._get_http_options()
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseVpnGatewaysRestTransport._BaseInsert._get_transcoded_request(
@@ -869,6 +1108,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._Insert._get_response(
@@ -891,7 +1157,29 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseVpnGatewaysRestTransport._BaseList, VpnGatewaysRestStub):
@@ -926,7 +1214,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.VpnGatewayList:
             r"""Call the list method over HTTP.
 
@@ -938,8 +1226,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.VpnGatewayList:
@@ -949,6 +1239,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             """
 
             http_options = _BaseVpnGatewaysRestTransport._BaseList._get_http_options()
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseVpnGatewaysRestTransport._BaseList._get_transcoded_request(
@@ -962,6 +1253,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._List._get_response(
@@ -983,7 +1301,29 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.VpnGatewayList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.VpnGatewayList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLabels(_BaseVpnGatewaysRestTransport._BaseSetLabels, VpnGatewaysRestStub):
@@ -1019,7 +1359,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set labels method over HTTP.
 
@@ -1031,8 +1371,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1059,6 +1401,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             http_options = (
                 _BaseVpnGatewaysRestTransport._BaseSetLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
             transcoded_request = (
                 _BaseVpnGatewaysRestTransport._BaseSetLabels._get_transcoded_request(
@@ -1076,6 +1419,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.SetLabels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "SetLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._SetLabels._get_response(
@@ -1098,7 +1468,29 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.set_labels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "SetLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -1136,7 +1528,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TestPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1148,8 +1540,10 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TestPermissionsResponse:
@@ -1159,6 +1553,7 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             http_options = (
                 _BaseVpnGatewaysRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1174,6 +1569,33 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             query_params = _BaseVpnGatewaysRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.VpnGatewaysClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VpnGatewaysRestTransport._TestIamPermissions._get_response(
@@ -1196,7 +1618,29 @@ class VpnGatewaysRestTransport(_BaseVpnGatewaysRestTransport):
             pb_resp = compute.TestPermissionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TestPermissionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.VpnGatewaysClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.VpnGateways",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

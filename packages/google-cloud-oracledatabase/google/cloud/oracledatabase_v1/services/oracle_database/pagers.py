@@ -80,7 +80,7 @@ class ListCloudExadataInfrastructuresPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -94,8 +94,10 @@ class ListCloudExadataInfrastructuresPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListCloudExadataInfrastructuresRequest(request)
@@ -154,7 +156,7 @@ class ListCloudVmClustersPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -168,8 +170,10 @@ class ListCloudVmClustersPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListCloudVmClustersRequest(request)
@@ -228,7 +232,7 @@ class ListEntitlementsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -242,8 +246,10 @@ class ListEntitlementsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListEntitlementsRequest(request)
@@ -302,7 +308,7 @@ class ListDbServersPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -316,8 +322,10 @@ class ListDbServersPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListDbServersRequest(request)
@@ -376,7 +384,7 @@ class ListDbNodesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -390,8 +398,10 @@ class ListDbNodesPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListDbNodesRequest(request)
@@ -450,7 +460,7 @@ class ListGiVersionsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -464,8 +474,10 @@ class ListGiVersionsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListGiVersionsRequest(request)
@@ -524,7 +536,7 @@ class ListDbSystemShapesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -538,8 +550,10 @@ class ListDbSystemShapesPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListDbSystemShapesRequest(request)
@@ -598,7 +612,7 @@ class ListAutonomousDatabasesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -612,8 +626,10 @@ class ListAutonomousDatabasesPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListAutonomousDatabasesRequest(request)
@@ -672,7 +688,7 @@ class ListAutonomousDbVersionsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -686,8 +702,10 @@ class ListAutonomousDbVersionsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListAutonomousDbVersionsRequest(request)
@@ -748,7 +766,7 @@ class ListAutonomousDatabaseCharacterSetsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -762,8 +780,10 @@ class ListAutonomousDatabaseCharacterSetsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(
@@ -828,7 +848,7 @@ class ListAutonomousDatabaseBackupsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -842,8 +862,10 @@ class ListAutonomousDatabaseBackupsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = oracledatabase.ListAutonomousDatabaseBackupsRequest(request)

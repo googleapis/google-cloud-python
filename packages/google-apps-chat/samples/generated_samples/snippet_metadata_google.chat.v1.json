@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-apps-chat",
-    "version": "0.1.14"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -43,7 +43,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.CompleteImportSpaceResponse",
@@ -119,7 +119,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.CompleteImportSpaceResponse",
@@ -204,7 +204,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -288,7 +288,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -377,7 +377,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Message",
@@ -465,7 +465,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Message",
@@ -550,7 +550,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Reaction",
@@ -563,12 +563,12 @@
       "regionTag": "chat_v1_generated_ChatService_CreateReaction_async",
       "segments": [
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -578,18 +578,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 45,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 46,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -634,7 +634,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Reaction",
@@ -647,12 +647,12 @@
       "regionTag": "chat_v1_generated_ChatService_CreateReaction_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -662,18 +662,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 45,
+          "end": 49,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 48,
-          "start": 46,
+          "end": 52,
+          "start": 50,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
-          "start": 49,
+          "end": 56,
+          "start": 53,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -715,7 +715,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -795,7 +795,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -876,7 +876,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -956,7 +956,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -1037,7 +1037,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_message"
@@ -1114,7 +1114,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_message"
@@ -1192,7 +1192,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_reaction"
@@ -1269,7 +1269,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_reaction"
@@ -1347,7 +1347,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_space"
@@ -1424,7 +1424,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_space"
@@ -1498,7 +1498,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -1574,7 +1574,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -1655,7 +1655,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Attachment",
@@ -1735,7 +1735,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Attachment",
@@ -1816,7 +1816,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -1896,7 +1896,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -1977,7 +1977,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Message",
@@ -2057,7 +2057,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Message",
@@ -2138,7 +2138,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.SpaceEvent",
@@ -2218,7 +2218,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.SpaceEvent",
@@ -2299,7 +2299,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.SpaceReadState",
@@ -2379,7 +2379,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.SpaceReadState",
@@ -2460,7 +2460,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -2540,7 +2540,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -2621,7 +2621,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.ThreadReadState",
@@ -2701,7 +2701,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.ThreadReadState",
@@ -2782,7 +2782,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListMembershipsAsyncPager",
@@ -2862,7 +2862,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListMembershipsPager",
@@ -2943,7 +2943,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListMessagesAsyncPager",
@@ -3023,7 +3023,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListMessagesPager",
@@ -3104,7 +3104,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListReactionsAsyncPager",
@@ -3184,7 +3184,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListReactionsPager",
@@ -3269,7 +3269,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListSpaceEventsAsyncPager",
@@ -3353,7 +3353,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListSpaceEventsPager",
@@ -3430,7 +3430,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListSpacesAsyncPager",
@@ -3506,7 +3506,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.ListSpacesPager",
@@ -3583,7 +3583,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.SearchSpacesAsyncPager",
@@ -3659,7 +3659,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.services.chat_service.pagers.SearchSpacesPager",
@@ -3736,7 +3736,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -3812,7 +3812,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -3897,7 +3897,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -3981,7 +3981,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Membership",
@@ -4066,7 +4066,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Message",
@@ -4150,7 +4150,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Message",
@@ -4235,7 +4235,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.SpaceReadState",
@@ -4319,7 +4319,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.SpaceReadState",
@@ -4404,7 +4404,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -4488,7 +4488,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.Space",
@@ -4565,7 +4565,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.UploadAttachmentResponse",
@@ -4641,7 +4641,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.apps.chat_v1.types.UploadAttachmentResponse",

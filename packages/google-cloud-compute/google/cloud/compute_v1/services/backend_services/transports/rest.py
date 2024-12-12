@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -197,8 +205,11 @@ class BackendServicesRestInterceptor:
     def pre_add_signed_url_key(
         self,
         request: compute.AddSignedUrlKeyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AddSignedUrlKeyBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddSignedUrlKeyBackendServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_signed_url_key
 
         Override in a subclass to manipulate the request or metadata
@@ -218,8 +229,11 @@ class BackendServicesRestInterceptor:
     def pre_aggregated_list(
         self,
         request: compute.AggregatedListBackendServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AggregatedListBackendServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AggregatedListBackendServicesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -241,8 +255,10 @@ class BackendServicesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -262,9 +278,10 @@ class BackendServicesRestInterceptor:
     def pre_delete_signed_url_key(
         self,
         request: compute.DeleteSignedUrlKeyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.DeleteSignedUrlKeyBackendServiceRequest, Sequence[Tuple[str, str]]
+        compute.DeleteSignedUrlKeyBackendServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_signed_url_key
 
@@ -287,8 +304,10 @@ class BackendServicesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -308,8 +327,10 @@ class BackendServicesRestInterceptor:
     def pre_get_health(
         self,
         request: compute.GetHealthBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetHealthBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetHealthBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_health
 
         Override in a subclass to manipulate the request or metadata
@@ -331,8 +352,11 @@ class BackendServicesRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: compute.GetIamPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetIamPolicyBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetIamPolicyBackendServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -352,8 +376,10 @@ class BackendServicesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -373,8 +399,10 @@ class BackendServicesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListBackendServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListBackendServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListBackendServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -396,8 +424,11 @@ class BackendServicesRestInterceptor:
     def pre_list_usable(
         self,
         request: compute.ListUsableBackendServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListUsableBackendServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListUsableBackendServicesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_usable
 
         Override in a subclass to manipulate the request or metadata
@@ -419,8 +450,10 @@ class BackendServicesRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -440,9 +473,10 @@ class BackendServicesRestInterceptor:
     def pre_set_edge_security_policy(
         self,
         request: compute.SetEdgeSecurityPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.SetEdgeSecurityPolicyBackendServiceRequest, Sequence[Tuple[str, str]]
+        compute.SetEdgeSecurityPolicyBackendServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_edge_security_policy
 
@@ -465,8 +499,11 @@ class BackendServicesRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: compute.SetIamPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetIamPolicyBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetIamPolicyBackendServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -486,9 +523,10 @@ class BackendServicesRestInterceptor:
     def pre_set_security_policy(
         self,
         request: compute.SetSecurityPolicyBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.SetSecurityPolicyBackendServiceRequest, Sequence[Tuple[str, str]]
+        compute.SetSecurityPolicyBackendServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_security_policy
 
@@ -511,9 +549,10 @@ class BackendServicesRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: compute.TestIamPermissionsBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.TestIamPermissionsBackendServiceRequest, Sequence[Tuple[str, str]]
+        compute.TestIamPermissionsBackendServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for test_iam_permissions
 
@@ -536,8 +575,10 @@ class BackendServicesRestInterceptor:
     def pre_update(
         self,
         request: compute.UpdateBackendServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.UpdateBackendServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.UpdateBackendServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -680,7 +721,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the add signed url key method over HTTP.
 
@@ -692,8 +733,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -720,6 +763,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_signed_url_key(
                 request, metadata
             )
@@ -735,6 +779,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseAddSignedUrlKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.AddSignedUrlKey",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "AddSignedUrlKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._AddSignedUrlKey._get_response(
@@ -757,7 +828,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_signed_url_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.add_signed_url_key",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "AddSignedUrlKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AggregatedList(
@@ -794,7 +887,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.BackendServiceAggregatedList:
             r"""Call the aggregated list method over HTTP.
 
@@ -806,8 +899,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.BackendServiceAggregatedList:
@@ -819,6 +914,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseAggregatedList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseBackendServicesRestTransport._BaseAggregatedList._get_transcoded_request(
                 http_options, request
@@ -828,6 +924,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseAggregatedList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._AggregatedList._get_response(
@@ -849,7 +972,31 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.BackendServiceAggregatedList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.BackendServiceAggregatedList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "AggregatedList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(
@@ -886,7 +1033,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -898,8 +1045,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -926,6 +1075,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseBackendServicesRestTransport._BaseDelete._get_transcoded_request(
@@ -939,6 +1089,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._Delete._get_response(
@@ -960,7 +1137,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSignedUrlKey(
@@ -998,7 +1197,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete signed url key method over HTTP.
 
@@ -1010,8 +1209,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1038,6 +1239,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_signed_url_key(
                 request, metadata
             )
@@ -1049,6 +1251,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseDeleteSignedUrlKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.DeleteSignedUrlKey",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "DeleteSignedUrlKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._DeleteSignedUrlKey._get_response(
@@ -1070,7 +1299,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_signed_url_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.delete_signed_url_key",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "DeleteSignedUrlKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseBackendServicesRestTransport._BaseGet, BackendServicesRestStub):
@@ -1105,7 +1356,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.BackendService:
             r"""Call the get method over HTTP.
 
@@ -1117,8 +1368,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.BackendService:
@@ -1143,6 +1396,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseBackendServicesRestTransport._BaseGet._get_transcoded_request(
@@ -1156,6 +1410,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._Get._get_response(
@@ -1177,7 +1458,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.BackendService.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.BackendService.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHealth(
@@ -1215,7 +1518,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.BackendServiceGroupHealth:
             r"""Call the get health method over HTTP.
 
@@ -1227,8 +1530,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.BackendServiceGroupHealth:
@@ -1238,6 +1543,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseGetHealth._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_health(request, metadata)
             transcoded_request = _BaseBackendServicesRestTransport._BaseGetHealth._get_transcoded_request(
                 http_options, request
@@ -1255,6 +1561,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.GetHealth",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "GetHealth",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._GetHealth._get_response(
@@ -1277,7 +1610,31 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.BackendServiceGroupHealth.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_health(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.BackendServiceGroupHealth.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.get_health",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "GetHealth",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -1314,7 +1671,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1326,8 +1683,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Policy:
@@ -1360,6 +1719,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1369,6 +1729,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._GetIamPolicy._get_response(
@@ -1390,7 +1777,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -1428,7 +1837,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -1440,8 +1849,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1468,6 +1879,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseBackendServicesRestTransport._BaseInsert._get_transcoded_request(
@@ -1485,6 +1897,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._Insert._get_response(
@@ -1507,7 +1946,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseBackendServicesRestTransport._BaseList, BackendServicesRestStub):
@@ -1542,7 +2003,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.BackendServiceList:
             r"""Call the list method over HTTP.
 
@@ -1554,8 +2015,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.BackendServiceList:
@@ -1567,6 +2030,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseBackendServicesRestTransport._BaseList._get_transcoded_request(
@@ -1580,6 +2044,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._List._get_response(
@@ -1601,7 +2092,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.BackendServiceList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.BackendServiceList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListUsable(
@@ -1638,7 +2151,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.BackendServiceListUsable:
             r"""Call the list usable method over HTTP.
 
@@ -1650,8 +2163,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.BackendServiceListUsable:
@@ -1663,6 +2178,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseListUsable._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_usable(request, metadata)
             transcoded_request = _BaseBackendServicesRestTransport._BaseListUsable._get_transcoded_request(
                 http_options, request
@@ -1672,6 +2188,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseListUsable._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.ListUsable",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "ListUsable",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._ListUsable._get_response(
@@ -1693,7 +2236,31 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.BackendServiceListUsable.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_usable(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.BackendServiceListUsable.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.list_usable",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "ListUsable",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(_BaseBackendServicesRestTransport._BasePatch, BackendServicesRestStub):
@@ -1729,7 +2296,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -1741,8 +2308,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1769,6 +2338,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = (
                 _BaseBackendServicesRestTransport._BasePatch._get_transcoded_request(
@@ -1786,6 +2356,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._Patch._get_response(
@@ -1808,7 +2405,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetEdgeSecurityPolicy(
@@ -1847,7 +2466,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set edge security policy method over HTTP.
 
@@ -1859,8 +2478,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1887,6 +2508,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_edge_security_policy(
                 request, metadata
             )
@@ -1902,6 +2524,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseSetEdgeSecurityPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.SetEdgeSecurityPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "SetEdgeSecurityPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1926,7 +2575,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_edge_security_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.set_edge_security_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "SetEdgeSecurityPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -1964,7 +2635,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1976,8 +2647,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Policy:
@@ -2010,6 +2683,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2023,6 +2697,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._SetIamPolicy._get_response(
@@ -2045,7 +2746,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetSecurityPolicy(
@@ -2084,7 +2807,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set security policy method over HTTP.
 
@@ -2096,8 +2819,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2124,6 +2849,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_security_policy(
                 request, metadata
             )
@@ -2139,6 +2865,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseSetSecurityPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.SetSecurityPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "SetSecurityPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._SetSecurityPolicy._get_response(
@@ -2161,7 +2914,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_security_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.set_security_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "SetSecurityPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -2200,7 +2975,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TestPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2212,8 +2987,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TestPermissionsResponse:
@@ -2223,6 +3000,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2238,6 +3016,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             query_params = _BaseBackendServicesRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._TestIamPermissions._get_response(
@@ -2260,7 +3065,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.TestPermissionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TestPermissionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Update(
@@ -2298,7 +3125,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the update method over HTTP.
 
@@ -2310,8 +3137,10 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2338,6 +3167,7 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             http_options = (
                 _BaseBackendServicesRestTransport._BaseUpdate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update(request, metadata)
             transcoded_request = (
                 _BaseBackendServicesRestTransport._BaseUpdate._get_transcoded_request(
@@ -2355,6 +3185,33 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.BackendServicesClient.Update",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Update",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackendServicesRestTransport._Update._get_response(
@@ -2377,7 +3234,29 @@ class BackendServicesRestTransport(_BaseBackendServicesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.BackendServicesClient.update",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.BackendServices",
+                        "rpcName": "Update",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
