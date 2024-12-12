@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -222,8 +230,10 @@ class AzureClustersRestInterceptor:
     def pre_create_azure_client(
         self,
         request: azure_service.CreateAzureClientRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.CreateAzureClientRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.CreateAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -245,8 +255,10 @@ class AzureClustersRestInterceptor:
     def pre_create_azure_cluster(
         self,
         request: azure_service.CreateAzureClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.CreateAzureClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.CreateAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -268,8 +280,11 @@ class AzureClustersRestInterceptor:
     def pre_create_azure_node_pool(
         self,
         request: azure_service.CreateAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.CreateAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.CreateAzureNodePoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -291,8 +306,10 @@ class AzureClustersRestInterceptor:
     def pre_delete_azure_client(
         self,
         request: azure_service.DeleteAzureClientRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.DeleteAzureClientRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.DeleteAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -314,8 +331,10 @@ class AzureClustersRestInterceptor:
     def pre_delete_azure_cluster(
         self,
         request: azure_service.DeleteAzureClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.DeleteAzureClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.DeleteAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -337,8 +356,11 @@ class AzureClustersRestInterceptor:
     def pre_delete_azure_node_pool(
         self,
         request: azure_service.DeleteAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.DeleteAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.DeleteAzureNodePoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -360,9 +382,10 @@ class AzureClustersRestInterceptor:
     def pre_generate_azure_access_token(
         self,
         request: azure_service.GenerateAzureAccessTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        azure_service.GenerateAzureAccessTokenRequest, Sequence[Tuple[str, str]]
+        azure_service.GenerateAzureAccessTokenRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for generate_azure_access_token
 
@@ -385,9 +408,10 @@ class AzureClustersRestInterceptor:
     def pre_generate_azure_cluster_agent_token(
         self,
         request: azure_service.GenerateAzureClusterAgentTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        azure_service.GenerateAzureClusterAgentTokenRequest, Sequence[Tuple[str, str]]
+        azure_service.GenerateAzureClusterAgentTokenRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for generate_azure_cluster_agent_token
 
@@ -410,8 +434,10 @@ class AzureClustersRestInterceptor:
     def pre_get_azure_client(
         self,
         request: azure_service.GetAzureClientRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.GetAzureClientRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.GetAzureClientRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_azure_client
 
         Override in a subclass to manipulate the request or metadata
@@ -433,8 +459,10 @@ class AzureClustersRestInterceptor:
     def pre_get_azure_cluster(
         self,
         request: azure_service.GetAzureClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.GetAzureClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.GetAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -456,8 +484,11 @@ class AzureClustersRestInterceptor:
     def pre_get_azure_json_web_keys(
         self,
         request: azure_service.GetAzureJsonWebKeysRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.GetAzureJsonWebKeysRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.GetAzureJsonWebKeysRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_azure_json_web_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -479,8 +510,10 @@ class AzureClustersRestInterceptor:
     def pre_get_azure_node_pool(
         self,
         request: azure_service.GetAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.GetAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.GetAzureNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -502,8 +535,11 @@ class AzureClustersRestInterceptor:
     def pre_get_azure_open_id_config(
         self,
         request: azure_service.GetAzureOpenIdConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.GetAzureOpenIdConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.GetAzureOpenIdConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_azure_open_id_config
 
         Override in a subclass to manipulate the request or metadata
@@ -525,8 +561,11 @@ class AzureClustersRestInterceptor:
     def pre_get_azure_server_config(
         self,
         request: azure_service.GetAzureServerConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.GetAzureServerConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.GetAzureServerConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_azure_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -548,8 +587,10 @@ class AzureClustersRestInterceptor:
     def pre_list_azure_clients(
         self,
         request: azure_service.ListAzureClientsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.ListAzureClientsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.ListAzureClientsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_azure_clients
 
         Override in a subclass to manipulate the request or metadata
@@ -571,8 +612,10 @@ class AzureClustersRestInterceptor:
     def pre_list_azure_clusters(
         self,
         request: azure_service.ListAzureClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.ListAzureClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.ListAzureClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_azure_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -594,8 +637,10 @@ class AzureClustersRestInterceptor:
     def pre_list_azure_node_pools(
         self,
         request: azure_service.ListAzureNodePoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.ListAzureNodePoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.ListAzureNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_azure_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -617,8 +662,10 @@ class AzureClustersRestInterceptor:
     def pre_update_azure_cluster(
         self,
         request: azure_service.UpdateAzureClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.UpdateAzureClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.UpdateAzureClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_azure_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -640,8 +687,11 @@ class AzureClustersRestInterceptor:
     def pre_update_azure_node_pool(
         self,
         request: azure_service.UpdateAzureNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[azure_service.UpdateAzureNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        azure_service.UpdateAzureNodePoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_azure_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -663,8 +713,10 @@ class AzureClustersRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -684,8 +736,10 @@ class AzureClustersRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -705,8 +759,10 @@ class AzureClustersRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -728,8 +784,10 @@ class AzureClustersRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -930,7 +988,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create azure client method over HTTP.
 
@@ -941,8 +999,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -955,6 +1015,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_azure_client(
                 request, metadata
             )
@@ -970,6 +1031,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseCreateAzureClient._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.CreateAzureClient",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "CreateAzureClient",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._CreateAzureClient._get_response(
@@ -990,7 +1078,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_azure_client(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.create_azure_client",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "CreateAzureClient",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAzureCluster(
@@ -1028,7 +1138,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create azure cluster method over HTTP.
 
@@ -1039,8 +1149,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1053,6 +1165,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_azure_cluster(
                 request, metadata
             )
@@ -1068,6 +1181,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseCreateAzureCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.CreateAzureCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "CreateAzureCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._CreateAzureCluster._get_response(
@@ -1088,7 +1228,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_azure_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.create_azure_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "CreateAzureCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAzureNodePool(
@@ -1126,7 +1288,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create azure node pool method over HTTP.
 
@@ -1137,8 +1299,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1151,6 +1315,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_azure_node_pool(
                 request, metadata
             )
@@ -1166,6 +1331,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseCreateAzureNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.CreateAzureNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "CreateAzureNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._CreateAzureNodePool._get_response(
@@ -1186,7 +1378,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_azure_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.create_azure_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "CreateAzureNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAzureClient(
@@ -1223,7 +1437,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete azure client method over HTTP.
 
@@ -1234,8 +1448,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1248,6 +1464,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_azure_client(
                 request, metadata
             )
@@ -1259,6 +1476,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureClient._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.DeleteAzureClient",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "DeleteAzureClient",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._DeleteAzureClient._get_response(
@@ -1278,7 +1522,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_azure_client(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.delete_azure_client",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "DeleteAzureClient",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAzureCluster(
@@ -1315,7 +1581,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete azure cluster method over HTTP.
 
@@ -1326,8 +1592,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1340,6 +1608,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_azure_cluster(
                 request, metadata
             )
@@ -1351,6 +1620,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.DeleteAzureCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "DeleteAzureCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._DeleteAzureCluster._get_response(
@@ -1370,7 +1666,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_azure_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.delete_azure_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "DeleteAzureCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAzureNodePool(
@@ -1407,7 +1725,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete azure node pool method over HTTP.
 
@@ -1418,8 +1736,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1432,6 +1752,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_azure_node_pool(
                 request, metadata
             )
@@ -1443,6 +1764,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseDeleteAzureNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.DeleteAzureNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "DeleteAzureNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._DeleteAzureNodePool._get_response(
@@ -1462,7 +1810,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_azure_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.delete_azure_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "DeleteAzureNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAzureAccessToken(
@@ -1500,7 +1870,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_service.GenerateAzureAccessTokenResponse:
             r"""Call the generate azure access
             token method over HTTP.
@@ -1512,8 +1882,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.azure_service.GenerateAzureAccessTokenResponse:
@@ -1525,6 +1897,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_azure_access_token(
                 request, metadata
             )
@@ -1536,6 +1909,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGenerateAzureAccessToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GenerateAzureAccessToken",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GenerateAzureAccessToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1559,7 +1959,31 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_service.GenerateAzureAccessTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_azure_access_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        azure_service.GenerateAzureAccessTokenResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.generate_azure_access_token",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GenerateAzureAccessToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAzureClusterAgentToken(
@@ -1598,7 +2022,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_service.GenerateAzureClusterAgentTokenResponse:
             r"""Call the generate azure cluster
             agent token method over HTTP.
@@ -1609,8 +2033,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.azure_service.GenerateAzureClusterAgentTokenResponse:
@@ -1620,6 +2046,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1638,6 +2065,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGenerateAzureClusterAgentToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GenerateAzureClusterAgentToken",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GenerateAzureClusterAgentToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GenerateAzureClusterAgentToken._get_response(
@@ -1660,7 +2114,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_service.GenerateAzureClusterAgentTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_azure_cluster_agent_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        azure_service.GenerateAzureClusterAgentTokenResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.generate_azure_cluster_agent_token",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GenerateAzureClusterAgentToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAzureClient(
@@ -1697,7 +2177,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_resources.AzureClient:
             r"""Call the get azure client method over HTTP.
 
@@ -1708,8 +2188,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_resources.AzureClient:
@@ -1735,6 +2217,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGetAzureClient._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_azure_client(
                 request, metadata
             )
@@ -1746,6 +2229,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGetAzureClient._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GetAzureClient",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureClient",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureClient._get_response(
@@ -1767,7 +2277,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_resources.AzureClient.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_azure_client(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_resources.AzureClient.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.get_azure_client",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureClient",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAzureCluster(
@@ -1804,7 +2336,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_resources.AzureCluster:
             r"""Call the get azure cluster method over HTTP.
 
@@ -1815,8 +2347,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_resources.AzureCluster:
@@ -1826,6 +2360,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_azure_cluster(
                 request, metadata
             )
@@ -1837,6 +2372,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGetAzureCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GetAzureCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureCluster._get_response(
@@ -1858,7 +2420,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_resources.AzureCluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_azure_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_resources.AzureCluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.get_azure_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAzureJsonWebKeys(
@@ -1895,7 +2479,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_resources.AzureJsonWebKeys:
             r"""Call the get azure json web keys method over HTTP.
 
@@ -1909,8 +2493,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_resources.AzureJsonWebKeys:
@@ -1922,6 +2508,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_azure_json_web_keys(
                 request, metadata
             )
@@ -1933,6 +2520,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGetAzureJsonWebKeys._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GetAzureJsonWebKeys",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureJsonWebKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureJsonWebKeys._get_response(
@@ -1954,7 +2568,31 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_resources.AzureJsonWebKeys.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_azure_json_web_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_resources.AzureJsonWebKeys.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.get_azure_json_web_keys",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureJsonWebKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAzureNodePool(
@@ -1991,7 +2629,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_resources.AzureNodePool:
             r"""Call the get azure node pool method over HTTP.
 
@@ -2002,8 +2640,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_resources.AzureNodePool:
@@ -2013,6 +2653,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_azure_node_pool(
                 request, metadata
             )
@@ -2024,6 +2665,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGetAzureNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GetAzureNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureNodePool._get_response(
@@ -2045,7 +2713,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_resources.AzureNodePool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_azure_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_resources.AzureNodePool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.get_azure_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAzureOpenIdConfig(
@@ -2082,7 +2772,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_resources.AzureOpenIdConfig:
             r"""Call the get azure open id config method over HTTP.
 
@@ -2095,8 +2785,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_resources.AzureOpenIdConfig:
@@ -2110,6 +2802,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_azure_open_id_config(
                 request, metadata
             )
@@ -2121,6 +2814,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGetAzureOpenIdConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GetAzureOpenIdConfig",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureOpenIdConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureOpenIdConfig._get_response(
@@ -2142,7 +2862,31 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_resources.AzureOpenIdConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_azure_open_id_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_resources.AzureOpenIdConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.get_azure_open_id_config",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureOpenIdConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAzureServerConfig(
@@ -2179,7 +2923,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_resources.AzureServerConfig:
             r"""Call the get azure server config method over HTTP.
 
@@ -2190,8 +2934,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_resources.AzureServerConfig:
@@ -2205,6 +2951,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_azure_server_config(
                 request, metadata
             )
@@ -2216,6 +2963,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGetAzureServerConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GetAzureServerConfig",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureServerConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GetAzureServerConfig._get_response(
@@ -2237,7 +3011,31 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_resources.AzureServerConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_azure_server_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_resources.AzureServerConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.get_azure_server_config",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetAzureServerConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAzureClients(
@@ -2274,7 +3072,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_service.ListAzureClientsResponse:
             r"""Call the list azure clients method over HTTP.
 
@@ -2285,8 +3083,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_service.ListAzureClientsResponse:
@@ -2298,6 +3098,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseListAzureClients._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_azure_clients(
                 request, metadata
             )
@@ -2309,6 +3110,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseListAzureClients._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.ListAzureClients",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListAzureClients",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._ListAzureClients._get_response(
@@ -2330,7 +3158,31 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_service.ListAzureClientsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_azure_clients(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_service.ListAzureClientsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.list_azure_clients",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListAzureClients",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAzureClusters(
@@ -2367,7 +3219,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_service.ListAzureClustersResponse:
             r"""Call the list azure clusters method over HTTP.
 
@@ -2378,8 +3230,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_service.ListAzureClustersResponse:
@@ -2391,6 +3245,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseListAzureClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_azure_clusters(
                 request, metadata
             )
@@ -2402,6 +3257,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseListAzureClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.ListAzureClusters",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListAzureClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._ListAzureClusters._get_response(
@@ -2423,7 +3305,31 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_service.ListAzureClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_azure_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_service.ListAzureClustersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.list_azure_clusters",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListAzureClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAzureNodePools(
@@ -2460,7 +3366,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> azure_service.ListAzureNodePoolsResponse:
             r"""Call the list azure node pools method over HTTP.
 
@@ -2471,8 +3377,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.azure_service.ListAzureNodePoolsResponse:
@@ -2484,6 +3392,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_azure_node_pools(
                 request, metadata
             )
@@ -2495,6 +3404,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseListAzureNodePools._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.ListAzureNodePools",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListAzureNodePools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._ListAzureNodePools._get_response(
@@ -2516,7 +3452,31 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             pb_resp = azure_service.ListAzureNodePoolsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_azure_node_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = azure_service.ListAzureNodePoolsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.list_azure_node_pools",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListAzureNodePools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAzureCluster(
@@ -2554,7 +3514,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update azure cluster method over HTTP.
 
@@ -2565,8 +3525,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2579,6 +3541,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_azure_cluster(
                 request, metadata
             )
@@ -2594,6 +3557,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseUpdateAzureCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.UpdateAzureCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "UpdateAzureCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._UpdateAzureCluster._get_response(
@@ -2614,7 +3604,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_azure_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.update_azure_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "UpdateAzureCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAzureNodePool(
@@ -2652,7 +3664,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update azure node pool method over HTTP.
 
@@ -2663,8 +3675,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2677,6 +3691,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_azure_node_pool(
                 request, metadata
             )
@@ -2692,6 +3707,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseUpdateAzureNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.UpdateAzureNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "UpdateAzureNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._UpdateAzureNodePool._get_response(
@@ -2712,7 +3754,29 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_azure_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersClient.update_azure_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "UpdateAzureNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2928,7 +3992,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2938,13 +4002,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAzureClustersRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2960,6 +4027,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._CancelOperation._get_response(
@@ -3017,7 +4111,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3027,13 +4121,16 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAzureClustersRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3045,6 +4142,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._DeleteOperation._get_response(
@@ -3101,7 +4225,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3111,8 +4235,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3121,6 +4247,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseAzureClustersRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3130,6 +4257,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._GetOperation._get_response(
@@ -3150,6 +4304,27 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3190,7 +4365,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3200,8 +4375,10 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3210,6 +4387,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             http_options = (
                 _BaseAzureClustersRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAzureClustersRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3219,6 +4397,33 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             query_params = _BaseAzureClustersRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AzureClustersClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AzureClustersRestTransport._ListOperations._get_response(
@@ -3239,6 +4444,27 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AzureClustersAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

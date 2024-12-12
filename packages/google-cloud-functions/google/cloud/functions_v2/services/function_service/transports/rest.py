@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -137,8 +145,10 @@ class FunctionServiceRestInterceptor:
     def pre_create_function(
         self,
         request: functions.CreateFunctionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[functions.CreateFunctionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        functions.CreateFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_function
 
         Override in a subclass to manipulate the request or metadata
@@ -160,8 +170,10 @@ class FunctionServiceRestInterceptor:
     def pre_delete_function(
         self,
         request: functions.DeleteFunctionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[functions.DeleteFunctionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        functions.DeleteFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_function
 
         Override in a subclass to manipulate the request or metadata
@@ -183,8 +195,10 @@ class FunctionServiceRestInterceptor:
     def pre_generate_download_url(
         self,
         request: functions.GenerateDownloadUrlRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[functions.GenerateDownloadUrlRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        functions.GenerateDownloadUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for generate_download_url
 
         Override in a subclass to manipulate the request or metadata
@@ -206,8 +220,10 @@ class FunctionServiceRestInterceptor:
     def pre_generate_upload_url(
         self,
         request: functions.GenerateUploadUrlRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[functions.GenerateUploadUrlRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        functions.GenerateUploadUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for generate_upload_url
 
         Override in a subclass to manipulate the request or metadata
@@ -227,8 +243,10 @@ class FunctionServiceRestInterceptor:
         return response
 
     def pre_get_function(
-        self, request: functions.GetFunctionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[functions.GetFunctionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: functions.GetFunctionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[functions.GetFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_function
 
         Override in a subclass to manipulate the request or metadata
@@ -248,8 +266,8 @@ class FunctionServiceRestInterceptor:
     def pre_list_functions(
         self,
         request: functions.ListFunctionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[functions.ListFunctionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[functions.ListFunctionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_functions
 
         Override in a subclass to manipulate the request or metadata
@@ -271,8 +289,8 @@ class FunctionServiceRestInterceptor:
     def pre_list_runtimes(
         self,
         request: functions.ListRuntimesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[functions.ListRuntimesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[functions.ListRuntimesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_runtimes
 
         Override in a subclass to manipulate the request or metadata
@@ -294,8 +312,10 @@ class FunctionServiceRestInterceptor:
     def pre_update_function(
         self,
         request: functions.UpdateFunctionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[functions.UpdateFunctionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        functions.UpdateFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_function
 
         Override in a subclass to manipulate the request or metadata
@@ -317,8 +337,10 @@ class FunctionServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -340,8 +362,10 @@ class FunctionServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -361,8 +385,10 @@ class FunctionServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -382,8 +408,11 @@ class FunctionServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -405,8 +434,10 @@ class FunctionServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -428,8 +459,10 @@ class FunctionServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -616,7 +649,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create function method over HTTP.
 
@@ -626,8 +659,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -640,6 +675,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseCreateFunction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_function(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_transcoded_request(
                 http_options, request
@@ -653,6 +689,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.CreateFunction",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "CreateFunction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._CreateFunction._get_response(
@@ -673,7 +736,29 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_function(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.create_function",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "CreateFunction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteFunction(
@@ -710,7 +795,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete function method over HTTP.
 
@@ -720,8 +805,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -734,6 +821,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_function(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_transcoded_request(
                 http_options, request
@@ -743,6 +831,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.DeleteFunction",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "DeleteFunction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._DeleteFunction._get_response(
@@ -762,7 +877,29 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_function(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.delete_function",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "DeleteFunction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateDownloadUrl(
@@ -801,7 +938,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> functions.GenerateDownloadUrlResponse:
             r"""Call the generate download url method over HTTP.
 
@@ -811,8 +948,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.functions.GenerateDownloadUrlResponse:
@@ -822,6 +961,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_download_url(
                 request, metadata
             )
@@ -837,6 +977,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.GenerateDownloadUrl",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GenerateDownloadUrl",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._GenerateDownloadUrl._get_response(
@@ -859,7 +1026,31 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             pb_resp = functions.GenerateDownloadUrlResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_download_url(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = functions.GenerateDownloadUrlResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.generate_download_url",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GenerateDownloadUrl",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateUploadUrl(
@@ -898,7 +1089,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> functions.GenerateUploadUrlResponse:
             r"""Call the generate upload url method over HTTP.
 
@@ -908,8 +1099,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.functions.GenerateUploadUrlResponse:
@@ -919,6 +1112,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_upload_url(
                 request, metadata
             )
@@ -934,6 +1128,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.GenerateUploadUrl",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GenerateUploadUrl",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._GenerateUploadUrl._get_response(
@@ -956,7 +1177,31 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             pb_resp = functions.GenerateUploadUrlResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_upload_url(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = functions.GenerateUploadUrlResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.generate_upload_url",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GenerateUploadUrl",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetFunction(
@@ -993,7 +1238,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> functions.Function:
             r"""Call the get function method over HTTP.
 
@@ -1003,8 +1248,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.functions.Function:
@@ -1018,6 +1265,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseGetFunction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_function(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseGetFunction._get_transcoded_request(
                 http_options, request
@@ -1027,6 +1275,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseGetFunction._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.GetFunction",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GetFunction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._GetFunction._get_response(
@@ -1048,7 +1323,29 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             pb_resp = functions.Function.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_function(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = functions.Function.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.get_function",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GetFunction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFunctions(
@@ -1085,7 +1382,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> functions.ListFunctionsResponse:
             r"""Call the list functions method over HTTP.
 
@@ -1095,8 +1392,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.functions.ListFunctionsResponse:
@@ -1106,6 +1405,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseListFunctions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_functions(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseListFunctions._get_transcoded_request(
                 http_options, request
@@ -1115,6 +1415,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseListFunctions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.ListFunctions",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListFunctions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._ListFunctions._get_response(
@@ -1136,7 +1463,29 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             pb_resp = functions.ListFunctionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_functions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = functions.ListFunctionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.list_functions",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListFunctions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRuntimes(
@@ -1173,7 +1522,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> functions.ListRuntimesResponse:
             r"""Call the list runtimes method over HTTP.
 
@@ -1183,8 +1532,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.functions.ListRuntimesResponse:
@@ -1194,6 +1545,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseListRuntimes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_runtimes(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseListRuntimes._get_transcoded_request(
                 http_options, request
@@ -1203,6 +1555,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseListRuntimes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.ListRuntimes",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListRuntimes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._ListRuntimes._get_response(
@@ -1224,7 +1603,29 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             pb_resp = functions.ListRuntimesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_runtimes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = functions.ListRuntimesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.list_runtimes",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListRuntimes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateFunction(
@@ -1262,7 +1663,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update function method over HTTP.
 
@@ -1272,8 +1673,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1286,6 +1689,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_function(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_transcoded_request(
                 http_options, request
@@ -1299,6 +1703,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.UpdateFunction",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "UpdateFunction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._UpdateFunction._get_response(
@@ -1319,7 +1750,29 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_function(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceClient.update_function",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "UpdateFunction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1428,7 +1881,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1438,8 +1891,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1448,6 +1903,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1457,6 +1913,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._ListLocations._get_response(
@@ -1477,6 +1960,27 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1517,7 +2021,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1527,8 +2031,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1537,6 +2043,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1546,6 +2053,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._GetIamPolicy._get_response(
@@ -1566,6 +2100,27 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1607,7 +2162,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1617,8 +2172,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1627,6 +2184,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1640,6 +2198,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._SetIamPolicy._get_response(
@@ -1661,6 +2246,27 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1703,7 +2309,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1713,8 +2319,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1723,6 +2331,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1738,6 +2347,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._TestIamPermissions._get_response(
@@ -1759,6 +2395,27 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1799,7 +2456,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1809,8 +2466,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1819,6 +2478,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1828,6 +2488,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._GetOperation._get_response(
@@ -1848,6 +2535,27 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1888,7 +2596,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1898,8 +2606,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1908,6 +2618,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             http_options = (
                 _BaseFunctionServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseFunctionServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1917,6 +2628,33 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             query_params = _BaseFunctionServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.functions_v2.FunctionServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FunctionServiceRestTransport._ListOperations._get_response(
@@ -1937,6 +2675,27 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.functions_v2.FunctionServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.functions.v2.FunctionService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

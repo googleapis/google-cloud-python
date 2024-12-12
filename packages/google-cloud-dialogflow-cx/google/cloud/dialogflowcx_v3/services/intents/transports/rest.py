@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -125,8 +133,10 @@ class IntentsRestInterceptor:
     def pre_create_intent(
         self,
         request: gcdc_intent.CreateIntentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcdc_intent.CreateIntentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_intent.CreateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_intent
 
         Override in a subclass to manipulate the request or metadata
@@ -144,8 +154,10 @@ class IntentsRestInterceptor:
         return response
 
     def pre_delete_intent(
-        self, request: intent.DeleteIntentRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[intent.DeleteIntentRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: intent.DeleteIntentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[intent.DeleteIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_intent
 
         Override in a subclass to manipulate the request or metadata
@@ -154,8 +166,10 @@ class IntentsRestInterceptor:
         return request, metadata
 
     def pre_export_intents(
-        self, request: intent.ExportIntentsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[intent.ExportIntentsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: intent.ExportIntentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[intent.ExportIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_intents
 
         Override in a subclass to manipulate the request or metadata
@@ -175,8 +189,10 @@ class IntentsRestInterceptor:
         return response
 
     def pre_get_intent(
-        self, request: intent.GetIntentRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[intent.GetIntentRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: intent.GetIntentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[intent.GetIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_intent
 
         Override in a subclass to manipulate the request or metadata
@@ -194,8 +210,10 @@ class IntentsRestInterceptor:
         return response
 
     def pre_import_intents(
-        self, request: intent.ImportIntentsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[intent.ImportIntentsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: intent.ImportIntentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[intent.ImportIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_intents
 
         Override in a subclass to manipulate the request or metadata
@@ -215,8 +233,10 @@ class IntentsRestInterceptor:
         return response
 
     def pre_list_intents(
-        self, request: intent.ListIntentsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[intent.ListIntentsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: intent.ListIntentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[intent.ListIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_intents
 
         Override in a subclass to manipulate the request or metadata
@@ -238,8 +258,10 @@ class IntentsRestInterceptor:
     def pre_update_intent(
         self,
         request: gcdc_intent.UpdateIntentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcdc_intent.UpdateIntentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_intent.UpdateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_intent
 
         Override in a subclass to manipulate the request or metadata
@@ -259,8 +281,10 @@ class IntentsRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -282,8 +306,10 @@ class IntentsRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -305,8 +331,10 @@ class IntentsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -326,8 +354,10 @@ class IntentsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -349,8 +379,10 @@ class IntentsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -549,7 +581,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcdc_intent.Intent:
             r"""Call the create intent method over HTTP.
 
@@ -560,8 +592,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcdc_intent.Intent:
@@ -578,6 +612,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseCreateIntent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_intent(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseCreateIntent._get_transcoded_request(
@@ -595,6 +630,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.CreateIntent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "CreateIntent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._CreateIntent._get_response(
@@ -617,7 +679,29 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             pb_resp = gcdc_intent.Intent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_intent(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcdc_intent.Intent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsClient.create_intent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "CreateIntent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteIntent(_BaseIntentsRestTransport._BaseDeleteIntent, IntentsRestStub):
@@ -652,7 +736,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete intent method over HTTP.
 
@@ -663,13 +747,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseIntentsRestTransport._BaseDeleteIntent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_intent(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseDeleteIntent._get_transcoded_request(
@@ -683,6 +770,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.DeleteIntent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "DeleteIntent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._DeleteIntent._get_response(
@@ -732,7 +846,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export intents method over HTTP.
 
@@ -743,8 +857,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -757,6 +873,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseExportIntents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_intents(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseExportIntents._get_transcoded_request(
@@ -774,6 +891,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.ExportIntents",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ExportIntents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._ExportIntents._get_response(
@@ -794,7 +938,29 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_intents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsClient.export_intents",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ExportIntents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIntent(_BaseIntentsRestTransport._BaseGetIntent, IntentsRestStub):
@@ -829,7 +995,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> intent.Intent:
             r"""Call the get intent method over HTTP.
 
@@ -840,8 +1006,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.intent.Intent:
@@ -856,6 +1024,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             """
 
             http_options = _BaseIntentsRestTransport._BaseGetIntent._get_http_options()
+
             request, metadata = self._interceptor.pre_get_intent(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseGetIntent._get_transcoded_request(
@@ -869,6 +1038,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.GetIntent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "GetIntent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._GetIntent._get_response(
@@ -890,7 +1086,29 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             pb_resp = intent.Intent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_intent(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = intent.Intent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsClient.get_intent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "GetIntent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportIntents(_BaseIntentsRestTransport._BaseImportIntents, IntentsRestStub):
@@ -926,7 +1144,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import intents method over HTTP.
 
@@ -937,8 +1155,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -951,6 +1171,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseImportIntents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_intents(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseImportIntents._get_transcoded_request(
@@ -968,6 +1189,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.ImportIntents",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ImportIntents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._ImportIntents._get_response(
@@ -988,7 +1236,29 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_intents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsClient.import_intents",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ImportIntents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListIntents(_BaseIntentsRestTransport._BaseListIntents, IntentsRestStub):
@@ -1023,7 +1293,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> intent.ListIntentsResponse:
             r"""Call the list intents method over HTTP.
 
@@ -1034,8 +1304,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.intent.ListIntentsResponse:
@@ -1047,6 +1319,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseListIntents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_intents(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseListIntents._get_transcoded_request(
@@ -1060,6 +1333,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.ListIntents",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ListIntents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._ListIntents._get_response(
@@ -1081,7 +1381,29 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             pb_resp = intent.ListIntentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_intents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = intent.ListIntentsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsClient.list_intents",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ListIntents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateIntent(_BaseIntentsRestTransport._BaseUpdateIntent, IntentsRestStub):
@@ -1117,7 +1439,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcdc_intent.Intent:
             r"""Call the update intent method over HTTP.
 
@@ -1128,8 +1450,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcdc_intent.Intent:
@@ -1146,6 +1470,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseUpdateIntent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_intent(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseUpdateIntent._get_transcoded_request(
@@ -1163,6 +1488,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.UpdateIntent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "UpdateIntent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._UpdateIntent._get_response(
@@ -1185,7 +1537,29 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             pb_resp = gcdc_intent.Intent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_intent(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcdc_intent.Intent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsClient.update_intent",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "UpdateIntent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1276,7 +1650,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1286,8 +1660,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1296,6 +1672,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1309,6 +1686,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._GetLocation._get_response(
@@ -1329,6 +1733,27 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1367,7 +1792,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1377,8 +1802,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1387,6 +1814,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseListLocations._get_transcoded_request(
@@ -1400,6 +1828,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._ListLocations._get_response(
@@ -1420,6 +1875,27 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1460,7 +1936,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1470,13 +1946,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseIntentsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1492,6 +1971,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._CancelOperation._get_response(
@@ -1546,7 +2052,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1556,8 +2062,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1566,6 +2074,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1579,6 +2088,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._GetOperation._get_response(
@@ -1599,6 +2135,27 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1639,7 +2196,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1649,8 +2206,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1659,6 +2218,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = (
                 _BaseIntentsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseIntentsRestTransport._BaseListOperations._get_transcoded_request(
@@ -1672,6 +2232,33 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.IntentsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IntentsRestTransport._ListOperations._get_response(
@@ -1692,6 +2279,27 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.IntentsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Intents",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

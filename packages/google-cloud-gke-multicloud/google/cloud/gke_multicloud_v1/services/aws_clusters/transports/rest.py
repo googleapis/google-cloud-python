@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -198,8 +206,10 @@ class AwsClustersRestInterceptor:
     def pre_create_aws_cluster(
         self,
         request: aws_service.CreateAwsClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.CreateAwsClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.CreateAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -221,8 +231,10 @@ class AwsClustersRestInterceptor:
     def pre_create_aws_node_pool(
         self,
         request: aws_service.CreateAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.CreateAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.CreateAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -244,8 +256,10 @@ class AwsClustersRestInterceptor:
     def pre_delete_aws_cluster(
         self,
         request: aws_service.DeleteAwsClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.DeleteAwsClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.DeleteAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -267,8 +281,10 @@ class AwsClustersRestInterceptor:
     def pre_delete_aws_node_pool(
         self,
         request: aws_service.DeleteAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.DeleteAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.DeleteAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -290,8 +306,11 @@ class AwsClustersRestInterceptor:
     def pre_generate_aws_access_token(
         self,
         request: aws_service.GenerateAwsAccessTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GenerateAwsAccessTokenRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.GenerateAwsAccessTokenRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for generate_aws_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -313,9 +332,10 @@ class AwsClustersRestInterceptor:
     def pre_generate_aws_cluster_agent_token(
         self,
         request: aws_service.GenerateAwsClusterAgentTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        aws_service.GenerateAwsClusterAgentTokenRequest, Sequence[Tuple[str, str]]
+        aws_service.GenerateAwsClusterAgentTokenRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for generate_aws_cluster_agent_token
 
@@ -338,8 +358,10 @@ class AwsClustersRestInterceptor:
     def pre_get_aws_cluster(
         self,
         request: aws_service.GetAwsClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.GetAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -361,8 +383,10 @@ class AwsClustersRestInterceptor:
     def pre_get_aws_json_web_keys(
         self,
         request: aws_service.GetAwsJsonWebKeysRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsJsonWebKeysRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.GetAwsJsonWebKeysRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_aws_json_web_keys
 
         Override in a subclass to manipulate the request or metadata
@@ -384,8 +408,10 @@ class AwsClustersRestInterceptor:
     def pre_get_aws_node_pool(
         self,
         request: aws_service.GetAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.GetAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -407,8 +433,10 @@ class AwsClustersRestInterceptor:
     def pre_get_aws_open_id_config(
         self,
         request: aws_service.GetAwsOpenIdConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsOpenIdConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.GetAwsOpenIdConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_aws_open_id_config
 
         Override in a subclass to manipulate the request or metadata
@@ -430,8 +458,10 @@ class AwsClustersRestInterceptor:
     def pre_get_aws_server_config(
         self,
         request: aws_service.GetAwsServerConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.GetAwsServerConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.GetAwsServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_aws_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -453,8 +483,10 @@ class AwsClustersRestInterceptor:
     def pre_list_aws_clusters(
         self,
         request: aws_service.ListAwsClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.ListAwsClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.ListAwsClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_aws_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -476,8 +508,10 @@ class AwsClustersRestInterceptor:
     def pre_list_aws_node_pools(
         self,
         request: aws_service.ListAwsNodePoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.ListAwsNodePoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.ListAwsNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_aws_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -499,8 +533,11 @@ class AwsClustersRestInterceptor:
     def pre_rollback_aws_node_pool_update(
         self,
         request: aws_service.RollbackAwsNodePoolUpdateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.RollbackAwsNodePoolUpdateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.RollbackAwsNodePoolUpdateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for rollback_aws_node_pool_update
 
         Override in a subclass to manipulate the request or metadata
@@ -522,8 +559,10 @@ class AwsClustersRestInterceptor:
     def pre_update_aws_cluster(
         self,
         request: aws_service.UpdateAwsClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.UpdateAwsClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.UpdateAwsClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_aws_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -545,8 +584,10 @@ class AwsClustersRestInterceptor:
     def pre_update_aws_node_pool(
         self,
         request: aws_service.UpdateAwsNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[aws_service.UpdateAwsNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        aws_service.UpdateAwsNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_aws_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -568,8 +609,10 @@ class AwsClustersRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -589,8 +632,10 @@ class AwsClustersRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -610,8 +655,10 @@ class AwsClustersRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -633,8 +680,10 @@ class AwsClustersRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -835,7 +884,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create aws cluster method over HTTP.
 
@@ -846,8 +895,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -860,6 +911,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_aws_cluster(
                 request, metadata
             )
@@ -875,6 +927,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseCreateAwsCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.CreateAwsCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "CreateAwsCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._CreateAwsCluster._get_response(
@@ -895,7 +974,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_aws_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.create_aws_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "CreateAwsCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAwsNodePool(
@@ -933,7 +1034,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create aws node pool method over HTTP.
 
@@ -944,8 +1045,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -958,6 +1061,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_aws_node_pool(
                 request, metadata
             )
@@ -973,6 +1077,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseCreateAwsNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.CreateAwsNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "CreateAwsNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._CreateAwsNodePool._get_response(
@@ -993,7 +1124,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_aws_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.create_aws_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "CreateAwsNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAwsCluster(
@@ -1030,7 +1183,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete aws cluster method over HTTP.
 
@@ -1041,8 +1194,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1055,6 +1210,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_aws_cluster(
                 request, metadata
             )
@@ -1066,6 +1222,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseDeleteAwsCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.DeleteAwsCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "DeleteAwsCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._DeleteAwsCluster._get_response(
@@ -1085,7 +1268,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_aws_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.delete_aws_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "DeleteAwsCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAwsNodePool(
@@ -1122,7 +1327,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete aws node pool method over HTTP.
 
@@ -1133,8 +1338,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1147,6 +1354,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_aws_node_pool(
                 request, metadata
             )
@@ -1158,6 +1366,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseDeleteAwsNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.DeleteAwsNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "DeleteAwsNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._DeleteAwsNodePool._get_response(
@@ -1177,7 +1412,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_aws_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.delete_aws_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "DeleteAwsNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAwsAccessToken(
@@ -1214,7 +1471,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_service.GenerateAwsAccessTokenResponse:
             r"""Call the generate aws access token method over HTTP.
 
@@ -1225,8 +1482,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_service.GenerateAwsAccessTokenResponse:
@@ -1238,6 +1497,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_aws_access_token(
                 request, metadata
             )
@@ -1249,6 +1509,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseGenerateAwsAccessToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GenerateAwsAccessToken",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GenerateAwsAccessToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._GenerateAwsAccessToken._get_response(
@@ -1270,7 +1557,31 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_service.GenerateAwsAccessTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_aws_access_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        aws_service.GenerateAwsAccessTokenResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.generate_aws_access_token",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GenerateAwsAccessToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAwsClusterAgentToken(
@@ -1309,7 +1620,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_service.GenerateAwsClusterAgentTokenResponse:
             r"""Call the generate aws cluster
             agent token method over HTTP.
@@ -1320,8 +1631,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.aws_service.GenerateAwsClusterAgentTokenResponse:
@@ -1331,6 +1644,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_aws_cluster_agent_token(
                 request, metadata
             )
@@ -1346,6 +1660,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseGenerateAwsClusterAgentToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GenerateAwsClusterAgentToken",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GenerateAwsClusterAgentToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1370,7 +1711,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_service.GenerateAwsClusterAgentTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_aws_cluster_agent_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        aws_service.GenerateAwsClusterAgentTokenResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.generate_aws_cluster_agent_token",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GenerateAwsClusterAgentToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAwsCluster(
@@ -1407,7 +1774,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_resources.AwsCluster:
             r"""Call the get aws cluster method over HTTP.
 
@@ -1418,8 +1785,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_resources.AwsCluster:
@@ -1429,6 +1798,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_aws_cluster(request, metadata)
             transcoded_request = _BaseAwsClustersRestTransport._BaseGetAwsCluster._get_transcoded_request(
                 http_options, request
@@ -1440,6 +1810,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GetAwsCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsCluster._get_response(
@@ -1461,7 +1858,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_resources.AwsCluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_aws_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = aws_resources.AwsCluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.get_aws_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAwsJsonWebKeys(
@@ -1498,7 +1917,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_resources.AwsJsonWebKeys:
             r"""Call the get aws json web keys method over HTTP.
 
@@ -1512,8 +1931,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_resources.AwsJsonWebKeys:
@@ -1525,6 +1946,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_aws_json_web_keys(
                 request, metadata
             )
@@ -1536,6 +1958,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseGetAwsJsonWebKeys._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GetAwsJsonWebKeys",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsJsonWebKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsJsonWebKeys._get_response(
@@ -1557,7 +2006,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_resources.AwsJsonWebKeys.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_aws_json_web_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = aws_resources.AwsJsonWebKeys.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.get_aws_json_web_keys",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsJsonWebKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAwsNodePool(
@@ -1594,7 +2065,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_resources.AwsNodePool:
             r"""Call the get aws node pool method over HTTP.
 
@@ -1605,8 +2076,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_resources.AwsNodePool:
@@ -1616,6 +2089,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_aws_node_pool(
                 request, metadata
             )
@@ -1627,6 +2101,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseGetAwsNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GetAwsNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsNodePool._get_response(
@@ -1648,7 +2149,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_resources.AwsNodePool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_aws_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = aws_resources.AwsNodePool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.get_aws_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAwsOpenIdConfig(
@@ -1685,7 +2208,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_resources.AwsOpenIdConfig:
             r"""Call the get aws open id config method over HTTP.
 
@@ -1698,8 +2221,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_resources.AwsOpenIdConfig:
@@ -1713,6 +2238,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_aws_open_id_config(
                 request, metadata
             )
@@ -1724,6 +2250,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseGetAwsOpenIdConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GetAwsOpenIdConfig",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsOpenIdConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsOpenIdConfig._get_response(
@@ -1745,7 +2298,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_resources.AwsOpenIdConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_aws_open_id_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = aws_resources.AwsOpenIdConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.get_aws_open_id_config",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsOpenIdConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAwsServerConfig(
@@ -1782,7 +2357,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_resources.AwsServerConfig:
             r"""Call the get aws server config method over HTTP.
 
@@ -1793,8 +2368,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_resources.AwsServerConfig:
@@ -1806,6 +2383,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_aws_server_config(
                 request, metadata
             )
@@ -1817,6 +2395,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseGetAwsServerConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GetAwsServerConfig",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsServerConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._GetAwsServerConfig._get_response(
@@ -1838,7 +2443,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_resources.AwsServerConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_aws_server_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = aws_resources.AwsServerConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.get_aws_server_config",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetAwsServerConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAwsClusters(
@@ -1875,7 +2502,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_service.ListAwsClustersResponse:
             r"""Call the list aws clusters method over HTTP.
 
@@ -1886,8 +2513,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_service.ListAwsClustersResponse:
@@ -1899,6 +2528,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseListAwsClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_aws_clusters(
                 request, metadata
             )
@@ -1910,6 +2540,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseListAwsClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.ListAwsClusters",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "ListAwsClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._ListAwsClusters._get_response(
@@ -1931,7 +2588,31 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_service.ListAwsClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_aws_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = aws_service.ListAwsClustersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.list_aws_clusters",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "ListAwsClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAwsNodePools(
@@ -1968,7 +2649,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> aws_service.ListAwsNodePoolsResponse:
             r"""Call the list aws node pools method over HTTP.
 
@@ -1979,8 +2660,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.aws_service.ListAwsNodePoolsResponse:
@@ -1992,6 +2675,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_aws_node_pools(
                 request, metadata
             )
@@ -2003,6 +2687,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseListAwsNodePools._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.ListAwsNodePools",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "ListAwsNodePools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._ListAwsNodePools._get_response(
@@ -2024,7 +2735,31 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             pb_resp = aws_service.ListAwsNodePoolsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_aws_node_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = aws_service.ListAwsNodePoolsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.list_aws_node_pools",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "ListAwsNodePools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RollbackAwsNodePoolUpdate(
@@ -2063,7 +2798,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the rollback aws node pool
             update method over HTTP.
@@ -2075,8 +2810,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2089,6 +2826,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rollback_aws_node_pool_update(
                 request, metadata
             )
@@ -2104,6 +2842,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseRollbackAwsNodePoolUpdate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.RollbackAwsNodePoolUpdate",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "RollbackAwsNodePoolUpdate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2126,7 +2891,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback_aws_node_pool_update(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.rollback_aws_node_pool_update",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "RollbackAwsNodePoolUpdate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAwsCluster(
@@ -2164,7 +2951,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update aws cluster method over HTTP.
 
@@ -2175,8 +2962,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2189,6 +2978,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_aws_cluster(
                 request, metadata
             )
@@ -2204,6 +2994,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseUpdateAwsCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.UpdateAwsCluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "UpdateAwsCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._UpdateAwsCluster._get_response(
@@ -2224,7 +3041,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_aws_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.update_aws_cluster",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "UpdateAwsCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAwsNodePool(
@@ -2262,7 +3101,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update aws node pool method over HTTP.
 
@@ -2273,8 +3112,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2287,6 +3128,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_aws_node_pool(
                 request, metadata
             )
@@ -2302,6 +3144,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseUpdateAwsNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.UpdateAwsNodePool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "UpdateAwsNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._UpdateAwsNodePool._get_response(
@@ -2322,7 +3191,29 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_aws_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersClient.update_aws_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "UpdateAwsNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2508,7 +3399,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2518,13 +3409,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAwsClustersRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2540,6 +3434,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._CancelOperation._get_response(
@@ -2597,7 +3518,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -2607,13 +3528,16 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAwsClustersRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -2625,6 +3549,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._DeleteOperation._get_response(
@@ -2681,7 +3632,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2691,8 +3642,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2701,6 +3654,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseAwsClustersRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2714,6 +3668,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._GetOperation._get_response(
@@ -2734,6 +3715,27 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2774,7 +3776,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2784,8 +3786,10 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2794,6 +3798,7 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             http_options = (
                 _BaseAwsClustersRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAwsClustersRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2803,6 +3808,33 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             query_params = _BaseAwsClustersRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkemulticloud_v1.AwsClustersClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AwsClustersRestTransport._ListOperations._get_response(
@@ -2823,6 +3855,27 @@ class AwsClustersRestTransport(_BaseAwsClustersRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkemulticloud_v1.AwsClustersAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

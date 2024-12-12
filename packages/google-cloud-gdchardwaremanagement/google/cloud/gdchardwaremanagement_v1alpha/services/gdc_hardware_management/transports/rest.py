@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -349,8 +357,10 @@ class GDCHardwareManagementRestInterceptor:
     """
 
     def pre_create_comment(
-        self, request: service.CreateCommentRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateCommentRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_comment
 
         Override in a subclass to manipulate the request or metadata
@@ -372,8 +382,8 @@ class GDCHardwareManagementRestInterceptor:
     def pre_create_hardware(
         self,
         request: service.CreateHardwareRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateHardwareRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_hardware
 
         Override in a subclass to manipulate the request or metadata
@@ -395,8 +405,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_create_hardware_group(
         self,
         request: service.CreateHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateHardwareGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -416,8 +428,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_create_order(
-        self, request: service.CreateOrderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateOrderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateOrderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_order
 
         Override in a subclass to manipulate the request or metadata
@@ -437,8 +451,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_create_site(
-        self, request: service.CreateSiteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateSiteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateSiteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_site
 
         Override in a subclass to manipulate the request or metadata
@@ -458,8 +474,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_create_zone(
-        self, request: service.CreateZoneRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateZoneRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateZoneRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -481,8 +499,8 @@ class GDCHardwareManagementRestInterceptor:
     def pre_delete_hardware(
         self,
         request: service.DeleteHardwareRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteHardwareRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_hardware
 
         Override in a subclass to manipulate the request or metadata
@@ -504,8 +522,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_delete_hardware_group(
         self,
         request: service.DeleteHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteHardwareGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DeleteHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -525,8 +545,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_delete_order(
-        self, request: service.DeleteOrderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteOrderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteOrderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_order
 
         Override in a subclass to manipulate the request or metadata
@@ -546,8 +568,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_delete_site(
-        self, request: service.DeleteSiteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteSiteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteSiteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_site
 
         Override in a subclass to manipulate the request or metadata
@@ -567,8 +591,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_delete_zone(
-        self, request: service.DeleteZoneRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteZoneRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteZoneRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -590,8 +616,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_get_change_log_entry(
         self,
         request: service.GetChangeLogEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetChangeLogEntryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetChangeLogEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_change_log_entry
 
         Override in a subclass to manipulate the request or metadata
@@ -611,8 +639,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_get_comment(
-        self, request: service.GetCommentRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetCommentRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_comment
 
         Override in a subclass to manipulate the request or metadata
@@ -630,8 +660,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_get_hardware(
-        self, request: service.GetHardwareRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetHardwareRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetHardwareRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_hardware
 
         Override in a subclass to manipulate the request or metadata
@@ -651,8 +683,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_get_hardware_group(
         self,
         request: service.GetHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetHardwareGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -672,8 +706,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_get_order(
-        self, request: service.GetOrderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetOrderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetOrderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_order
 
         Override in a subclass to manipulate the request or metadata
@@ -691,8 +727,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_get_site(
-        self, request: service.GetSiteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetSiteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetSiteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_site
 
         Override in a subclass to manipulate the request or metadata
@@ -710,8 +748,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_get_sku(
-        self, request: service.GetSkuRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetSkuRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetSkuRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetSkuRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_sku
 
         Override in a subclass to manipulate the request or metadata
@@ -729,8 +769,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_get_zone(
-        self, request: service.GetZoneRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetZoneRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetZoneRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -750,8 +792,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_list_change_log_entries(
         self,
         request: service.ListChangeLogEntriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListChangeLogEntriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListChangeLogEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_change_log_entries
 
         Override in a subclass to manipulate the request or metadata
@@ -771,8 +815,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_comments(
-        self, request: service.ListCommentsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListCommentsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListCommentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListCommentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_comments
 
         Override in a subclass to manipulate the request or metadata
@@ -792,8 +838,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_hardware(
-        self, request: service.ListHardwareRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListHardwareRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListHardwareRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_hardware
 
         Override in a subclass to manipulate the request or metadata
@@ -815,8 +863,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_list_hardware_groups(
         self,
         request: service.ListHardwareGroupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListHardwareGroupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListHardwareGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_hardware_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -836,8 +886,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_orders(
-        self, request: service.ListOrdersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListOrdersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListOrdersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListOrdersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_orders
 
         Override in a subclass to manipulate the request or metadata
@@ -857,8 +909,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_sites(
-        self, request: service.ListSitesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListSitesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListSitesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sites
 
         Override in a subclass to manipulate the request or metadata
@@ -878,8 +932,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_skus(
-        self, request: service.ListSkusRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListSkusRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListSkusRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListSkusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_skus
 
         Override in a subclass to manipulate the request or metadata
@@ -899,8 +955,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_list_zones(
-        self, request: service.ListZonesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListZonesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListZonesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListZonesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_zones
 
         Override in a subclass to manipulate the request or metadata
@@ -922,8 +980,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_record_action_on_comment(
         self,
         request: service.RecordActionOnCommentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.RecordActionOnCommentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.RecordActionOnCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for record_action_on_comment
 
         Override in a subclass to manipulate the request or metadata
@@ -945,8 +1005,8 @@ class GDCHardwareManagementRestInterceptor:
     def pre_signal_zone_state(
         self,
         request: service.SignalZoneStateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.SignalZoneStateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.SignalZoneStateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for signal_zone_state
 
         Override in a subclass to manipulate the request or metadata
@@ -966,8 +1026,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_submit_order(
-        self, request: service.SubmitOrderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.SubmitOrderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.SubmitOrderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.SubmitOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_order
 
         Override in a subclass to manipulate the request or metadata
@@ -989,8 +1051,8 @@ class GDCHardwareManagementRestInterceptor:
     def pre_update_hardware(
         self,
         request: service.UpdateHardwareRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateHardwareRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateHardwareRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_hardware
 
         Override in a subclass to manipulate the request or metadata
@@ -1012,8 +1074,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_update_hardware_group(
         self,
         request: service.UpdateHardwareGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateHardwareGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.UpdateHardwareGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_hardware_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1033,8 +1097,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_update_order(
-        self, request: service.UpdateOrderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateOrderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateOrderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_order
 
         Override in a subclass to manipulate the request or metadata
@@ -1054,8 +1120,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_update_site(
-        self, request: service.UpdateSiteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateSiteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateSiteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_site
 
         Override in a subclass to manipulate the request or metadata
@@ -1075,8 +1143,10 @@ class GDCHardwareManagementRestInterceptor:
         return response
 
     def pre_update_zone(
-        self, request: service.UpdateZoneRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateZoneRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateZoneRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -1098,8 +1168,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1121,8 +1193,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1144,8 +1218,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1165,8 +1241,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1186,8 +1264,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1209,8 +1289,10 @@ class GDCHardwareManagementRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1406,7 +1488,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create comment method over HTTP.
 
@@ -1416,8 +1498,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1430,6 +1514,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_comment(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_transcoded_request(
                 http_options, request
@@ -1443,6 +1528,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.CreateComment",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateComment._get_response(
@@ -1463,7 +1575,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_comment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.create_comment",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateHardware(
@@ -1502,7 +1636,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create hardware method over HTTP.
 
@@ -1512,8 +1646,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1526,6 +1662,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_transcoded_request(
                 http_options, request
@@ -1539,6 +1676,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.CreateHardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateHardware",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateHardware._get_response(
@@ -1559,7 +1723,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_hardware(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.create_hardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateHardware",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateHardwareGroup(
@@ -1598,7 +1784,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create hardware group method over HTTP.
 
@@ -1608,8 +1794,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1622,6 +1810,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_hardware_group(
                 request, metadata
             )
@@ -1637,6 +1826,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.CreateHardwareGroup",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateHardwareGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1659,7 +1875,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_hardware_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.create_hardware_group",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateHardwareGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateOrder(
@@ -1698,7 +1936,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create order method over HTTP.
 
@@ -1708,8 +1946,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1722,6 +1962,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_transcoded_request(
                 http_options, request
@@ -1735,6 +1976,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.CreateOrder",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateOrder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateOrder._get_response(
@@ -1755,7 +2023,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_order(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.create_order",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateOrder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSite(
@@ -1794,7 +2084,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create site method over HTTP.
 
@@ -1804,8 +2094,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1818,6 +2110,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_site(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_transcoded_request(
                 http_options, request
@@ -1831,6 +2124,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.CreateSite",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateSite",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateSite._get_response(
@@ -1851,7 +2171,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_site(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.create_site",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateSite",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateZone(
@@ -1890,7 +2232,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create zone method over HTTP.
 
@@ -1900,8 +2242,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1914,6 +2258,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_zone(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_transcoded_request(
                 http_options, request
@@ -1927,6 +2272,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.CreateZone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateZone",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._CreateZone._get_response(
@@ -1947,7 +2319,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_zone(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.create_zone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CreateZone",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteHardware(
@@ -1985,7 +2379,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete hardware method over HTTP.
 
@@ -1995,8 +2389,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2009,6 +2405,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_transcoded_request(
                 http_options, request
@@ -2018,6 +2415,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.DeleteHardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteHardware",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteHardware._get_response(
@@ -2037,7 +2461,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_hardware(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.delete_hardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteHardware",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteHardwareGroup(
@@ -2075,7 +2521,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete hardware group method over HTTP.
 
@@ -2085,8 +2531,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2099,6 +2547,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_hardware_group(
                 request, metadata
             )
@@ -2110,6 +2559,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.DeleteHardwareGroup",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteHardwareGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2131,7 +2607,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_hardware_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.delete_hardware_group",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteHardwareGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteOrder(
@@ -2169,7 +2667,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete order method over HTTP.
 
@@ -2179,8 +2677,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2193,6 +2693,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_transcoded_request(
                 http_options, request
@@ -2202,6 +2703,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.DeleteOrder",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteOrder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteOrder._get_response(
@@ -2221,7 +2749,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_order(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.delete_order",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteOrder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSite(
@@ -2259,7 +2809,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete site method over HTTP.
 
@@ -2269,8 +2819,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2283,6 +2835,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_site(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_transcoded_request(
                 http_options, request
@@ -2292,6 +2845,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.DeleteSite",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteSite",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteSite._get_response(
@@ -2311,7 +2891,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_site(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.delete_site",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteSite",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteZone(
@@ -2349,7 +2951,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete zone method over HTTP.
 
@@ -2359,8 +2961,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2373,6 +2977,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_zone(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_transcoded_request(
                 http_options, request
@@ -2382,6 +2987,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.DeleteZone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteZone",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._DeleteZone._get_response(
@@ -2401,7 +3033,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_zone(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.delete_zone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteZone",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetChangeLogEntry(
@@ -2439,7 +3093,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ChangeLogEntry:
             r"""Call the get change log entry method over HTTP.
 
@@ -2449,8 +3103,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ChangeLogEntry:
@@ -2462,6 +3118,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_change_log_entry(
                 request, metadata
             )
@@ -2473,6 +3130,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetChangeLogEntry",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetChangeLogEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2496,7 +3180,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.ChangeLogEntry.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_change_log_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ChangeLogEntry.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_change_log_entry",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetChangeLogEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetComment(
@@ -2534,7 +3240,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Comment:
             r"""Call the get comment method over HTTP.
 
@@ -2544,8 +3250,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Comment:
@@ -2555,6 +3263,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_comment(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_transcoded_request(
                 http_options, request
@@ -2564,6 +3273,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetComment",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetComment._get_response(
@@ -2585,7 +3321,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.Comment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_comment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Comment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_comment",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHardware(
@@ -2623,7 +3381,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Hardware:
             r"""Call the get hardware method over HTTP.
 
@@ -2633,8 +3391,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Hardware:
@@ -2646,6 +3406,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_transcoded_request(
                 http_options, request
@@ -2655,6 +3416,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetHardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetHardware",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetHardware._get_response(
@@ -2676,7 +3464,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.Hardware.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_hardware(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Hardware.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_hardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetHardware",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHardwareGroup(
@@ -2714,7 +3524,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.HardwareGroup:
             r"""Call the get hardware group method over HTTP.
 
@@ -2724,8 +3534,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.HardwareGroup:
@@ -2738,6 +3550,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_hardware_group(
                 request, metadata
             )
@@ -2749,6 +3562,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetHardwareGroup",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetHardwareGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2772,7 +3612,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.HardwareGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_hardware_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.HardwareGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_hardware_group",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetHardwareGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOrder(
@@ -2810,7 +3672,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Order:
             r"""Call the get order method over HTTP.
 
@@ -2820,8 +3682,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Order:
@@ -2831,6 +3695,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_transcoded_request(
                 http_options, request
@@ -2840,6 +3705,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetOrder",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetOrder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetOrder._get_response(
@@ -2861,7 +3753,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.Order.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_order(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Order.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_order",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetOrder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSite(
@@ -2899,7 +3813,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Site:
             r"""Call the get site method over HTTP.
 
@@ -2909,8 +3823,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Site:
@@ -2922,6 +3838,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_site(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_transcoded_request(
                 http_options, request
@@ -2931,6 +3848,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetSite._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetSite",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetSite",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetSite._get_response(
@@ -2952,7 +3896,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.Site.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_site(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Site.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_site",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetSite",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSku(
@@ -2990,7 +3956,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Sku:
             r"""Call the get sku method over HTTP.
 
@@ -3000,8 +3966,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Sku:
@@ -3013,6 +3981,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_sku(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_transcoded_request(
                 http_options, request
@@ -3022,6 +3991,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetSku._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetSku",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetSku",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetSku._get_response(
@@ -3043,7 +4039,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.Sku.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_sku(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Sku.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_sku",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetSku",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetZone(
@@ -3081,7 +4099,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Zone:
             r"""Call the get zone method over HTTP.
 
@@ -3091,8 +4109,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Zone:
@@ -3102,6 +4122,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_zone(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_transcoded_request(
                 http_options, request
@@ -3111,6 +4132,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetZone._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetZone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetZone",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetZone._get_response(
@@ -3132,7 +4180,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.Zone.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_zone(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Zone.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.get_zone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetZone",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListChangeLogEntries(
@@ -3170,7 +4240,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListChangeLogEntriesResponse:
             r"""Call the list change log entries method over HTTP.
 
@@ -3180,8 +4250,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListChangeLogEntriesResponse:
@@ -3191,6 +4263,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_change_log_entries(
                 request, metadata
             )
@@ -3202,6 +4275,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListChangeLogEntries",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListChangeLogEntries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3225,7 +4325,31 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListChangeLogEntriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_change_log_entries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListChangeLogEntriesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_change_log_entries",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListChangeLogEntries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListComments(
@@ -3263,7 +4387,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListCommentsResponse:
             r"""Call the list comments method over HTTP.
 
@@ -3273,8 +4397,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListCommentsResponse:
@@ -3284,6 +4410,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListComments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_comments(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_transcoded_request(
                 http_options, request
@@ -3293,6 +4420,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListComments",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListComments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListComments._get_response(
@@ -3314,7 +4468,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListCommentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_comments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListCommentsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_comments",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListComments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListHardware(
@@ -3352,7 +4528,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListHardwareResponse:
             r"""Call the list hardware method over HTTP.
 
@@ -3362,8 +4538,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListHardwareResponse:
@@ -3373,6 +4551,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_transcoded_request(
                 http_options, request
@@ -3382,6 +4561,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListHardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListHardware",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListHardware._get_response(
@@ -3403,7 +4609,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListHardwareResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_hardware(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListHardwareResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_hardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListHardware",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListHardwareGroups(
@@ -3441,7 +4669,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListHardwareGroupsResponse:
             r"""Call the list hardware groups method over HTTP.
 
@@ -3451,8 +4679,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListHardwareGroupsResponse:
@@ -3462,6 +4692,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_hardware_groups(
                 request, metadata
             )
@@ -3473,6 +4704,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListHardwareGroups",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListHardwareGroups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3496,7 +4754,31 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListHardwareGroupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_hardware_groups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListHardwareGroupsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_hardware_groups",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListHardwareGroups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListOrders(
@@ -3534,7 +4816,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListOrdersResponse:
             r"""Call the list orders method over HTTP.
 
@@ -3544,8 +4826,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListOrdersResponse:
@@ -3555,6 +4839,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_orders(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_transcoded_request(
                 http_options, request
@@ -3564,6 +4849,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListOrders",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListOrders",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListOrders._get_response(
@@ -3585,7 +4897,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListOrdersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_orders(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListOrdersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_orders",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListOrders",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSites(
@@ -3623,7 +4957,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListSitesResponse:
             r"""Call the list sites method over HTTP.
 
@@ -3633,8 +4967,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListSitesResponse:
@@ -3644,6 +4980,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListSites._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_sites(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_transcoded_request(
                 http_options, request
@@ -3653,6 +4990,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListSites",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListSites",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListSites._get_response(
@@ -3674,7 +5038,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListSitesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_sites(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListSitesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_sites",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListSites",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSkus(
@@ -3712,7 +5098,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListSkusResponse:
             r"""Call the list skus method over HTTP.
 
@@ -3722,8 +5108,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListSkusResponse:
@@ -3733,6 +5121,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_skus(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_transcoded_request(
                 http_options, request
@@ -3742,6 +5131,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListSkus",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListSkus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListSkus._get_response(
@@ -3763,7 +5179,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListSkusResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_skus(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListSkusResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_skus",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListSkus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListZones(
@@ -3801,7 +5239,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListZonesResponse:
             r"""Call the list zones method over HTTP.
 
@@ -3811,8 +5249,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListZonesResponse:
@@ -3822,6 +5262,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListZones._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_zones(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_transcoded_request(
                 http_options, request
@@ -3831,6 +5272,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListZones",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListZones",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListZones._get_response(
@@ -3852,7 +5320,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = service.ListZonesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_zones(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListZonesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.list_zones",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListZones",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RecordActionOnComment(
@@ -3891,7 +5381,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Comment:
             r"""Call the record action on comment method over HTTP.
 
@@ -3902,8 +5392,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Comment:
@@ -3913,6 +5405,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_record_action_on_comment(
                 request, metadata
             )
@@ -3928,6 +5421,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.RecordActionOnComment",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "RecordActionOnComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3952,7 +5472,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             pb_resp = resources.Comment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_record_action_on_comment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Comment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.record_action_on_comment",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "RecordActionOnComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SignalZoneState(
@@ -3991,7 +5533,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the signal zone state method over HTTP.
 
@@ -4002,8 +5544,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4016,6 +5560,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_signal_zone_state(
                 request, metadata
             )
@@ -4031,6 +5576,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.SignalZoneState",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "SignalZoneState",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4053,7 +5625,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_signal_zone_state(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.signal_zone_state",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "SignalZoneState",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SubmitOrder(
@@ -4092,7 +5686,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the submit order method over HTTP.
 
@@ -4102,8 +5696,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4116,6 +5712,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_submit_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_transcoded_request(
                 http_options, request
@@ -4129,6 +5726,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.SubmitOrder",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "SubmitOrder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._SubmitOrder._get_response(
@@ -4149,7 +5773,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_submit_order(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.submit_order",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "SubmitOrder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateHardware(
@@ -4188,7 +5834,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update hardware method over HTTP.
 
@@ -4198,8 +5844,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4212,6 +5860,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_transcoded_request(
                 http_options, request
@@ -4225,6 +5874,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.UpdateHardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateHardware",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateHardware._get_response(
@@ -4245,7 +5921,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_hardware(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.update_hardware",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateHardware",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateHardwareGroup(
@@ -4284,7 +5982,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update hardware group method over HTTP.
 
@@ -4294,8 +5992,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4308,6 +6008,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_hardware_group(
                 request, metadata
             )
@@ -4323,6 +6024,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.UpdateHardwareGroup",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateHardwareGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4345,7 +6073,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_hardware_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.update_hardware_group",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateHardwareGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateOrder(
@@ -4384,7 +6134,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update order method over HTTP.
 
@@ -4394,8 +6144,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4408,6 +6160,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_transcoded_request(
                 http_options, request
@@ -4421,6 +6174,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.UpdateOrder",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateOrder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateOrder._get_response(
@@ -4441,7 +6221,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_order(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.update_order",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateOrder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSite(
@@ -4480,7 +6282,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update site method over HTTP.
 
@@ -4490,8 +6292,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4504,6 +6308,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_site(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_transcoded_request(
                 http_options, request
@@ -4517,6 +6322,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.UpdateSite",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateSite",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateSite._get_response(
@@ -4537,7 +6369,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_site(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.update_site",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateSite",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateZone(
@@ -4576,7 +6430,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update zone method over HTTP.
 
@@ -4586,8 +6440,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4600,6 +6456,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_zone(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_transcoded_request(
                 http_options, request
@@ -4613,6 +6470,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.UpdateZone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateZone",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._UpdateZone._get_response(
@@ -4633,7 +6517,29 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_zone(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.update_zone",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "UpdateZone",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -4949,7 +6855,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -4959,8 +6865,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -4969,6 +6877,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -4978,6 +6887,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetLocation._get_response(
@@ -4998,6 +6934,27 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5039,7 +6996,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -5049,8 +7006,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -5059,6 +7018,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -5068,6 +7028,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListLocations._get_response(
@@ -5088,6 +7075,27 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5130,7 +7138,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -5140,13 +7148,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -5162,6 +7173,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5222,7 +7260,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -5232,13 +7270,16 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -5250,6 +7291,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5309,7 +7377,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -5319,8 +7387,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -5329,6 +7399,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -5338,6 +7409,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._GetOperation._get_response(
@@ -5358,6 +7456,27 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5399,7 +7518,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -5409,8 +7528,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -5419,6 +7540,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             http_options = (
                 _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -5428,6 +7550,33 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             query_params = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GDCHardwareManagementRestTransport._ListOperations._get_response(
@@ -5448,6 +7597,27 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gdchardwaremanagement_v1alpha.GDCHardwareManagementAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
