@@ -1,0 +1,118 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.redis_cluster_v1beta1",
+  "protoPackage": "google.cloud.redis.cluster.v1beta1",
+  "schema": "1.0",
+  "services": {
+    "CloudRedisCluster": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CloudRedisClusterClient",
+          "rpcs": {
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetClusterCertificateAuthority": {
+              "methods": [
+                "get_cluster_certificate_authority"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CloudRedisClusterAsyncClient",
+          "rpcs": {
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetClusterCertificateAuthority": {
+              "methods": [
+                "get_cluster_certificate_authority"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CloudRedisClusterClient",
+          "rpcs": {
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetClusterCertificateAuthority": {
+              "methods": [
+                "get_cluster_certificate_authority"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
