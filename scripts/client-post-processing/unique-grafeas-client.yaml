@@ -1515,7 +1515,7 @@ replacements:
       \            str: The universe domain used by the client instance.
       \        """
       \        return self._universe_domain\n
-    after: "}"
+    after: "}\n"
     count: 1
   - paths: [
       packages/grafeas/grafeas/grafeas_v1/services/grafeas/client.py
@@ -1608,6 +1608,10 @@ replacements:
       \        # Initialize the universe domain validation.
       \        self._is_universe_domain_valid = False
       \
+      \        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+      \            # Setup logging.
+      \            client_logging.initialize_logging\(\)
+      \
       \        api_key_value = getattr\(self._client_options, "api_key", None\)
       \        if api_key_value and credentials:
       \            raise ValueError\(
@@ -1669,6 +1673,29 @@ replacements:
       \                always_use_jwt_access=True,
       \                api_audience=self._client_options.api_audience,
       \            \)
+      \
+      \        if "async" not in str\(self._transport\):
+      \            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor\(
+      \                std_logging.DEBUG
+      \            \):  # pragma: NO COVER
+      \                _LOGGER.debug\(
+      \                    "Created client `grafeas_v1.GrafeasClient`.",
+      \                    extra=\{
+      \                        "serviceName": "grafeas.v1.Grafeas",
+      \                        "universeDomain": getattr\(
+      \                            self._transport._credentials, "universe_domain", ""
+      \                        \),
+      \                        "credentialsType": f"\{type\(self._transport._credentials\).__module__\}.\{type\(self._transport._credentials\).__qualname__\}",
+      \                        "credentialsInfo": getattr\(
+      \                            self.transport._credentials, "get_cred_info", lambda: None
+      \                        \)\(\),
+      \                    \}
+      \                    if hasattr\(self._transport, "_credentials"\)
+      \                    else \{
+      \                        "serviceName": "grafeas.v1.Grafeas",
+      \                        "credentialsType": None,
+      \                    \},
+      \                \)
     after: |
       \n
           def __init__(
