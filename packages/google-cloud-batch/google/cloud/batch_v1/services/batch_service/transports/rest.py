@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -120,8 +128,10 @@ class BatchServiceRestInterceptor:
     """
 
     def pre_create_job(
-        self, request: batch.CreateJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[batch.CreateJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: batch.CreateJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.CreateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +149,10 @@ class BatchServiceRestInterceptor:
         return response
 
     def pre_delete_job(
-        self, request: batch.DeleteJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[batch.DeleteJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: batch.DeleteJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job
 
         Override in a subclass to manipulate the request or metadata
@@ -160,8 +172,10 @@ class BatchServiceRestInterceptor:
         return response
 
     def pre_get_job(
-        self, request: batch.GetJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[batch.GetJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: batch.GetJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
         Override in a subclass to manipulate the request or metadata
@@ -179,8 +193,10 @@ class BatchServiceRestInterceptor:
         return response
 
     def pre_get_task(
-        self, request: batch.GetTaskRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[batch.GetTaskRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: batch.GetTaskRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.GetTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_task
 
         Override in a subclass to manipulate the request or metadata
@@ -198,8 +214,10 @@ class BatchServiceRestInterceptor:
         return response
 
     def pre_list_jobs(
-        self, request: batch.ListJobsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[batch.ListJobsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: batch.ListJobsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -219,8 +237,10 @@ class BatchServiceRestInterceptor:
         return response
 
     def pre_list_tasks(
-        self, request: batch.ListTasksRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[batch.ListTasksRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: batch.ListTasksRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batch.ListTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tasks
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +262,10 @@ class BatchServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +287,10 @@ class BatchServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +312,10 @@ class BatchServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -309,8 +335,10 @@ class BatchServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -330,8 +358,10 @@ class BatchServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -353,8 +383,10 @@ class BatchServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -551,7 +583,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcb_job.Job:
             r"""Call the create job method over HTTP.
 
@@ -561,8 +593,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcb_job.Job:
@@ -572,6 +606,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseCreateJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_job(request, metadata)
             transcoded_request = (
                 _BaseBatchServiceRestTransport._BaseCreateJob._get_transcoded_request(
@@ -589,6 +624,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.CreateJob",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "CreateJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._CreateJob._get_response(
@@ -611,7 +673,29 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             pb_resp = gcb_job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcb_job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceClient.create_job",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "CreateJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteJob(
@@ -648,7 +732,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete job method over HTTP.
 
@@ -658,8 +742,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -672,6 +758,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseDeleteJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
             transcoded_request = (
                 _BaseBatchServiceRestTransport._BaseDeleteJob._get_transcoded_request(
@@ -685,6 +772,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.DeleteJob",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "DeleteJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._DeleteJob._get_response(
@@ -704,7 +818,29 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceClient.delete_job",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "DeleteJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetJob(_BaseBatchServiceRestTransport._BaseGetJob, BatchServiceRestStub):
@@ -739,7 +875,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> job.Job:
             r"""Call the get job method over HTTP.
 
@@ -749,8 +885,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.job.Job:
@@ -760,6 +898,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseGetJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job(request, metadata)
             transcoded_request = (
                 _BaseBatchServiceRestTransport._BaseGetJob._get_transcoded_request(
@@ -773,6 +912,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.GetJob",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._GetJob._get_response(
@@ -794,7 +960,29 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             pb_resp = job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceClient.get_job",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTask(_BaseBatchServiceRestTransport._BaseGetTask, BatchServiceRestStub):
@@ -829,7 +1017,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> task.Task:
             r"""Call the get task method over HTTP.
 
@@ -839,8 +1027,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.task.Task:
@@ -850,6 +1040,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseGetTask._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_task(request, metadata)
             transcoded_request = (
                 _BaseBatchServiceRestTransport._BaseGetTask._get_transcoded_request(
@@ -863,6 +1054,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.GetTask",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetTask",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._GetTask._get_response(
@@ -884,7 +1102,29 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             pb_resp = task.Task.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_task(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = task.Task.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceClient.get_task",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetTask",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListJobs(_BaseBatchServiceRestTransport._BaseListJobs, BatchServiceRestStub):
@@ -919,7 +1159,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> batch.ListJobsResponse:
             r"""Call the list jobs method over HTTP.
 
@@ -929,8 +1169,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.batch.ListJobsResponse:
@@ -940,6 +1182,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseListJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
             transcoded_request = (
                 _BaseBatchServiceRestTransport._BaseListJobs._get_transcoded_request(
@@ -953,6 +1196,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.ListJobs",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._ListJobs._get_response(
@@ -974,7 +1244,29 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             pb_resp = batch.ListJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = batch.ListJobsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceClient.list_jobs",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTasks(
@@ -1011,7 +1303,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> batch.ListTasksResponse:
             r"""Call the list tasks method over HTTP.
 
@@ -1021,8 +1313,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.batch.ListTasksResponse:
@@ -1032,6 +1326,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseListTasks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tasks(request, metadata)
             transcoded_request = (
                 _BaseBatchServiceRestTransport._BaseListTasks._get_transcoded_request(
@@ -1045,6 +1340,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.ListTasks",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListTasks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._ListTasks._get_response(
@@ -1066,7 +1388,29 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             pb_resp = batch.ListTasksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tasks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = batch.ListTasksResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceClient.list_tasks",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListTasks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1145,7 +1489,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1155,8 +1499,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1165,6 +1511,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseBatchServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1178,6 +1525,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._GetLocation._get_response(
@@ -1198,6 +1572,27 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1238,7 +1633,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1248,8 +1643,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1258,6 +1655,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseBatchServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1267,6 +1665,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             query_params = _BaseBatchServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._ListLocations._get_response(
@@ -1287,6 +1712,27 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1328,7 +1774,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1338,13 +1784,16 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBatchServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1360,6 +1809,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             query_params = _BaseBatchServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._CancelOperation._get_response(
@@ -1417,7 +1893,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1427,13 +1903,16 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBatchServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1445,6 +1924,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             query_params = _BaseBatchServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._DeleteOperation._get_response(
@@ -1501,7 +2007,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1511,8 +2017,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1521,6 +2029,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseBatchServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1532,6 +2041,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._GetOperation._get_response(
@@ -1552,6 +2088,27 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1592,7 +2149,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1602,8 +2159,10 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1612,6 +2171,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             http_options = (
                 _BaseBatchServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseBatchServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1621,6 +2181,33 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             query_params = _BaseBatchServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.batch_v1.BatchServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BatchServiceRestTransport._ListOperations._get_response(
@@ -1641,6 +2228,27 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.batch_v1.BatchServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.batch.v1.BatchService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -946,14 +946,11 @@ class VehicleMatch(proto.Message):
         vehicle_match_type (google.maps.fleetengine_v1.types.VehicleMatch.VehicleMatchType):
             Type of the vehicle match.
         requested_ordered_by (google.maps.fleetengine_v1.types.SearchVehiclesRequest.VehicleMatchOrder):
-            The order requested for sorting vehicle
-            matches.
+            The order requested for sorting vehicle matches. Equivalent
+            to ``ordered_by``.
         ordered_by (google.maps.fleetengine_v1.types.SearchVehiclesRequest.VehicleMatchOrder):
-            The actual order that was used for this vehicle. Normally
-            this will match the 'order_by' field from the request;
-            however, in certain circumstances such as an internal server
-            error, a different method may be used (such as
-            ``PICKUP_POINT_STRAIGHT_DISTANCE``).
+            The order requested for sorting vehicle matches. Equivalent
+            to ``requested_ordered_by``.
     """
 
     class VehicleMatchType(proto.Enum):
