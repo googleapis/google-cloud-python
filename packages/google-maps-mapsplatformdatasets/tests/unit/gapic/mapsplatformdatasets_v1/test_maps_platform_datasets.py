@@ -3664,6 +3664,7 @@ def test_create_dataset_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_dataset(request)
 
@@ -3718,6 +3719,7 @@ def test_create_dataset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_dataset(**mock_args)
 
@@ -3851,6 +3853,7 @@ def test_update_dataset_metadata_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_dataset_metadata(request)
 
@@ -3897,6 +3900,7 @@ def test_update_dataset_metadata_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_dataset_metadata(**mock_args)
 
@@ -4028,6 +4032,7 @@ def test_get_dataset_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_dataset(request)
 
@@ -4073,6 +4078,7 @@ def test_get_dataset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_dataset(**mock_args)
 
@@ -4215,6 +4221,7 @@ def test_fetch_dataset_errors_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_dataset_errors(request)
 
@@ -4270,6 +4277,7 @@ def test_fetch_dataset_errors_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.fetch_dataset_errors(**mock_args)
 
@@ -4473,6 +4481,7 @@ def test_list_datasets_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_datasets(request)
 
@@ -4527,6 +4536,7 @@ def test_list_datasets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_datasets(**mock_args)
 
@@ -4716,6 +4726,7 @@ def test_delete_dataset_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_dataset(request)
 
@@ -4759,6 +4770,7 @@ def test_delete_dataset_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_dataset(**mock_args)
 
@@ -5241,6 +5253,7 @@ def test_create_dataset_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_dataset(request)
 
 
@@ -5362,6 +5375,7 @@ def test_create_dataset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_dataset(request)
 
     # Establish that the response is the type that we expect.
@@ -5407,6 +5421,7 @@ def test_create_dataset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gmm_dataset.Dataset.to_json(gmm_dataset.Dataset())
         req.return_value.content = return_value
 
@@ -5451,6 +5466,7 @@ def test_update_dataset_metadata_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_dataset_metadata(request)
 
 
@@ -5574,6 +5590,7 @@ def test_update_dataset_metadata_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_dataset_metadata(request)
 
     # Establish that the response is the type that we expect.
@@ -5619,6 +5636,7 @@ def test_update_dataset_metadata_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gmm_dataset.Dataset.to_json(gmm_dataset.Dataset())
         req.return_value.content = return_value
 
@@ -5663,6 +5681,7 @@ def test_get_dataset_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_dataset(request)
 
 
@@ -5703,6 +5722,7 @@ def test_get_dataset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_dataset(request)
 
     # Establish that the response is the type that we expect.
@@ -5748,6 +5768,7 @@ def test_get_dataset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataset.Dataset.to_json(dataset.Dataset())
         req.return_value.content = return_value
 
@@ -5792,6 +5813,7 @@ def test_fetch_dataset_errors_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_dataset_errors(request)
 
 
@@ -5829,6 +5851,7 @@ def test_fetch_dataset_errors_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_dataset_errors(request)
 
     # Establish that the response is the type that we expect.
@@ -5869,6 +5892,7 @@ def test_fetch_dataset_errors_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = maps_platform_datasets.FetchDatasetErrorsResponse.to_json(
             maps_platform_datasets.FetchDatasetErrorsResponse()
         )
@@ -5915,6 +5939,7 @@ def test_list_datasets_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_datasets(request)
 
 
@@ -5950,6 +5975,7 @@ def test_list_datasets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_datasets(request)
 
     # Establish that the response is the type that we expect.
@@ -5990,6 +6016,7 @@ def test_list_datasets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = maps_platform_datasets.ListDatasetsResponse.to_json(
             maps_platform_datasets.ListDatasetsResponse()
         )
@@ -6036,6 +6063,7 @@ def test_delete_dataset_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_dataset(request)
 
 
@@ -6066,6 +6094,7 @@ def test_delete_dataset_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_dataset(request)
 
     # Establish that the response is the type that we expect.
@@ -6102,6 +6131,7 @@ def test_delete_dataset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = maps_platform_datasets.DeleteDatasetRequest()
         metadata = [

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -85,8 +93,11 @@ class BusinessIdentityServiceRestInterceptor:
     def pre_get_business_identity(
         self,
         request: businessidentity.GetBusinessIdentityRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[businessidentity.GetBusinessIdentityRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        businessidentity.GetBusinessIdentityRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_business_identity
 
         Override in a subclass to manipulate the request or metadata
@@ -108,9 +119,10 @@ class BusinessIdentityServiceRestInterceptor:
     def pre_update_business_identity(
         self,
         request: businessidentity.UpdateBusinessIdentityRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        businessidentity.UpdateBusinessIdentityRequest, Sequence[Tuple[str, str]]
+        businessidentity.UpdateBusinessIdentityRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_business_identity
 
@@ -254,7 +266,7 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> businessidentity.BusinessIdentity:
             r"""Call the get business identity method over HTTP.
 
@@ -264,8 +276,10 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.businessidentity.BusinessIdentity:
@@ -277,6 +291,7 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             http_options = (
                 _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_business_identity(
                 request, metadata
             )
@@ -288,6 +303,33 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             query_params = _BaseBusinessIdentityServiceRestTransport._BaseGetBusinessIdentity._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.BusinessIdentityServiceClient.GetBusinessIdentity",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessIdentityService",
+                        "rpcName": "GetBusinessIdentity",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -311,7 +353,31 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             pb_resp = businessidentity.BusinessIdentity.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_business_identity(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = businessidentity.BusinessIdentity.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.BusinessIdentityServiceClient.get_business_identity",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessIdentityService",
+                        "rpcName": "GetBusinessIdentity",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBusinessIdentity(
@@ -350,7 +416,7 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> businessidentity.BusinessIdentity:
             r"""Call the update business identity method over HTTP.
 
@@ -361,8 +427,10 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.businessidentity.BusinessIdentity:
@@ -374,6 +442,7 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             http_options = (
                 _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_business_identity(
                 request, metadata
             )
@@ -389,6 +458,33 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             query_params = _BaseBusinessIdentityServiceRestTransport._BaseUpdateBusinessIdentity._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.BusinessIdentityServiceClient.UpdateBusinessIdentity",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessIdentityService",
+                        "rpcName": "UpdateBusinessIdentity",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BusinessIdentityServiceRestTransport._UpdateBusinessIdentity._get_response(
@@ -411,7 +507,31 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
             pb_resp = businessidentity.BusinessIdentity.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_business_identity(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = businessidentity.BusinessIdentity.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.BusinessIdentityServiceClient.update_business_identity",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessIdentityService",
+                        "rpcName": "UpdateBusinessIdentity",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

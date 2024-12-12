@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -110,8 +118,10 @@ class DataSourcesServiceRestInterceptor:
     def pre_create_data_source(
         self,
         request: datasources.CreateDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datasources.CreateDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasources.CreateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -133,8 +143,10 @@ class DataSourcesServiceRestInterceptor:
     def pre_delete_data_source(
         self,
         request: datasources.DeleteDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datasources.DeleteDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasources.DeleteDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -145,8 +157,10 @@ class DataSourcesServiceRestInterceptor:
     def pre_fetch_data_source(
         self,
         request: datasources.FetchDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datasources.FetchDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasources.FetchDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for fetch_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -157,8 +171,10 @@ class DataSourcesServiceRestInterceptor:
     def pre_get_data_source(
         self,
         request: datasources.GetDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datasources.GetDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasources.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -180,8 +196,10 @@ class DataSourcesServiceRestInterceptor:
     def pre_list_data_sources(
         self,
         request: datasources.ListDataSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datasources.ListDataSourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasources.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -203,8 +221,10 @@ class DataSourcesServiceRestInterceptor:
     def pre_update_data_source(
         self,
         request: datasources.UpdateDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datasources.UpdateDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasources.UpdateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -349,7 +369,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datasources.DataSource:
             r"""Call the create data source method over HTTP.
 
@@ -360,8 +380,10 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datasources.DataSource:
@@ -374,6 +396,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             http_options = (
                 _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_data_source(
                 request, metadata
             )
@@ -389,6 +412,33 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             query_params = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.CreateDataSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "CreateDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataSourcesServiceRestTransport._CreateDataSource._get_response(
@@ -411,7 +461,29 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             pb_resp = datasources.DataSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_data_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datasources.DataSource.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.create_data_source",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "CreateDataSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDataSource(
@@ -449,7 +521,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete data source method over HTTP.
 
@@ -460,13 +532,16 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_data_source(
                 request, metadata
             )
@@ -478,6 +553,33 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             query_params = _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.DeleteDataSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "DeleteDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataSourcesServiceRestTransport._DeleteDataSource._get_response(
@@ -530,7 +632,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the fetch data source method over HTTP.
 
@@ -541,13 +643,16 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_data_source(
                 request, metadata
             )
@@ -563,6 +668,33 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             query_params = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.FetchDataSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "FetchDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataSourcesServiceRestTransport._FetchDataSource._get_response(
@@ -615,7 +747,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datasources.DataSource:
             r"""Call the get data source method over HTTP.
 
@@ -626,8 +758,10 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datasources.DataSource:
@@ -640,6 +774,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             http_options = (
                 _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
             transcoded_request = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_transcoded_request(
                 http_options, request
@@ -649,6 +784,33 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             query_params = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.GetDataSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "GetDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataSourcesServiceRestTransport._GetDataSource._get_response(
@@ -670,7 +832,29 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             pb_resp = datasources.DataSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datasources.DataSource.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.get_data_source",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "GetDataSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDataSources(
@@ -708,7 +892,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datasources.ListDataSourcesResponse:
             r"""Call the list data sources method over HTTP.
 
@@ -719,8 +903,10 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datasources.ListDataSourcesResponse:
@@ -732,6 +918,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             http_options = (
                 _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_data_sources(
                 request, metadata
             )
@@ -743,6 +930,33 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             query_params = _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.ListDataSources",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "ListDataSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataSourcesServiceRestTransport._ListDataSources._get_response(
@@ -764,7 +978,31 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             pb_resp = datasources.ListDataSourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_data_sources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datasources.ListDataSourcesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.list_data_sources",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "ListDataSources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataSource(
@@ -803,7 +1041,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datasources.DataSource:
             r"""Call the update data source method over HTTP.
 
@@ -814,8 +1052,10 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datasources.DataSource:
@@ -828,6 +1068,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             http_options = (
                 _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_data_source(
                 request, metadata
             )
@@ -843,6 +1084,33 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             query_params = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.UpdateDataSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "UpdateDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataSourcesServiceRestTransport._UpdateDataSource._get_response(
@@ -865,7 +1133,29 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             pb_resp = datasources.DataSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_data_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datasources.DataSource.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.datasources_v1beta.DataSourcesServiceClient.update_data_source",
+                    extra={
+                        "serviceName": "google.shopping.merchant.datasources.v1beta.DataSourcesService",
+                        "rpcName": "UpdateDataSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

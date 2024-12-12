@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -94,9 +102,10 @@ class SolarRestInterceptor:
     def pre_find_closest_building_insights(
         self,
         request: solar_service.FindClosestBuildingInsightsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        solar_service.FindClosestBuildingInsightsRequest, Sequence[Tuple[str, str]]
+        solar_service.FindClosestBuildingInsightsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for find_closest_building_insights
 
@@ -119,8 +128,10 @@ class SolarRestInterceptor:
     def pre_get_data_layers(
         self,
         request: solar_service.GetDataLayersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[solar_service.GetDataLayersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        solar_service.GetDataLayersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_data_layers
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +153,10 @@ class SolarRestInterceptor:
     def pre_get_geo_tiff(
         self,
         request: solar_service.GetGeoTiffRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[solar_service.GetGeoTiffRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        solar_service.GetGeoTiffRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_geo_tiff
 
         Override in a subclass to manipulate the request or metadata
@@ -283,7 +296,7 @@ class SolarRestTransport(_BaseSolarRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> solar_service.BuildingInsights:
             r"""Call the find closest building
             insights method over HTTP.
@@ -295,8 +308,10 @@ class SolarRestTransport(_BaseSolarRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.solar_service.BuildingInsights:
@@ -310,6 +325,7 @@ class SolarRestTransport(_BaseSolarRestTransport):
             http_options = (
                 _BaseSolarRestTransport._BaseFindClosestBuildingInsights._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_find_closest_building_insights(
                 request, metadata
             )
@@ -321,6 +337,33 @@ class SolarRestTransport(_BaseSolarRestTransport):
             query_params = _BaseSolarRestTransport._BaseFindClosestBuildingInsights._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.solar_v1.SolarClient.FindClosestBuildingInsights",
+                    extra={
+                        "serviceName": "google.maps.solar.v1.Solar",
+                        "rpcName": "FindClosestBuildingInsights",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SolarRestTransport._FindClosestBuildingInsights._get_response(
@@ -342,7 +385,29 @@ class SolarRestTransport(_BaseSolarRestTransport):
             pb_resp = solar_service.BuildingInsights.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_find_closest_building_insights(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = solar_service.BuildingInsights.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.solar_v1.SolarClient.find_closest_building_insights",
+                    extra={
+                        "serviceName": "google.maps.solar.v1.Solar",
+                        "rpcName": "FindClosestBuildingInsights",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataLayers(_BaseSolarRestTransport._BaseGetDataLayers, SolarRestStub):
@@ -377,7 +442,7 @@ class SolarRestTransport(_BaseSolarRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> solar_service.DataLayers:
             r"""Call the get data layers method over HTTP.
 
@@ -387,8 +452,10 @@ class SolarRestTransport(_BaseSolarRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.solar_service.DataLayers:
@@ -410,6 +477,7 @@ class SolarRestTransport(_BaseSolarRestTransport):
             http_options = (
                 _BaseSolarRestTransport._BaseGetDataLayers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_layers(request, metadata)
             transcoded_request = (
                 _BaseSolarRestTransport._BaseGetDataLayers._get_transcoded_request(
@@ -423,6 +491,33 @@ class SolarRestTransport(_BaseSolarRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.solar_v1.SolarClient.GetDataLayers",
+                    extra={
+                        "serviceName": "google.maps.solar.v1.Solar",
+                        "rpcName": "GetDataLayers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SolarRestTransport._GetDataLayers._get_response(
@@ -444,7 +539,29 @@ class SolarRestTransport(_BaseSolarRestTransport):
             pb_resp = solar_service.DataLayers.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_layers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = solar_service.DataLayers.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.solar_v1.SolarClient.get_data_layers",
+                    extra={
+                        "serviceName": "google.maps.solar.v1.Solar",
+                        "rpcName": "GetDataLayers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGeoTiff(_BaseSolarRestTransport._BaseGetGeoTiff, SolarRestStub):
@@ -479,7 +596,7 @@ class SolarRestTransport(_BaseSolarRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> httpbody_pb2.HttpBody:
             r"""Call the get geo tiff method over HTTP.
 
@@ -489,8 +606,10 @@ class SolarRestTransport(_BaseSolarRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
@@ -547,6 +666,7 @@ class SolarRestTransport(_BaseSolarRestTransport):
             """
 
             http_options = _BaseSolarRestTransport._BaseGetGeoTiff._get_http_options()
+
             request, metadata = self._interceptor.pre_get_geo_tiff(request, metadata)
             transcoded_request = (
                 _BaseSolarRestTransport._BaseGetGeoTiff._get_transcoded_request(
@@ -560,6 +680,33 @@ class SolarRestTransport(_BaseSolarRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.solar_v1.SolarClient.GetGeoTiff",
+                    extra={
+                        "serviceName": "google.maps.solar.v1.Solar",
+                        "rpcName": "GetGeoTiff",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SolarRestTransport._GetGeoTiff._get_response(
@@ -581,7 +728,29 @@ class SolarRestTransport(_BaseSolarRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_geo_tiff(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.solar_v1.SolarClient.get_geo_tiff",
+                    extra={
+                        "serviceName": "google.maps.solar.v1.Solar",
+                        "rpcName": "GetGeoTiff",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

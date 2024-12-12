@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -75,8 +83,10 @@ class ReportServiceRestInterceptor:
     """
 
     def pre_search(
-        self, request: reports.SearchRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[reports.SearchRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: reports.SearchRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reports.SearchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search
 
         Override in a subclass to manipulate the request or metadata
@@ -215,7 +225,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> reports.SearchResponse:
             r"""Call the search method over HTTP.
 
@@ -225,8 +235,10 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.reports.SearchResponse:
@@ -238,6 +250,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseSearch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search(request, metadata)
             transcoded_request = (
                 _BaseReportServiceRestTransport._BaseSearch._get_transcoded_request(
@@ -255,6 +268,33 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.reports_v1beta.ReportServiceClient.Search",
+                    extra={
+                        "serviceName": "google.shopping.merchant.reports.v1beta.ReportService",
+                        "rpcName": "Search",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ReportServiceRestTransport._Search._get_response(
@@ -277,7 +317,29 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             pb_resp = reports.SearchResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = reports.SearchResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.reports_v1beta.ReportServiceClient.search",
+                    extra={
+                        "serviceName": "google.shopping.merchant.reports.v1beta.ReportService",
+                        "rpcName": "Search",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

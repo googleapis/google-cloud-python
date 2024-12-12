@@ -1693,6 +1693,7 @@ def test_find_closest_building_insights_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.find_closest_building_insights(request)
 
@@ -1837,6 +1838,7 @@ def test_get_data_layers_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_data_layers(request)
 
@@ -1982,6 +1984,7 @@ def test_get_geo_tiff_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_geo_tiff(request)
 
@@ -2313,6 +2316,7 @@ def test_find_closest_building_insights_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.find_closest_building_insights(request)
 
 
@@ -2353,6 +2357,7 @@ def test_find_closest_building_insights_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.find_closest_building_insights(request)
 
     # Establish that the response is the type that we expect.
@@ -2396,6 +2401,7 @@ def test_find_closest_building_insights_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = solar_service.BuildingInsights.to_json(
             solar_service.BuildingInsights()
         )
@@ -2442,6 +2448,7 @@ def test_get_data_layers_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_data_layers(request)
 
 
@@ -2483,6 +2490,7 @@ def test_get_data_layers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_data_layers(request)
 
     # Establish that the response is the type that we expect.
@@ -2527,6 +2535,7 @@ def test_get_data_layers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = solar_service.DataLayers.to_json(solar_service.DataLayers())
         req.return_value.content = return_value
 
@@ -2569,6 +2578,7 @@ def test_get_geo_tiff_rest_bad_request(request_type=solar_service.GetGeoTiffRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_geo_tiff(request)
 
 
@@ -2602,6 +2612,7 @@ def test_get_geo_tiff_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_geo_tiff(request)
 
     # Establish that the response is the type that we expect.
@@ -2641,6 +2652,7 @@ def test_get_geo_tiff_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(httpbody_pb2.HttpBody())
         req.return_value.content = return_value
 

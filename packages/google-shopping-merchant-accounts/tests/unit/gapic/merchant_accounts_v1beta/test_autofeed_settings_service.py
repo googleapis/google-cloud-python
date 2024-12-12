@@ -1939,6 +1939,7 @@ def test_get_autofeed_settings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_autofeed_settings(request)
 
@@ -1984,6 +1985,7 @@ def test_get_autofeed_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_autofeed_settings(**mock_args)
 
@@ -2118,6 +2120,7 @@ def test_update_autofeed_settings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_autofeed_settings(request)
 
@@ -2174,6 +2177,7 @@ def test_update_autofeed_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_autofeed_settings(**mock_args)
 
@@ -2460,6 +2464,7 @@ def test_get_autofeed_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_autofeed_settings(request)
 
 
@@ -2497,6 +2502,7 @@ def test_get_autofeed_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_autofeed_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -2539,6 +2545,7 @@ def test_get_autofeed_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = autofeedsettings.AutofeedSettings.to_json(
             autofeedsettings.AutofeedSettings()
         )
@@ -2585,6 +2592,7 @@ def test_update_autofeed_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_autofeed_settings(request)
 
 
@@ -2696,6 +2704,7 @@ def test_update_autofeed_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_autofeed_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -2740,6 +2749,7 @@ def test_update_autofeed_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = autofeedsettings.AutofeedSettings.to_json(
             autofeedsettings.AutofeedSettings()
         )
