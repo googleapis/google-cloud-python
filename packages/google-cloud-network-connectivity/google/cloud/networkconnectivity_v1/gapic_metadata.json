@@ -90,9 +90,19 @@
                 "list_spokes"
               ]
             },
+            "QueryHubStatus": {
+              "methods": [
+                "query_hub_status"
+              ]
+            },
             "RejectHubSpoke": {
               "methods": [
                 "reject_hub_spoke"
+              ]
+            },
+            "UpdateGroup": {
+              "methods": [
+                "update_group"
               ]
             },
             "UpdateHub": {
@@ -190,9 +200,19 @@
                 "list_spokes"
               ]
             },
+            "QueryHubStatus": {
+              "methods": [
+                "query_hub_status"
+              ]
+            },
             "RejectHubSpoke": {
               "methods": [
                 "reject_hub_spoke"
+              ]
+            },
+            "UpdateGroup": {
+              "methods": [
+                "update_group"
               ]
             },
             "UpdateHub": {

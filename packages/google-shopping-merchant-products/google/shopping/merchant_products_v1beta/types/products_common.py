@@ -176,12 +176,10 @@ class Attributes(proto.Message):
             auto assigned google product categories through the API.
 
             This field is a member of `oneof`_ ``_google_product_category``.
-        gtin (str):
-            Global Trade Item Number
+        gtin (MutableSequence[str]):
+            Global Trade Item Numbers
             (`GTIN <https://support.google.com/merchants/answer/188494#gtin>`__)
-            of the item.
-
-            This field is a member of `oneof`_ ``_gtin``.
+            of the item. You can provide up to 10 GTINs.
         item_group_id (str):
             Shared identifier for all variants of the
             same product.
@@ -305,9 +303,7 @@ class Attributes(proto.Message):
         taxes (MutableSequence[google.shopping.merchant_products_v1beta.types.Tax]):
             Tax information.
         tax_category (str):
-            The tax category of the product, used to
-            configure detailed tax nexus in account-level
-            tax settings.
+            The tax category of the product.
 
             This field is a member of `oneof`_ ``_tax_category``.
         energy_efficiency_class (str):
@@ -591,10 +587,9 @@ class Attributes(proto.Message):
         number=25,
         optional=True,
     )
-    gtin: str = proto.Field(
+    gtin: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=26,
-        optional=True,
     )
     item_group_id: str = proto.Field(
         proto.STRING,
@@ -1236,6 +1231,22 @@ class LoyaltyProgram(proto.Message):
             purchase.
 
             This field is a member of `oneof`_ ``_loyalty_points``.
+        member_price_effective_date (google.type.interval_pb2.Interval):
+            A date range during which the item is
+            eligible for member price. If not specified, the
+            member price is always applicable. The date
+            range is represented by a pair of ISO 8601 dates
+            separated by a space, comma, or slash.
+
+            This field is a member of `oneof`_ ``_member_price_effective_date``.
+        shipping_label (str):
+            The label of the shipping benefit. If the
+            field has value, this offer has loyalty shipping
+            benefit. If the field value isn't provided, the
+            item is not eligible for loyalty shipping for
+            the given loyalty tier.
+
+            This field is a member of `oneof`_ ``_shipping_label``.
     """
 
     program_label: str = proto.Field(
@@ -1263,6 +1274,17 @@ class LoyaltyProgram(proto.Message):
     loyalty_points: int = proto.Field(
         proto.INT64,
         number=5,
+        optional=True,
+    )
+    member_price_effective_date: interval_pb2.Interval = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=interval_pb2.Interval,
+    )
+    shipping_label: str = proto.Field(
+        proto.STRING,
+        number=7,
         optional=True,
     )
 
@@ -1305,11 +1327,11 @@ class Shipping(proto.Message):
             received and shipped in business days. 0 means that the
             order is shipped on the same day as it is received if it
             happens before the cut-off time.
-            [minHandlingTime][google.shopping.content.bundles.Products.Shipping.min_handling_time]
+            [minHandlingTime][google.shopping.merchant.products.v1beta.Shipping.min_handling_time]
             can only be present together with
-            [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time];
+            [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time];
             but it is not required if
-            [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+            [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
             is present.
 
             This field is a member of `oneof`_ ``_min_handling_time``.
@@ -1318,13 +1340,13 @@ class Shipping(proto.Message):
             received and shipped in business days. 0 means that the
             order is shipped on the same day as it is received if it
             happens before the cut-off time. Both
-            [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+            [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
             and
-            [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+            [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
             are required if providing shipping speeds.
-            [minHandlingTime][google.shopping.content.bundles.Products.Shipping.min_handling_time]
+            [minHandlingTime][google.shopping.merchant.products.v1beta.Shipping.min_handling_time]
             is optional if
-            [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+            [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
             is present.
 
             This field is a member of `oneof`_ ``_max_handling_time``.
@@ -1332,11 +1354,11 @@ class Shipping(proto.Message):
             Minimum transit time (inclusive) between when the order has
             shipped and when it is delivered in business days. 0 means
             that the order is delivered on the same day as it ships.
-            [minTransitTime][google.shopping.content.bundles.Products.Shipping.min_transit_time]
+            [minTransitTime][google.shopping.merchant.products.v1beta.Shipping.min_transit_time]
             can only be present together with
-            [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time];
+            [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time];
             but it is not required if
-            [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+            [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
             is present.
 
             This field is a member of `oneof`_ ``_min_transit_time``.
@@ -1345,13 +1367,13 @@ class Shipping(proto.Message):
             shipped and when it is delivered in business days. 0 means
             that the order is delivered on the same day as it ships.
             Both
-            [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+            [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
             and
-            [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+            [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
             are required if providing shipping speeds.
-            [minTransitTime][google.shopping.content.bundles.Products.Shipping.min_transit_time]
+            [minTransitTime][google.shopping.merchant.products.v1beta.Shipping.min_transit_time]
             is optional if
-            [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+            [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
             is present.
 
             This field is a member of `oneof`_ ``_max_transit_time``.
