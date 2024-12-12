@@ -11,6 +11,16 @@ import pytest
 from pandas_gbq import gbq
 
 
+class FakeDataFrame:
+    """A fake bigframes DataFrame to avoid depending on bigframes."""
+
+    def to_gbq(self):
+        """Fake to_gbq() to mimic a bigframes object."""
+
+    def to_pandas(self):
+        """Fake to_pandas() to mimic a bigframes object."""
+
+
 @pytest.fixture
 def expected_load_method(mock_bigquery_client):
     return mock_bigquery_client.load_table_from_dataframe
@@ -64,6 +74,15 @@ def test_to_gbq_load_method_translates_exception(
             project_id="myproj",
         )
     expected_load_method.assert_called_once()
+
+
+def test_to_gbq_with_bigframes_raises_typeerror():
+    dataframe = FakeDataFrame()
+
+    with pytest.raises(
+        TypeError, match=r"Expected a pandas.DataFrame, but got .+FakeDataFrame"
+    ):
+        gbq.to_gbq(dataframe, "my_dataset.my_table", project_id="myproj")
 
 
 def test_to_gbq_with_if_exists_append(mock_bigquery_client, expected_load_method):

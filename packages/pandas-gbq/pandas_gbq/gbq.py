@@ -1091,6 +1091,14 @@ def to_gbq(
         .. versionadded:: 0.23.3
     """
 
+    # If we get a bigframes.pandas.DataFrame object, it may be possible to use
+    # the code paths here, but it could potentially be quite expensive because
+    # of the queries involved in type detection. It would be safer just to
+    # fail early if there are bigframes-y methods available.
+    # https://github.com/googleapis/python-bigquery-pandas/issues/824
+    if hasattr(dataframe, "to_pandas") and hasattr(dataframe, "to_gbq"):
+        raise TypeError(f"Expected a pandas.DataFrame, but got {repr(type(dataframe))}")
+
     _test_google_api_imports()
 
     from google.api_core import exceptions as google_exceptions
