@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -342,8 +350,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_batch_create_instances(
         self,
         request: service.BatchCreateInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.BatchCreateInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.BatchCreateInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_create_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -363,8 +373,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_create_backup(
-        self, request: service.CreateBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -384,8 +396,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_create_cluster(
-        self, request: service.CreateClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -407,8 +421,8 @@ class AlloyDBAdminRestInterceptor:
     def pre_create_instance(
         self,
         request: service.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -430,8 +444,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_create_secondary_cluster(
         self,
         request: service.CreateSecondaryClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateSecondaryClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateSecondaryClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_secondary_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -453,8 +469,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_create_secondary_instance(
         self,
         request: service.CreateSecondaryInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateSecondaryInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateSecondaryInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_secondary_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -474,8 +492,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_create_user(
-        self, request: service.CreateUserRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateUserRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_user
 
         Override in a subclass to manipulate the request or metadata
@@ -493,8 +513,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_delete_backup(
-        self, request: service.DeleteBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -514,8 +536,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_delete_cluster(
-        self, request: service.DeleteClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -537,8 +561,8 @@ class AlloyDBAdminRestInterceptor:
     def pre_delete_instance(
         self,
         request: service.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -558,8 +582,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_delete_user(
-        self, request: service.DeleteUserRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteUserRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_user
 
         Override in a subclass to manipulate the request or metadata
@@ -568,8 +594,10 @@ class AlloyDBAdminRestInterceptor:
         return request, metadata
 
     def pre_execute_sql(
-        self, request: service.ExecuteSqlRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ExecuteSqlRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ExecuteSqlRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ExecuteSqlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for execute_sql
 
         Override in a subclass to manipulate the request or metadata
@@ -591,8 +619,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_failover_instance(
         self,
         request: service.FailoverInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.FailoverInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for failover_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -614,8 +644,11 @@ class AlloyDBAdminRestInterceptor:
     def pre_generate_client_certificate(
         self,
         request: service.GenerateClientCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GenerateClientCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GenerateClientCertificateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for generate_client_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -635,8 +668,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_get_backup(
-        self, request: service.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -654,8 +689,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_get_cluster(
-        self, request: service.GetClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -675,8 +712,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_get_connection_info(
         self,
         request: service.GetConnectionInfoRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetConnectionInfoRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetConnectionInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_connection_info
 
         Override in a subclass to manipulate the request or metadata
@@ -696,8 +735,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_get_instance(
-        self, request: service.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -715,8 +756,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_get_user(
-        self, request: service.GetUserRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetUserRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_user
 
         Override in a subclass to manipulate the request or metadata
@@ -734,8 +777,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_inject_fault(
-        self, request: service.InjectFaultRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.InjectFaultRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.InjectFaultRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.InjectFaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for inject_fault
 
         Override in a subclass to manipulate the request or metadata
@@ -755,8 +800,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_list_backups(
-        self, request: service.ListBackupsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -776,8 +823,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_list_clusters(
-        self, request: service.ListClustersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListClustersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListClustersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -797,8 +846,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_list_databases(
-        self, request: service.ListDatabasesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListDatabasesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListDatabasesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListDatabasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_databases
 
         Override in a subclass to manipulate the request or metadata
@@ -818,8 +869,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_list_instances(
-        self, request: service.ListInstancesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListInstancesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -841,8 +894,11 @@ class AlloyDBAdminRestInterceptor:
     def pre_list_supported_database_flags(
         self,
         request: service.ListSupportedDatabaseFlagsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListSupportedDatabaseFlagsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListSupportedDatabaseFlagsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_supported_database_flags
 
         Override in a subclass to manipulate the request or metadata
@@ -862,8 +918,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_list_users(
-        self, request: service.ListUsersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListUsersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListUsersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListUsersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_users
 
         Override in a subclass to manipulate the request or metadata
@@ -885,8 +943,8 @@ class AlloyDBAdminRestInterceptor:
     def pre_promote_cluster(
         self,
         request: service.PromoteClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.PromoteClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.PromoteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for promote_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -908,8 +966,8 @@ class AlloyDBAdminRestInterceptor:
     def pre_restart_instance(
         self,
         request: service.RestartInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.RestartInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.RestartInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restart_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -931,8 +989,8 @@ class AlloyDBAdminRestInterceptor:
     def pre_restore_cluster(
         self,
         request: service.RestoreClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.RestoreClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.RestoreClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -954,8 +1012,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_switchover_cluster(
         self,
         request: service.SwitchoverClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.SwitchoverClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.SwitchoverClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for switchover_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -975,8 +1035,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_update_backup(
-        self, request: service.UpdateBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -996,8 +1058,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_update_cluster(
-        self, request: service.UpdateClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1019,8 +1083,8 @@ class AlloyDBAdminRestInterceptor:
     def pre_update_instance(
         self,
         request: service.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1040,8 +1104,10 @@ class AlloyDBAdminRestInterceptor:
         return response
 
     def pre_update_user(
-        self, request: service.UpdateUserRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateUserRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateUserRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_user
 
         Override in a subclass to manipulate the request or metadata
@@ -1061,8 +1127,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1084,8 +1152,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1107,8 +1177,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1128,8 +1200,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1149,8 +1223,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1172,8 +1248,10 @@ class AlloyDBAdminRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1368,7 +1446,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch create instances method over HTTP.
 
@@ -1379,8 +1457,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1393,6 +1473,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_instances(
                 request, metadata
             )
@@ -1408,6 +1489,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.BatchCreateInstances",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "BatchCreateInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._BatchCreateInstances._get_response(
@@ -1428,7 +1536,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.batch_create_instances",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "BatchCreateInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackup(
@@ -1466,7 +1596,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup method over HTTP.
 
@@ -1476,8 +1606,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1490,6 +1622,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_transcoded_request(
                 http_options, request
@@ -1507,6 +1640,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.CreateBackup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateBackup._get_response(
@@ -1527,7 +1687,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.create_backup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCluster(
@@ -1565,7 +1747,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create cluster method over HTTP.
 
@@ -1575,8 +1757,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1589,6 +1773,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_transcoded_request(
                 http_options, request
@@ -1602,6 +1787,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.CreateCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateCluster._get_response(
@@ -1622,7 +1834,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.create_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInstance(
@@ -1660,7 +1894,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -1670,8 +1904,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1684,6 +1920,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_transcoded_request(
                 http_options, request
@@ -1697,6 +1934,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.CreateInstance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateInstance._get_response(
@@ -1717,7 +1981,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.create_instance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSecondaryCluster(
@@ -1755,7 +2041,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create secondary cluster method over HTTP.
 
@@ -1765,8 +2051,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1779,6 +2067,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_secondary_cluster(
                 request, metadata
             )
@@ -1794,6 +2083,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.CreateSecondaryCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateSecondaryCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateSecondaryCluster._get_response(
@@ -1814,7 +2130,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_secondary_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.create_secondary_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateSecondaryCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSecondaryInstance(
@@ -1853,7 +2191,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create secondary instance method over HTTP.
 
@@ -1864,8 +2202,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1878,6 +2218,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_secondary_instance(
                 request, metadata
             )
@@ -1893,6 +2234,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.CreateSecondaryInstance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateSecondaryInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateSecondaryInstance._get_response(
@@ -1913,7 +2281,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_secondary_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.create_secondary_instance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateSecondaryInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateUser(
@@ -1951,7 +2341,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.User:
             r"""Call the create user method over HTTP.
 
@@ -1961,8 +2351,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.User:
@@ -1972,6 +2364,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_user(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_transcoded_request(
@@ -1991,6 +2384,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.CreateUser",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._CreateUser._get_response(
@@ -2013,7 +2433,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = resources.User.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_user(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.User.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.create_user",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CreateUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackup(
@@ -2050,7 +2492,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup method over HTTP.
 
@@ -2060,8 +2502,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2074,6 +2518,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_transcoded_request(
                 http_options, request
@@ -2085,6 +2530,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteBackup._get_response(
@@ -2104,7 +2576,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCluster(
@@ -2141,7 +2635,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete cluster method over HTTP.
 
@@ -2151,8 +2645,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2165,6 +2661,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_transcoded_request(
                 http_options, request
@@ -2174,6 +2671,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.DeleteCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteCluster._get_response(
@@ -2193,7 +2717,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.delete_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteInstance(
@@ -2230,7 +2776,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
@@ -2240,8 +2786,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2254,6 +2802,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_transcoded_request(
                 http_options, request
@@ -2263,6 +2812,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.DeleteInstance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteInstance._get_response(
@@ -2282,7 +2858,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.delete_instance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteUser(
@@ -2319,7 +2917,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete user method over HTTP.
 
@@ -2329,13 +2927,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_user(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_transcoded_request(
@@ -2349,6 +2950,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.DeleteUser",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteUser._get_response(
@@ -2400,7 +3028,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ExecuteSqlResponse:
             r"""Call the execute sql method over HTTP.
 
@@ -2410,8 +3038,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ExecuteSqlResponse:
@@ -2421,6 +3051,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_execute_sql(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseExecuteSql._get_transcoded_request(
@@ -2440,6 +3071,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ExecuteSql",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ExecuteSql",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ExecuteSql._get_response(
@@ -2462,7 +3120,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.ExecuteSqlResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_execute_sql(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ExecuteSqlResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.execute_sql",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ExecuteSql",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FailoverInstance(
@@ -2500,7 +3180,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the failover instance method over HTTP.
 
@@ -2511,8 +3191,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2525,6 +3207,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_failover_instance(
                 request, metadata
             )
@@ -2540,6 +3223,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.FailoverInstance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "FailoverInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._FailoverInstance._get_response(
@@ -2560,7 +3270,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_failover_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.failover_instance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "FailoverInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateClientCertificate(
@@ -2599,7 +3331,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.GenerateClientCertificateResponse:
             r"""Call the generate client
             certificate method over HTTP.
@@ -2612,8 +3344,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.GenerateClientCertificateResponse:
@@ -2625,6 +3359,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_client_certificate(
                 request, metadata
             )
@@ -2640,6 +3375,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GenerateClientCertificate",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GenerateClientCertificate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2664,7 +3426,31 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.GenerateClientCertificateResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_client_certificate(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service.GenerateClientCertificateResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.generate_client_certificate",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GenerateClientCertificate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackup(
@@ -2701,7 +3487,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Backup:
             r"""Call the get backup method over HTTP.
 
@@ -2711,8 +3497,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Backup:
@@ -2722,6 +3510,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_transcoded_request(
@@ -2735,6 +3524,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetBackup._get_response(
@@ -2756,7 +3572,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = resources.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCluster(
@@ -2793,7 +3631,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Cluster:
             r"""Call the get cluster method over HTTP.
 
@@ -2803,8 +3641,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Cluster:
@@ -2820,6 +3660,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_transcoded_request(
@@ -2833,6 +3674,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GetCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetCluster._get_response(
@@ -2854,7 +3722,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = resources.Cluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Cluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.get_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConnectionInfo(
@@ -2891,7 +3781,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ConnectionInfo:
             r"""Call the get connection info method over HTTP.
 
@@ -2902,8 +3792,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ConnectionInfo:
@@ -2915,6 +3807,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_connection_info(
                 request, metadata
             )
@@ -2926,6 +3819,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GetConnectionInfo",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetConnectionInfo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetConnectionInfo._get_response(
@@ -2947,7 +3867,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = resources.ConnectionInfo.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_connection_info(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ConnectionInfo.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.get_connection_info",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetConnectionInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstance(
@@ -2984,7 +3926,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -2994,8 +3936,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Instance:
@@ -3009,6 +3953,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_transcoded_request(
@@ -3022,6 +3967,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GetInstance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetInstance._get_response(
@@ -3043,7 +4015,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = resources.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Instance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.get_instance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetUser(_BaseAlloyDBAdminRestTransport._BaseGetUser, AlloyDBAdminRestStub):
@@ -3078,7 +4072,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.User:
             r"""Call the get user method over HTTP.
 
@@ -3088,8 +4082,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.User:
@@ -3099,6 +4095,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGetUser._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_user(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseGetUser._get_transcoded_request(
@@ -3112,6 +4109,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GetUser",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetUser._get_response(
@@ -3133,7 +4157,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = resources.User.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_user(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.User.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.get_user",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InjectFault(
@@ -3171,7 +4217,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the inject fault method over HTTP.
 
@@ -3182,8 +4228,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3196,6 +4244,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_inject_fault(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_transcoded_request(
@@ -3216,6 +4265,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.InjectFault",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "InjectFault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = AlloyDBAdminRestTransport._InjectFault._get_response(
                 self._host,
@@ -3235,7 +4311,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_inject_fault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.inject_fault",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "InjectFault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackups(
@@ -3272,7 +4370,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListBackupsResponse:
             r"""Call the list backups method over HTTP.
 
@@ -3283,8 +4381,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListBackupsResponse:
@@ -3296,6 +4396,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseListBackups._get_transcoded_request(
@@ -3309,6 +4410,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListBackups._get_response(
@@ -3330,7 +4458,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.ListBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListBackupsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClusters(
@@ -3367,7 +4517,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListClustersResponse:
             r"""Call the list clusters method over HTTP.
 
@@ -3378,8 +4528,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListClustersResponse:
@@ -3391,6 +4543,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListClusters._get_transcoded_request(
                 http_options, request
@@ -3402,6 +4555,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListClusters",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListClusters._get_response(
@@ -3423,7 +4603,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.ListClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListClustersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.list_clusters",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatabases(
@@ -3460,7 +4662,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListDatabasesResponse:
             r"""Call the list databases method over HTTP.
 
@@ -3471,8 +4673,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListDatabasesResponse:
@@ -3484,6 +4688,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_transcoded_request(
                 http_options, request
@@ -3493,6 +4698,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseListDatabases._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListDatabases",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListDatabases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListDatabases._get_response(
@@ -3514,7 +4746,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.ListDatabasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_databases(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListDatabasesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.list_databases",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListDatabases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstances(
@@ -3551,7 +4805,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -3562,8 +4816,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListInstancesResponse:
@@ -3575,6 +4831,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_transcoded_request(
                 http_options, request
@@ -3584,6 +4841,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListInstances",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListInstances._get_response(
@@ -3605,7 +4889,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListInstancesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.list_instances",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSupportedDatabaseFlags(
@@ -3643,7 +4949,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListSupportedDatabaseFlagsResponse:
             r"""Call the list supported database
             flags method over HTTP.
@@ -3655,8 +4961,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.ListSupportedDatabaseFlagsResponse:
@@ -3668,6 +4976,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_supported_database_flags(
                 request, metadata
             )
@@ -3679,6 +4988,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListSupportedDatabaseFlags",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListSupportedDatabaseFlags",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3702,7 +5038,31 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.ListSupportedDatabaseFlagsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_supported_database_flags(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service.ListSupportedDatabaseFlagsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.list_supported_database_flags",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListSupportedDatabaseFlags",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListUsers(
@@ -3739,7 +5099,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListUsersResponse:
             r"""Call the list users method over HTTP.
 
@@ -3749,8 +5109,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListUsersResponse:
@@ -3760,6 +5122,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListUsers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_users(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseListUsers._get_transcoded_request(
@@ -3773,6 +5136,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListUsers",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListUsers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListUsers._get_response(
@@ -3794,7 +5184,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = service.ListUsersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_users(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListUsersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.list_users",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListUsers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PromoteCluster(
@@ -3832,7 +5244,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the promote cluster method over HTTP.
 
@@ -3842,8 +5254,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3856,6 +5270,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_promote_cluster(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_transcoded_request(
                 http_options, request
@@ -3869,6 +5284,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.PromoteCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "PromoteCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._PromoteCluster._get_response(
@@ -3889,7 +5331,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_promote_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.promote_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "PromoteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestartInstance(
@@ -3927,7 +5391,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restart instance method over HTTP.
 
@@ -3937,8 +5401,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3951,6 +5417,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restart_instance(
                 request, metadata
             )
@@ -3966,6 +5433,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.RestartInstance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "RestartInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._RestartInstance._get_response(
@@ -3986,7 +5480,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restart_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.restart_instance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "RestartInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestoreCluster(
@@ -4024,7 +5540,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restore cluster method over HTTP.
 
@@ -4036,8 +5552,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4050,6 +5568,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restore_cluster(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_transcoded_request(
                 http_options, request
@@ -4063,6 +5582,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.RestoreCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "RestoreCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._RestoreCluster._get_response(
@@ -4083,7 +5629,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restore_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.restore_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "RestoreCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SwitchoverCluster(
@@ -4121,7 +5689,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the switchover cluster method over HTTP.
 
@@ -4132,8 +5700,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4146,6 +5716,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_switchover_cluster(
                 request, metadata
             )
@@ -4161,6 +5732,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.SwitchoverCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "SwitchoverCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._SwitchoverCluster._get_response(
@@ -4181,7 +5779,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_switchover_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.switchover_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "SwitchoverCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackup(
@@ -4219,7 +5839,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup method over HTTP.
 
@@ -4229,8 +5849,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4243,6 +5865,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_transcoded_request(
                 http_options, request
@@ -4260,6 +5883,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.UpdateBackup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateBackup._get_response(
@@ -4280,7 +5930,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.update_backup",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCluster(
@@ -4318,7 +5990,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update cluster method over HTTP.
 
@@ -4328,8 +6000,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4342,6 +6016,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_transcoded_request(
                 http_options, request
@@ -4355,6 +6030,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.UpdateCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateCluster._get_response(
@@ -4375,7 +6077,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.update_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInstance(
@@ -4413,7 +6137,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -4423,8 +6147,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4437,6 +6163,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_transcoded_request(
                 http_options, request
@@ -4450,6 +6177,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.UpdateInstance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateInstance._get_response(
@@ -4470,7 +6224,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.update_instance",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateUser(
@@ -4508,7 +6284,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.User:
             r"""Call the update user method over HTTP.
 
@@ -4518,8 +6294,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.User:
@@ -4529,6 +6307,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_user(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_transcoded_request(
@@ -4548,6 +6327,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.UpdateUser",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._UpdateUser._get_response(
@@ -4570,7 +6376,29 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             pb_resp = resources.User.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_user(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.User.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminClient.update_user",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "UpdateUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -4877,7 +6705,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -4887,8 +6715,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -4897,6 +6727,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_transcoded_request(
@@ -4910,6 +6741,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetLocation._get_response(
@@ -4930,6 +6788,27 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4970,7 +6849,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -4980,8 +6859,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -4990,6 +6871,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -4999,6 +6881,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListLocations._get_response(
@@ -5019,6 +6928,27 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5060,7 +6990,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -5070,13 +7000,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -5092,6 +7025,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._CancelOperation._get_response(
@@ -5149,7 +7109,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -5159,13 +7119,16 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -5177,6 +7140,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._DeleteOperation._get_response(
@@ -5233,7 +7223,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -5243,8 +7233,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -5253,6 +7245,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -5264,6 +7257,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._GetOperation._get_response(
@@ -5284,6 +7304,27 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5324,7 +7365,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -5334,8 +7375,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -5344,6 +7387,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             http_options = (
                 _BaseAlloyDBAdminRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -5353,6 +7397,33 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             query_params = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1.AlloyDBAdminClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AlloyDBAdminRestTransport._ListOperations._get_response(
@@ -5373,6 +7444,27 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

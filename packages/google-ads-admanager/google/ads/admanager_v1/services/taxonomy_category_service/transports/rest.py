@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -89,9 +97,10 @@ class TaxonomyCategoryServiceRestInterceptor:
     def pre_get_taxonomy_category(
         self,
         request: taxonomy_category_service.GetTaxonomyCategoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        taxonomy_category_service.GetTaxonomyCategoryRequest, Sequence[Tuple[str, str]]
+        taxonomy_category_service.GetTaxonomyCategoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_taxonomy_category
 
@@ -114,10 +123,10 @@ class TaxonomyCategoryServiceRestInterceptor:
     def pre_list_taxonomy_categories(
         self,
         request: taxonomy_category_service.ListTaxonomyCategoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         taxonomy_category_service.ListTaxonomyCategoriesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_taxonomy_categories
 
@@ -140,8 +149,10 @@ class TaxonomyCategoryServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -282,7 +293,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> taxonomy_category_messages.TaxonomyCategory:
             r"""Call the get taxonomy category method over HTTP.
 
@@ -292,8 +303,10 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.taxonomy_category_messages.TaxonomyCategory:
@@ -303,6 +316,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             http_options = (
                 _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_taxonomy_category(
                 request, metadata
             )
@@ -314,6 +328,33 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.TaxonomyCategoryServiceClient.GetTaxonomyCategory",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.TaxonomyCategoryService",
+                        "rpcName": "GetTaxonomyCategory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -337,7 +378,31 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             pb_resp = taxonomy_category_messages.TaxonomyCategory.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_taxonomy_category(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        taxonomy_category_messages.TaxonomyCategory.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.TaxonomyCategoryServiceClient.get_taxonomy_category",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.TaxonomyCategoryService",
+                        "rpcName": "GetTaxonomyCategory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTaxonomyCategories(
@@ -375,7 +440,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> taxonomy_category_service.ListTaxonomyCategoriesResponse:
             r"""Call the list taxonomy categories method over HTTP.
 
@@ -385,8 +450,10 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.taxonomy_category_service.ListTaxonomyCategoriesResponse:
@@ -398,6 +465,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             http_options = (
                 _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_taxonomy_categories(
                 request, metadata
             )
@@ -409,6 +477,33 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.TaxonomyCategoryServiceClient.ListTaxonomyCategories",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.TaxonomyCategoryService",
+                        "rpcName": "ListTaxonomyCategories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TaxonomyCategoryServiceRestTransport._ListTaxonomyCategories._get_response(
@@ -430,7 +525,31 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             pb_resp = taxonomy_category_service.ListTaxonomyCategoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_taxonomy_categories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = taxonomy_category_service.ListTaxonomyCategoriesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.TaxonomyCategoryServiceClient.list_taxonomy_categories",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.TaxonomyCategoryService",
+                        "rpcName": "ListTaxonomyCategories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -494,7 +613,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -504,8 +623,10 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -514,6 +635,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             http_options = (
                 _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -523,6 +645,33 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.TaxonomyCategoryServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.TaxonomyCategoryService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TaxonomyCategoryServiceRestTransport._GetOperation._get_response(
@@ -543,6 +692,27 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.TaxonomyCategoryServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.TaxonomyCategoryService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

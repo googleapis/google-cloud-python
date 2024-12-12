@@ -3162,6 +3162,7 @@ def test_list_versions_rest_bad_request(request_type=appengine.ListVersionsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_versions(request)
 
 
@@ -3197,6 +3198,7 @@ def test_list_versions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_versions(request)
 
     # Establish that the response is the type that we expect.
@@ -3233,6 +3235,7 @@ def test_list_versions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = appengine.ListVersionsResponse.to_json(
             appengine.ListVersionsResponse()
         )
@@ -3277,6 +3280,7 @@ def test_get_version_rest_bad_request(request_type=appengine.GetVersionRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_version(request)
 
 
@@ -3330,6 +3334,7 @@ def test_get_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_version(request)
 
     # Establish that the response is the type that we expect.
@@ -3386,6 +3391,7 @@ def test_get_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = version.Version.to_json(version.Version())
         req.return_value.content = return_value
 
@@ -3428,6 +3434,7 @@ def test_create_version_rest_bad_request(request_type=appengine.CreateVersionReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_version(request)
 
 
@@ -3688,6 +3695,7 @@ def test_create_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_version(request)
 
     # Establish that the response is the type that we expect.
@@ -3725,6 +3733,7 @@ def test_create_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -3767,6 +3776,7 @@ def test_update_version_rest_bad_request(request_type=appengine.UpdateVersionReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_version(request)
 
 
@@ -4027,6 +4037,7 @@ def test_update_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_version(request)
 
     # Establish that the response is the type that we expect.
@@ -4064,6 +4075,7 @@ def test_update_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4106,6 +4118,7 @@ def test_delete_version_rest_bad_request(request_type=appengine.DeleteVersionReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_version(request)
 
 
@@ -4136,6 +4149,7 @@ def test_delete_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_version(request)
 
     # Establish that the response is the type that we expect.
@@ -4173,6 +4187,7 @@ def test_delete_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 

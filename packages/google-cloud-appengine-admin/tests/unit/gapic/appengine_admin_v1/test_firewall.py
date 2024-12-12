@@ -3516,6 +3516,7 @@ def test_list_ingress_rules_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_ingress_rules(request)
 
 
@@ -3551,6 +3552,7 @@ def test_list_ingress_rules_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_ingress_rules(request)
 
     # Establish that the response is the type that we expect.
@@ -3589,6 +3591,7 @@ def test_list_ingress_rules_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = appengine.ListIngressRulesResponse.to_json(
             appengine.ListIngressRulesResponse()
         )
@@ -3635,6 +3638,7 @@ def test_batch_update_ingress_rules_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_update_ingress_rules(request)
 
 
@@ -3668,6 +3672,7 @@ def test_batch_update_ingress_rules_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_update_ingress_rules(request)
 
     # Establish that the response is the type that we expect.
@@ -3705,6 +3710,7 @@ def test_batch_update_ingress_rules_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = appengine.BatchUpdateIngressRulesResponse.to_json(
             appengine.BatchUpdateIngressRulesResponse()
         )
@@ -3751,6 +3757,7 @@ def test_create_ingress_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_ingress_rule(request)
 
 
@@ -3862,6 +3869,7 @@ def test_create_ingress_rule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_ingress_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -3903,6 +3911,7 @@ def test_create_ingress_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = firewall.FirewallRule.to_json(firewall.FirewallRule())
         req.return_value.content = return_value
 
@@ -3947,6 +3956,7 @@ def test_get_ingress_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_ingress_rule(request)
 
 
@@ -3985,6 +3995,7 @@ def test_get_ingress_rule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_ingress_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -4026,6 +4037,7 @@ def test_get_ingress_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = firewall.FirewallRule.to_json(firewall.FirewallRule())
         req.return_value.content = return_value
 
@@ -4070,6 +4082,7 @@ def test_update_ingress_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_ingress_rule(request)
 
 
@@ -4181,6 +4194,7 @@ def test_update_ingress_rule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_ingress_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -4222,6 +4236,7 @@ def test_update_ingress_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = firewall.FirewallRule.to_json(firewall.FirewallRule())
         req.return_value.content = return_value
 
@@ -4266,6 +4281,7 @@ def test_delete_ingress_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_ingress_rule(request)
 
 
@@ -4296,6 +4312,7 @@ def test_delete_ingress_rule_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_ingress_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -4330,6 +4347,7 @@ def test_delete_ingress_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = appengine.DeleteIngressRuleRequest()
         metadata = [

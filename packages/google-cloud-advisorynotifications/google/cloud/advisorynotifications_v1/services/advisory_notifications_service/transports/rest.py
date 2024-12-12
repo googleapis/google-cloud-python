@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -101,8 +109,8 @@ class AdvisoryNotificationsServiceRestInterceptor:
     def pre_get_notification(
         self,
         request: service.GetNotificationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetNotificationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetNotificationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_notification
 
         Override in a subclass to manipulate the request or metadata
@@ -122,8 +130,10 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response
 
     def pre_get_settings(
-        self, request: service.GetSettingsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetSettingsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetSettingsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -143,8 +153,10 @@ class AdvisoryNotificationsServiceRestInterceptor:
     def pre_list_notifications(
         self,
         request: service.ListNotificationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListNotificationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListNotificationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_notifications
 
         Override in a subclass to manipulate the request or metadata
@@ -166,8 +178,8 @@ class AdvisoryNotificationsServiceRestInterceptor:
     def pre_update_settings(
         self,
         request: service.UpdateSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateSettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -308,7 +320,7 @@ class AdvisoryNotificationsServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Notification:
             r"""Call the get notification method over HTTP.
 
@@ -318,8 +330,10 @@ class AdvisoryNotificationsServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Notification:
@@ -332,6 +346,7 @@ class AdvisoryNotificationsServiceRestTransport(
             http_options = (
                 _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_notification(
                 request, metadata
             )
@@ -343,6 +358,33 @@ class AdvisoryNotificationsServiceRestTransport(
             query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.GetNotification",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "GetNotification",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AdvisoryNotificationsServiceRestTransport._GetNotification._get_response(
@@ -364,7 +406,29 @@ class AdvisoryNotificationsServiceRestTransport(
             pb_resp = service.Notification.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_notification(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Notification.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.get_notification",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "GetNotification",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSettings(
@@ -402,7 +466,7 @@ class AdvisoryNotificationsServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Settings:
             r"""Call the get settings method over HTTP.
 
@@ -412,8 +476,10 @@ class AdvisoryNotificationsServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Settings:
@@ -423,6 +489,7 @@ class AdvisoryNotificationsServiceRestTransport(
             http_options = (
                 _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
             transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_transcoded_request(
                 http_options, request
@@ -432,6 +499,33 @@ class AdvisoryNotificationsServiceRestTransport(
             query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.GetSettings",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "GetSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -455,7 +549,29 @@ class AdvisoryNotificationsServiceRestTransport(
             pb_resp = service.Settings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Settings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.get_settings",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "GetSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNotifications(
@@ -493,7 +609,7 @@ class AdvisoryNotificationsServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListNotificationsResponse:
             r"""Call the list notifications method over HTTP.
 
@@ -504,8 +620,10 @@ class AdvisoryNotificationsServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListNotificationsResponse:
@@ -517,6 +635,7 @@ class AdvisoryNotificationsServiceRestTransport(
             http_options = (
                 _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_notifications(
                 request, metadata
             )
@@ -528,6 +647,33 @@ class AdvisoryNotificationsServiceRestTransport(
             query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.ListNotifications",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "ListNotifications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AdvisoryNotificationsServiceRestTransport._ListNotifications._get_response(
@@ -549,7 +695,31 @@ class AdvisoryNotificationsServiceRestTransport(
             pb_resp = service.ListNotificationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_notifications(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListNotificationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.list_notifications",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "ListNotifications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSettings(
@@ -588,7 +758,7 @@ class AdvisoryNotificationsServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Settings:
             r"""Call the update settings method over HTTP.
 
@@ -598,8 +768,10 @@ class AdvisoryNotificationsServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Settings:
@@ -609,6 +781,7 @@ class AdvisoryNotificationsServiceRestTransport(
             http_options = (
                 _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
             transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_transcoded_request(
                 http_options, request
@@ -622,6 +795,33 @@ class AdvisoryNotificationsServiceRestTransport(
             query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.UpdateSettings",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "UpdateSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -646,7 +846,29 @@ class AdvisoryNotificationsServiceRestTransport(
             pb_resp = service.Settings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Settings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.advisorynotifications_v1.AdvisoryNotificationsServiceClient.update_settings",
+                    extra={
+                        "serviceName": "google.cloud.advisorynotifications.v1.AdvisoryNotificationsService",
+                        "rpcName": "UpdateSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
