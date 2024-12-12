@@ -8291,6 +8291,7 @@ def test_list_queues_rest_required_fields(request_type=cloudtasks.ListQueuesRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_queues(request)
 
@@ -8346,6 +8347,7 @@ def test_list_queues_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_queues(**mock_args)
 
@@ -8538,6 +8540,7 @@ def test_get_queue_rest_required_fields(request_type=cloudtasks.GetQueueRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_queue(request)
 
@@ -8583,6 +8586,7 @@ def test_get_queue_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_queue(**mock_args)
 
@@ -8713,6 +8717,7 @@ def test_create_queue_rest_required_fields(request_type=cloudtasks.CreateQueueRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_queue(request)
 
@@ -8767,6 +8772,7 @@ def test_create_queue_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_queue(**mock_args)
 
@@ -8895,6 +8901,7 @@ def test_update_queue_rest_required_fields(request_type=cloudtasks.UpdateQueueRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_queue(request)
 
@@ -8943,6 +8950,7 @@ def test_update_queue_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_queue(**mock_args)
 
@@ -9070,6 +9078,7 @@ def test_delete_queue_rest_required_fields(request_type=cloudtasks.DeleteQueueRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_queue(request)
 
@@ -9113,6 +9122,7 @@ def test_delete_queue_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_queue(**mock_args)
 
@@ -9243,6 +9253,7 @@ def test_purge_queue_rest_required_fields(request_type=cloudtasks.PurgeQueueRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.purge_queue(request)
 
@@ -9288,6 +9299,7 @@ def test_purge_queue_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.purge_queue(**mock_args)
 
@@ -9418,6 +9430,7 @@ def test_pause_queue_rest_required_fields(request_type=cloudtasks.PauseQueueRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.pause_queue(request)
 
@@ -9463,6 +9476,7 @@ def test_pause_queue_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.pause_queue(**mock_args)
 
@@ -9593,6 +9607,7 @@ def test_resume_queue_rest_required_fields(request_type=cloudtasks.ResumeQueueRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.resume_queue(request)
 
@@ -9638,6 +9653,7 @@ def test_resume_queue_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.resume_queue(**mock_args)
 
@@ -9778,6 +9794,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_iam_policy(request)
 
@@ -9823,6 +9840,7 @@ def test_get_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_iam_policy(**mock_args)
 
@@ -9953,6 +9971,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.set_iam_policy(request)
 
@@ -10006,6 +10025,7 @@ def test_set_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.set_iam_policy(**mock_args)
 
@@ -10144,6 +10164,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.test_iam_permissions(request)
 
@@ -10198,6 +10219,7 @@ def test_test_iam_permissions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.test_iam_permissions(**mock_args)
 
@@ -10336,6 +10358,7 @@ def test_list_tasks_rest_required_fields(request_type=cloudtasks.ListTasksReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_tasks(request)
 
@@ -10390,6 +10413,7 @@ def test_list_tasks_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_tasks(**mock_args)
 
@@ -10582,6 +10606,7 @@ def test_get_task_rest_required_fields(request_type=cloudtasks.GetTaskRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_task(request)
 
@@ -10629,6 +10654,7 @@ def test_get_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_task(**mock_args)
 
@@ -10759,6 +10785,7 @@ def test_create_task_rest_required_fields(request_type=cloudtasks.CreateTaskRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_task(request)
 
@@ -10813,6 +10840,7 @@ def test_create_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_task(**mock_args)
 
@@ -10940,6 +10968,7 @@ def test_delete_task_rest_required_fields(request_type=cloudtasks.DeleteTaskRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_task(request)
 
@@ -10985,6 +11014,7 @@ def test_delete_task_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_task(**mock_args)
 
@@ -11115,6 +11145,7 @@ def test_lease_tasks_rest_required_fields(request_type=cloudtasks.LeaseTasksRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.lease_tasks(request)
 
@@ -11169,6 +11200,7 @@ def test_lease_tasks_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.lease_tasks(**mock_args)
 
@@ -11301,6 +11333,7 @@ def test_acknowledge_task_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.acknowledge_task(request)
 
@@ -11355,6 +11388,7 @@ def test_acknowledge_task_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.acknowledge_task(**mock_args)
 
@@ -11486,6 +11520,7 @@ def test_renew_lease_rest_required_fields(request_type=cloudtasks.RenewLeaseRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.renew_lease(request)
 
@@ -11544,6 +11579,7 @@ def test_renew_lease_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.renew_lease(**mock_args)
 
@@ -11676,6 +11712,7 @@ def test_cancel_lease_rest_required_fields(request_type=cloudtasks.CancelLeaseRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.cancel_lease(request)
 
@@ -11732,6 +11769,7 @@ def test_cancel_lease_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.cancel_lease(**mock_args)
 
@@ -11863,6 +11901,7 @@ def test_run_task_rest_required_fields(request_type=cloudtasks.RunTaskRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.run_task(request)
 
@@ -11910,6 +11949,7 @@ def test_run_task_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.run_task(**mock_args)
 
@@ -13109,6 +13149,7 @@ def test_list_queues_rest_bad_request(request_type=cloudtasks.ListQueuesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_queues(request)
 
 
@@ -13144,6 +13185,7 @@ def test_list_queues_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_queues(request)
 
     # Establish that the response is the type that we expect.
@@ -13182,6 +13224,7 @@ def test_list_queues_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudtasks.ListQueuesResponse.to_json(
             cloudtasks.ListQueuesResponse()
         )
@@ -13226,6 +13269,7 @@ def test_get_queue_rest_bad_request(request_type=cloudtasks.GetQueueRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_queue(request)
 
 
@@ -13262,6 +13306,7 @@ def test_get_queue_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_queue(request)
 
     # Establish that the response is the type that we expect.
@@ -13301,6 +13346,7 @@ def test_get_queue_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = queue.Queue.to_json(queue.Queue())
         req.return_value.content = return_value
 
@@ -13343,6 +13389,7 @@ def test_create_queue_rest_bad_request(request_type=cloudtasks.CreateQueueReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_queue(request)
 
 
@@ -13504,6 +13551,7 @@ def test_create_queue_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_queue(request)
 
     # Establish that the response is the type that we expect.
@@ -13543,6 +13591,7 @@ def test_create_queue_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gct_queue.Queue.to_json(gct_queue.Queue())
         req.return_value.content = return_value
 
@@ -13587,6 +13636,7 @@ def test_update_queue_rest_bad_request(request_type=cloudtasks.UpdateQueueReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_queue(request)
 
 
@@ -13750,6 +13800,7 @@ def test_update_queue_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_queue(request)
 
     # Establish that the response is the type that we expect.
@@ -13789,6 +13840,7 @@ def test_update_queue_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gct_queue.Queue.to_json(gct_queue.Queue())
         req.return_value.content = return_value
 
@@ -13831,6 +13883,7 @@ def test_delete_queue_rest_bad_request(request_type=cloudtasks.DeleteQueueReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_queue(request)
 
 
@@ -13861,6 +13914,7 @@ def test_delete_queue_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_queue(request)
 
     # Establish that the response is the type that we expect.
@@ -13895,6 +13949,7 @@ def test_delete_queue_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = cloudtasks.DeleteQueueRequest()
         metadata = [
@@ -13933,6 +13988,7 @@ def test_purge_queue_rest_bad_request(request_type=cloudtasks.PurgeQueueRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.purge_queue(request)
 
 
@@ -13969,6 +14025,7 @@ def test_purge_queue_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.purge_queue(request)
 
     # Establish that the response is the type that we expect.
@@ -14008,6 +14065,7 @@ def test_purge_queue_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = queue.Queue.to_json(queue.Queue())
         req.return_value.content = return_value
 
@@ -14050,6 +14108,7 @@ def test_pause_queue_rest_bad_request(request_type=cloudtasks.PauseQueueRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.pause_queue(request)
 
 
@@ -14086,6 +14145,7 @@ def test_pause_queue_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.pause_queue(request)
 
     # Establish that the response is the type that we expect.
@@ -14125,6 +14185,7 @@ def test_pause_queue_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = queue.Queue.to_json(queue.Queue())
         req.return_value.content = return_value
 
@@ -14167,6 +14228,7 @@ def test_resume_queue_rest_bad_request(request_type=cloudtasks.ResumeQueueReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.resume_queue(request)
 
 
@@ -14203,6 +14265,7 @@ def test_resume_queue_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.resume_queue(request)
 
     # Establish that the response is the type that we expect.
@@ -14242,6 +14305,7 @@ def test_resume_queue_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = queue.Queue.to_json(queue.Queue())
         req.return_value.content = return_value
 
@@ -14298,6 +14362,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -14331,6 +14396,7 @@ def test_get_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -14370,6 +14436,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(policy_pb2.Policy())
         req.return_value.content = return_value
 
@@ -14414,6 +14481,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -14447,6 +14515,7 @@ def test_set_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -14486,6 +14555,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(policy_pb2.Policy())
         req.return_value.content = return_value
 
@@ -14530,6 +14600,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -14562,6 +14633,7 @@ def test_test_iam_permissions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
@@ -14600,6 +14672,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(
             iam_policy_pb2.TestIamPermissionsResponse()
         )
@@ -14644,6 +14717,7 @@ def test_list_tasks_rest_bad_request(request_type=cloudtasks.ListTasksRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_tasks(request)
 
 
@@ -14679,6 +14753,7 @@ def test_list_tasks_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_tasks(request)
 
     # Establish that the response is the type that we expect.
@@ -14717,6 +14792,7 @@ def test_list_tasks_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudtasks.ListTasksResponse.to_json(
             cloudtasks.ListTasksResponse()
         )
@@ -14763,6 +14839,7 @@ def test_get_task_rest_bad_request(request_type=cloudtasks.GetTaskRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_task(request)
 
 
@@ -14801,6 +14878,7 @@ def test_get_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_task(request)
 
     # Establish that the response is the type that we expect.
@@ -14840,6 +14918,7 @@ def test_get_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = task.Task.to_json(task.Task())
         req.return_value.content = return_value
 
@@ -14882,6 +14961,7 @@ def test_create_task_rest_bad_request(request_type=cloudtasks.CreateTaskRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_task(request)
 
 
@@ -14918,6 +14998,7 @@ def test_create_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_task(request)
 
     # Establish that the response is the type that we expect.
@@ -14957,6 +15038,7 @@ def test_create_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gct_task.Task.to_json(gct_task.Task())
         req.return_value.content = return_value
 
@@ -15001,6 +15083,7 @@ def test_delete_task_rest_bad_request(request_type=cloudtasks.DeleteTaskRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_task(request)
 
 
@@ -15033,6 +15116,7 @@ def test_delete_task_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_task(request)
 
     # Establish that the response is the type that we expect.
@@ -15067,6 +15151,7 @@ def test_delete_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = cloudtasks.DeleteTaskRequest()
         metadata = [
@@ -15105,6 +15190,7 @@ def test_lease_tasks_rest_bad_request(request_type=cloudtasks.LeaseTasksRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.lease_tasks(request)
 
 
@@ -15138,6 +15224,7 @@ def test_lease_tasks_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.lease_tasks(request)
 
     # Establish that the response is the type that we expect.
@@ -15175,6 +15262,7 @@ def test_lease_tasks_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudtasks.LeaseTasksResponse.to_json(
             cloudtasks.LeaseTasksResponse()
         )
@@ -15223,6 +15311,7 @@ def test_acknowledge_task_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.acknowledge_task(request)
 
 
@@ -15255,6 +15344,7 @@ def test_acknowledge_task_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.acknowledge_task(request)
 
     # Establish that the response is the type that we expect.
@@ -15291,6 +15381,7 @@ def test_acknowledge_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = cloudtasks.AcknowledgeTaskRequest()
         metadata = [
@@ -15331,6 +15422,7 @@ def test_renew_lease_rest_bad_request(request_type=cloudtasks.RenewLeaseRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.renew_lease(request)
 
 
@@ -15369,6 +15461,7 @@ def test_renew_lease_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.renew_lease(request)
 
     # Establish that the response is the type that we expect.
@@ -15408,6 +15501,7 @@ def test_renew_lease_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = task.Task.to_json(task.Task())
         req.return_value.content = return_value
 
@@ -15452,6 +15546,7 @@ def test_cancel_lease_rest_bad_request(request_type=cloudtasks.CancelLeaseReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_lease(request)
 
 
@@ -15490,6 +15585,7 @@ def test_cancel_lease_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.cancel_lease(request)
 
     # Establish that the response is the type that we expect.
@@ -15529,6 +15625,7 @@ def test_cancel_lease_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = task.Task.to_json(task.Task())
         req.return_value.content = return_value
 
@@ -15573,6 +15670,7 @@ def test_run_task_rest_bad_request(request_type=cloudtasks.RunTaskRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_task(request)
 
 
@@ -15611,6 +15709,7 @@ def test_run_task_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_task(request)
 
     # Establish that the response is the type that we expect.
@@ -15650,6 +15749,7 @@ def test_run_task_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = task.Task.to_json(task.Task())
         req.return_value.content = return_value
 
@@ -15694,6 +15794,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -15724,6 +15825,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -15752,6 +15854,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -15782,6 +15885,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 

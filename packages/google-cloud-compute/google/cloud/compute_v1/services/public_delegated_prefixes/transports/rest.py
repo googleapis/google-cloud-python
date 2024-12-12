@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -133,9 +141,10 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_aggregated_list(
         self,
         request: compute.AggregatedListPublicDelegatedPrefixesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.AggregatedListPublicDelegatedPrefixesRequest, Sequence[Tuple[str, str]]
+        compute.AggregatedListPublicDelegatedPrefixesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for aggregated_list
 
@@ -158,9 +167,10 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_announce(
         self,
         request: compute.AnnouncePublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.AnnouncePublicDelegatedPrefixeRequest, Sequence[Tuple[str, str]]
+        compute.AnnouncePublicDelegatedPrefixeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for announce
 
@@ -181,8 +191,11 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeletePublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeletePublicDelegatedPrefixeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeletePublicDelegatedPrefixeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -202,8 +215,11 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetPublicDelegatedPrefixeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetPublicDelegatedPrefixeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -225,8 +241,11 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertPublicDelegatedPrefixeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertPublicDelegatedPrefixeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -246,8 +265,11 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListPublicDelegatedPrefixesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListPublicDelegatedPrefixesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListPublicDelegatedPrefixesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +291,11 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchPublicDelegatedPrefixeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchPublicDelegatedPrefixeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -290,9 +315,10 @@ class PublicDelegatedPrefixesRestInterceptor:
     def pre_withdraw(
         self,
         request: compute.WithdrawPublicDelegatedPrefixeRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.WithdrawPublicDelegatedPrefixeRequest, Sequence[Tuple[str, str]]
+        compute.WithdrawPublicDelegatedPrefixeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for withdraw
 
@@ -436,7 +462,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.PublicDelegatedPrefixAggregatedList:
             r"""Call the aggregated list method over HTTP.
 
@@ -448,8 +474,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.PublicDelegatedPrefixAggregatedList:
@@ -459,6 +487,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_transcoded_request(
                 http_options, request
@@ -468,6 +497,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BaseAggregatedList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -491,7 +547,31 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.PublicDelegatedPrefixAggregatedList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        compute.PublicDelegatedPrefixAggregatedList.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "AggregatedList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Announce(
@@ -529,7 +609,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the announce method over HTTP.
 
@@ -541,8 +621,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -569,6 +651,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_announce(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_transcoded_request(
                 http_options, request
@@ -578,6 +661,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BaseAnnounce._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.Announce",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Announce",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Announce._get_response(
@@ -599,7 +709,29 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_announce(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.announce",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Announce",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(
@@ -637,7 +769,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -649,8 +781,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -677,6 +811,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -686,6 +821,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Delete._get_response(
@@ -707,7 +869,29 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -745,7 +929,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.PublicDelegatedPrefix:
             r"""Call the get method over HTTP.
 
@@ -757,8 +941,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.PublicDelegatedPrefix:
@@ -777,6 +963,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -786,6 +973,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BaseGet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Get._get_response(
@@ -807,7 +1021,29 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.PublicDelegatedPrefix.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.PublicDelegatedPrefix.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -846,7 +1082,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -858,8 +1094,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -886,6 +1124,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -899,6 +1138,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Insert._get_response(
@@ -921,7 +1187,29 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -959,7 +1247,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.PublicDelegatedPrefixList:
             r"""Call the list method over HTTP.
 
@@ -971,8 +1259,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.PublicDelegatedPrefixList:
@@ -982,6 +1272,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseList._get_transcoded_request(
                 http_options, request
@@ -991,6 +1282,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._List._get_response(
@@ -1012,7 +1330,31 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.PublicDelegatedPrefixList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.PublicDelegatedPrefixList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(
@@ -1051,7 +1393,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -1063,8 +1405,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1091,6 +1435,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_transcoded_request(
                 http_options, request
@@ -1104,6 +1449,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BasePatch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Patch._get_response(
@@ -1126,7 +1498,29 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Withdraw(
@@ -1164,7 +1558,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the withdraw method over HTTP.
 
@@ -1176,8 +1570,10 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1204,6 +1600,7 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             http_options = (
                 _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_withdraw(request, metadata)
             transcoded_request = _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_transcoded_request(
                 http_options, request
@@ -1213,6 +1610,33 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             query_params = _BasePublicDelegatedPrefixesRestTransport._BaseWithdraw._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.PublicDelegatedPrefixesClient.Withdraw",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Withdraw",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublicDelegatedPrefixesRestTransport._Withdraw._get_response(
@@ -1234,7 +1658,29 @@ class PublicDelegatedPrefixesRestTransport(_BasePublicDelegatedPrefixesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_withdraw(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.PublicDelegatedPrefixesClient.withdraw",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.PublicDelegatedPrefixes",
+                        "rpcName": "Withdraw",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

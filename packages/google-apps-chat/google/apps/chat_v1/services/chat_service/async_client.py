@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -73,6 +74,15 @@ from google.apps.chat_v1.types import space_setup, thread_read_state, user
 from .client import ChatServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, ChatServiceTransport
 from .transports.grpc_asyncio import ChatServiceGrpcAsyncIOTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class ChatServiceAsyncClient:
@@ -303,6 +313,28 @@ class ChatServiceAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.chat_v1.ChatServiceAsyncClient`.",
+                extra={
+                    "serviceName": "google.chat.v1.ChatService",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.chat.v1.ChatService",
+                    "credentialsType": None,
+                },
+            )
+
     async def create_message(
         self,
         request: Optional[Union[gc_message.CreateMessageRequest, dict]] = None,
@@ -312,16 +344,18 @@ class ChatServiceAsyncClient:
         message_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_message.Message:
         r"""Creates a message in a Google Chat space. For an example, see
         `Send a
         message <https://developers.google.com/workspace/chat/create-messages>`__.
 
-        The ``create()`` method requires either user or app
-        authentication. Chat attributes the message sender differently
-        depending on the type of authentication that you use in your
-        request.
+        The ``create()`` method requires either `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        or `app
+        authentication <https://developers.google.com/workspace/chat/authorize-import>`__.
+        Chat attributes the message sender differently depending on the
+        type of authentication that you use in your request.
 
         The following image shows how Chat attributes a message when you
         use app authentication. Chat displays the Chat app as the
@@ -341,6 +375,12 @@ class ChatServiceAsyncClient:
 
         The maximum message size, including the message contents, is
         32,000 bytes.
+
+        For
+        `webhook <https://developers.google.com/workspace/chat/quickstart/webhooks>`__
+        requests, the response doesn't contain the full message. The
+        response only populates the ``name`` and ``thread.name`` fields
+        in addition to the information that was in the request.
 
         .. |Message sent with app authentication async| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
         .. |Message sent with user authentication async| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
@@ -414,8 +454,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Message:
@@ -478,7 +520,7 @@ class ChatServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListMessagesAsyncPager:
         r"""Lists messages in a space that the caller is a member of,
         including messages from blocked members and spaces. If you list
@@ -486,6 +528,7 @@ class ChatServiceAsyncClient:
         object. When using a REST/HTTP interface, the response contains
         an empty JSON object, ``{}``. For an example, see `List
         messages <https://developers.google.com/workspace/chat/api/guides/v1/messages/list>`__.
+
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
@@ -532,8 +575,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListMessagesAsyncPager:
@@ -608,7 +653,7 @@ class ChatServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListMembershipsAsyncPager:
         r"""Lists memberships in a space. For an example, see `List users
         and Google Chat apps in a
@@ -622,12 +667,17 @@ class ChatServiceAsyncClient:
         lists memberships in spaces that the authenticated user has
         access to.
 
-        Requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
-        Supports `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-        and `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         .. code-block:: python
 
@@ -673,8 +723,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListMembershipsAsyncPager:
@@ -749,18 +801,23 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> membership.Membership:
         r"""Returns details about a membership. For an example, see `Get
         details about a user's or Google Chat app's
         membership <https://developers.google.com/workspace/chat/get-members>`__.
 
-        Requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
-        Supports `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-        and `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         .. code-block:: python
 
@@ -802,9 +859,7 @@ class ChatServiceAsyncClient:
                 Format: ``spaces/{space}/members/{member}`` or
                 ``spaces/{space}/members/app``
 
-                When `authenticated as a
-                user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-                you can use the user's email as an alias for
+                You can use the user's email as an alias for
                 ``{member}``. For example,
                 ``spaces/{space}/members/example@gmail.com`` where
                 ``example@gmail.com`` is the email of the Google Chat
@@ -816,8 +871,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Membership:
@@ -880,18 +937,20 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> message.Message:
         r"""Returns details about a message. For an example, see `Get
         details about a
         message <https://developers.google.com/workspace/chat/get-messages>`__.
 
-        Requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
-        Supports `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-        and `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
 
         Note: Might return a message from a blocked member or space.
 
@@ -940,8 +999,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Message:
@@ -1001,7 +1062,7 @@ class ChatServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_message.Message:
         r"""Updates a message. There's a difference between the ``patch``
         and ``update`` methods. The ``patch`` method uses a ``patch``
@@ -1010,12 +1071,15 @@ class ChatServiceAsyncClient:
         `Update a
         message <https://developers.google.com/workspace/chat/update-messages>`__.
 
-        Requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
-        Supports `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-        and `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+
         When using app authentication, requests can only update messages
         created by the calling Chat app.
 
@@ -1080,8 +1144,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Message:
@@ -1144,17 +1210,20 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a message. For an example, see `Delete a
         message <https://developers.google.com/workspace/chat/delete-messages>`__.
 
-        Requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
-        Supports `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-        and `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+
         When using app authentication, requests can only delete messages
         created by the calling Chat app.
 
@@ -1200,8 +1269,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1253,7 +1324,7 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> attachment.Attachment:
         r"""Gets the metadata of a message attachment. The attachment data
         is fetched using the `media
@@ -1302,8 +1373,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Attachment:
@@ -1361,11 +1434,12 @@ class ChatServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> attachment.UploadAttachmentResponse:
         r"""Uploads an attachment. For an example, see `Upload media as a
         file
         attachment <https://developers.google.com/workspace/chat/upload-media-attachments>`__.
+
         Requires user
         `authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
@@ -1406,8 +1480,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.UploadAttachmentResponse:
@@ -1451,22 +1527,21 @@ class ChatServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSpacesAsyncPager:
         r"""Lists spaces the caller is a member of. Group chats and DMs
         aren't listed until the first message is sent. For an example,
         see `List
         spaces <https://developers.google.com/workspace/chat/list-spaces>`__.
 
-        Requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
-        Supports `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-        and `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        Lists spaces visible to the caller or authenticated user. Group
-        chats and DMs aren't listed until the first message is sent.
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
 
         To list all named spaces by Google Workspace organization, use
         the
@@ -1506,8 +1581,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListSpacesAsyncPager:
@@ -1561,11 +1638,12 @@ class ChatServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchSpacesAsyncPager:
         r"""Returns a list of spaces in a Google Workspace organization
-        based on an administrator's search. Requires `user
-        authentication with administrator
+        based on an administrator's search.
+
+        Requires `user authentication with administrator
         privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__.
         In the request, set ``use_admin_access`` to ``true``.
 
@@ -1603,8 +1681,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.SearchSpacesAsyncPager:
@@ -1659,18 +1739,23 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> space.Space:
         r"""Returns details about a space. For an example, see `Get details
         about a
         space <https://developers.google.com/workspace/chat/get-spaces>`__.
 
-        Requires
-        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__.
-        Supports `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
-        and `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         .. code-block:: python
 
@@ -1713,8 +1798,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Space:
@@ -1777,11 +1864,11 @@ class ChatServiceAsyncClient:
         space: Optional[gc_space.Space] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_space.Space:
         r"""Creates a space with no members. Can be used to create a named
-        space. Spaces grouped by topics aren't supported. For an
-        example, see `Create a
+        space, or a group chat in ``Import mode``. For an example, see
+        `Create a
         space <https://developers.google.com/workspace/chat/create-spaces>`__.
 
         If you receive the error message ``ALREADY_EXISTS`` when
@@ -1789,13 +1876,21 @@ class ChatServiceAsyncClient:
         space within the Google Workspace organization might already use
         this display name.
 
-        If you're a member of the `Developer Preview
-        program <https://developers.google.com/workspace/preview>`__,
-        you can create a group chat in import mode using
-        ``spaceType.GROUP_CHAT``.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
 
-        Requires `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+           with `administrator
+           approval <https://support.google.com/a?p=chat-app-auth>`__ in
+           `Developer
+           Preview <https://developers.google.com/workspace/preview>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+
+        When authenticating as an app, the ``space.customer`` field must
+        be set in the request.
 
         .. code-block:: python
 
@@ -1832,18 +1927,15 @@ class ChatServiceAsyncClient:
                 with no members.
             space (:class:`google.apps.chat_v1.types.Space`):
                 Required. The ``displayName`` and ``spaceType`` fields
-                must be populated. Only ``SpaceType.SPACE`` is
-                supported.
+                must be populated. Only ``SpaceType.SPACE`` and
+                ``SpaceType.GROUP_CHAT`` are supported.
+                ``SpaceType.GROUP_CHAT`` can only be used if
+                ``importMode`` is set to true.
 
                 If you receive the error message ``ALREADY_EXISTS``, try
                 a different ``displayName``. An existing space within
                 the Google Workspace organization might already use this
                 display name.
-
-                If you're a member of the `Developer Preview
-                program <https://developers.google.com/workspace/preview>`__,
-                ``SpaceType.GROUP_CHAT`` can be used if ``importMode``
-                is set to true.
 
                 The space ``name`` is assigned on the server so anything
                 specified in this field will be ignored.
@@ -1854,8 +1946,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Space:
@@ -1911,7 +2005,7 @@ class ChatServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> space.Space:
         r"""Creates a space and adds specified users to it. The calling user
         is automatically added to the space, and shouldn't be specified
@@ -2008,8 +2102,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Space:
@@ -2053,7 +2149,7 @@ class ChatServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_space.Space:
         r"""Updates a space. For an example, see `Update a
         space <https://developers.google.com/workspace/chat/update-spaces>`__.
@@ -2063,8 +2159,21 @@ class ChatServiceAsyncClient:
         An existing space within the Google Workspace organization might
         already use this display name.
 
-        Requires `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+           with `administrator
+           approval <https://support.google.com/a?p=chat-app-auth>`__ in
+           `Developer
+           Preview <https://developers.google.com/workspace/preview>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         .. code-block:: python
 
@@ -2185,8 +2294,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Space:
@@ -2253,16 +2364,29 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a named space. Always performs a cascading delete, which
         means that the space's child resources—like messages posted in
         the space and memberships in the space—are also deleted. For an
         example, see `Delete a
         space <https://developers.google.com/workspace/chat/delete-spaces>`__.
-        Requires `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-        from a user who has permission to delete the space.
+
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+           with `administrator
+           approval <https://support.google.com/a?p=chat-app-auth>`__ in
+           `Developer
+           Preview <https://developers.google.com/workspace/preview>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         .. code-block:: python
 
@@ -2301,8 +2425,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -2353,13 +2479,16 @@ class ChatServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> space.CompleteImportSpaceResponse:
         r"""Completes the `import
         process <https://developers.google.com/workspace/chat/import-data>`__
-        for the specified space and makes it visible to users. Requires
-        app authentication and domain-wide delegation. For more
-        information, see `Authorize Google Chat apps to import
+        for the specified space and makes it visible to users.
+
+        Requires `app
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+        and domain-wide delegation. For more information, see `Authorize
+        Google Chat apps to import
         data <https://developers.google.com/workspace/chat/authorize-import>`__.
 
         .. code-block:: python
@@ -2395,8 +2524,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.CompleteImportSpaceResponse:
@@ -2442,27 +2573,31 @@ class ChatServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> space.Space:
         r"""Returns the existing direct message with the specified user. If
         no direct message space is found, returns a ``404 NOT_FOUND``
         error. For an example, see `Find a direct
         message </chat/api/guides/v1/spaces/find-direct-message>`__.
 
-        With `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-        returns the direct message space between the specified user and
-        the authenticated user.
-
         With `app
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__,
         returns the direct message space between the specified user and
         the calling Chat app.
 
-        Requires `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
-        or `app
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
+        With `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
+        returns the direct message space between the specified user and
+        the authenticated user.
+
+        // Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
 
         .. code-block:: python
 
@@ -2497,8 +2632,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Space:
@@ -2542,7 +2679,7 @@ class ChatServiceAsyncClient:
         membership: Optional[gc_membership.Membership] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_membership.Membership:
         r"""Creates a membership for the calling Chat app, a user, or a
         Google Group. Creating memberships for other Chat apps isn't
@@ -2550,8 +2687,23 @@ class ChatServiceAsyncClient:
         has their auto-accept policy turned off, then they're invited,
         and must accept the space invitation before joining. Otherwise,
         creating a membership adds the member directly to the specified
-        space. Requires `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        space.
+
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+           with `administrator
+           approval <https://support.google.com/a?p=chat-app-auth>`__ in
+           `Developer
+           Preview <https://developers.google.com/workspace/preview>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         For example usage, see:
 
@@ -2605,27 +2757,52 @@ class ChatServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             membership (:class:`google.apps.chat_v1.types.Membership`):
-                Required. The membership relation to create. The
-                ``memberType`` field must contain a user with the
+                Required. The membership relation to create.
+
+                The ``memberType`` field must contain a user with the
                 ``user.name`` and ``user.type`` fields populated. The
                 server will assign a resource name and overwrite
-                anything specified. When a Chat app creates a membership
-                relation for a human user, it must use the
-                ``chat.memberships`` scope, set ``user.type`` to
-                ``HUMAN``, and set ``user.name`` with format
-                ``users/{user}``, where ``{user}`` can be the email
-                address for the user. For users in the same Workspace
-                organization ``{user}`` can also be the ``id`` of the
-                `person <https://developers.google.com/people/api/rest/v1/people>`__
-                from the People API, or the ``id`` for the user in the
-                Directory API. For example, if the People API Person
-                profile ID for ``user@example.com`` is ``123456789``,
-                you can add the user to the space by setting the
-                ``membership.member.name`` to ``users/user@example.com``
-                or ``users/123456789``. When a Chat app creates a
-                membership relation for itself, it must use the
-                ``chat.memberships.app`` scope, set ``user.type`` to
-                ``BOT``, and set ``user.name`` to ``users/app``.
+                anything specified.
+
+                When a Chat app creates a membership relation for a
+                human user, it must use certain authorization scopes and
+                set specific values for certain fields:
+
+                -  When `authenticating as a
+                   user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
+                   the ``chat.memberships`` authorization scope is
+                   required.
+
+                -  When `authenticating as an
+                   app <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__,
+                   the ``chat.app.memberships`` authorization scope is
+                   required. Authenticating as an app is available in
+                   `Developer
+                   Preview <https://developers.google.com/workspace/preview>`__.
+
+                -  Set ``user.type`` to ``HUMAN``, and set ``user.name``
+                   with format ``users/{user}``, where ``{user}`` can be
+                   the email address for the user. For users in the same
+                   Workspace organization ``{user}`` can also be the
+                   ``id`` of the
+                   `person <https://developers.google.com/people/api/rest/v1/people>`__
+                   from the People API, or the ``id`` for the user in
+                   the Directory API. For example, if the People API
+                   Person profile ID for ``user@example.com`` is
+                   ``123456789``, you can add the user to the space by
+                   setting the ``membership.member.name`` to
+                   ``users/user@example.com`` or ``users/123456789``.
+
+                Inviting users external to the Workspace organization
+                that owns the space requires `user
+                authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+                When a Chat app creates a membership relation for
+                itself, it must `authenticate as a
+                user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+                and use the ``chat.memberships.app`` scope, set
+                ``user.type`` to ``BOT``, and set ``user.name`` to
+                ``users/app``.
 
                 This corresponds to the ``membership`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2633,8 +2810,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Membership:
@@ -2700,14 +2879,27 @@ class ChatServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_membership.Membership:
         r"""Updates a membership. For an example, see `Update a user's
         membership in a
         space <https://developers.google.com/workspace/chat/update-members>`__.
 
-        Requires `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+           with `administrator
+           approval <https://support.google.com/a?p=chat-app-auth>`__ in
+           `Developer
+           Preview <https://developers.google.com/workspace/preview>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         .. code-block:: python
 
@@ -2760,8 +2952,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Membership:
@@ -2828,14 +3022,27 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> membership.Membership:
         r"""Deletes a membership. For an example, see `Remove a user or a
         Google Chat app from a
         space <https://developers.google.com/workspace/chat/delete-members>`__.
 
-        Requires `user
-        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        -  `App
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+           with `administrator
+           approval <https://support.google.com/a?p=chat-app-auth>`__ in
+           `Developer
+           Preview <https://developers.google.com/workspace/preview>`__
+
+        -  `User
+           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+           You can authenticate and authorize this method with
+           administrator privileges by setting the ``use_admin_access``
+           field in the request.
 
         .. code-block:: python
 
@@ -2894,8 +3101,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Membership:
@@ -2959,11 +3168,12 @@ class ChatServiceAsyncClient:
         reaction: Optional[gc_reaction.Reaction] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_reaction.Reaction:
         r"""Creates a reaction and adds it to a message. Only unicode emojis
         are supported. For an example, see `Add a reaction to a
         message <https://developers.google.com/workspace/chat/create-reactions>`__.
+
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
@@ -2983,8 +3193,12 @@ class ChatServiceAsyncClient:
                 client = chat_v1.ChatServiceAsyncClient()
 
                 # Initialize request argument(s)
+                reaction = chat_v1.Reaction()
+                reaction.emoji.unicode = "unicode_value"
+
                 request = chat_v1.CreateReactionRequest(
                     parent="parent_value",
+                    reaction=reaction,
                 )
 
                 # Make the request
@@ -3012,8 +3226,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.Reaction:
@@ -3074,11 +3290,12 @@ class ChatServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListReactionsAsyncPager:
         r"""Lists reactions to a message. For an example, see `List
         reactions for a
         message <https://developers.google.com/workspace/chat/list-reactions>`__.
+
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
@@ -3123,8 +3340,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListReactionsAsyncPager:
@@ -3199,11 +3418,12 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a reaction to a message. Only unicode emojis are
         supported. For an example, see `Delete a
         reaction <https://developers.google.com/workspace/chat/delete-reactions>`__.
+
         Requires `user
         authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
@@ -3245,8 +3465,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -3300,7 +3522,7 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> space_read_state.SpaceReadState:
         r"""Returns details about a user's read state within a space, used
         to identify read and unread messages. For an example, see `Get
@@ -3365,8 +3587,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.SpaceReadState:
@@ -3431,7 +3655,7 @@ class ChatServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_space_read_state.SpaceReadState:
         r"""Updates a user's read state within a space, used to identify
         read and unread messages. For an example, see `Update a user's
@@ -3515,8 +3739,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.SpaceReadState:
@@ -3584,7 +3810,7 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> thread_read_state.ThreadReadState:
         r"""Returns details about a user's read state within a thread, used
         to identify read and unread messages. For an example, see `Get
@@ -3650,8 +3876,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.ThreadReadState:
@@ -3713,7 +3941,7 @@ class ChatServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> space_event.SpaceEvent:
         r"""Returns an event from a Google Chat space. The `event
         payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
@@ -3775,8 +4003,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.types.SpaceEvent:
@@ -3839,7 +4069,7 @@ class ChatServiceAsyncClient:
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSpaceEventsAsyncPager:
         r"""Lists events from a Google Chat space. For each event, the
         `payload <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload>`__
@@ -3967,8 +4197,10 @@ class ChatServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.chat_v1.services.chat_service.pagers.ListSpaceEventsAsyncPager:

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -85,8 +93,10 @@ class CssProductsServiceRestInterceptor:
     def pre_get_css_product(
         self,
         request: css_products.GetCssProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[css_products.GetCssProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        css_products.GetCssProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_css_product
 
         Override in a subclass to manipulate the request or metadata
@@ -108,8 +118,10 @@ class CssProductsServiceRestInterceptor:
     def pre_list_css_products(
         self,
         request: css_products.ListCssProductsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[css_products.ListCssProductsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        css_products.ListCssProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_css_products
 
         Override in a subclass to manipulate the request or metadata
@@ -251,7 +263,7 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> css_products.CssProduct:
             r"""Call the get css product method over HTTP.
 
@@ -261,8 +273,10 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.css_products.CssProduct:
@@ -274,6 +288,7 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             http_options = (
                 _BaseCssProductsServiceRestTransport._BaseGetCssProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_css_product(request, metadata)
             transcoded_request = _BaseCssProductsServiceRestTransport._BaseGetCssProduct._get_transcoded_request(
                 http_options, request
@@ -283,6 +298,33 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             query_params = _BaseCssProductsServiceRestTransport._BaseGetCssProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.CssProductsServiceClient.GetCssProduct",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.CssProductsService",
+                        "rpcName": "GetCssProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CssProductsServiceRestTransport._GetCssProduct._get_response(
@@ -304,7 +346,29 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             pb_resp = css_products.CssProduct.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_css_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = css_products.CssProduct.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.CssProductsServiceClient.get_css_product",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.CssProductsService",
+                        "rpcName": "GetCssProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCssProducts(
@@ -342,7 +406,7 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> css_products.ListCssProductsResponse:
             r"""Call the list css products method over HTTP.
 
@@ -353,8 +417,10 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.css_products.ListCssProductsResponse:
@@ -366,6 +432,7 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             http_options = (
                 _BaseCssProductsServiceRestTransport._BaseListCssProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_css_products(
                 request, metadata
             )
@@ -377,6 +444,33 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             query_params = _BaseCssProductsServiceRestTransport._BaseListCssProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.CssProductsServiceClient.ListCssProducts",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.CssProductsService",
+                        "rpcName": "ListCssProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CssProductsServiceRestTransport._ListCssProducts._get_response(
@@ -398,7 +492,31 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
             pb_resp = css_products.ListCssProductsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_css_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = css_products.ListCssProductsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.CssProductsServiceClient.list_css_products",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.CssProductsService",
+                        "rpcName": "ListCssProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

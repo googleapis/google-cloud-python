@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -141,8 +149,10 @@ class TargetSslProxiesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteTargetSslProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -162,8 +172,10 @@ class TargetSslProxiesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetTargetSslProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -183,8 +195,10 @@ class TargetSslProxiesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertTargetSslProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -204,8 +218,10 @@ class TargetSslProxiesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListTargetSslProxiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListTargetSslProxiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListTargetSslProxiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -227,9 +243,10 @@ class TargetSslProxiesRestInterceptor:
     def pre_set_backend_service(
         self,
         request: compute.SetBackendServiceTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.SetBackendServiceTargetSslProxyRequest, Sequence[Tuple[str, str]]
+        compute.SetBackendServiceTargetSslProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_backend_service
 
@@ -252,9 +269,10 @@ class TargetSslProxiesRestInterceptor:
     def pre_set_certificate_map(
         self,
         request: compute.SetCertificateMapTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.SetCertificateMapTargetSslProxyRequest, Sequence[Tuple[str, str]]
+        compute.SetCertificateMapTargetSslProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_certificate_map
 
@@ -277,8 +295,11 @@ class TargetSslProxiesRestInterceptor:
     def pre_set_proxy_header(
         self,
         request: compute.SetProxyHeaderTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetProxyHeaderTargetSslProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetProxyHeaderTargetSslProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_proxy_header
 
         Override in a subclass to manipulate the request or metadata
@@ -298,9 +319,10 @@ class TargetSslProxiesRestInterceptor:
     def pre_set_ssl_certificates(
         self,
         request: compute.SetSslCertificatesTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.SetSslCertificatesTargetSslProxyRequest, Sequence[Tuple[str, str]]
+        compute.SetSslCertificatesTargetSslProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_ssl_certificates
 
@@ -323,8 +345,11 @@ class TargetSslProxiesRestInterceptor:
     def pre_set_ssl_policy(
         self,
         request: compute.SetSslPolicyTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetSslPolicyTargetSslProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetSslPolicyTargetSslProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_ssl_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -466,7 +491,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -478,8 +503,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -506,6 +533,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseTargetSslProxiesRestTransport._BaseDelete._get_transcoded_request(
@@ -519,6 +547,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._Delete._get_response(
@@ -540,7 +595,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseTargetSslProxiesRestTransport._BaseGet, TargetSslProxiesRestStub):
@@ -575,7 +652,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetSslProxy:
             r"""Call the get method over HTTP.
 
@@ -587,8 +664,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetSslProxy:
@@ -606,6 +685,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseTargetSslProxiesRestTransport._BaseGet._get_transcoded_request(
@@ -619,6 +699,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._Get._get_response(
@@ -640,7 +747,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.TargetSslProxy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetSslProxy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -678,7 +807,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -690,8 +819,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -718,6 +849,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseTargetSslProxiesRestTransport._BaseInsert._get_transcoded_request(
@@ -737,6 +869,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._Insert._get_response(
@@ -759,7 +918,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseTargetSslProxiesRestTransport._BaseList, TargetSslProxiesRestStub):
@@ -794,7 +975,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetSslProxyList:
             r"""Call the list method over HTTP.
 
@@ -806,8 +987,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetSslProxyList:
@@ -819,6 +1002,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseTargetSslProxiesRestTransport._BaseList._get_transcoded_request(
@@ -832,6 +1016,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._List._get_response(
@@ -853,7 +1064,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.TargetSslProxyList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetSslProxyList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetBackendService(
@@ -892,7 +1125,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set backend service method over HTTP.
 
@@ -904,8 +1137,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -932,6 +1167,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_backend_service(
                 request, metadata
             )
@@ -947,6 +1183,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             query_params = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.SetBackendService",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetBackendService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetBackendService._get_response(
@@ -969,7 +1232,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_backend_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.set_backend_service",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetBackendService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetCertificateMap(
@@ -1008,7 +1293,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set certificate map method over HTTP.
 
@@ -1020,8 +1305,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1048,6 +1335,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_certificate_map(
                 request, metadata
             )
@@ -1063,6 +1351,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             query_params = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.SetCertificateMap",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetCertificateMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetCertificateMap._get_response(
@@ -1085,7 +1400,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_certificate_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.set_certificate_map",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetCertificateMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetProxyHeader(
@@ -1123,7 +1460,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set proxy header method over HTTP.
 
@@ -1135,8 +1472,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1163,6 +1502,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_proxy_header(
                 request, metadata
             )
@@ -1178,6 +1518,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             query_params = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.SetProxyHeader",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetProxyHeader",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetProxyHeader._get_response(
@@ -1200,7 +1567,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_proxy_header(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.set_proxy_header",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetProxyHeader",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetSslCertificates(
@@ -1239,7 +1628,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set ssl certificates method over HTTP.
 
@@ -1251,8 +1640,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1279,6 +1670,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_ssl_certificates(
                 request, metadata
             )
@@ -1294,6 +1686,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.SetSslCertificates",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetSslCertificates",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetSslCertificates._get_response(
@@ -1316,7 +1735,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_ssl_certificates(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.set_ssl_certificates",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetSslCertificates",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetSslPolicy(
@@ -1354,7 +1795,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set ssl policy method over HTTP.
 
@@ -1366,8 +1807,10 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1394,6 +1837,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             http_options = (
                 _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_ssl_policy(request, metadata)
             transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_transcoded_request(
                 http_options, request
@@ -1407,6 +1851,33 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetSslProxiesClient.SetSslPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetSslPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetSslPolicy._get_response(
@@ -1429,7 +1900,29 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_ssl_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetSslProxiesClient.set_ssl_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetSslProxies",
+                        "rpcName": "SetSslPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
