@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -152,8 +160,10 @@ class ConversationsRestInterceptor:
     def pre_batch_create_messages(
         self,
         request: conversation.BatchCreateMessagesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversation.BatchCreateMessagesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.BatchCreateMessagesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_create_messages
 
         Override in a subclass to manipulate the request or metadata
@@ -175,8 +185,11 @@ class ConversationsRestInterceptor:
     def pre_complete_conversation(
         self,
         request: conversation.CompleteConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversation.CompleteConversationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.CompleteConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for complete_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -198,8 +211,11 @@ class ConversationsRestInterceptor:
     def pre_create_conversation(
         self,
         request: gcd_conversation.CreateConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcd_conversation.CreateConversationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_conversation.CreateConversationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -221,9 +237,10 @@ class ConversationsRestInterceptor:
     def pre_generate_stateless_suggestion(
         self,
         request: conversation.GenerateStatelessSuggestionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversation.GenerateStatelessSuggestionRequest, Sequence[Tuple[str, str]]
+        conversation.GenerateStatelessSuggestionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for generate_stateless_suggestion
 
@@ -246,8 +263,11 @@ class ConversationsRestInterceptor:
     def pre_generate_stateless_summary(
         self,
         request: conversation.GenerateStatelessSummaryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversation.GenerateStatelessSummaryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.GenerateStatelessSummaryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for generate_stateless_summary
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +289,10 @@ class ConversationsRestInterceptor:
     def pre_get_conversation(
         self,
         request: conversation.GetConversationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversation.GetConversationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.GetConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -292,8 +314,10 @@ class ConversationsRestInterceptor:
     def pre_list_conversations(
         self,
         request: conversation.ListConversationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversation.ListConversationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.ListConversationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_conversations
 
         Override in a subclass to manipulate the request or metadata
@@ -315,8 +339,10 @@ class ConversationsRestInterceptor:
     def pre_list_messages(
         self,
         request: conversation.ListMessagesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversation.ListMessagesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.ListMessagesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_messages
 
         Override in a subclass to manipulate the request or metadata
@@ -338,8 +364,10 @@ class ConversationsRestInterceptor:
     def pre_search_knowledge(
         self,
         request: conversation.SearchKnowledgeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversation.SearchKnowledgeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation.SearchKnowledgeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_knowledge
 
         Override in a subclass to manipulate the request or metadata
@@ -361,9 +389,10 @@ class ConversationsRestInterceptor:
     def pre_suggest_conversation_summary(
         self,
         request: gcd_conversation.SuggestConversationSummaryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcd_conversation.SuggestConversationSummaryRequest, Sequence[Tuple[str, str]]
+        gcd_conversation.SuggestConversationSummaryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for suggest_conversation_summary
 
@@ -386,8 +415,10 @@ class ConversationsRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -409,8 +440,10 @@ class ConversationsRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -432,8 +465,10 @@ class ConversationsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -453,8 +488,10 @@ class ConversationsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -476,8 +513,10 @@ class ConversationsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -619,7 +658,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.BatchCreateMessagesResponse:
             r"""Call the batch create messages method over HTTP.
 
@@ -630,8 +669,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversation.BatchCreateMessagesResponse:
@@ -643,6 +684,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseBatchCreateMessages._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_messages(
                 request, metadata
             )
@@ -658,6 +700,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseBatchCreateMessages._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.BatchCreateMessages",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "BatchCreateMessages",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._BatchCreateMessages._get_response(
@@ -680,7 +749,31 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.BatchCreateMessagesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_messages(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversation.BatchCreateMessagesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.batch_create_messages",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "BatchCreateMessages",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CompleteConversation(
@@ -718,7 +811,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.Conversation:
             r"""Call the complete conversation method over HTTP.
 
@@ -729,8 +822,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversation.Conversation:
@@ -747,6 +842,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseCompleteConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_complete_conversation(
                 request, metadata
             )
@@ -762,6 +858,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseCompleteConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.CompleteConversation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "CompleteConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._CompleteConversation._get_response(
@@ -784,7 +907,29 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_complete_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversation.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.complete_conversation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "CompleteConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateConversation(
@@ -822,7 +967,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_conversation.Conversation:
             r"""Call the create conversation method over HTTP.
 
@@ -833,8 +978,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_conversation.Conversation:
@@ -851,6 +998,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseCreateConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_conversation(
                 request, metadata
             )
@@ -866,6 +1014,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseCreateConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.CreateConversation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "CreateConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._CreateConversation._get_response(
@@ -888,7 +1063,29 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = gcd_conversation.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_conversation.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.create_conversation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "CreateConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateStatelessSuggestion(
@@ -927,7 +1124,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.GenerateStatelessSuggestionResponse:
             r"""Call the generate stateless
             suggestion method over HTTP.
@@ -939,8 +1136,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.conversation.GenerateStatelessSuggestionResponse:
@@ -952,6 +1151,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseGenerateStatelessSuggestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_stateless_suggestion(
                 request, metadata
             )
@@ -967,6 +1167,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseGenerateStatelessSuggestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.GenerateStatelessSuggestion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GenerateStatelessSuggestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -991,7 +1218,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.GenerateStatelessSuggestionResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_stateless_suggestion(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        conversation.GenerateStatelessSuggestionResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.generate_stateless_suggestion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GenerateStatelessSuggestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateStatelessSummary(
@@ -1030,7 +1283,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.GenerateStatelessSummaryResponse:
             r"""Call the generate stateless
             summary method over HTTP.
@@ -1042,8 +1295,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.conversation.GenerateStatelessSummaryResponse:
@@ -1055,6 +1310,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseGenerateStatelessSummary._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_stateless_summary(
                 request, metadata
             )
@@ -1070,6 +1326,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseGenerateStatelessSummary._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.GenerateStatelessSummary",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GenerateStatelessSummary",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1094,7 +1377,31 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.GenerateStatelessSummaryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_stateless_summary(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        conversation.GenerateStatelessSummaryResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.generate_stateless_summary",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GenerateStatelessSummary",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConversation(
@@ -1131,7 +1438,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.Conversation:
             r"""Call the get conversation method over HTTP.
 
@@ -1142,8 +1449,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversation.Conversation:
@@ -1160,6 +1469,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseGetConversation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_conversation(
                 request, metadata
             )
@@ -1171,6 +1481,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseGetConversation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.GetConversation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GetConversation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._GetConversation._get_response(
@@ -1192,7 +1529,29 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_conversation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversation.Conversation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.get_conversation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GetConversation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConversations(
@@ -1229,7 +1588,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.ListConversationsResponse:
             r"""Call the list conversations method over HTTP.
 
@@ -1240,8 +1599,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversation.ListConversationsResponse:
@@ -1253,6 +1614,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseListConversations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_conversations(
                 request, metadata
             )
@@ -1264,6 +1626,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseListConversations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.ListConversations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListConversations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._ListConversations._get_response(
@@ -1285,7 +1674,31 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.ListConversationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_conversations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversation.ListConversationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.list_conversations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListConversations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMessages(
@@ -1322,7 +1735,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.ListMessagesResponse:
             r"""Call the list messages method over HTTP.
 
@@ -1333,8 +1746,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversation.ListMessagesResponse:
@@ -1346,6 +1761,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseListMessages._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_messages(request, metadata)
             transcoded_request = _BaseConversationsRestTransport._BaseListMessages._get_transcoded_request(
                 http_options, request
@@ -1355,6 +1771,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseListMessages._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.ListMessages",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListMessages",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._ListMessages._get_response(
@@ -1376,7 +1819,31 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.ListMessagesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_messages(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversation.ListMessagesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.list_messages",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListMessages",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchKnowledge(
@@ -1414,7 +1881,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversation.SearchKnowledgeResponse:
             r"""Call the search knowledge method over HTTP.
 
@@ -1425,8 +1892,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversation.SearchKnowledgeResponse:
@@ -1438,6 +1907,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseSearchKnowledge._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_knowledge(
                 request, metadata
             )
@@ -1453,6 +1923,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseSearchKnowledge._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.SearchKnowledge",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "SearchKnowledge",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._SearchKnowledge._get_response(
@@ -1475,7 +1972,31 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = conversation.SearchKnowledgeResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_knowledge(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversation.SearchKnowledgeResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.search_knowledge",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "SearchKnowledge",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SuggestConversationSummary(
@@ -1514,7 +2035,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_conversation.SuggestConversationSummaryResponse:
             r"""Call the suggest conversation
             summary method over HTTP.
@@ -1526,8 +2047,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gcd_conversation.SuggestConversationSummaryResponse:
@@ -1539,6 +2062,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseSuggestConversationSummary._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_suggest_conversation_summary(
                 request, metadata
             )
@@ -1554,6 +2078,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseSuggestConversationSummary._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.SuggestConversationSummary",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "SuggestConversationSummary",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1578,7 +2129,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             pb_resp = gcd_conversation.SuggestConversationSummaryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_suggest_conversation_summary(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gcd_conversation.SuggestConversationSummaryResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsClient.suggest_conversation_summary",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "SuggestConversationSummary",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1721,7 +2298,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1731,8 +2308,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1741,6 +2320,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseConversationsRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1752,6 +2332,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._GetLocation._get_response(
@@ -1772,6 +2379,27 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1812,7 +2440,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1822,8 +2450,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1832,6 +2462,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseConversationsRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1841,6 +2472,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._ListLocations._get_response(
@@ -1861,6 +2519,27 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1901,7 +2580,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1911,13 +2590,16 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseConversationsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1929,6 +2611,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._CancelOperation._get_response(
@@ -1985,7 +2694,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1995,8 +2704,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2005,6 +2716,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseConversationsRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2014,6 +2726,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._GetOperation._get_response(
@@ -2034,6 +2773,27 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2074,7 +2834,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2084,8 +2844,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2094,6 +2856,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             http_options = (
                 _BaseConversationsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseConversationsRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2103,6 +2866,33 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             query_params = _BaseConversationsRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.ConversationsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversationsRestTransport._ListOperations._get_response(
@@ -2123,6 +2913,27 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.ConversationsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.Conversations",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
